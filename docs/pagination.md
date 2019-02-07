@@ -1,5 +1,7 @@
 # Pagination
 
+{% raw %}
+
 The pagination object is returned on listing pages, usually in the `{{ pages.pagination }}` field.
 
 The pagination object has the following variables and functions available. In the following examples we assume the 
@@ -145,3 +147,5 @@ links. For example:
 ```
 {{ include('includes/pagination.html.twig', {'pagination': pages.pagination, 'route': 'news_list'}) }}
 ```
+
+{% endraw %}

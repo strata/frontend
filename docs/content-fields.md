@@ -1,6 +1,6 @@
 # Content fields
 
-
+{% raw %}
   
 ## The content object
 
@@ -401,6 +401,7 @@ You can loop over flexible content and output it.
 
 E.g. Looping over a flexible content field called `page_content`:
 
+
 ```
 {% for component in page.content.page_content %}
 
@@ -415,11 +416,4 @@ E.g. Looping over a flexible content field called `page_content`:
 {% endfor %}
 ```
 
-
-
- 
-
-
-
-
- 
+{% endraw %}
