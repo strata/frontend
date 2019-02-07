@@ -1,0 +1,15 @@
+content_types:
+  news:
+    api_endpoint: posts
+    content_fields: news.yaml
+
+global:
+  test: myValue
+  image_thumbnails:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+    - twentyseventeen-featured-image
+    - twentyseventeen-thumbnail-avatar
+    - issue-post-image

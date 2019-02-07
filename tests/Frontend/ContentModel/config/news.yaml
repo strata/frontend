@@ -1,0 +1,52 @@
+post_type:
+  type: plaintext
+theme:
+  type: plaintext
+description:
+  type: plaintext
+image_credit:
+  type: plaintext
+banner_title:
+  type: plaintext
+banner_text:
+  type: plaintext
+mini_summary:
+  type: plaintext
+full_summary:
+  type: plaintext
+video_loop:
+  type: boolean
+video_poster:
+  type: boolean
+featured:
+  type: boolean
+post_index_image:
+  type: boolean
+exclude_from_search:
+  type: boolean
+image:
+  type: image
+  thumbnails:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+    - twentyseventeen-featured-image
+    - twentyseventeen-thumbnail-avatar
+    - issue-post-image
+page_content:
+  type: flexible
+  components:
+    content_block:
+      content_title:
+        type: plaintext
+      content:
+        type: richtext
+      full_width:
+        type: boolean
+      excerpt:
+        type: boolean
+    quote_block:
+      author:
+        type: relation
+        content_type: user
