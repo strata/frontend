@@ -17,7 +17,7 @@ See the [roadmap](ROADMAP.md) for more details on future development plans.
 Until version 0.5 you need to install via dev-master. 
 
 ```
-composer require "studio24/frontend@dev-master" 
+composer require studio24/frontend:dev-master
 ```
 
 ## Documentation
@@ -25,6 +25,24 @@ composer require "studio24/frontend@dev-master"
 See [docs](docs/index.md) or via the GitHub pages site at:
 
 * [https://studio24.github.io/frontend/](https://studio24.github.io/frontend/)
+
+Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses the [Liquid templating](https://jekyllrb.com/docs/liquid/) 
+language. This uses a similar syntax to Twig, so if you need to include Twig tags in your docs files ensure you wrap your 
+page content in `raw` Liquid tags. For example:  
+
+{% raw %}
+```
+{% raw %}
+
+Your Markdown here
+
+{% if page.content.field is not empty %}
+    Do something
+{% endif %}
+
+{% endraw %}
+```
+{% endraw %}
 
 ## Making changes
 
