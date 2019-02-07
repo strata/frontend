@@ -210,7 +210,7 @@ class Wordpress
                     case 'mini_summary':
                     case 'full_summary':
                         if (empty($value)) {
-                            continue;
+                            continue 2;
                         }
                         $page->addContent(new PlainText($key, $value));
                         break;
@@ -223,7 +223,7 @@ class Wordpress
                         break;
                     case 'image':
                         if (empty($value['url'])) {
-                            continue;
+                            continue 2;
                         }
                         $image = new Image($key, $value['url'], $value['title'], $value['caption'], $value['alt']);
 
@@ -263,7 +263,7 @@ class Wordpress
                          */
                     case 'page_content':
                         if (!is_array($value)) {
-                            continue;
+                            continue 2;
                         }
                         $flexible = new FlexibleContent($key);
                         foreach ($value as $key => $value) {
