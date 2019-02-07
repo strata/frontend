@@ -2,6 +2,8 @@
 
 Framework to build an efficient front-end website with content from a Headless CMS or other data sources.
 
+[![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend)
+
 ## Status
 
 Please note this is development software, usage and the project name may change before the 1.0 release. 

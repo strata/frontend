@@ -2,5 +2,20 @@ language: php
 
 php:
   - '7.1'
+  - '7.2'
+  - '7.3'
 
+before_install: composer self-update
 install: composer install
+
+before_script:
+  # PHP linting to check for syntax errors
+  - if find . -name "*.php" ! -path "./vendor/*" -exec php -l {} \; | grep -v "No syntax errors detected"; then exit 1; fi
+
+script:
+  # PHP unit
+  - vendor/bin/phpunit
+
+notifications:
+  on_success: never
+  on_failure: always
