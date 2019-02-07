@@ -89,5 +89,4 @@ class Boolean extends ContentField
     {
         return ($this->value) ? 'true' : 'false';
     }
-
 }

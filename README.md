@@ -54,6 +54,18 @@ Run [PHPUnit](https://phpunit.readthedocs.io/en/8.0/) tests via:
 vendor/bin/phpunit
 ```
 
+### PHP CodeSniffer
+
+You can test coding standards (PSR2) via:
+
+```
+# Summary report
+vendor/bin/phpcs --report=summary
+
+# Full details
+vendor/bin/phpcs
+```
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.

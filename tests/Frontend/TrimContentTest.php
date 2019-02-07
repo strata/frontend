@@ -92,8 +92,5 @@ CSS Color Module
 EOD;
 
         $this->assertEquals($expected, $page->trimContent(20, $content));
-
-
     }
-
 }

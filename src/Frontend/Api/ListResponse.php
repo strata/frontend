@@ -57,5 +57,4 @@ class ListResponse
     {
         return $this->responseData;
     }
-
 }

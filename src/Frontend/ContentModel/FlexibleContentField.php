@@ -198,6 +198,4 @@ class FlexibleContentField implements ContentFieldInterface, \ArrayAccess, \Seek
         }
         $this->key = $position;
     }
-
-
 }

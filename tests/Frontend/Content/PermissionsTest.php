@@ -63,5 +63,4 @@ class PermissionsTest extends TestCase
         $this->assertTrue($perms->write());
         $this->assertTrue($perms->delete());
     }
-
 }

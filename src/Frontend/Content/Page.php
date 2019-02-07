@@ -269,7 +269,7 @@ class Page
     {
         if (empty($this->excerpt)) {
             // @todo grab first 200 chars of page content
-            return $this->trimContent(200, 'TODO');
+            return $this->trimContent('TODO', 200);
         }
 
         return $this->excerpt;
@@ -279,11 +279,11 @@ class Page
     /**
      * Return a shorter version of content, cut to word boundaries and stripped of any HTML
      *
-     * @param int $limit Character length to trim string to
      * @param string $content String
+     * @param int $limit Character length to trim string to
      * @return string Concatenated string
      */
-    public function trimContent(int $limit = 200, string $content) : string
+    public function trimContent(string $content, int $limit = 200) : string
     {
         $content = strip_tags($content);
         $content = trim($content);
@@ -327,6 +327,4 @@ class Page
         $this->author = $author;
         return $this;
     }
-
-
 }

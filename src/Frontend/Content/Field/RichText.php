@@ -68,5 +68,4 @@ class RichText extends ContentField
     {
         return $this->content;
     }
-
 }

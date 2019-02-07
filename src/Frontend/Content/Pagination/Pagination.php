@@ -39,7 +39,10 @@ class Pagination implements PaginationInterface
         if ($page > $this->getTotalPages()) {
             throw new PaginationException(sprintf(
                 'Invalid page %s, only %s pages available. If you are using custom results per page
-                        make sure you call Pagination::setResultsPerPage() before Pagination::setPage()', $page, $this->getTotalPages()));
+                        make sure you call Pagination::setResultsPerPage() before Pagination::setPage()',
+                $page,
+                $this->getTotalPages()
+            ));
         }
         $this->page = $page;
         return $this;
@@ -254,6 +257,4 @@ class Pagination implements PaginationInterface
 
         return range($from, $to);
     }
-
 }
-

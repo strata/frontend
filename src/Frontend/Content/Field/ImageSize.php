@@ -111,5 +111,4 @@ class ImageSize
         $this->height = $height;
         return $this;
     }
-
 }

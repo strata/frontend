@@ -77,5 +77,4 @@ class PageCollection implements \SeekableIterator, \Countable
         }
         $this->position = $position;
     }
-
 }

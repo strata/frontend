@@ -77,7 +77,6 @@ class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
                 throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
             }
             $contentField = new FlexibleContentField($name, $data['components']);
-
         } else {
             $contentField = new ContentField($name, $data['type']);
 
@@ -223,5 +222,4 @@ class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
         }
         $this->key = $position;
     }
-
 }

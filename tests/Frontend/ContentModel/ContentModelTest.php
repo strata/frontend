@@ -15,5 +15,4 @@ class ContentModelTest extends TestCase
 
         $this->assertEquals('myValue', $contentModel->getGlobal('test'));
     }
-
 }

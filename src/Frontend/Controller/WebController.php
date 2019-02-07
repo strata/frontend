@@ -48,6 +48,4 @@ class WebController extends AbstractController
 
         return $response;
     }
-
-
 }

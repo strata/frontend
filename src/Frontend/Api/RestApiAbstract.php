@@ -45,7 +45,7 @@ abstract class RestApiAbstract
      *
      * @param Permissions $permissions (if not passed, default = read-only)
      */
-    public function  __construct(Permissions $permissions = null)
+    public function __construct(Permissions $permissions = null)
     {
         if ($permissions instanceof Permissions) {
             $this->permissions = $permissions;
@@ -59,7 +59,7 @@ abstract class RestApiAbstract
      *
      * @return Client
      */
-    public abstract function setupHttpClient() : Client;
+    abstract public function setupHttpClient() : Client;
 
     /**
      * Return the user agent string to use with HTTP requests
@@ -69,7 +69,7 @@ abstract class RestApiAbstract
     public function getUserAgent()
     {
         $userAgent = 'S24_Frontend/' . self::VERSION;
-        if (!empty( getenv('USER_AGENT_EMAIL'))) {
+        if (!empty(getenv('USER_AGENT_EMAIL'))) {
             $userAgent .= '(' . getenv('USER_AGENT_EMAIL') . ')';
         }
         return $userAgent;
@@ -222,5 +222,4 @@ abstract class RestApiAbstract
 
         throw new FailedRequestException('Cannot parse JSON response body');
     }
-
 }

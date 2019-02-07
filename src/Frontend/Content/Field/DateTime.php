@@ -67,5 +67,4 @@ class DateTime extends Date
     {
         return $this->format(\DateTimeInterface::ATOM);
     }
-
 }

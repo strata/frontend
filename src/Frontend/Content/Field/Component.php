@@ -72,7 +72,4 @@ class Component
         $this->name = $name;
         return $this;
     }
-
-
-
 }

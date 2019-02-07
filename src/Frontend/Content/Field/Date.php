@@ -136,5 +136,4 @@ class Date extends ContentField
     {
         return $this->format('Y-m-d');
     }
-
 }

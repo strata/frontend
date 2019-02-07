@@ -60,5 +60,4 @@ class ImageSizeCollection implements \SeekableIterator, \Countable
         }
         $this->position = $position;
     }
-
 }

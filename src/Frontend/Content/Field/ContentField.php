@@ -62,5 +62,4 @@ abstract class ContentField implements ContentFieldInterface
         $this->name = $name;
         return $this;
     }
-
 }

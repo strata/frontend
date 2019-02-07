@@ -62,7 +62,6 @@ class Wordpress
             return true;
         }
         return false;
-
     }
 
     public function setContentType(string $type): Wordpress
@@ -197,7 +196,6 @@ class Wordpress
         // ACF content fields
         if (isset($data['acf']) && is_array($data['acf'])) {
             foreach ($data['acf'] as $key => $value) {
-
                 // Hard-code the available content types for now
                 // @todo set via configuration
                 switch ($key) {
@@ -238,6 +236,7 @@ class Wordpress
                         }
                         $page->addContent($image);
                         break;
+
                     case 'author':
                         /**
                          * Test code:
@@ -261,6 +260,8 @@ class Wordpress
                          * Tim Knight, Person ID 10031
                          *
                          */
+                        break;
+
                     case 'page_content':
                         if (!is_array($value)) {
                             continue 2;
@@ -305,7 +306,4 @@ class Wordpress
         }
         return $user;
     }
-
-
-
 }

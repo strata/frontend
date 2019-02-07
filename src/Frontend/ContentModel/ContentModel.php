@@ -197,6 +197,4 @@ class ContentModel implements \ArrayAccess, \SeekableIterator, \Countable
         }
         $this->key = $position;
     }
-
-
 }

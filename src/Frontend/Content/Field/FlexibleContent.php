@@ -73,5 +73,4 @@ class FlexibleContent extends ContentField
 
         return $content;
     }
-
 }

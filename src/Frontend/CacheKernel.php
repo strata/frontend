@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
  * @see https://symfony.com/doc/current/http_cache.html
  * @package Studio24\Frontend
  */
-class CacheKernel  extends HttpCache
+class CacheKernel extends HttpCache
 {
 
     /**
@@ -25,5 +25,4 @@ class CacheKernel  extends HttpCache
             'default_ttl' => 3600,
         ];
     }
-
 }

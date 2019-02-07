@@ -102,5 +102,4 @@ class ContentFieldCollection implements \ArrayAccess, \SeekableIterator, \Counta
         }
         $this->key = $position;
     }
-
 }

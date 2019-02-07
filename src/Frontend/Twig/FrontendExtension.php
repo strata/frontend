@@ -24,5 +24,4 @@ class FrontendExtension extends AbstractExtension
     {
         return "TEST";
     }
-
 }

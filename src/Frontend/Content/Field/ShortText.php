@@ -62,5 +62,4 @@ class ShortText extends ContentField
     {
         return $this->getContent();
     }
-
 }

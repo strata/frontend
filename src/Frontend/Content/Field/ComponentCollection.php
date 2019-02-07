@@ -59,5 +59,4 @@ class ComponentCollection implements \SeekableIterator, \Countable
         }
         $this->position = $position;
     }
-
 }

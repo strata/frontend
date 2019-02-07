@@ -59,5 +59,4 @@ class PlainText extends ContentField
     {
         return $this->content;
     }
-
 }

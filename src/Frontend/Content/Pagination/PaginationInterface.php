@@ -33,4 +33,3 @@ interface PaginationInterface extends \Countable
      */
     public function getTotalPages(): int;
 }
-

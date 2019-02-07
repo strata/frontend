@@ -115,5 +115,4 @@ class ContentField implements ContentFieldInterface
         }
         return $this;
     }
-
 }

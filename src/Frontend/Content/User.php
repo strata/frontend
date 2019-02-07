@@ -62,6 +62,4 @@ class User
         $this->bio = $bio;
         return $this;
     }
-
-
 }

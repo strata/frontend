@@ -41,7 +41,7 @@ class Wordpress extends RestApiAbstract
      * @throws \Studio24\Exception\PermissionException
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
-    public function listPosts($apiEndpoint = 'posts', $page = 1, array $options) : ListResponse
+    public function listPosts($apiEndpoint, $page = 1, array $options = []) : ListResponse
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
@@ -99,7 +99,7 @@ class Wordpress extends RestApiAbstract
      * @throws \Studio24\Exception\FailedRequestException
      * @throws \Studio24\Exception\PermissionException
      */
-    public function getPost($apiEndpoint = 'posts', int $id) : array
+    public function getPost($apiEndpoint, int $id) : array
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
@@ -129,6 +129,4 @@ class Wordpress extends RestApiAbstract
 
         return $data;
     }
-
-
 }
