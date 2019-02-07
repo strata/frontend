@@ -12,13 +12,13 @@ class TrimContentTest extends TestCase
     {
         $page = new Page();
 
-        $this->assertEquals('The quick', $page->trimContent(10, 'The quick brown fox jumps over the lazy dog'));
-        $this->assertEquals('The quick brown fox', $page->trimContent(24, 'The quick brown fox jumps over the lazy dog'));
-        $this->assertEquals('The quick brown fox jumps', $page->trimContent(29, 'The quick brown fox jumps over the lazy dog'));
-        $this->assertNotEquals(29, strlen($page->trimContent(29, 'The quick brown fox jumps over the lazy dog')));
+        $this->assertEquals('The quick', $page->trimContent('The quick brown fox jumps over the lazy dog', 10));
+        $this->assertEquals('The quick brown fox', $page->trimContent('The quick brown fox jumps over the lazy dog', 24));
+        $this->assertEquals('The quick brown fox jumps', $page->trimContent('The quick brown fox jumps over the lazy dog', 29));
+        $this->assertNotEquals(29, strlen($page->trimContent('The quick brown fox jumps over the lazy dog', 29)));
 
-        $this->assertEquals('The quick brown fox jumps over', $page->trimContent(30, 'The quick brown fox jumps over the lazy dog'));
-        $this->assertEquals('The quick brown fox jumps over', $page->trimContent(31, 'The quick brown fox jumps over the lazy dog'));
+        $this->assertEquals('The quick brown fox jumps over', $page->trimContent('The quick brown fox jumps over the lazy dog', 30));
+        $this->assertEquals('The quick brown fox jumps over', $page->trimContent('The quick brown fox jumps over the lazy dog', 31));
 
         $content = <<<EOD
 Lorem ipsum dolor amet coloring book vice shoreditch, occupy skateboard hot chicken chillwave microdosing wolf tacos leggings.
@@ -36,10 +36,10 @@ Lorem ipsum dolor amet coloring book vice shoreditch, occupy skateboard hot chic
 Gastropub freegan try-
 EOD;
 
-        $this->assertEquals($expected1, $page->trimContent(142, $content));
-        $this->assertEquals($expected2, $page->trimContent(150, $content));
+        $this->assertEquals($expected1, $page->trimContent($content, 142));
+        $this->assertEquals($expected2, $page->trimContent($content, 150));
 
-        $this->assertEquals('The quick brown fox', $page->trimContent(24, 'The <strong>quick</strong> brown fox jumps over the lazy dog'));
+        $this->assertEquals('The quick brown fox', $page->trimContent('The <strong>quick</strong> brown fox jumps over the lazy dog', 24));
 
         /**
          * @license http://creativecommons.org/licenses/by-sa/2.5/ Test content by Mozilla Contributors is licensed under CC-BY-SA 2.5
@@ -64,8 +64,8 @@ CSS3 is the latest evolution of the Cascading Style Sheets language and aims at 
 Modules and the
 EOD;
 
-        $this->assertEquals($expected1, $page->trimContent(60, $content));
-        $this->assertEquals($expected2, $page->trimContent(500, $content));
+        $this->assertEquals($expected1, $page->trimContent($content, 60));
+        $this->assertEquals($expected2, $page->trimContent($content, 500));
 
         $content = <<<EOD
 <table class="fullwidth-table">
@@ -91,6 +91,6 @@ EOD;
 CSS Color Module
 EOD;
 
-        $this->assertEquals($expected, $page->trimContent(20, $content));
+        $this->assertEquals($expected, $page->trimContent( $content, 20));
     }
 }
