@@ -1,8 +1,4 @@
 theme: jekyll-theme-cayman
 
-site:
-  title: Frontend
-  google_analytics: UA-188013-7
-
 kramdown:
-  toc_levels: 2..3
+  toc_levels: "2..3"

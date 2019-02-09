@@ -2,15 +2,16 @@
 <html lang="{{ site.lang | default: "en-US" }}">
 <head>
 
-    {% if site.google_analytics %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-188013-7"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '{{ site.google_analytics }}');
+
+        gtag('config', 'UA-188013-7');
     </script>
-    {% endif %}
+
     <meta charset="UTF-8">
 
     {% seo %}
@@ -23,8 +24,9 @@
 <a id="skip-to-content" href="#content">Skip to the content.</a>
 
 <header class="page-header" role="banner">
-    <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
-    <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
+    <h1 class="project-name">Frontend</h1>
+    <h2 class="project-tagline">Framework to build an efficient front-end website with content from a Headless CMS or other data sources</h2>
+
     <a href="{{ "/" | absolute_url }}" class="btn">Docs home</a>
     {% if site.github.is_project_page %}
     <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
@@ -36,6 +38,7 @@
 </header>
 
 <main id="content" class="main-content" role="main">
+
     {{ content }}
 
     <footer class="site-footer">
