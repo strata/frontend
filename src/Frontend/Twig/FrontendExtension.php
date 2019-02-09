@@ -20,8 +20,10 @@ class FrontendExtension extends AbstractExtension
         );
     }
 
-    public function test()
+    public function buildRevisionFilter()
     {
+        // @todo Add build revision to CSS, e.g. {{ 'css' | build_revision }}
+        // Outputs: css?r=512
         return "TEST";
     }
 }
