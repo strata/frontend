@@ -26,9 +26,10 @@ composer require studio24/frontend:dev-master
 
 See [docs](docs/index.md) or via the GitHub pages site at: [https://studio24.github.io/frontend/](https://studio24.github.io/frontend/)
 
-Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses the [Liquid templating](https://jekyllrb.com/docs/liquid/) 
-language. This uses a similar syntax to Twig, so if you need to include Twig tags in your docs files ensure you wrap your 
-page content in `raw` Liquid tags. For example:  
+Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses [Kramdown](https://kramdown.gettalong.org/parser/html.html) 
+to parse markdown to HTML and the [Liquid templating](https://jekyllrb.com/docs/liquid/) 
+language. Liquid uses a similar syntax to Twig, so if you need to include Twig tags in your docs files ensure you wrap your 
+page content in `raw` Liquid tags to avoid errors. For example:  
 
 ```
 {% raw %}
