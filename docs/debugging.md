@@ -1,5 +1,7 @@
 # Debugging
 
+{% raw %}
+
 ## Symfony debugger
 
 On your local development environment you will see the Symfony debug bar which displays:
@@ -50,3 +52,5 @@ Select the inspector icon ![Inspector icon](assets/symfony-debugger-inspect-icon
 
 The example above also shows the debug bar with an error, additional information such as the error details can be accessed 
 from here.
+
+{% endraw %}

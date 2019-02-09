@@ -1,5 +1,8 @@
 # Pagination
 
+* TOC
+{:toc}
+
 {% raw %}
 
 The pagination object is returned on listing pages, usually in the `{{ pages.pagination }}` field.
@@ -7,7 +10,7 @@ The pagination object is returned on listing pages, usually in the `{{ pages.pag
 The pagination object has the following variables and functions available. In the following examples we assume the 
 pagination object is `{{ pagination }}`
 
-## Pagination object variables
+## Variables
 
 ### page
 
@@ -121,7 +124,7 @@ Return the next page number, or the last page number if we are already on the la
 {{ pagination.next }}
 ```
 
-## Pagination object methods
+## Functions
 
 ### pageLinks($maxPages)
 
