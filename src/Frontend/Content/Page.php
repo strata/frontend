@@ -7,7 +7,7 @@ use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\DateTime;
 
-class Page
+class Page implements ContentInterface
 {
     protected $id;
     protected $title;
@@ -39,6 +39,11 @@ class Page
     protected $excerpt;
 
     /**
+     * @var Url
+     */
+    protected $urlPattern;
+
+    /**
      * Author user
      *
      * @var User
@@ -48,6 +53,21 @@ class Page
     public function __construct()
     {
         $this->content = new ContentFieldCollection();
+    }
+
+    /**
+     * Set URL pattern
+     *
+     * @param $urlPattern
+     */
+    public function setUrlPattern($urlPattern)
+    {
+
+    }
+
+    public function getUrlPattern(): Url
+    {
+
     }
 
     /**
@@ -168,7 +188,7 @@ class Page
      *
      * @return DateTime
      */
-    public function getDatePublished() : DateTime
+    public function getDatePublished(): DateTime
     {
         return $this->datePublished;
     }

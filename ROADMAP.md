@@ -18,3 +18,4 @@ Planned for June 2019.
 
 * Drupal API integration
 * Full developer documentation
+* Add Symfony Flex support

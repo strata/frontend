@@ -8,24 +8,26 @@ use Psr\Http\Message\ResponseInterface;
 use Studio24\Frontend\Api\ListResponse;
 use Studio24\Frontend\Content\Pagination\Pagination;
 use Studio24\Frontend\Api\RestApiAbstract;
+use Studio24\Frontend\Exception\ApiException;
 
 class Wordpress extends RestApiAbstract
 {
+
     /**
-     * @todo Need to pass WordPress API base URL
+     * Setup HTTP client
      *
      * @return Client
+     * @throws ApiException
      */
     public function setupHttpClient() : Client
     {
         return new Client([
-            'base_uri' => "https://api.fauna-flora.org/wp-json/wp/v2/",
+            'base_uri' => $this->getBaseUri(),
             'headers' => [
                 'User-Agent'            => $this->getUserAgent(),
             ]
         ]);
     }
-
 
     /**
      * Get multiple posts
