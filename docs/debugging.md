@@ -1,5 +1,8 @@
 # Debugging
 
+* TOC
+{:toc toc_levels=2..3}
+
 {% raw %}
 
 ## Symfony debugger

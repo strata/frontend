@@ -1,7 +1,7 @@
 # Pagination
 
 * TOC
-{:toc}
+{:toc toc_levels=2..3}
 
 {% raw %}
 
