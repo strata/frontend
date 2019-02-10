@@ -5,14 +5,12 @@
 
 {% raw %}
   
-## The content object
-
 We build a standardised content object to collect standard fields and custom content fields from the CMS. These are detailed 
 below.
 
-### Common fields
+## Variables
 
-#### id
+### id
 
 The page ID (from the CMS).
 
@@ -20,7 +18,7 @@ The page ID (from the CMS).
 {{ page.id }}
 ``
 
-#### title
+### title
 
 Page title.
 
@@ -28,15 +26,15 @@ Page title.
 {{ page.title }}
 ```
 
-#### Page URL
+### Page URL
 
-TODO:  Return the current page URL. E.g. /news/my-page-title
+Return the current page URL. E.g. `/news/my-page-title`
 
 ```
 {{ page.url }}
 ```
 
-#### urlSlug
+### urlSlug
 
 URL slug as defined in the CMS. This isn't the whole page URL, for that, see `page.url`
 
@@ -44,7 +42,7 @@ URL slug as defined in the CMS. This isn't the whole page URL, for that, see `pa
 {{ page.urlSlug }}
 ```
 
-#### status
+### status
 
 TODO:  Page status as defined by the CMS.
 
@@ -52,7 +50,7 @@ TODO:  Page status as defined by the CMS.
 {{ page.status }}
 ```
 
-#### contentType
+### contentType
 
 The content type from the CMS (string). E.g. `post`
 
@@ -60,7 +58,7 @@ The content type from the CMS (string). E.g. `post`
 {{ page.contentType }}
 ```
 
-#### excerpt
+### excerpt
 
 A summary of the content. This either returns the field set in the CMS as the excerpt. 
 
@@ -78,7 +76,7 @@ parameter. The following example sets the excerpt to 100.
 {{ page.excerpt(100) }}
 ```
 
-#### datePublished
+### datePublished
 
 Date the page was published, see `DateTime`.
  
@@ -86,7 +84,7 @@ Date the page was published, see `DateTime`.
 {{ page.datePublished }}
 ```
 
-#### dateModified
+### dateModified
 
 Date the page was last modified, see `DateTime`.
 
@@ -94,7 +92,7 @@ Date the page was last modified, see `DateTime`.
 {{ page.dateModified }}
 ```
 
-### Custom content fields
+## Content 
 
 Custom content fields are collected within the `content` property. `content` is a collection of many content fields and
 can be looped over like an array or accessed directly by referencing the content field name of the child item.
@@ -115,7 +113,7 @@ In real world usage, replace `field` with the actual field name. E.g. Output the
 {{ page.content.post_type }}
 ```
 
-#### Common properties
+### Common properties
 
 Output the field type (e.g. image):
 
@@ -155,7 +153,7 @@ Output the field's raw value. This is useful if it is not a string:
 {{ page.content.field.value }}
 ```
 
-#### ShortText
+### ShortText
 
 Short text field, we do not expect any line returns or HTML. 
 
@@ -163,7 +161,7 @@ Short text field, we do not expect any line returns or HTML.
 {{ page.content.field }}
 ```
 
-#### PlainText
+### PlainText
 
 Plain text field, can have line returns but we do not expect any HTML.
 
@@ -171,7 +169,7 @@ Plain text field, can have line returns but we do not expect any HTML.
 {{ page.content.field }}
 ```
 
-#### Escaping content
+### Escaping content
 By default Twig auto-escapes all variables using the HTML strategy. If the text field is intended to be used 
 in a different context, ensure you use the correct escaping. For example, if the text is outputted in CSS: 
 
@@ -183,7 +181,7 @@ See:
 * https://twig.symfony.com/doc/2.x/templates.html#html-escaping 
 * https://twig.symfony.com/doc/2.x/filters/escape.html
 
-#### RichText
+### RichText
 
 HTML text. By default Twig auto-escapes all variables using the HTML strategy. You need to use the `raw` 
 filter in Twig to avoid escaping HTML. 
@@ -195,7 +193,7 @@ returned is safe for use.
 {{ page.field.name|raw }}
 ```
 
-#### Date
+### Date
 
 Date field. Default output format is Y-m-d which is a bit ugly. E.g. 2019-01-30
 
@@ -227,11 +225,11 @@ And you can compare dates via:
 
 See https://twig.symfony.com/doc/2.x/functions/date.html
 
-#### DateTime
+### DateTime
 
 Datetime field. 
 
-Default output is a standarsided format, Atom, e.g. 2019-01-30T15:52:01+00:00. This is compatible with ISO-8601.  
+Default output is a standardised format, Atom, e.g. 2019-01-30T15:52:01+00:00. This is compatible with ISO-8601.  
 
 ```
 {{ page.content.field }}
@@ -243,7 +241,7 @@ DateTime has the same functionality as Date. Customise the date format via the `
 {{ page.content.field.format("j M Y, H:i:s T") }}
 ```
 
-#### Returning part of a Date or DateTime field
+### Returning part of a Date or DateTime field
 
 If you want to compare dates for a DateTime field you need to compare just the date part, otherwise the comparison 
 will use the full date and time. 
@@ -293,11 +291,11 @@ Return the seconds with leading zeros (e.g. 05 for 5 secs, 15 for 15 secs)
 page.content.field.seconds
 ```
 
-#### TODO:  Number / Integer / Decimal
+### TODO:  Number / Integer / Decimal
 
 An integer or decimal number. 
 
-#### Boolean
+### Boolean
 
 A true / false variable.
 
@@ -334,7 +332,7 @@ Test whether two boolean fields have the same value:
 {% endif %}
 ```
 
-#### Image
+### Image
 
 An image. Outputting the variable will return the default image URL value:
 
@@ -389,7 +387,7 @@ Return image URL by image width and height:
 {{ page.content.field.byWidthHeight(300, 100) }}
 ```
 
-#### Flexible Content
+### Flexible Content
 
 **Flexible content** is a way of supporting flexible mix of content types that may apply to a piece of content. They are built 
 up of **Components** which themselves are a set of different **Content fields**. 

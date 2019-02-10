@@ -7,7 +7,7 @@ use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\DateTime;
 
-class Page
+class Page implements ContentInterface
 {
     protected $id;
     protected $title;
@@ -39,6 +39,11 @@ class Page
     protected $excerpt;
 
     /**
+     * @var Url
+     */
+    protected $urlPattern;
+
+    /**
      * Author user
      *
      * @var User
@@ -51,13 +56,34 @@ class Page
     }
 
     /**
+     * Set URL pattern
+     *
+     * @param $urlPattern
+     */
+    public function setUrlPattern(Url $urlPattern)
+    {
+        $this->urlPattern = $urlPattern;
+    }
+
+    /**
+     * Get URL pattern
+     *
+     * @return Url
+     */
+    public function getUrlPattern(): Url
+    {
+        return $this->urlPattern;
+    }
+
+    /**
      * Return the full URL to the current page
      *
      * @return string
+     * @throws \Studio24\Frontend\Exception\UrlException
      */
     public function getUrl() : string
     {
-        return 'TODO/' . $this->urlSlug;
+        return $this->urlPattern->getUrl($this);
     }
 
     /**
@@ -168,7 +194,7 @@ class Page
      *
      * @return DateTime
      */
-    public function getDatePublished() : DateTime
+    public function getDatePublished(): DateTime
     {
         return $this->datePublished;
     }

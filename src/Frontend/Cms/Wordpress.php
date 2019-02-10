@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\Cms;
 
+use GuzzleHttp\Client;
 use Studio24\Frontend\Content\Field\Boolean;
 use Studio24\Frontend\Content\Field\FlexibleContent;
 use Studio24\Frontend\Content\Field\Image;
@@ -47,13 +48,31 @@ class Wordpress
      * @var array
      */
     protected $contentTypes = [
-        'posts'      => 'posts',
-        'projects'   => 'projects',
+        'posts' => 'posts',
+        'pages' => 'pages',
+        'media' => 'media',
     ];
 
-    public function __construct()
+    /**
+     * Constructor
+     *
+     * @param string $baseUrl API base URI
+     */
+    public function __construct(string $baseUrl = '')
     {
-        $this->api = new WordpressApi();
+        $this->api = new WordpressApi($baseUrl);
+    }
+
+    /**
+     * Set HTTP client
+     *
+     * Useful for testing
+     *
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        $this->api->setClient($client);
     }
 
     public function hasContentType(string $type): bool
@@ -116,7 +135,9 @@ class Wordpress
             $pages->addItem($this->createPage($pageData));
         }
 
-        $this->cache->set($cacheKey, $pages);
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $pages);
+        }
 
         return $pages;
     }
@@ -160,7 +181,9 @@ class Wordpress
                 throw new \Exception('Unrecognised content type: ' . $this->getContentType());
         }
 
-        $this->cache->set($cacheKey, $page);
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $page);
+        }
 
         return $page;
     }
@@ -174,7 +197,6 @@ class Wordpress
      */
     public function createPage(array $data) : Page
     {
-        dump($data);
         $page = new Page();
         $page->setId($data['id']);
         $page->setTitle($data['title']['rendered']);

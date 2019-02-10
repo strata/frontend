@@ -7,6 +7,8 @@ use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Studio24\Exception\PermissionException;
 use Studio24\Exception\FailedRequestException;
+use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Version;
 
 /**
  * Simple abstract class for communicating with a RESTful API
@@ -15,7 +17,12 @@ use Studio24\Exception\FailedRequestException;
  */
 abstract class RestApiAbstract
 {
-    const VERSION = '1.0.1';
+    /**
+     * API base URI
+     *
+     * @var string
+     */
+    protected $baseUri;
 
     /**
      * HTTP client to access the API
@@ -43,15 +50,43 @@ abstract class RestApiAbstract
     /**
      * Constructor
      *
+     * @param string $baseUri API base URI
      * @param Permissions $permissions (if not passed, default = read-only)
      */
-    public function __construct(Permissions $permissions = null)
+    public function __construct(string $baseUri, Permissions $permissions = null)
     {
+        $this->setBaseUri($baseUri);
+
         if ($permissions instanceof Permissions) {
             $this->permissions = $permissions;
         } else {
             $this->permissions = new Permissions(Permissions::READ);
         }
+    }
+
+    /**
+     * Set the API base URI
+     *
+     * @param string $baseUri
+     */
+    public function setBaseUri(string $baseUri)
+    {
+        $this->baseUri = $baseUri;
+    }
+
+    /**
+     * Return API base URI
+     *
+     * @return string
+     * @throws ApiException
+     */
+    public function getBaseUri()
+    {
+        if (empty($this->baseUri)) {
+            throw new ApiException(sprintf('API base URL not set, please set via %s::setBaseUri()', get_class($this)));
+        }
+
+        return $this->baseUri;
     }
 
     /**
@@ -68,11 +103,7 @@ abstract class RestApiAbstract
      */
     public function getUserAgent()
     {
-        $userAgent = 'S24_Frontend/' . self::VERSION;
-        if (!empty(getenv('USER_AGENT_EMAIL'))) {
-            $userAgent .= '(' . getenv('USER_AGENT_EMAIL') . ')';
-        }
-        return $userAgent;
+        return Version::getUserAgent();
     }
 
     /**
@@ -139,17 +170,27 @@ abstract class RestApiAbstract
     }
 
     /**
+     * Set HTTP client
+     *
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
      * Return the HTTP client
      *
      * @return Client
      */
-    public function getClient() : Client
+    public function getClient(): Client
     {
         if ($this->client instanceof Client) {
             return $this->client;
         }
 
-        $this->client = $this->setupHttpClient();
+        $this->setClient($this->setupHttpClient());
 
         return $this->client;
     }

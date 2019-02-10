@@ -102,4 +102,18 @@ class ContentFieldCollection implements \ArrayAccess, \SeekableIterator, \Counta
         }
         $this->key = $position;
     }
+
+    /**
+     * Return string representation of content fields
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        $content = [];
+        foreach ($this->collection as $item) {
+            $content[] = $item->__toString();
+        }
+        return implode(' ', $content);
+    }
 }
