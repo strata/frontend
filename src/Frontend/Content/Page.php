@@ -60,24 +60,30 @@ class Page implements ContentInterface
      *
      * @param $urlPattern
      */
-    public function setUrlPattern($urlPattern)
+    public function setUrlPattern(Url $urlPattern)
     {
-
+        $this->urlPattern = $urlPattern;
     }
 
+    /**
+     * Get URL pattern
+     *
+     * @return Url
+     */
     public function getUrlPattern(): Url
     {
-
+        return $this->urlPattern;
     }
 
     /**
      * Return the full URL to the current page
      *
      * @return string
+     * @throws \Studio24\Frontend\Exception\UrlException
      */
     public function getUrl() : string
     {
-        return 'TODO/' . $this->urlSlug;
+        return $this->urlPattern->getUrl($this);
     }
 
     /**

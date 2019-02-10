@@ -19,10 +19,10 @@ class Url
      * @var array
      */
     protected $availableParams = [
-        ':id',
-        ':slug',
-        ':date_published',
-        ':date_modified',
+        'id',
+        'slug',
+        'date_published',
+        'date_modified',
     ];
 
     /**
@@ -68,16 +68,17 @@ class Url
      */
     public function setPattern(string $pattern)
     {
+        $this->clearParams();
         $this->pattern = $pattern;
 
         foreach ($this->availableParams as $param) {
-            if (preg_match('/(' . preg_quote($param, '/') . ')(\([^)]+\))?/', $pattern, $m)) {
+            if (preg_match('/:(' . preg_quote($param, '/') . ')(\([^)]+\))?/', $pattern, $m)) {
 
                 $replace = $m[0];
                 $param = $m[1];
 
                 if (isset($m[2]) & !empty($m[2])) {
-                    $this->setParam($param, $replace, $this->parseParamOptions($param, $m[2]));
+                    $this->setParam($param, $replace, $this->parseParamOptions($m[2]));
                 }  else {
                     $this->setParam($param, $replace);
                 }
@@ -91,6 +92,31 @@ class Url
     public function getPattern(): string
     {
         return $this->pattern;
+    }
+
+    /**
+     * Reset and clear all current params
+     */
+    public function clearParams()
+    {
+        $this->params = [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    /**
+     * @param string $param
+     * @return bool
+     */
+    public function hasParam(string $param): bool
+    {
+        return array_key_exists($param, $this->getParams());
     }
 
     /**
@@ -122,35 +148,63 @@ class Url
             'replace' => $replace,
             'options' => $options
         ];
-
-        $this->hasParams[] = $param;
     }
 
+    /**
+     * Return replace string for the URL param
+     *
+     * @param string $param
+     * @return mixed
+     * @throws UrlException
+     */
     public function getReplace(string $param)
     {
         if (!$this->validParam($param)) {
             throw new UrlException(sprintf('Param name %s not recognised!', $param));
         }
 
-        return $this->params[$param]['replace'];
+        if ($this->hasParam($param)) {
+            return $this->params[$param]['replace'];
+        }
+
+        return null;
     }
 
+    /**
+     * Return options for the URL param
+     *
+     * @param string $param
+     * @return array
+     * @throws UrlException
+     */
     public function getOptions(string $param): array
     {
         if (!$this->validParam($param)) {
             throw new UrlException(sprintf('Param name %s not recognised!', $param));
         }
 
-        return $this->params[$param]['options'];
+        if ($this->hasParam($param)) {
+            return $this->params[$param]['options'];
+        }
+
+        return [];
     }
 
+    /**
+     * Get a named option for a URL param
+     *
+     * @param string $param
+     * @param string $option
+     * @return null
+     * @throws UrlException
+     */
     public function getOption(string $param, string $option)
     {
         if (!$this->validParam($param)) {
             throw new UrlException(sprintf('Param name %s not recognised!', $param));
         }
 
-        if (isset($this->params[$param]['options'][$option])) {
+        if ($this->hasParam($param) && isset($this->params[$param]['options'][$option])) {
             return $this->params[$param]['options'][$option];
         } else {
             return null;
@@ -165,17 +219,16 @@ class Url
      *
      * @param string $value
      * @return array Array of param options
-     * @throws UrlException
      */
     public function parseParamOptions(string $value): array
     {
         $options = [];
 
         $value = trim($value, "() \t\n\r\0\x0B");
-        $values = expode(',', $value);
+        $values = explode(',', $value);
         foreach ($values as $value) {
             $pairs = explode('=', $value);
-            if (!empty($pairs[0]) && !empty($pairs[1])) {
+            if (count($pairs) === 2) {
                 $options[$pairs[0]] = $pairs[1];
             }
         }
@@ -195,29 +248,29 @@ class Url
     public function parseParamValue (string $url, ContentInterface $content, string $param): string
     {
         $formatDate = function(DateTime $date, string $param): string {
-            $format = trim($this->getOption($param, 'format'));
+            $format = $this->getOption($param, 'format');
 
             // Default format: 2012/12/30
-            if (!empty($format)) {
+            if (empty($format)) {
                 $format = 'Y/m/d';
             }
             return $date->format($format);
         };
 
         switch ($param) {
-            case ':id':
+            case 'id':
                 $value = $content->getId();
                 break;
 
-            case ':slug':
+            case 'slug':
                 $value = $content->getUrlSlug();
                 break;
 
-            case ':date_published':
+            case 'date_published':
                 $value = $formatDate($content->getDatePublished(), $param);
                 break;
 
-            case ':date_modified':
+            case 'date_modified':
                 $value = $formatDate($content->getDateModified(), $param);
                 break;
 
@@ -245,5 +298,6 @@ class Url
 
         return $url;
     }
+
 
 }

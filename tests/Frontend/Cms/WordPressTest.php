@@ -7,6 +7,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Studio24\Frontend\Cms\Wordpress;
+use Studio24\Frontend\Content\Url;
 
 class WordPressTest extends TestCase
 {
@@ -87,6 +88,10 @@ class WordPressTest extends TestCase
         $this->assertEquals(105, $pages->getPagination()->getTotalPages());
 
         $page = $pages->current();
+
+        $url = new Url('news/:slug');
+        $page->setUrlPattern($url);
+
         $this->assertEquals(1, $page->getId());
         $this->assertEquals("When is a Marine Protected Area not a Marine Protected Area?", $page->getTitle());
         $this->assertEquals('2019-02-05T12:00:52:00+00:00', $page->getDatePublished()->__toString());

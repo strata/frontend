@@ -9,7 +9,7 @@
 
 On your local development environment you will see the Symfony debug bar which displays:
 
-![Symfony debugger](assets/symfony-debugger.png)
+![Symfony debugger](../assets/symfony-debugger.png)
 
 * HTTP status code
 * Matching route
@@ -35,7 +35,7 @@ When used in your template, this will output the variable directly to the page. 
 {{ dump(page) }}
 ```
 
-![Inspecting a variable via debug (in a template)](assets/dump-variable.png)
+![Inspecting a variable via debug (in a template)](../assets/dump-variable.png)
 
 The above example shows the `page` object which represents, in this instance, a news post from WordPress.
 
@@ -49,9 +49,9 @@ You can also use the `dump()` function in PHP, this will output the variable to 
 dump($page);
 ```  
 
-Select the inspector icon ![Inspector icon](assets/symfony-debugger-inspect-icon.png) to inspect the variable.
+Select the inspector icon ![Inspector icon](../assets/symfony-debugger-inspect-icon.png) to inspect the variable.
 
-![Inspecting a variable via debug (in PHP)](assets/symfony-debugger-dump-variable.png)
+![Inspecting a variable via debug (in PHP)](../assets/symfony-debugger-dump-variable.png)
 
 The example above also shows the debug bar with an error, additional information such as the error details can be accessed 
 from here.

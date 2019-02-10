@@ -28,7 +28,7 @@ Page title.
 
 ### Page URL
 
-TODO:  Return the current page URL. E.g. /news/my-page-title
+Return the current page URL. E.g. `/news/my-page-title`
 
 ```
 {{ page.url }}
