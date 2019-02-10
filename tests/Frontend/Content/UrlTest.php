@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Tests\Frontend\Content;
 
@@ -110,7 +111,6 @@ class UrlTest extends TestCase
         $this->assertTrue($url->hasParam('date_modified'));
         $this->assertFalse($url->hasParam('date_published'));
         $this->assertEquals('Y', $url->getOption('date_modified', 'format'));
-
     }
 
     public function testGetUrl()
@@ -128,5 +128,4 @@ class UrlTest extends TestCase
         $url = new Url('news/:date_published(format=Y)/:slug');
         $this->assertEquals('news/2019/test-page', $url->getUrl($content));
     }
-
 }

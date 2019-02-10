@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Tests\Frontend\Api\Providers;
+
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -14,10 +16,16 @@ class WordPressApiTest extends TestCase
     {
         // Create a mock and queue two responses
         $mock = new MockHandler([
-            new Response(200, ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
-                file_get_contents(__DIR__ . '/../../responses/demo/posts_1.json')),
-            new Response(200, ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
-                file_get_contents(__DIR__ . '/../../responses/demo/posts_2.json')),
+            new Response(
+                200,
+                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
+                file_get_contents(__DIR__ . '/../../responses/demo/posts_1.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
+                file_get_contents(__DIR__ . '/../../responses/demo/posts_2.json')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -43,7 +51,4 @@ class WordPressApiTest extends TestCase
         $this->assertEquals(5, $data[0]['id']);
         $this->assertTrue(!empty($data[0]['title']['rendered']));
     }
-
-
-
 }

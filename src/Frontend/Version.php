@@ -12,7 +12,7 @@ class Version
      *
      * @return string
      */
-    static function getVersion(): string
+    public static function getVersion(): string
     {
         return self::VERSION;
     }
@@ -22,7 +22,7 @@ class Version
      *
      * @return string
      */
-    static function getUserAgent(): string
+    public static function getUserAgent(): string
     {
         return "S24_Frontend/" . self::VERSION;
     }

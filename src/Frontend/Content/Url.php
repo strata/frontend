@@ -73,13 +73,12 @@ class Url
 
         foreach ($this->availableParams as $param) {
             if (preg_match('/:(' . preg_quote($param, '/') . ')(\([^)]+\))?/', $pattern, $m)) {
-
                 $replace = $m[0];
                 $param = $m[1];
 
                 if (isset($m[2]) & !empty($m[2])) {
                     $this->setParam($param, $replace, $this->parseParamOptions($m[2]));
-                }  else {
+                } else {
                     $this->setParam($param, $replace);
                 }
             }
@@ -245,9 +244,9 @@ class Url
      * @return string URL
      * @throws UrlException
      */
-    public function parseParamValue (string $url, ContentInterface $content, string $param): string
+    public function parseParamValue(string $url, ContentInterface $content, string $param): string
     {
-        $formatDate = function(DateTime $date, string $param): string {
+        $formatDate = function (DateTime $date, string $param): string {
             $format = $this->getOption($param, 'format');
 
             // Default format: 2012/12/30
@@ -298,6 +297,4 @@ class Url
 
         return $url;
     }
-
-
 }

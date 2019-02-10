@@ -47,6 +47,9 @@ Your Markdown here
 
 Commit to a branch, request a PR to merge into master.
 
+Please note [Travis CI](https://travis-ci.org/studio24/frontend) is setup to run PHP linting, PHPUnit and PHP CodeSniffer 
+on all merges into master.
+
 ## Tests
 
 Run [PHPUnit](https://phpunit.readthedocs.io/en/8.0/) tests via: 
@@ -67,6 +70,11 @@ vendor/bin/phpcs --report=summary
 vendor/bin/phpcs
 ```
 
+Where possible you can auto-fix code via:
+
+```
+vendor/bin/phpcbf
+```
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.

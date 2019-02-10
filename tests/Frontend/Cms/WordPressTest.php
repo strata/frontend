@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Tests\Frontend\Cms\Content;
+
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -15,10 +17,16 @@ class WordPressTest extends TestCase
     {
         // Create a mock and queue two responses
         $mock = new MockHandler([
-            new Response(200, ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
-                file_get_contents(__DIR__ . '/../responses/demo/posts_1.json')),
-            new Response(200, ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
-                file_get_contents(__DIR__ . '/../responses/demo/posts_2.json')),
+            new Response(
+                200,
+                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
+                file_get_contents(__DIR__ . '/../responses/demo/posts_1.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
+                file_get_contents(__DIR__ . '/../responses/demo/posts_2.json')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -68,10 +76,16 @@ class WordPressTest extends TestCase
     {
         // Create a mock and queue two responses
         $mock = new MockHandler([
-            new Response(200, ['X-WP-Total' => 1041, 'X-WP-TotalPages' => 105],
-                file_get_contents(__DIR__ . '/../responses/complex/posts_1.json')),
-            new Response(200, ['X-WP-Total' => 1041, 'X-WP-TotalPages' => 105],
-                file_get_contents(__DIR__ . '/../responses/complex/posts_2.json')),
+            new Response(
+                200,
+                ['X-WP-Total' => 1041, 'X-WP-TotalPages' => 105],
+                file_get_contents(__DIR__ . '/../responses/complex/posts_1.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1041, 'X-WP-TotalPages' => 105],
+                file_get_contents(__DIR__ . '/../responses/complex/posts_2.json')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -89,15 +103,12 @@ class WordPressTest extends TestCase
 
         $page = $pages->current();
 
-        $url = new Url('news/:slug');
+        $url = new Url('/news/:slug');
         $page->setUrlPattern($url);
 
-        $this->assertEquals(1, $page->getId());
+        $this->assertEquals(21883, $page->getId());
         $this->assertEquals("When is a Marine Protected Area not a Marine Protected Area?", $page->getTitle());
-        $this->assertEquals('2019-02-05T12:00:52:00+00:00', $page->getDatePublished()->__toString());
+        $this->assertEquals('2019-02-05T12:00:52+00:00', $page->getDatePublished()->__toString());
         $this->assertEquals('/news/marine-protected-area-not-marine-protected-area', $page->getUrl());
     }
-
-
-
 }
