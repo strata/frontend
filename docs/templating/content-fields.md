@@ -229,7 +229,7 @@ See https://twig.symfony.com/doc/2.x/functions/date.html
 
 Datetime field. 
 
-Default output is a standarsided format, Atom, e.g. 2019-01-30T15:52:01+00:00. This is compatible with ISO-8601.  
+Default output is a standardised format, Atom, e.g. 2019-01-30T15:52:01+00:00. This is compatible with ISO-8601.  
 
 ```
 {{ page.content.field }}

@@ -59,12 +59,12 @@ class DateTime extends Date
     /**
      * Return string representation of content field
      *
-     * Default format: DateTimeInterface::DATE_ATOM (e.g. 2005-08-15T15:52:01+00:00)
+     * Default format: DateTime::DATE_ATOM (e.g. 2005-08-15T15:52:01+00:00)
      *
      * @return string
      */
     public function __toString(): string
     {
-        return $this->format(\DateTimeInterface::ATOM);
+        return $this->format(\DateTime::ATOM);
     }
 }
