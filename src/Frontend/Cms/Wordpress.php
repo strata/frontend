@@ -50,7 +50,6 @@ class Wordpress
      * @var array
      */
     protected $contentTypes = [
-      'projects' => 'projects',
       'posts'    => 'posts',
       'pages'    => 'pages',
       'media'    => 'media',
