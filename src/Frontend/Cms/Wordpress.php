@@ -8,12 +8,14 @@ use Studio24\Frontend\Content\Field\Boolean;
 use Studio24\Frontend\Content\Field\FlexibleContent;
 use Studio24\Frontend\Content\Field\Image;
 use Studio24\Frontend\Content\Field\PlainText;
+use Studio24\Frontend\Content\Field\Relation;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Page;
 use Studio24\Frontend\Content\PageCollection;
 use Studio24\Frontend\Content\User;
 use Studio24\Frontend\Traits\CacheTrait;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
+use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 
 /**
  * Class to manage access to Wordpress API and returns well-formed content objects
@@ -48,9 +50,10 @@ class Wordpress
      * @var array
      */
     protected $contentTypes = [
-        'posts' => 'posts',
-        'pages' => 'pages',
-        'media' => 'media',
+      'projects' => 'projects',
+      'posts'    => 'posts',
+      'pages'    => 'pages',
+      'media'    => 'media',
     ];
 
     /**
@@ -119,8 +122,10 @@ class Wordpress
      * @throws \Studio24\Exception\PermissionException
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
-    public function listPages(int $page = 1, array $options = []): PageCollection
-    {
+    public function listPages(
+      int $page = 1,
+      array $options = []
+    ): PageCollection {
         // @todo Need to add unique identifier for this data based on options array
         $cacheKey = sprintf('%s.list.%s', $this->getContentType(), $page);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
@@ -128,7 +133,8 @@ class Wordpress
             return $pages;
         }
 
-        $list = $this->api->listPosts($this->getContentApiEndpoint(), $page, $options);
+        $list = $this->api->listPosts($this->getContentApiEndpoint(), $page,
+          $options);
         $pages = new PageCollection($list->getPagination());
 
         foreach ($list->getResponseData() as $pageData) {
@@ -154,7 +160,7 @@ class Wordpress
      * @throws \Studio24\Exception\FailedRequestException
      * @throws \Studio24\Exception\PermissionException
      */
-    public function getPage(int $id) : Page
+    public function getPage(int $id): Page
     {
         $cacheKey = sprintf('%s.%s', $this->getContentType(), $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
@@ -165,7 +171,8 @@ class Wordpress
         // Get content
         switch ($this->getContentType()) {
             case 'posts':
-                $data = $this->api->getPost($this->getContentApiEndpoint(), $id);
+                $data = $this->api->getPost($this->getContentApiEndpoint(),
+                  $id);
                 $page = $this->createPage($data);
 
                 $author = $this->api->getAuthor($data['author']);
@@ -173,7 +180,8 @@ class Wordpress
                 break;
 
             case 'projects':
-                $data = $this->api->getPost($this->getContentApiEndpoint(), $id);
+                $data = $this->api->getPost($this->getContentApiEndpoint(),
+                  $id);
                 $page = $this->createPage($data);
 
                 break;
@@ -195,24 +203,46 @@ class Wordpress
      * @return Page
      * @throws \Studio24\Exception\ContentFieldException
      */
-    public function createPage(array $data) : Page
+    public function createPage(array $data): Page
     {
         $page = new Page();
-        $page->setId($data['id']);
-        $page->setTitle($data['title']['rendered']);
-        $page->setDatePublished($data['date']);
-        $page->setDateModified($data['modified']);
-        $page->setUrlSlug($data['slug']);
-        $page->setStatus($data['status']);
-        $page->setContentType($data['type']);
 
-        if (isset($data['excerpt']) && !empty($data['excerpt']['rendered'])) {
-            $page->setExcerpt($data['excerpt']['rendered']);
+        $this->setContentFields($page, $data);
+
+        return $page;
+    }
+
+    /**
+     * @param Page $page
+     * @param $data
+     * @return \Studio24\Frontend\Content\Page
+     * @throws \Studio24\Exception\ContentFieldException
+     */
+    public function setContentFields($page, $data)
+    {
+        if (empty($data))
+        {
+            return;
+        }
+
+        $page->setId(FieldFinder::id($data));
+        $page->setTitle(FieldFinder::title($data));
+        $page->setDatePublished(FieldFinder::datePublished($data));
+        $page->setDateModified(FieldFinder::dateModified($data));
+        $page->setStatus(FieldFinder::status($data));
+        $page->setContentType(FieldFinder::type($data));
+
+        if (!empty(FieldFinder::slug($data))) {
+            $page->setUrlSlug(FieldFinder::slug($data));
+        }
+
+        if (!empty(FieldFinder::excerpt($data))) {
+            $page->setExcerpt(FieldFinder::excerpt($data));
         }
 
         // Default WordPress content field
-        if (isset($data['content']) && !empty($data['content']['rendered'])) {
-            $page->addContent(new RichText('content', $data['content']['rendered']));
+        if (!empty(FieldFinder::content($data))) {
+            $page->addContent(new RichText('content', FieldFinder::content($data)));
         }
 
         // ACF content fields
@@ -245,43 +275,44 @@ class Wordpress
                         if (empty($value['url'])) {
                             continue 2;
                         }
-                        $image = new Image($key, $value['url'], $value['title'], $value['caption'], $value['alt']);
+                        $image = new Image($key, $value['url'], $value['title'],
+                          $value['caption'], $value['alt']);
 
                         // Add sizes
-                        $availableSizes = ['thumbnail', 'medium', 'medium_large', 'large', 'twentyseventeen-featured-image', 'twentyseventeen-thumbnail-avatar', 'issue-post-image'];
+                        $availableSizes = [
+                          'thumbnail',
+                          'medium',
+                          'medium_large',
+                          'large',
+                          'twentyseventeen-featured-image',
+                          'twentyseventeen-thumbnail-avatar',
+                          'issue-post-image'
+                        ];
                         foreach ($availableSizes as $sizeName) {
                             if (isset($value['sizes'][$sizeName])) {
                                 $width = $sizeName . '-width';
                                 $height = $sizeName . '-height';
-                                $image->addSize($value['sizes'][$sizeName], $value['sizes'][$width], $value['sizes'][$height], $sizeName);
+                                $image->addSize($value['sizes'][$sizeName],
+                                  $value['sizes'][$width],
+                                  $value['sizes'][$height], $sizeName);
                             }
                         }
                         $page->addContent($image);
                         break;
 
                     case 'author':
-                        /**
-                         * Test code:
-                         * {% set author = page.content.author }}
-                         * or
-                         * {% set author = page.relation('author') }}
-                         *
-                         * {{ author.title }}
-                         * {{ author.content.image.getSize('thumbnail') }}
-                         *
-                         * $relation = new Relation($key, $this->createPage($data));
-                         * $page->addContent($relation);
-                         *
-                         * author = new "relation" to an existing content object (person post type)
-                         *
-                         * Test URL:
-                         * http://local.fauna-flora.org/news/lets-talk-elephant-wasnt-room
-                         *
-                         * Elephant news post, ID 21717
-                         * Written by:
-                         * Tim Knight, Person ID 10031
-                         *
-                         */
+
+                        // First check to see if the author field is empty
+                        if (empty($value))
+                        {
+                            break;
+                        }
+
+                        $relation = new Relation($key);
+
+                        self::setContentFields($relation->getContent(), $value);
+                        $page->addContent($relation);
+
                         break;
 
                     case 'page_content':
@@ -291,12 +322,11 @@ class Wordpress
                         $flexible = new FlexibleContent($key);
                         foreach ($value as $key => $value) {
                             /**
-
-                             $component = new Component('My component name');
-                             $component->addContent(new PlainText('name1'));
-                             $component->addContent(new Image('name2'));
-                             $flexible->addComponent($component);
-
+                             *
+                             * $component = new Component('My component name');
+                             * $component->addContent(new PlainText('name1'));
+                             * $component->addContent(new Image('name2'));
+                             * $flexible->addComponent($component);
                              */
                         }
                         $page->addContent($flexible);
@@ -318,11 +348,11 @@ class Wordpress
      * @param array $data
      * @return User
      */
-    public function createUser(array $data) : User
+    public function createUser(array $data): User
     {
         $user = new User();
         $user->setId($data['id'])
-            ->setName($data['name']);
+          ->setName($data['name']);
         if (!empty($data['description'])) {
             $user->setBio($data['description']);
         }

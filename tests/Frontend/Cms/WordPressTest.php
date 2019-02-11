@@ -102,6 +102,10 @@ class WordPressTest extends TestCase
         $this->assertEquals(105, $pages->getPagination()->getTotalPages());
 
         $page = $pages->current();
+        
+        // Check the Author is present in the data response
+        $this->assertEquals('Daniel Steadman', $page->getAuthor()->__toString());
+        $this->assertEquals('11086', $page->getAuthor()->getContent()->getId());
 
         $url = new Url('/news/:slug');
         $page->setUrlPattern($url);
