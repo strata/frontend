@@ -24,6 +24,6 @@ class Version
      */
     public static function getUserAgent(): string
     {
-        return "S24_Frontend/" . self::VERSION;
+        return "S24_Frontend/" . self::VERSION . ' (https://github.com/studio24/frontend)';
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Search;
+namespace App\Tests\Frontend\Content;
 
 use PHPUnit\Framework\TestCase;
 use Studio24\Frontend\Content\Page;
