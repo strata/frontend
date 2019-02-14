@@ -14,7 +14,7 @@ use Studio24\Exception\UnimplementedException;
  *
  * @package Studio24\Frontend\Content
  */
-class ContentBlock extends ContentType
+class Component extends ContentType
 {
 
     public function parseConfig(string $file): ContentType

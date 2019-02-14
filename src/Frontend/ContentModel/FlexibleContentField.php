@@ -79,7 +79,7 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
     public function addComponents(array $components): FlexibleContentField
     {
         foreach ($components as $name => $contentFields) {
-            $block = new ContentBlock($name);
+            $block = new Component($name);
 
             foreach ($contentFields as $name => $values) {
                 $block->addItem($block->parseContentFieldArray($name, $values));
@@ -94,10 +94,10 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
     /**
      * Add an item to the collection
      *
-     * @param ContentBlock $item
+     * @param Component $item
      * @return FlexibleContentField Fluent interface
      */
-    public function addItem(ContentBlock $item): FlexibleContentField
+    public function addItem(Component $item): FlexibleContentField
     {
         $this->offsetSet($item->getName(), $item);
         return $this;
@@ -106,9 +106,9 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
     /**
      * Return current item
      *
-     * @return ContentBlock
+     * @return Component
      */
-    public function current(): ContentBlock
+    public function current(): Component
     {
         return parent::current();
     }
@@ -117,9 +117,9 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
      * Return item by key
      *
      * @param string $index
-     * @return ContentBlock
+     * @return Component
      */
-    public function offsetGet($index): ContentBlock
+    public function offsetGet($index): Component
     {
         return parent::offsetGet($index);
     }

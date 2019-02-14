@@ -1,5 +1,6 @@
 # Development
 
+* [Setting up content types](setting-up-content-types.md)
 * [URLs](urls.md) 
 
 ## Routes

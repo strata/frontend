@@ -47,36 +47,36 @@ class ContentModelTest extends TestCase
                                 $this->assertEquals('flexible', $contentField->getType());
 
                                 $z = 1;
-                                foreach ($contentField as $block) {
+                                foreach ($contentField as $component) {
                                     switch ($z) {
                                         case 1:
-                                            $this->assertEquals('content_block', $block->getName());
+                                            $this->assertEquals('content_block', $component->getName());
 
                                             $a = 1;
-                                            foreach ($block as $blockContentField) {
+                                            foreach ($component as $componentContentFields) {
                                                 switch ($a) {
                                                     case 1:
-                                                        $this->assertEquals('content_title', $blockContentField->getName());
-                                                        $this->assertEquals('plaintext', $blockContentField->getType());
+                                                        $this->assertEquals('content_title', $componentContentFields->getName());
+                                                        $this->assertEquals('plaintext', $componentContentFields->getType());
                                                         break;
                                                     case 2:
-                                                        $this->assertEquals('full_width', $blockContentField->getName());
-                                                        $this->assertEquals('boolean', $blockContentField->getType());
+                                                        $this->assertEquals('full_width', $componentContentFields->getName());
+                                                        $this->assertEquals('boolean', $componentContentFields->getType());
                                                 }
                                                 $a++;
                                             }
 
                                             break;
                                         case 2:
-                                            $this->assertEquals('quote_block', $block->getName());
+                                            $this->assertEquals('quote_block', $component->getName());
 
                                             $a = 1;
-                                            foreach ($block as $blockContentField) {
+                                            foreach ($component as $componentContentFields) {
                                                 switch ($a) {
                                                     case 1:
-                                                        $this->assertEquals('author', $blockContentField->getName());
-                                                        $this->assertEquals('relation', $blockContentField->getType());
-                                                        $this->assertEquals('user', $blockContentField->getOption('content_type'));
+                                                        $this->assertEquals('author', $componentContentFields->getName());
+                                                        $this->assertEquals('relation', $componentContentFields->getType());
+                                                        $this->assertEquals('user', $componentContentFields->getOption('content_type'));
                                                         break;
                                                 }
                                                 $a++;

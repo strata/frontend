@@ -8,6 +8,8 @@
 We build a standardised content object to collect standard fields and custom content fields from the CMS. These are detailed 
 below.
 
+For more information on the content model see [Content model](../content-model.md). 
+
 ## Variables
 
 ### id
