@@ -1,0 +1,14 @@
+post_type:
+  type: plaintext
+title:
+  type: plaintext
+type:
+  type: plaintext
+image:
+  type: image
+  thumbnails:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+

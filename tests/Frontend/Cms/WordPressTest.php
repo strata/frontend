@@ -48,7 +48,8 @@ class WordPressTest extends TestCase
         $this->assertEquals('2017-05-23', $page->getDatePublished()->getDate());
         $this->assertEquals('2017-05-23', $page->getDateModified()->getDate());
         $this->assertEquals("hello-world", $page->getUrlSlug());
-        $this->assertEquals("<p>Welcome to <a href=\"http://wp-api.org/\">WP API Demo Sites</a>. This is your first post. Edit or delete it, then start blogging!</p>\n", $page->getContent());
+        $this->assertEquals("<p>Welcome to <a href=\"http://wp-api.org/\">WP API Demo Sites</a>. This is your first post. Edit or delete it, then start blogging!</p>\n", $page->getContent()->current());
+        $this->assertEquals("<p>Welcome to <a href=\"http://wp-api.org/\">WP API Demo Sites</a>. This is your first post. Edit or delete it, then start blogging!</p>\n", (string) $page);
         $this->assertEquals("<p>Welcome to WP API Demo Sites. This is your first post. Edit or delete it, then start blogging!</p>\n", $page->getExcerpt());
 
         $pages->next();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Studio24\Frontend\ContentModel;
 
 use Studio24\Frontend\Content\Field\FlexibleContent;
+use Studio24\Frontend\Collection\ArrayAccessTrait;
 
 /**
  * Represents a content field definition (e.g. title field)
@@ -12,7 +13,7 @@ use Studio24\Frontend\Content\Field\FlexibleContent;
  *
  * @package Studio24\Frontend\ContentModel
  */
-class FlexibleContentField implements ContentFieldInterface, \ArrayAccess, \SeekableIterator, \Countable
+class FlexibleContentField extends \ArrayIterator implements ContentFieldInterface
 {
     /**
      * Content field name
@@ -27,19 +28,6 @@ class FlexibleContentField implements ContentFieldInterface, \ArrayAccess, \Seek
      * @var string
      */
     protected $type = FlexibleContent::TYPE;
-
-    /**
-     * Collection of content blocks
-     * @var array
-     */
-    protected $blocks = [];
-
-    /**
-     * Content type collection key
-     *
-     * @var string
-     */
-    protected $key;
 
     /**
      * Constructor
@@ -97,7 +85,7 @@ class FlexibleContentField implements ContentFieldInterface, \ArrayAccess, \Seek
                 $block->addItem($block->parseContentFieldArray($name, $values));
             }
 
-            $this->addBlock($block);
+            $this->addItem($block);
         }
 
         return $this;
@@ -106,96 +94,34 @@ class FlexibleContentField implements ContentFieldInterface, \ArrayAccess, \Seek
     /**
      * Add an item to the collection
      *
-     * @param ContentType $item
+     * @param ContentBlock $item
      * @return FlexibleContentField Fluent interface
      */
-    public function addBlock(ContentBlock $item): FlexibleContentField
+    public function addItem(ContentBlock $item): FlexibleContentField
     {
-        $this->blocks[$item->getName()] = $item;
+        $this->offsetSet($item->getName(), $item);
         return $this;
     }
 
     /**
+     * Return current item
+     *
      * @return ContentBlock
      */
-    public function current() : ContentBlock
+    public function current(): ContentBlock
     {
-        return $this->blocks[$this->key];
-    }
-
-    public function next()
-    {
-        $keys = $this->getKeys();
-        foreach ($keys as $num => $key) {
-            if ($this->key === $key) {
-                $this->key = $keys[$num + 1];
-            }
-        }
-    }
-
-    public function key()
-    {
-        return $this->key;
-    }
-
-    public function valid()
-    {
-        return isset($this->array[$this->key]);
-    }
-
-    public function rewind()
-    {
-        $this->key = $this->getKeys()[0];
+        return parent::current();
     }
 
     /**
-     * Return current collection array keys
+     * Return item by key
      *
-     * @return array
+     * @param string $index
+     * @return ContentBlock
      */
-    public function getKeys() : array
+    public function offsetGet($index): ContentBlock
     {
-        return array_keys($this->blocks);
+        return parent::offsetGet($index);
     }
 
-    public function offsetExists($offset)
-    {
-        return isset($this->blocks[$offset]);
-    }
-
-    /**
-     * @param mixed $offset
-     * @return ContentField
-     */
-    public function offsetGet($offset) : ContentBlock
-    {
-        return isset($this->blocks[$offset]) ? $this->blocks[$offset] : null;
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->blocks[] = $value;
-        } else {
-            $this->blocks[$offset] = $value;
-        }
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->blocks[$offset]);
-    }
-
-    public function count() : int
-    {
-        return count($this->blocks);
-    }
-
-    public function seek($position)
-    {
-        if (!isset($this->blocks[$position])) {
-            throw new \OutOfBoundsException(sprintf('Invalid content block key: %s', $position));
-        }
-        $this->key = $position;
-    }
 }

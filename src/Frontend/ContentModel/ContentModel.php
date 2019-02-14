@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Studio24\Frontend\ContentModel;
 
 use Studio24\Exception\ConfigParsingException;
+use Studio24\Frontend\Collection\ArrayAccessTrait;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -13,21 +14,8 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package Studio24\Frontend\ContentType
  */
-class ContentModel implements \ArrayAccess, \SeekableIterator, \Countable
+class ContentModel extends \ArrayIterator
 {
-    /**
-     * Collection of content types
-     * @var array
-     */
-    protected $contentTypes = [];
-
-    /**
-     * Content type collection key
-     *
-     * @var string
-     */
-    protected $key;
-
     /**
      * Array of global content type variables
      *
@@ -110,91 +98,29 @@ class ContentModel implements \ArrayAccess, \SeekableIterator, \Countable
      */
     public function addItem(ContentType $item) : ContentModel
     {
-        $this->contentTypes[$item->getName()] = $item;
+        $this->offsetSet($item->getName(), $item);
         return $this;
     }
 
     /**
-     * @return ContentType
-     */
-    public function current() : ContentType
-    {
-        return $this->contentTypes[$this->key];
-    }
-
-    public function next()
-    {
-        $keys = $this->getKeys();
-        foreach ($keys as $num => $key) {
-            if ($this->key === $key) {
-                $this->key = $keys[$num + 1];
-            }
-        }
-    }
-
-    public function key()
-    {
-        return $this->key;
-    }
-
-    public function valid()
-    {
-        return isset($this->array[$this->key]);
-    }
-
-    public function rewind()
-    {
-        $this->key = $this->getKeys()[0];
-    }
-
-    /**
-     * Return current collection array keys
+     * Return current item
      *
-     * @return array
+     * @return ContentType
      */
-    public function getKeys() : array
+    public function current(): ContentType
     {
-        return array_keys($this->contentTypes);
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->contentTypes[$offset]);
+        return parent::current();
     }
 
     /**
-     * @param mixed $offset
+     * Return item by key
+     *
+     * @param string $index
      * @return ContentType
      */
-    public function offsetGet($offset) : ContentType
+    public function offsetGet($index): ContentType
     {
-        return isset($this->contentTypes[$offset]) ? $this->contentTypes[$offset] : null;
+        return parent::offsetGet($index);
     }
 
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->contentTypes[] = $value;
-        } else {
-            $this->contentTypes[$offset] = $value;
-        }
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->contentTypes[$offset]);
-    }
-
-    public function count() : int
-    {
-        return count($this->contentTypes);
-    }
-
-    public function seek($position)
-    {
-        if (!isset($this->contentTypes[$position])) {
-            throw new \OutOfBoundsException(sprintf('Invalid content type key: %s', $position));
-        }
-        $this->key = $position;
-    }
 }

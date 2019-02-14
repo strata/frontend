@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
 
-use Studio24\Frontend\Content\BaseContentObject;
+use Studio24\Frontend\Content\BaseContent;
 use Studio24\Frontend\Content\Page;
 
 /**
@@ -38,16 +38,16 @@ class Relation extends ContentField
     public function __construct(string $name)
     {
         $this->setName($name);
-        $this->content = new BaseContentObject();
+        $this->content = new BaseContent();
     }
 
     /**
      * Set the Page Object
      *
-     * @param \Studio24\Frontend\Content\BaseContentObject $baseContentObject
+     * @param \Studio24\Frontend\Content\BaseContent $baseContentObject
      * @return \Studio24\Frontend\Content\Field\Relation
      */
-    public function setContent(BaseContentObject $baseContentObject): Relation
+    public function setContent(BaseContent $baseContentObject): Relation
     {
         $this->content = $baseContentObject;
 
@@ -69,7 +69,7 @@ class Relation extends ContentField
      *
      * @return Page
      */
-    public function getContent(): ?BaseContentObject
+    public function getContent(): ?BaseContent
     {
         return $this->content;
     }

@@ -7,13 +7,8 @@ namespace Studio24\Frontend\Content;
  * Class Page
  * @package Studio24\Frontend\Content
  */
-class Page extends BaseContentObject implements ContentInterface
+class Page extends BaseContent implements ContentInterface
 {
-
-    /**
-     * @var
-     */
-    protected $urlSlug;
 
     /**
      * @var
@@ -54,25 +49,6 @@ class Page extends BaseContentObject implements ContentInterface
     public function getUrl(): string
     {
         return $this->urlPattern->getUrl($this);
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getUrlSlug(): string
-    {
-        return $this->urlSlug;
-    }
-
-    /**
-     * @param mixed $slug
-     * @return Page
-     */
-    public function setUrlSlug(? string $slug): Page
-    {
-        $this->urlSlug = $slug;
-        return $this;
     }
 
     /**

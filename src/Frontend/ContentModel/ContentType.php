@@ -13,28 +13,16 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package Studio24\Frontend\Content
  */
-class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
+class ContentType extends \ArrayIterator
 {
-
     protected $name;
 
     protected $apiEndpoint;
 
-    /**
-     * Collection of content fields
-     * @var array
-     */
-    protected $contentFields = [];
-
-    /**
-     * Content type collection key
-     *
-     * @var string
-     */
-    protected $key;
-
     public function __construct(string $name)
     {
+        parent::__construct();
+
         $this->setName($name);
     }
 
@@ -130,96 +118,34 @@ class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
     /**
      * Add an item to the collection
      *
-     * @param ContentFieldInterface $item
-     * @return ContentModel Fluent interface
+     * @param ContentModelFieldInterface $item
+     * @return ContentType Fluent interface
      */
     public function addItem(ContentFieldInterface $item): ContentType
     {
-        $this->contentFields[$item->getName()] = $item;
+        $this->offsetSet($item->getName(), $item);
         return $this;
     }
 
     /**
-     * @return ContentFieldInterface
-     */
-    public function current() : ContentFieldInterface
-    {
-        return $this->contentFields[$this->key];
-    }
-
-    public function next()
-    {
-        $keys = $this->getKeys();
-        foreach ($keys as $num => $key) {
-            if ($this->key === $key) {
-                $this->key = $keys[$num + 1];
-            }
-        }
-    }
-
-    public function key()
-    {
-        return $this->key;
-    }
-
-    public function valid()
-    {
-        return isset($this->array[$this->key]);
-    }
-
-    public function rewind()
-    {
-        $this->key = $this->getKeys()[0];
-    }
-
-    /**
-     * Return current collection array keys
+     * Return current item
      *
-     * @return array
+     * @return ContentFieldInterface
      */
-    public function getKeys() : array
+    public function current(): ContentFieldInterface
     {
-        return array_keys($this->contentFields);
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->contentFields[$offset]);
+        return parent::current();
     }
 
     /**
-     * @param mixed $offset
+     * Return item by key
+     *
+     * @param string $index
      * @return ContentFieldInterface
      */
-    public function offsetGet($offset) : ContentFieldInterface
+    public function offsetGet($index): ContentFieldInterface
     {
-        return isset($this->contentFields[$offset]) ? $this->contentFields[$offset] : null;
+        return parent::offsetGet($index);
     }
 
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->contentFields[] = $value;
-        } else {
-            $this->contentFields[$offset] = $value;
-        }
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->contentFields[$offset]);
-    }
-
-    public function count() : int
-    {
-        return count($this->contentFields);
-    }
-
-    public function seek($position)
-    {
-        if (!isset($this->contentFields[$position])) {
-            throw new \OutOfBoundsException(sprintf('Invalid content field key: %s', $position));
-        }
-        $this->key = $position;
-    }
 }
