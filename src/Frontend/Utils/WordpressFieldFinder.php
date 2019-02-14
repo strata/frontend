@@ -2,7 +2,6 @@
 
 namespace Studio24\Frontend\Utils;
 
-
 use Webmozart\Assert\Assert;
 
 /**
@@ -171,12 +170,10 @@ class WordpressFieldFinder
         // Lets lowercase the data array keys for easier searching;
         $data = array_change_key_case($data, CASE_LOWER);
 
-        foreach ($searchFields as $searchFieldKey => $searchField)
-        {
+        foreach ($searchFields as $searchFieldKey => $searchField) {
             // Lets decide what we're searching on, the value or key.
             $needle = $searchField;
-            if (is_array($needle))
-            {
+            if (is_array($needle)) {
                 $needle = $searchFieldKey;
             }
 
@@ -189,8 +186,7 @@ class WordpressFieldFinder
             $potentialValue = $data[strtolower($needle)];
 
             // Did we find an array or a value;
-            if (is_array($potentialValue))
-            {
+            if (is_array($potentialValue)) {
                 // We're looking more than one layer deep, so lets keep searching
                 return self::findFirstFieldFromSearch($searchField, $potentialValue);
             }
@@ -199,8 +195,7 @@ class WordpressFieldFinder
             try {
                 Assert::notEmpty($potentialValue);
 
-                switch ($type)
-                {
+                switch ($type) {
                     case 'string':
                         Assert::string($potentialValue);
                         break;
@@ -211,9 +206,7 @@ class WordpressFieldFinder
                         Assert::string($potentialValue);
                         break;
                 }
-
-            } catch (\InvalidArgumentException $e)
-            {
+            } catch (\InvalidArgumentException $e) {
                 // Move on to the next variable
                 continue;
             }
@@ -225,5 +218,4 @@ class WordpressFieldFinder
         // Nothing was found
         return null;
     }
-
 }

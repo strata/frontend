@@ -79,8 +79,7 @@ class Relation extends ContentField
      */
     public function getValue(): ?string
     {
-        if ($this->hasContent())
-        {
+        if ($this->hasContent()) {
             return $this->getContent()->getTitle();
         }
 
@@ -96,5 +95,4 @@ class Relation extends ContentField
     {
         return $this->getValue();
     }
-
 }

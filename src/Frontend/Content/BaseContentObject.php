@@ -72,8 +72,7 @@ class BaseContentObject
      */
     public function setId($id): BaseContentObject
     {
-        if (empty($id))
-        {
+        if (empty($id)) {
             return $this;
         }
 
@@ -113,8 +112,7 @@ class BaseContentObject
      */
     public function setTitle(?string $title): BaseContentObject
     {
-        if (empty($title))
-        {
+        if (empty($title)) {
             return $this;
         }
 
@@ -144,8 +142,7 @@ class BaseContentObject
      */
     public function setDatePublished($datePublished, $format = null, $timezone = null) : BaseContentObject
     {
-        if (empty($datePublished))
-        {
+        if (empty($datePublished)) {
             return $this;
         }
 
@@ -187,8 +184,7 @@ class BaseContentObject
      */
     public function setDateModified($dateModified, $format = null, $timezone = null) : BaseContentObject
     {
-        if (empty($dateModified))
-        {
+        if (empty($dateModified)) {
             return $this;
         }
 
@@ -263,5 +259,4 @@ class BaseContentObject
     {
         return $this->content;
     }
-
 }

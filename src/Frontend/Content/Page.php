@@ -150,6 +150,4 @@ class Page extends BaseContentObject implements ContentInterface
         $this->author = $author;
         return $this;
     }
-
-
 }

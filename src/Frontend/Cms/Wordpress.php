@@ -122,8 +122,8 @@ class Wordpress
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
     public function listPages(
-      int $page = 1,
-      array $options = []
+        int $page = 1,
+        array $options = []
     ): PageCollection {
         // @todo Need to add unique identifier for this data based on options array
         $cacheKey = sprintf('%s.list.%s', $this->getContentType(), $page);
@@ -132,8 +132,11 @@ class Wordpress
             return $pages;
         }
 
-        $list = $this->api->listPosts($this->getContentApiEndpoint(), $page,
-          $options);
+        $list = $this->api->listPosts(
+            $this->getContentApiEndpoint(),
+            $page,
+            $options
+        );
         $pages = new PageCollection($list->getPagination());
 
         foreach ($list->getResponseData() as $pageData) {
@@ -170,8 +173,10 @@ class Wordpress
         // Get content
         switch ($this->getContentType()) {
             case 'posts':
-                $data = $this->api->getPost($this->getContentApiEndpoint(),
-                  $id);
+                $data = $this->api->getPost(
+                    $this->getContentApiEndpoint(),
+                    $id
+                );
                 $page = $this->createPage($data);
 
                 $author = $this->api->getAuthor($data['author']);
@@ -179,8 +184,10 @@ class Wordpress
                 break;
 
             case 'projects':
-                $data = $this->api->getPost($this->getContentApiEndpoint(),
-                  $id);
+                $data = $this->api->getPost(
+                    $this->getContentApiEndpoint(),
+                    $id
+                );
                 $page = $this->createPage($data);
 
                 break;
@@ -219,8 +226,7 @@ class Wordpress
      */
     public function setContentFields($page, $data)
     {
-        if (empty($data))
-        {
+        if (empty($data)) {
             return;
         }
 
@@ -274,8 +280,13 @@ class Wordpress
                         if (empty($value['url'])) {
                             continue 2;
                         }
-                        $image = new Image($key, $value['url'], $value['title'],
-                          $value['caption'], $value['alt']);
+                        $image = new Image(
+                            $key,
+                            $value['url'],
+                            $value['title'],
+                            $value['caption'],
+                            $value['alt']
+                        );
 
                         // Add sizes
                         $availableSizes = [
@@ -291,19 +302,20 @@ class Wordpress
                             if (isset($value['sizes'][$sizeName])) {
                                 $width = $sizeName . '-width';
                                 $height = $sizeName . '-height';
-                                $image->addSize($value['sizes'][$sizeName],
-                                  $value['sizes'][$width],
-                                  $value['sizes'][$height], $sizeName);
+                                $image->addSize(
+                                    $value['sizes'][$sizeName],
+                                    $value['sizes'][$width],
+                                    $value['sizes'][$height],
+                                    $sizeName
+                                );
                             }
                         }
                         $page->addContent($image);
                         break;
 
                     case 'author':
-
                         // First check to see if the author field is empty
-                        if (empty($value))
-                        {
+                        if (empty($value)) {
                             break;
                         }
 
