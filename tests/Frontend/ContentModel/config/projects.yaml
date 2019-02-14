@@ -1,8 +1,4 @@
-post_type:
-  type: plaintext
-title:
-  type: plaintext
-type:
+project_area:
   type: plaintext
 image:
   type: image
