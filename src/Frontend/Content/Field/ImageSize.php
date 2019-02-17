@@ -86,7 +86,7 @@ class ImageSize
 
     /**
      * @param mixed $width
-     * @return Asset
+     * @return AssetField
      */
     public function setWidth($width): ImageSize
     {
@@ -104,7 +104,7 @@ class ImageSize
 
     /**
      * @param mixed $height
-     * @return Asset
+     * @return AssetField
      */
     public function setHeight($height): ImageSize
     {

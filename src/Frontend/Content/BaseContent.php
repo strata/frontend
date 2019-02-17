@@ -6,8 +6,9 @@ namespace Studio24\Frontend\Content;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\DateTime;
+use Studio24\Frontend\ContentModel\ContentType;
 
-class BaseContent implements ContentInterface
+class BaseContent implements ContentInterface, AddressableInterface
 {
     /**
      * @var
@@ -15,7 +16,7 @@ class BaseContent implements ContentInterface
     protected $id;
 
     /**
-     * @var
+     * @var ContentType
      */
     protected $contentType;
 
@@ -104,21 +105,26 @@ class BaseContent implements ContentInterface
     }
 
     /**
-     * @return string
+     * Set content type
+     *
+     * @param ContentType $contentType
+     * @return BaseContent
      */
-    public function getContentType() : string
+    public function setContentType(ContentType $contentType): BaseContent
     {
-        return $this->contentType;
+        $this->contentType = $contentType;
+
+        return $this;
     }
 
     /**
-     * @param mixed $contentType
-     * @return BaseContent
+     * Return the content type
+     *
+     * @return ContentType
      */
-    public function setContentType(string $contentType): BaseContent
+    public function getContentType(): ContentType
     {
-        $this->contentType = $contentType;
-        return $this;
+        return $this->contentType;
     }
 
     /**
@@ -162,7 +168,7 @@ class BaseContent implements ContentInterface
      * @param string $format Date format to create DateTime from, see https://secure.php.net/manual/en/datetime.createfromformat.php
      * @param mixed $timezone DateTimeZone or timezone string
      * @return BaseContent
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function setDatePublished($datePublished, $format = null, $timezone = null) : BaseContent
     {
@@ -205,7 +211,7 @@ class BaseContent implements ContentInterface
      * @param string $format Date format to create DateTime from, see https://secure.php.net/manual/en/datetime.createfromformat.php
      * @param mixed $timezone DateTimeZone or timezone string
      * @return BaseContent
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function setDateModified($dateModified, $format = null, $timezone = null) : BaseContent
     {
@@ -266,13 +272,11 @@ class BaseContent implements ContentInterface
     /**
      * Add new content field
      *
-     * @param ContentFieldInterface $content
-     * @return BaseContent
+     * @param ContentFieldInterface $contentField
      */
-    public function addContent(ContentFieldInterface $content) : BaseContent
+    public function addContent(ContentFieldInterface $contentField)
     {
-        $this->content->addItem($content);
-        return $this;
+        $this->content->addItem($contentField);
     }
 
     /**

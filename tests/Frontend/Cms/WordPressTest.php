@@ -10,12 +10,13 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Studio24\Frontend\Cms\Wordpress;
 use Studio24\Frontend\Content\Url;
+use Studio24\Frontend\ContentModel\ContentModel;
 
 class WordPressTest extends TestCase
 {
-    public function testBasicPostData()
+    public function testBasicData()
     {
-        // Create a mock and queue two responses
+        // Create a mock and queue responses
         $mock = new MockHandler([
             new Response(
                 200,
@@ -36,6 +37,9 @@ class WordPressTest extends TestCase
         $wordpress->setClient($client);
 
         // Test it!
+        $contentModel = new ContentModel(__DIR__ . '/config/demo/content_model.yaml');
+        $wordpress->setContentModel($contentModel);
+        $wordpress->setContentType('news');
         $pages = $wordpress->listPages();
 
         $this->assertEquals(1, $pages->getPagination()->getPage());
@@ -73,47 +77,36 @@ class WordPressTest extends TestCase
         $this->assertEquals("Rerum dolorum aut sunt vel ea", $page->getTitle());
     }
 
-    public function testComplexPostData()
+    public function testAcfData()
     {
-        // Create a mock and queue two responses
+        // Create a mock and queue responses
         $mock = new MockHandler([
             new Response(
                 200,
-                ['X-WP-Total' => 1041, 'X-WP-TotalPages' => 105],
-                file_get_contents(__DIR__ . '/../responses/complex/posts_1.json')
-            ),
-            new Response(
-                200,
-                ['X-WP-Total' => 1041, 'X-WP-TotalPages' => 105],
-                file_get_contents(__DIR__ . '/../responses/complex/posts_2.json')
+                ['X-WP-Total' => 2, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/projects.json')
             ),
         ]);
 
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $wordpress = new Wordpress('something');
+        $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel, 'project');
         $wordpress->setClient($client);
 
         // Test it!
         $pages = $wordpress->listPages();
 
         $this->assertEquals(1, $pages->getPagination()->getPage());
-        $this->assertEquals(1041, $pages->getPagination()->getTotalResults());
-        $this->assertEquals(105, $pages->getPagination()->getTotalPages());
+        $this->assertEquals(2, $pages->getPagination()->getTotalResults());
+        $this->assertEquals(1, $pages->getPagination()->getTotalPages());
 
         $page = $pages->current();
-        
-        // Check the Author is present in the data response
-        $this->assertEquals('Daniel Steadman', $page->getAuthor()->__toString());
-        $this->assertEquals('11086', $page->getAuthor()->getContent()->getId());
+        $this->assertEquals('79', $page->getId());
+        $this->assertEquals("Lorem ipsum dolor sit school construction project", $page->getTitle());
 
-        $url = new Url('/news/:slug');
-        $page->setUrlPattern($url);
 
-        $this->assertEquals(21883, $page->getId());
-        $this->assertEquals("When is a Marine Protected Area not a Marine Protected Area?", $page->getTitle());
-        $this->assertEquals('2019-02-05T12:00:52+00:00', $page->getDatePublished()->__toString());
-        $this->assertEquals('/news/marine-protected-area-not-marine-protected-area', $page->getUrl());
+
     }
 }

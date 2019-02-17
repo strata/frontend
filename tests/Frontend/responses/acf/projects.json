@@ -1,0 +1,175 @@
+[
+    {
+        "id": 79,
+        "date": "2019-02-15T15:10:17",
+        "date_gmt": "2019-02-15T15:10:17",
+        "guid": {
+            "rendered": "http://localhost/?post_type=project&#038;p=79"
+        },
+        "modified": "2019-02-15T15:11:33",
+        "modified_gmt": "2019-02-15T15:11:33",
+        "slug": "lorem-ipsum-dolor-sit-school-construction-project",
+        "status": "publish",
+        "type": "project",
+        "link": "http://localhost/projects/lorem-ipsum-dolor-sit-school-construction-project/",
+        "title": {
+            "rendered": "Lorem ipsum dolor sit school construction project"
+        },
+        "content": {
+            "rendered": "",
+            "protected": false
+        },
+        "excerpt": {
+            "rendered": "",
+            "protected": false
+        },
+        "template": "",
+        "acf": {
+            "project_id": "RM58296875",
+            "project_summary": "<p>Do dolor amet et project description aqui</p>\n",
+            "project_description": "<p>Lorem ipsum dolor amet algo sobre <span class=\"tlid-translation translation\"><span class=\"\" title=\"\">el marco</span></span> aqui en el texto do dolor amet adipiscing aliquam et mas palabras aqui.</p>\n",
+            "project_updates": [
+                {
+                    "project_updates_project_update_title": "Update numero 1",
+                    "project_updates_project_update_description": "<p>Ahora algo es differente con esto documento.</p>\n"
+                },
+                {
+                    "project_updates_project_update_title": "Update 11/03/2019",
+                    "project_updates_project_update_description": "<p>Lorem ipsum dolor sit amet details about the update go in here.</p>\n"
+                }
+            ],
+            "project_benefits": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit dictum suspendisse potenti diam posuere pretium, iaculis platea vehicula nunc rhoncus facilisis quisque laoreet sodales pharetra tortor. A non aliquam ridiculus augue habitasse orci auctor, quisque hendrerit pretium eleifend rhoncus lobortis lacinia, semper netus vehicula lectus fermentum laoreet. Et habitant maecenas parturient pharetra vitae eu feugiat sapien, tempus primis elementum egestas nascetur ridiculus tincidunt, diam dictum fringilla magnis vivamus erat faucibus.</p>\n",
+            "project_how_to_buy": "<p>A non aliquam ridiculus augue habitasse orci auctor, quisque hendrerit pretium eleifend rhoncus lobortis lacinia, semper netus vehicula lectus fermentum laoreet. Et habitant maecenas parturient pharetra vitae eu feugiat sapien, tempus primis elementum egestas nascetur ridiculus tincidunt, diam dictum fringilla magnis vivamus erat faucibus.</p>\n",
+            "project_documents_updates": "<p>A non aliquam ridiculus augue habitasse orci auctor, quisque hendrerit pretium eleifend rhoncus lobortis lacinia, semper netus vehicula lectus fermentum laoreet.</p>\n",
+            "project_documents": [
+                {
+                    "project_documents_project_documents_document": 80
+                },
+                {
+                    "project_documents_project_documents_document": 81
+                },
+                {
+                    "project_documents_project_documents_document": 82
+                }
+            ]
+        },
+        "_links": {
+            "self": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/project/79"
+                }
+            ],
+            "collection": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/project"
+                }
+            ],
+            "about": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/types/project"
+                }
+            ],
+            "version-history": [
+                {
+                    "count": 2,
+                    "href": "http://localhost/wp-json/wp/v2/project/79/revisions"
+                }
+            ],
+            "predecessor-version": [
+                {
+                    "id": 84,
+                    "href": "http://localhost/wp-json/wp/v2/project/79/revisions/84"
+                }
+            ],
+            "wp:attachment": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/media?parent=79"
+                }
+            ],
+            "curies": [
+                {
+                    "name": "wp",
+                    "href": "https://api.w.org/{rel}",
+                    "templated": true
+                }
+            ]
+        }
+    },
+    {
+        "id": 55,
+        "date": "2019-02-13T15:04:31",
+        "date_gmt": "2019-02-13T15:04:31",
+        "guid": {
+            "rendered": "http://localhost/?post_type=project&#038;p=55"
+        },
+        "modified": "2019-02-13T15:04:31",
+        "modified_gmt": "2019-02-13T15:04:31",
+        "slug": "example-project-here",
+        "status": "publish",
+        "type": "project",
+        "link": "http://localhost/projects/example-project-here/",
+        "title": {
+            "rendered": "Example project here"
+        },
+        "content": {
+            "rendered": "",
+            "protected": false
+        },
+        "excerpt": {
+            "rendered": "",
+            "protected": false
+        },
+        "template": "",
+        "acf": {
+            "project_id": "RM123456",
+            "project_summary": "<p>summary text in this field</p>\n",
+            "project_description": "<p>Project description field lorem ipsum dolor sit amet et do dolor.</p>\n",
+            "project_updates": false,
+            "project_benefits": "",
+            "project_how_to_buy": "",
+            "project_documents_updates": "",
+            "project_documents": false
+        },
+        "_links": {
+            "self": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/project/55"
+                }
+            ],
+            "collection": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/project"
+                }
+            ],
+            "about": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/types/project"
+                }
+            ],
+            "version-history": [
+                {
+                    "count": 1,
+                    "href": "http://localhost/wp-json/wp/v2/project/55/revisions"
+                }
+            ],
+            "predecessor-version": [
+                {
+                    "id": 56,
+                    "href": "http://localhost/wp-json/wp/v2/project/55/revisions/56"
+                }
+            ],
+            "wp:attachment": [
+                {
+                    "href": "http://localhost/wp-json/wp/v2/media?parent=55"
+                }
+            ],
+            "curies": [
+                {
+                    "name": "wp",
+                    "href": "https://api.w.org/{rel}",
+                    "templated": true
+                }
+            ]
+        }
+    }
+]

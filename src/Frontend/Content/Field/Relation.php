@@ -15,25 +15,16 @@ use Studio24\Frontend\Content\Page;
  */
 class Relation extends ContentField
 {
+    const TYPE = 'relation';
 
     protected $content;
-
-    /**
-     * Return content field type
-     *
-     * @return string
-     */
-    public function getType() : string
-    {
-        return 'relation';
-    }
 
     /**
      * Create Relation content field
      *
      * @param string $name
      *
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name)
     {

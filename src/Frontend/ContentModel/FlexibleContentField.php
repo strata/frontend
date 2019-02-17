@@ -63,6 +63,15 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
     }
 
     /**
+     * @param string $name
+     * @return |null
+     */
+    public function getOption(string $name)
+    {
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function getType(): string
@@ -75,11 +84,12 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
      *
      * @param array $components
      * @return FlexibleContentField
+     * @throws \Studio24\Frontend\Exception\ConfigParsingException
      */
     public function addComponents(array $components): FlexibleContentField
     {
         foreach ($components as $name => $contentFields) {
-            $block = new Component($name);
+            $block = new ContentFieldCollection($name);
 
             foreach ($contentFields as $name => $values) {
                 $block->addItem($block->parseContentFieldArray($name, $values));
@@ -94,10 +104,10 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
     /**
      * Add an item to the collection
      *
-     * @param Component $item
+     * @param ContentFieldCollection $item
      * @return FlexibleContentField Fluent interface
      */
-    public function addItem(Component $item): FlexibleContentField
+    public function addItem(ContentFieldCollection $item): FlexibleContentField
     {
         $this->offsetSet($item->getName(), $item);
         return $this;
@@ -106,9 +116,9 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
     /**
      * Return current item
      *
-     * @return Component
+     * @return ContentFieldCollection
      */
-    public function current(): Component
+    public function current(): ContentFieldCollection
     {
         return parent::current();
     }
@@ -117,9 +127,9 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
      * Return item by key
      *
      * @param string $index
-     * @return Component
+     * @return ContentFieldCollection
      */
-    public function offsetGet($index): Component
+    public function offsetGet($index): ContentFieldCollection
     {
         return parent::offsetGet($index);
     }

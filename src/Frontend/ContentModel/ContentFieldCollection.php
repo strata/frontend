@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\ContentModel;
 
-use Studio24\Exception\UnimplementedException;
+use Studio24\Frontend\Exception\UnimplementedException;
 
 /**
- * Represents a content block definition
- *
- * This contains a collection of content fields
+ * Represents a collection of content fields
  *
  * To keep this simple, we extend ContentType
  *
  * @package Studio24\Frontend\Content
  */
-class Component extends ContentType
+class ContentFieldCollection extends ContentType
 {
 
     public function parseConfig(string $file): ContentType

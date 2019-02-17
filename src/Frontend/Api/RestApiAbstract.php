@@ -5,8 +5,8 @@ namespace Studio24\Frontend\Api;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use Studio24\Exception\PermissionException;
-use Studio24\Exception\FailedRequestException;
+use Studio24\Frontend\Exception\PermissionException;
+use Studio24\Frontend\Exception\FailedRequestException;
 use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Version;
 

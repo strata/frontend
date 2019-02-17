@@ -29,6 +29,17 @@ class ContentFieldCollection extends \ArrayIterator
     }
 
     /**
+     * Get content by name
+     *
+     * @param $name
+     * @return ContentFieldInterface
+     */
+    public function get($name): ContentFieldInterface
+    {
+        return $this->offsetGet($name);
+    }
+
+    /**
      * Return item by key
      *
      * @param string $index

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\ContentModel;
 
-use Studio24\Exception\ConfigParsingException;
+use Studio24\Frontend\Exception\ConfigParsingException;
 use Studio24\Frontend\Collection\ArrayAccessTrait;
 use Symfony\Component\Yaml\Yaml;
 
@@ -88,6 +88,31 @@ class ContentModel extends \ArrayIterator
     {
         $this->global[$name] = $value;
         return $this;
+    }
+
+    /**
+     * Whether the content type exists in the content model
+     *
+     * @param string $contentType
+     * @return bool
+     */
+    public function hasContentType (string $contentType): bool
+    {
+        return $this->offsetExists($contentType);
+    }
+
+    /**
+     * Return content type, if it exists
+     *
+     * @param string $contentType
+     * @return ContentType|null
+     */
+    public function getContentType (string $contentType): ?ContentType
+    {
+        if ($this->hasContentType($contentType)) {
+            return $this->offsetGet($contentType);
+        }
+        return null;
     }
 
     /**

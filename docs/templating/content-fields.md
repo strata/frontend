@@ -157,7 +157,7 @@ Output the field's raw value. This is useful if it is not a string:
 
 ### ShortText
 
-Short text field, we do not expect any line returns or HTML. 
+Short text field, any line returns are removed.
 
 ```
 {{ page.content.field }}
@@ -334,6 +334,36 @@ Test whether two boolean fields have the same value:
 {% endif %}
 ```
 
+## Asset content fields
+
+### Common fields
+
+All assets contain the following properties:
+
+The asset URL:
+
+```
+{{ page.content.field }}
+```
+
+Title:
+
+```
+{{ page.content.field.title }}
+```
+
+Description:
+
+```
+{{ page.content.field.description }}
+```
+
+Return the mime-type for the asset (e.g. application/pdf):
+
+```
+{{ page.content.field.mimeType }}
+```
+
 ### Image
 
 An image. Outputting the variable will return the default image URL value:
@@ -342,24 +372,10 @@ An image. Outputting the variable will return the default image URL value:
 {{ page.content.field }}
 ```
 
-There are different text fields associated with an image you can also output.
-
-Title:
-
-```
-{{ page.content.field.title }}
-```
- 
 Alt text:
 
 ```
 {{ page.content.field.alt }}
-```
-
-Caption:
-
-```
-{{ page.content.field.caption }}
 ```
 
 If different sizes have been setup there are multiple ways to return these. If any of these functions do not match 
@@ -387,6 +403,38 @@ Return image URL by image width and height:
 
 ```
 {{ page.content.field.byWidthHeight(300, 100) }}
+```
+
+### Document
+
+Documents can support image thumbnails, so the same sizes methods for images also work for documents.
+
+Return document URL:
+
+```
+{{ page.content.field }}
+```
+
+Return thumbnail of document:
+
+```
+{{ page.content.field.byName('thumb') }}
+```
+
+### Audio
+
+Return audio URL:
+
+```
+{{ page.content.field }}
+```
+
+### Video
+
+Return video URL:
+
+```
+{{ page.content.field }}
 ```
 
 ### Flexible Content

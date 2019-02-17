@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\Exception;
 
-class FileException extends \Exception
+class ContentTypeNotSetException extends \Exception
 {
 
 }

@@ -6,7 +6,7 @@ exclude_from_search:
   type: boolean
 image:
   type: image
-  thumbnails:
+  image_sizes:
     - thumbnail
     - medium
     - medium_large
@@ -14,6 +14,9 @@ image:
     - twentyseventeen-featured-image
     - twentyseventeen-thumbnail-avatar
     - issue-post-image
+author:
+  type: relation
+  content_type: user
 page_content:
   type: flexible
   components:

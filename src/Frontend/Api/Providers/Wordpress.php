@@ -39,8 +39,8 @@ class Wordpress extends RestApiAbstract
      * @param array $options Options to use when querying data from WordPress
      * @return ListResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Exception\FailedRequestException
-     * @throws \Studio24\Exception\PermissionException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
     public function listPosts($apiEndpoint, $page = 1, array $options = []) : ListResponse
@@ -98,8 +98,8 @@ class Wordpress extends RestApiAbstract
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @throws \Studio24\Exception\FailedRequestException
-     * @throws \Studio24\Exception\PermissionException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
      */
     public function getPost($apiEndpoint, int $id) : array
     {
@@ -118,8 +118,8 @@ class Wordpress extends RestApiAbstract
      * @param int $id User ID
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Exception\FailedRequestException
-     * @throws \Studio24\Exception\PermissionException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
      */
     public function getAuthor(int $id): array
     {

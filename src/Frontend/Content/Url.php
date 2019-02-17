@@ -239,12 +239,12 @@ class Url
      * Parse a param value for content into a URL
      *
      * @param string $url
-     * @param ContentInterface $content
+     * @param Content $content
      * @param string $param
      * @return string URL
      * @throws UrlException
      */
-    public function parseParamValue(string $url, ContentInterface $content, string $param): string
+    public function parseParamValue(string $url, Content $content, string $param): string
     {
         $formatDate = function (DateTime $date, string $param): string {
             $format = $this->getOption($param, 'format');
@@ -283,11 +283,11 @@ class Url
     /**
      * Return URL for the a page
      *
-     * @param ContentInterface $content
+     * @param Content $content
      * @return string
      * @throws UrlException
      */
-    public function getUrl(ContentInterface $content): string
+    public function getUrl(Content $content): string
     {
         $url = $this->getPattern();
 

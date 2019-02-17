@@ -72,14 +72,17 @@ Each content type then has its own YAML file to define the content fields for th
 
 Each root element is a content type, which has a list of sub-properties.
 
-The only required property is `type` which must denote the content field type. Any other properties are set 
-as options. 
-
 ```yaml
 field_name:
   type: field type
   other_options: value
 ```
+
+The `field_name` should match the field name that comes out of the API. For example, in WordPress ACF content fields 
+are stored in the `'acf'` array. So a content field called `hero_image` is expected to be stored in `['acf']['hero_image']` 
+
+The only required property is `type` which must denote the content field type. Any other properties are set 
+as options. 
 
 #### Supported content field types
 

@@ -18,7 +18,7 @@ class Boolean extends ContentField
      *
      * @param string $name
      * @param mixed $value
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, $value = null)
     {

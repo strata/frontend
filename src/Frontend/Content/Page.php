@@ -7,7 +7,7 @@ namespace Studio24\Frontend\Content;
  * Class Page
  * @package Studio24\Frontend\Content
  */
-class Page extends BaseContent implements ContentInterface
+class Page extends BaseContent
 {
 
     /**
@@ -20,6 +20,7 @@ class Page extends BaseContent implements ContentInterface
      * @var User
      */
     protected $author;
+
 
     /**
      * Set URL pattern

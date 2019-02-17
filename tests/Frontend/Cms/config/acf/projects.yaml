@@ -1,0 +1,24 @@
+project_id:
+  type: text
+project_summary:
+  type: richtext
+project_description:
+  type: richtext
+project_updates:
+  type: array
+  content_fields:
+    project_updates_project_update_title:
+      type: text
+    project_updates_project_update_description:
+      type: richtext
+project_benefits:
+  type: richtext
+project_how_to_buy:
+  type: richtext
+project_documents_updates:
+  type: richtext
+project_documents:
+  type: array
+  content_fields:
+    project_documents_project_documents_document:
+      type: document

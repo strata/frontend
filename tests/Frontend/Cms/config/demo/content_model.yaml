@@ -4,7 +4,6 @@ content_types:
     content_fields: news.yaml
 
 global:
-  test: myValue
   image_sizes:
     - thumbnail
     - medium

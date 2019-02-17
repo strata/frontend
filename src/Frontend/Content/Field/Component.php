@@ -2,12 +2,14 @@
 
 namespace Studio24\Frontend\Content\Field;
 
+use Studio24\Frontend\Content\ContentInterface;
+
 /**
  * Represents one component
  *
  * @package Studio24\Frontend\Content\Field
  */
-class Component
+class Component implements ContentInterface
 {
     protected $name;
 
@@ -32,13 +34,11 @@ class Component
     /**
      * Add new content field
      *
-     * @param ContentFieldInterface $content
-     * @return Component
+     * @param ContentFieldInterface $contentField
      */
-    public function addContent(ContentFieldInterface $content): Component
+    public function addContent(ContentFieldInterface $contentField)
     {
-        $this->content->addItem($content);
-        return $this;
+        $this->content->addItem($contentField);
     }
 
     /**

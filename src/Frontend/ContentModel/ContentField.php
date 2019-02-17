@@ -90,6 +90,9 @@ class ContentField implements ContentFieldInterface
         if (isset($this->options[$name])) {
             return $this->options[$name];
         }
+
+        // @todo Check global option
+
         return null;
     }
 

@@ -3,7 +3,20 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\ContentModel;
 
+use Studio24\Frontend\Content\Field\ArrayContent;
+use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\Boolean;
+use Studio24\Frontend\Content\Field\Date;
+use Studio24\Frontend\Content\Field\DateTime;
+use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\FlexibleContent;
+use Studio24\Frontend\Content\Field\Image;
+use Studio24\Frontend\Content\Field\PlainText;
+use Studio24\Frontend\Content\Field\Relation;
+use Studio24\Frontend\Content\Field\RichText;
+use Studio24\Frontend\Content\Field\ShortText;
+use Studio24\Frontend\Content\Field\Video;
+use Studio24\Frontend\Exception\ConfigParsingException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -15,6 +28,30 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ContentType extends \ArrayIterator
 {
+
+    /**
+     * Array of valid content types
+     *
+     * Add any new content types here
+     *
+     * @var array
+     */
+    protected static $validContentFields = [
+        ArrayContent::TYPE,
+        Audio::TYPE,
+        Boolean::TYPE,
+        Date::TYPE,
+        DateTime::TYPE,
+        Document::TYPE,
+        FlexibleContent::TYPE,
+        Image::TYPE,
+        PlainText::TYPE,
+        Relation::TYPE,
+        RichText::TYPE,
+        ShortText::TYPE,
+        Video::TYPE
+    ];
+
     protected $name;
 
     protected $apiEndpoint;
@@ -24,6 +61,18 @@ class ContentType extends \ArrayIterator
         parent::__construct();
 
         $this->setName($name);
+    }
+
+    /**
+     * Register a content type name
+     *
+     * If you create a new content type, make sure you register it to ensure the Content Model system recognises it
+     *
+     * @param string $name
+     */
+    public static function registerContentType(string $name)
+    {
+        self::$validContentFields[] = $name;
     }
 
     /**
@@ -54,29 +103,55 @@ class ContentType extends \ArrayIterator
      * @param string $name
      * @param array $data
      * @return ContentFieldInterface
+     * @throws ConfigParsingException
      */
     public function parseContentFieldArray(string $name, array $data): ContentFieldInterface
     {
         if (!isset($data['type'])) {
             throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");
         }
-        if ($data['type'] === FlexibleContent::TYPE) {
-            if (!isset($data['components'])) {
-                throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
-            }
-            $contentField = new FlexibleContentField($name, $data['components']);
-        } else {
-            $contentField = new ContentField($name, $data['type']);
+        if (!$this->validContentFields($data['type'])) {
+            throw new ConfigParsingException(sprintf("Invalid content field type '%s'", $data['type']));
+        }
 
-            unset($data['type']);
-            if (is_array($data)) {
-                foreach ($data as $name => $value) {
-                    $contentField->addOption($name, $value);
+        switch ($data['type']) {
+            case FlexibleContent::TYPE:
+                if (!isset($data['components'])) {
+                    throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
                 }
-            }
+                $contentField = new FlexibleContentField($name, $data['components']);
+                break;
+
+            case ArrayContent::TYPE:
+                if (!isset($data['content_fields'])) {
+                    throw new ConfigParsingException("You must set a 'content_fields' array for an array content field");
+                }
+                $contentField = new ArrayContentField($name, $data['content_fields']);
+                break;
+
+            default:
+                $contentField = new ContentField($name, $data['type']);
+
+                unset($data['type']);
+                if (is_array($data)) {
+                    foreach ($data as $name => $value) {
+                        $contentField->addOption($name, $value);
+                    }
+                }
         }
 
         return $contentField;
+    }
+
+    /**
+     * Is the passed content field name a valid content field type?
+     *
+     * @param string $field Content field type
+     * @return bool
+     */
+    public function validContentFields(string $field)
+    {
+        return in_array($field, self::$validContentFields);
     }
 
     /**
@@ -89,7 +164,7 @@ class ContentType extends \ArrayIterator
 
     /**
      * @param string $name
-     * @return ContentModel Fluent interface
+     * @return ContentType Fluent interface
      */
     public function setName(string $name): ContentType
     {
@@ -107,7 +182,7 @@ class ContentType extends \ArrayIterator
 
     /**
      * @param string $apiEndpoint
-     * @return ContentModel Fluent interface
+     * @return ContentType Fluent interface
      */
     public function setApiEndpoint(string $apiEndpoint): ContentType
     {
