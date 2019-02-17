@@ -63,17 +63,25 @@ taxonomy content record.
 
 Another common use case is listing taxonomies separately, for example, if you want to list of categories.
 
+### Array
+
+An array contains multiple fixed content fields. Think about multiple entries, each of which have the same number of fields. 
+This is also known as a _repeater_ field in a CMS.
+
+Each entry in the array must contain the same number of content fields.
+
 ### Flexible content
 
-Flexible content is where it gets a little complex! The benefit of the content field approach is that each content type 
-has a strict set of content fields a user can enter content into. This is great for providing structured content but fails 
-to give any flexibility to the user.
+Flexible content is similar to an array but allows for different sets of content fields which the user can add in any order. 
+We call these sets of content fields _components_. This is also known as a _block_ in a CMS.
 
-A common requirement is to allow users to build up a page of a number of different components, or blocks, of content. For 
-example, you may add a full-width image, followed by a text block, followed by a quotation block. 
+Flexible content can contain multiple components, in any order the user chooses. 
 
-The idea is the user can add these components in any order. This gives flexibility of layout, while still controlling the 
-content by providing fixed fields for each component for the user to fill in.
+The benefit of this approach is that each component has a strict set of content fields which can be used to 
+structure content, yet still giving the user the freedom to mix and match components to create interesting page content. 
+For example, you may add a full-width image, followed by a text block, followed by a quotation block. 
+
+This gives flexibility of layout, while still providing structured content. 
 
 #### Components
 
