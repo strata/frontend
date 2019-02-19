@@ -302,5 +302,4 @@ class BaseContent implements ContentInterface, AddressableInterface
         }
         return $content;
     }
-
 }

@@ -96,7 +96,7 @@ class ContentModel extends \ArrayIterator
      * @param string $contentType
      * @return bool
      */
-    public function hasContentType (string $contentType): bool
+    public function hasContentType(string $contentType): bool
     {
         return $this->offsetExists($contentType);
     }
@@ -107,7 +107,7 @@ class ContentModel extends \ArrayIterator
      * @param string $contentType
      * @return ContentType|null
      */
-    public function getContentType (string $contentType): ?ContentType
+    public function getContentType(string $contentType): ?ContentType
     {
         if ($this->hasContentType($contentType)) {
             return $this->offsetGet($contentType);
@@ -147,5 +147,4 @@ class ContentModel extends \ArrayIterator
     {
         return parent::offsetGet($index);
     }
-
 }

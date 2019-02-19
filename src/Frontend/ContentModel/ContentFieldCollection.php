@@ -12,7 +12,7 @@ use Studio24\Frontend\Exception\UnimplementedException;
  *
  * @package Studio24\Frontend\Content
  */
-class ContentFieldCollection extends ContentType
+class ContentFieldCollection extends ContentType implements ContentFieldCollectionInterface
 {
 
     public function parseConfig(string $file): ContentType

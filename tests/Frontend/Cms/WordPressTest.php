@@ -92,7 +92,8 @@ class WordPressTest extends TestCase
         $client = new Client(['handler' => $handler]);
 
         $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
-        $wordpress = new Wordpress('something', $contentModel, 'project');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('project');
         $wordpress->setClient($client);
 
         // Test it!
@@ -106,7 +107,17 @@ class WordPressTest extends TestCase
         $this->assertEquals('79', $page->getId());
         $this->assertEquals("Lorem ipsum dolor sit school construction project", $page->getTitle());
 
-
-
+        // Test array
+        foreach ($page->getContent()->get('project_updates') as $key => $value) {
+            switch ($key) {
+                case 0:
+                    $this->assertEquals("Update numero 1", $value->get('project_updates_project_update_title'));
+                    $this->assertEquals("<p>Ahora algo es differente con esto documento.</p>\n", $value->get('project_updates_project_update_description'));
+                    break;
+                case 1:
+                    $this->assertEquals("Update 11/03/2019", $value->get('project_updates_project_update_title'));
+                    break;
+            }
+        }
     }
 }

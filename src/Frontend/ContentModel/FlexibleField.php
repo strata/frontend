@@ -13,7 +13,7 @@ use Studio24\Frontend\Collection\ArrayAccessTrait;
  *
  * @package Studio24\Frontend\ContentModel
  */
-class FlexibleContentField extends \ArrayIterator implements ContentFieldInterface
+class FlexibleField extends \ArrayIterator implements FieldInterface
 {
     /**
      * Content field name
@@ -54,9 +54,9 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
 
     /**
      * @param string $name
-     * @return FlexibleContentField Fluent interface
+     * @return FlexibleField Fluent interface
      */
-    public function setName(string $name): FlexibleContentField
+    public function setName(string $name): FlexibleField
     {
         $this->name = $name;
         return $this;
@@ -83,10 +83,10 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
      * Add components from an array of data (normally loaded from config file)
      *
      * @param array $components
-     * @return FlexibleContentField
+     * @return FlexibleField
      * @throws \Studio24\Frontend\Exception\ConfigParsingException
      */
-    public function addComponents(array $components): FlexibleContentField
+    public function addComponents(array $components): FlexibleField
     {
         foreach ($components as $name => $contentFields) {
             $block = new ContentFieldCollection($name);
@@ -105,9 +105,9 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
      * Add an item to the collection
      *
      * @param ContentFieldCollection $item
-     * @return FlexibleContentField Fluent interface
+     * @return FlexibleField Fluent interface
      */
-    public function addItem(ContentFieldCollection $item): FlexibleContentField
+    public function addItem(ContentFieldCollection $item): FlexibleField
     {
         $this->offsetSet($item->getName(), $item);
         return $this;
@@ -133,5 +133,4 @@ class FlexibleContentField extends \ArrayIterator implements ContentFieldInterfa
     {
         return parent::offsetGet($index);
     }
-
 }

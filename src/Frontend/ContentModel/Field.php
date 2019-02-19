@@ -8,7 +8,7 @@ namespace Studio24\Frontend\ContentModel;
  *
  * @package Studio24\Frontend\ContentModel
  */
-class ContentField implements ContentFieldInterface
+class Field implements FieldInterface
 {
     /**
      * Content field name
@@ -53,9 +53,9 @@ class ContentField implements ContentFieldInterface
 
     /**
      * @param string $name
-     * @return ContentField Fluent interface
+     * @return Field Fluent interface
      */
-    public function setName(string $name): ContentField
+    public function setName(string $name): Field
     {
         $this->name = $name;
         return $this;
@@ -71,9 +71,9 @@ class ContentField implements ContentFieldInterface
 
     /**
      * @param string $type
-     * @return ContentField Fluent interface
+     * @return Field Fluent interface
      */
-    public function setType(string $type): ContentField
+    public function setType(string $type): Field
     {
         $this->type = $type;
         return $this;
@@ -99,9 +99,9 @@ class ContentField implements ContentFieldInterface
     /**
      * @param string $name
      * @param mixed $value
-     * @return ContentField Fluent interface
+     * @return Field Fluent interface
      */
-    public function addOption(string $name, $value): ContentField
+    public function addOption(string $name, $value): Field
     {
         $this->options[$name] = $value;
         return $this;
@@ -109,9 +109,9 @@ class ContentField implements ContentFieldInterface
 
     /**
      * @param array $options
-     * @return ContentField Fluent interface
+     * @return Field Fluent interface
      */
-    public function setOptions(array $options): ContentField
+    public function setOptions(array $options): Field
     {
         foreach ($options as $name => $value) {
             $this->addOption($name, $value);

@@ -29,5 +29,4 @@ class AssetTest extends TestCase
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $asset);
         $this->assertEquals('my_audio', $asset->getName());
     }
-
 }

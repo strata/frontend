@@ -5,25 +5,24 @@ namespace App\Tests\Frontend;
 
 use PHPUnit\Framework\TestCase;
 use Studio24\Frontend\ContentModel\ContentType;
-use Studio24\Frontend\ContentModel\ContentField;
-use Studio24\Frontend\ContentModel\ContentFieldInterface;
+use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\ContentModel\FieldInterface;
 
 class CollectionTest extends TestCase
 {
     public function testArrayAccess()
     {
         $collection = new ContentType('test');
-        $collection->addItem(new ContentField('test1', 'plaintext'));
-        $collection->addItem(new ContentField('test2', 'plaintext'));
-        $collection->addItem(new ContentField('test3', 'richtext'));
+        $collection->addItem(new Field('test1', 'plaintext'));
+        $collection->addItem(new Field('test2', 'plaintext'));
+        $collection->addItem(new Field('test3', 'richtext'));
 
         $this->assertEquals(3, count($collection));
         $this->assertFalse($collection->offsetExists('fake'));
 
         $x = 1;
         foreach ($collection as $key => $value) {
-
-            $this->assertTrue($value instanceof ContentFieldInterface);
+            $this->assertTrue($value instanceof FieldInterface);
 
             switch ($x) {
                 case 1:
@@ -42,5 +41,4 @@ class CollectionTest extends TestCase
             $x++;
         }
     }
-
 }

@@ -13,7 +13,7 @@ use Studio24\Frontend\Collection\ArrayAccessTrait;
  *
  * @package Studio24\Frontend\ContentModel
  */
-class ArrayContentField extends ContentFieldCollection implements ContentFieldInterface
+class ArrayField extends ContentFieldCollection implements FieldInterface, ContentFieldCollectionInterface
 {
 
     /**
@@ -72,10 +72,10 @@ class ArrayContentField extends ContentFieldCollection implements ContentFieldIn
      * Add content fields from an array of data (normally loaded from config file)
      *
      * @param array $contentFields
-     * @return ArrayContentField
+     * @return ArrayField
      * @throws \Studio24\Frontend\Exception\ConfigParsingException
      */
-    public function addContentFields(array $contentFields): ArrayContentField
+    public function addContentFields(array $contentFields): ArrayField
     {
         foreach ($contentFields as $name => $values) {
             $this->addItem($this->parseContentFieldArray($name, $values));
@@ -87,13 +87,10 @@ class ArrayContentField extends ContentFieldCollection implements ContentFieldIn
     public function getApiEndpoint(): string
     {
         throw new UnimplementedException(sprintf('% is not implemented in %s\%s', __METHOD__, __NAMESPACE__, __CLASS__));
-
     }
 
     public function setApiEndpoint(string $apiEndpoint): ContentType
     {
         throw new UnimplementedException(sprintf('% is not implemented in %s\%s', __METHOD__, __NAMESPACE__, __CLASS__));
-
     }
-
 }

@@ -26,7 +26,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package Studio24\Frontend\Content
  */
-class ContentType extends \ArrayIterator
+class ContentType extends \ArrayIterator implements ContentFieldCollectionInterface
 {
 
     /**
@@ -102,10 +102,10 @@ class ContentType extends \ArrayIterator
      *
      * @param string $name
      * @param array $data
-     * @return ContentFieldInterface
+     * @return FieldInterface
      * @throws ConfigParsingException
      */
-    public function parseContentFieldArray(string $name, array $data): ContentFieldInterface
+    public function parseContentFieldArray(string $name, array $data): FieldInterface
     {
         if (!isset($data['type'])) {
             throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");
@@ -119,18 +119,18 @@ class ContentType extends \ArrayIterator
                 if (!isset($data['components'])) {
                     throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
                 }
-                $contentField = new FlexibleContentField($name, $data['components']);
+                $contentField = new FlexibleField($name, $data['components']);
                 break;
 
             case ArrayContent::TYPE:
                 if (!isset($data['content_fields'])) {
                     throw new ConfigParsingException("You must set a 'content_fields' array for an array content field");
                 }
-                $contentField = new ArrayContentField($name, $data['content_fields']);
+                $contentField = new ArrayField($name, $data['content_fields']);
                 break;
 
             default:
-                $contentField = new ContentField($name, $data['type']);
+                $contentField = new Field($name, $data['type']);
 
                 unset($data['type']);
                 if (is_array($data)) {
@@ -196,7 +196,7 @@ class ContentType extends \ArrayIterator
      * @param ContentModelFieldInterface $item
      * @return ContentType Fluent interface
      */
-    public function addItem(ContentFieldInterface $item): ContentType
+    public function addItem(FieldInterface $item): ContentType
     {
         $this->offsetSet($item->getName(), $item);
         return $this;
@@ -205,9 +205,9 @@ class ContentType extends \ArrayIterator
     /**
      * Return current item
      *
-     * @return ContentFieldInterface
+     * @return FieldInterface
      */
-    public function current(): ContentFieldInterface
+    public function current(): FieldInterface
     {
         return parent::current();
     }
@@ -216,11 +216,10 @@ class ContentType extends \ArrayIterator
      * Return item by key
      *
      * @param string $index
-     * @return ContentFieldInterface
+     * @return FieldInterface
      */
-    public function offsetGet($index): ContentFieldInterface
+    public function offsetGet($index): FieldInterface
     {
         return parent::offsetGet($index);
     }
-
 }

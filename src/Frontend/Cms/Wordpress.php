@@ -6,7 +6,15 @@ namespace Studio24\Frontend\Cms;
 use GuzzleHttp\Client;
 use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
+use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\ContentField;
+use Studio24\Frontend\Content\Field\ContentFieldCollection;
+use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
+use Studio24\Frontend\Content\Field\Video;
+use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
+use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
 use Studio24\Frontend\Content\BaseContent;
 use Studio24\Frontend\Content\Field\Boolean;
@@ -24,7 +32,7 @@ use Studio24\Frontend\Content\PageCollection;
 use Studio24\Frontend\Content\User;
 use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
-use Studio24\Frontend\Traits\CacheTrait;
+use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 
@@ -33,12 +41,12 @@ use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
  *
  * This class is also responsible for caching results
  *
+ * @todo This class needs a review to extract different purposes into different classes. Do this when integrate 2nd CMS data source
+ *
  * @package Studio24\Frontend\Cms
  */
-class Wordpress
+class Wordpress extends ContentRepository
 {
-    use CacheTrait;
-
     /**
      * API
      *
@@ -47,59 +55,18 @@ class Wordpress
     protected $api;
 
     /**
-     * Content model
-     *
-     * @var ContentModel
-     */
-    protected $contentModel;
-
-    /**
-     * Current content type
-     *
-     * @var ContentType
-     */
-    protected $contentType;
-
-    /**
      * Constructor
      *
      * @param string $baseUrl API base URI
      * @param ContentModel $contentModel Content model
-     * @param string $type Content type
      */
-    public function __construct(string $baseUrl = '', ContentModel $contentModel = null, string $type = null)
+    public function __construct(string $baseUrl = '', ContentModel $contentModel = null)
     {
         $this->api = new WordpressApi($baseUrl);
 
         if ($contentModel instanceof ContentModel) {
             $this->setContentModel($contentModel);
         }
-        if ($type !== null) {
-            $this->setContentType($type);
-        }
-    }
-
-    /**
-     * Set the content model
-     *
-     * @param ContentModel $contentModel
-     * @return Wordpress Fluent interface
-     */
-    public function setContentModel(ContentModel $contentModel): Wordpress
-    {
-        $this->contentModel = $contentModel;
-
-        return $this;
-    }
-
-    /**
-     * Return the content model
-     *
-     * @return ContentModel
-     */
-    public function getContentModel(): ContentModel
-    {
-        return $this->contentModel;
     }
 
     /**
@@ -115,59 +82,6 @@ class Wordpress
         $this->api->setClient($client);
 
         return $this;
-    }
-
-    /**
-     * Does the content type exist?
-     *
-     * @param string $type
-     * @return bool
-     */
-    public function contentTypeExists(string $type): bool
-    {
-        return $this->contentModel->hasContentType($type);
-    }
-
-    /**
-     * Do we have a valid content type and content model set?
-     *
-     * @return bool
-     */
-    public function hasContentType(): bool
-    {
-        if ($this->contentModel instanceof ContentModel && $this->contentType instanceof ContentType) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Set the requested content type
-     *
-     * @param string $type
-     * @return Wordpress
-     */
-    public function setContentType(string $type): Wordpress
-    {
-        if ($this->contentTypeExists($type)) {
-            $this->contentType = $this->getContentModel()->getContentType($type);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Return the current content type
-     *
-     * @return ContentType
-     * @throws ContentTypeNotSetException
-     */
-    public function getContentType(): ContentType
-    {
-        if (!$this->hasContentType()) {
-            throw new ContentTypeNotSetException('Content type is not set!');
-        }
-        return $this->contentType;
     }
 
     /**
@@ -289,11 +203,12 @@ class Wordpress
      *
      * @param BaseContent $page
      * @param array $data
-     * @return BaseContent
+     * @return null
+     * @throws ContentFieldNotSetException
      * @throws ContentTypeNotSetException
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function setContentFields(BaseContent $page, array $data): ?BaseContent
+    public function setContentFields(BaseContent $page, array $data)
     {
         if (empty($data)) {
             return null;
@@ -321,8 +236,6 @@ class Wordpress
         if (isset($data['acf'])) {
             $this->setCustomContentFields($this->getContentType(), $page, $data['acf']);
         }
-
-        return $page;
     }
 
     /**
@@ -332,120 +245,162 @@ class Wordpress
      * @param ContentInterface $content
      * @param array $data
      * @return BaseContent
+     * @throws ContentFieldNotSetException
      * @throws ContentTypeNotSetException
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function setCustomContentFields(ContentType $contentType, ContentInterface $content, array $data): ContentInterface
     {
         foreach ($contentType as $contentField) {
-
             $name = $contentField->getName();
             if (!isset($data[$name])) {
                 continue;
             }
 
             $value = $data[$name];
-
-            switch ($contentField->getType()) {
-                case 'text':
-                    $content->addContent(new ShortText($name, $value));
-                    break;
-
-                case 'plaintext':
-                    $content->addContent(new PlainText($name, $value));
-                    break;
-
-                case 'richtext':
-                    $content->addContent(new RichText($name, $value));
-                    break;
-
-                case 'date':
-                    $content->addContent(new Date($name, $value));
-                    break;
-
-                case 'datetime':
-                    $content->addContent(new DateTime($name, $value));
-                    break;
-
-                case 'boolean':
-                    $content->addContent(new Boolean($name, $value));
-                    break;
-
-                case 'image':
-                    $image = new Image(
-                        $name,
-                        $value['url'],
-                        $value['title'],
-                        $value['caption'],
-                        $value['alt']
-                    );
-
-                    // Add sizes
-                    $availableSizes = $contentField->getOption('image_sizes');
-                    if ($availableSizes !== null) {
-                        foreach ($availableSizes as $sizeName) {
-                            if (isset($value['sizes'][$sizeName])) {
-                                $width = $sizeName . '-width';
-                                $height = $sizeName . '-height';
-                                $image->addSize(
-                                    $value['sizes'][$sizeName],
-                                    $value['sizes'][$width],
-                                    $value['sizes'][$height],
-                                    $sizeName
-                                );
-                            }
-                        }
-                    }
-                    $content->addContent($image);
-                    break;
-
-                case 'document':
-
-                    // Read document data from Media API
-                    if (is_numeric($value)) {
-                        // @todo
-                    }
-
-                    break;
-                    
-                // @todo array, document, video, audio
-
-                case 'array':
-                    $arrayField = new ArrayContent($name);
-
-
-
-                    break;
-
-                case 'relation':
-                    $relation = new Relation($name);
-                    $this->setContentFields($relation->getContent(), $value);
-                    $content->addContent($relation);
-                    break;
-
-                /**
-                 * @todo Build & test Flexible content field
-                case 'flexible':
-                    if (!is_array($value)) {
-                        continue;
-                    }
-
-                    $flexible = new FlexibleContent($name);
-
-                    foreach ($contentField as $componentType) {
-                        $component = new Component($componentType->getName());
-                        $this->setCustomContentFields($componentType, $component, $value);
-                        $flexible->addComponent($component);
-                    }
-
-                    $content->addContent($flexible);
-                    break;
-                 */
+            $contentField = $this->getContentField($contentField, $value);
+            if ($contentField !== null) {
+                $content->addContent($contentField);
             }
         }
 
         return $content;
     }
+
+    /**
+     * Return a content field populated with passed data
+     *
+     * @param FieldInterface $field Content field definition
+     * @param mixed $value Content field value
+     * @return ContentFieldInterface Populated content field object, or null on failure
+     * @throws ContentTypeNotSetException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws ContentFieldNotSetException
+     */
+    public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
+    {
+        $name = $field->getName();
+        switch ($field->getType()) {
+            case 'text':
+                return new ShortText($name, $value);
+                break;
+
+            case 'plaintext':
+                return new PlainText($name, $value);
+                break;
+
+            case 'richtext':
+                return new RichText($name, $value);
+                break;
+
+            case 'date':
+                return new Date($name, $value);
+                break;
+
+            case 'datetime':
+                return new DateTime($name, $value);
+                break;
+
+            case 'boolean':
+                return new Boolean($name, $value);
+                break;
+
+            case 'image':
+                $image = new Image(
+                    $name,
+                    $value['url'],
+                    $value['title'],
+                    $value['caption'],
+                    $value['alt']
+                );
+
+                // Add sizes
+                $availableSizes = $field->getOption('image_sizes');
+                if ($availableSizes !== null) {
+                    foreach ($availableSizes as $sizeName) {
+                        if (isset($value['sizes'][$sizeName])) {
+                            $width = $sizeName . '-width';
+                            $height = $sizeName . '-height';
+                            $image->addSize(
+                                $value['sizes'][$sizeName],
+                                $value['sizes'][$width],
+                                $value['sizes'][$height],
+                                $sizeName
+                            );
+                        }
+                    }
+                }
+                return $image;
+                break;
+
+            case 'document':
+                // Read document data from Media API
+                if (is_numeric($value)) {
+                    // @todo
+                }
+
+                return null;
+                break;
+
+            // @todo document, video, audio
+
+            case 'array':
+                $array = new ArrayContent($name);
+
+                if (!is_array($value)) {
+                    continue;
+                }
+
+                // Loop through data array
+                foreach ($value as $row) {
+                    // For each row add a set of content fields
+                    $item = new ContentFieldCollection();
+                    foreach ($field as $childField) {
+                        if (!isset($row[$childField->getName()])) {
+                            continue;
+                        }
+                        $childValue = $row[$childField->getName()];
+                        $contentField = $this->getContentField($childField, $childValue);
+                        if ($contentField !== null) {
+                            $item->addItem($this->getContentField($childField, $childValue));
+                        }
+                    }
+                    $array->addItem($item);
+                }
+
+                return $array;
+                break;
+
+            // @todo test relation
+            case 'relation':
+                $relation = new Relation($name);
+                $this->setContentFields($relation->getContent(), $value);
+                return $relation;
+                break;
+
+            /**
+             * @todo Build & test Flexible content field
+            case 'flexible':
+            if (!is_array($value)) {
+            continue;
+            }
+
+            $flexible = new FlexibleContent($name);
+
+            foreach ($contentField as $componentType) {
+            $component = new Component($componentType->getName());
+            $this->setCustomContentFields($componentType, $component, $value);
+            $flexible->addComponent($component);
+            }
+
+            $content->addContent($flexible);
+            break;
+             */
+        }
+
+        return null;
+    }
+
 
     /**
      * Generate user object from API data
