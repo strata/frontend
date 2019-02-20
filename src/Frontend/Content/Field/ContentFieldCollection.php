@@ -2,11 +2,10 @@
 
 namespace Studio24\Frontend\Content\Field;
 
-class ContentFieldCollection implements \ArrayAccess, \SeekableIterator, \Countable
-{
-    protected $collection = [];
-    protected $key;
+use Studio24\Frontend\Collection\ArrayAccessTrait;
 
+class ContentFieldCollection extends \ArrayIterator
+{
     /**
      * Add an item to the collection
      *
@@ -15,92 +14,40 @@ class ContentFieldCollection implements \ArrayAccess, \SeekableIterator, \Counta
      */
     public function addItem(ContentFieldInterface $item) : ContentFieldCollection
     {
-        $this->collection[$item->getName()] = $item;
+        $this->offsetSet($item->getName(), $item);
         return $this;
     }
 
     /**
-     * @return ContentFieldInterface
-     */
-    public function current() : ContentFieldInterface
-    {
-        return $this->collection[$this->key];
-    }
-
-    public function next()
-    {
-        $keys = $this->getKeys();
-        foreach ($keys as $num => $key) {
-            if ($this->key === $key) {
-                $this->key = $keys[$num + 1];
-            }
-        }
-    }
-
-    public function key()
-    {
-        return $this->key;
-    }
-
-    public function valid()
-    {
-        return isset($this->array[$this->key]);
-    }
-
-    public function rewind()
-    {
-        $this->key = $this->getKeys()[0];
-    }
-
-    /**
-     * Return current collection array keys
+     * Return current item
      *
-     * @return array
+     * @return ContentFieldInterface
      */
-    public function getKeys() : array
+    public function current(): ContentFieldInterface
     {
-        return array_keys($this->collection);
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->collection[$offset]);
+        return parent::current();
     }
 
     /**
-     * @param mixed $offset
+     * Get content by name
+     *
+     * @param $name
      * @return ContentFieldInterface
      */
-    public function offsetGet($offset) : ContentFieldInterface
+    public function get($name): ContentFieldInterface
     {
-        return isset($this->collection[$offset]) ? $this->collection[$offset] : null;
+        return $this->offsetGet($name);
     }
 
-    public function offsetSet($offset, $value)
+    /**
+     * Return item by key
+     *
+     * @param string $index
+     * @return ContentFieldInterface
+     */
+    public function offsetGet($index): ContentFieldInterface
     {
-        if (is_null($offset)) {
-            $this->collection[] = $value;
-        } else {
-            $this->collection[$offset] = $value;
-        }
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->collection[$offset]);
-    }
-
-    public function count() : int
-    {
-        return count($this->collection);
-    }
-
-    public function seek($position)
-    {
-        if (!isset($this->collection[$position])) {
-            throw new \OutOfBoundsException(sprintf('Invalid collection key: %s', $position));
-        }
-        $this->key = $position;
+        return parent::offsetGet($index);
     }
 
     /**

@@ -2,6 +2,9 @@ content_types:
   news:
     api_endpoint: posts
     content_fields: news.yaml
+  projects:
+    api_endpoint: projects
+    content_fields: projects.yaml
 
 global:
   test: myValue

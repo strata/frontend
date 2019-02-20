@@ -1,0 +1,66 @@
+
+{
+    "_links": {
+        "about": [
+            {
+                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/types/attachment"
+            }
+        ],
+        "author": [
+            {
+                "embeddable": true,
+                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/users/1"
+            }
+        ],
+        "collection": [
+            {
+                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/media"
+            }
+        ],
+        "replies": [
+            {
+                "embeddable": true,
+                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/comments?post=80"
+            }
+        ],
+        "self": [
+            {
+                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/media/80"
+            }
+        ]
+    },
+    "acf": [],
+    "alt_text": "",
+    "author": 1,
+    "caption": {
+        "rendered": "<p>test_2</p>\n"
+    },
+    "comment_status": "open",
+    "date": "2019-02-15T15:08:54",
+    "date_gmt": "2019-02-15T15:08:54",
+    "description": {
+        "rendered": "<p class=\"attachment\"><a href='http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_2.pdf'>test_2</a></p>\n"
+    },
+    "guid": {
+        "rendered": "http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_2.pdf"
+    },
+    "id": 80,
+    "link": "http://ccs-agreements.cabinetoffice.localhost/frameworks/lorem-ipsum-dolor-sit-school-construction-framework/test_2/",
+    "media_details": {},
+    "media_type": "file",
+    "meta": [],
+    "mime_type": "application/pdf",
+    "modified": "2019-02-15T15:08:54",
+    "modified_gmt": "2019-02-15T15:08:54",
+    "ping_status": "closed",
+    "post": 79,
+    "slug": "test_2",
+    "source_url": "http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_2.pdf",
+    "status": "inherit",
+    "template": "",
+    "title": {
+        "rendered": "test_2"
+    },
+    "type": "attachment"
+}
+

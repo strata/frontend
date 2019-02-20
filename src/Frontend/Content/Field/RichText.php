@@ -29,7 +29,7 @@ class RichText extends ContentField
      *
      * @param string $name
      * @param string $content
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $content)
     {

@@ -26,7 +26,7 @@ class FlexibleContent extends ContentField
      *
      * @param string $name
      *
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name)
     {

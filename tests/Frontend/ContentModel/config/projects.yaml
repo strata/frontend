@@ -1,0 +1,10 @@
+project_area:
+  type: plaintext
+image:
+  type: image
+  thumbnails:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+

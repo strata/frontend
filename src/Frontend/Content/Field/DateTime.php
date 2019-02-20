@@ -19,7 +19,7 @@ class DateTime extends Date
      * @param null $date Date and time, see valid date formats https://secure.php.net/manual/en/datetime.formats.compound.php
      * @param null $format Date format
      *
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, $date = null, $format = null)
     {

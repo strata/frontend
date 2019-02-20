@@ -25,7 +25,7 @@ class Date extends ContentField
      * @param string $name Content field name
      * @param null $date Date, see valid date formats https://secure.php.net/manual/en/datetime.formats.date.php
      * @param null $format Date format
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, $date = null, $format = null)
     {

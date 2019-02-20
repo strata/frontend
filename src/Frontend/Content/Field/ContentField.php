@@ -2,7 +2,7 @@
 
 namespace Studio24\Frontend\Content\Field;
 
-use Studio24\Exception\ContentFieldException;
+use Studio24\Frontend\Exception\ContentFieldException;
 
 /**
  * Core content field functionality

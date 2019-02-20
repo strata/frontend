@@ -3,7 +3,20 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\ContentModel;
 
+use Studio24\Frontend\Content\Field\ArrayContent;
+use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\Boolean;
+use Studio24\Frontend\Content\Field\Date;
+use Studio24\Frontend\Content\Field\DateTime;
+use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\FlexibleContent;
+use Studio24\Frontend\Content\Field\Image;
+use Studio24\Frontend\Content\Field\PlainText;
+use Studio24\Frontend\Content\Field\Relation;
+use Studio24\Frontend\Content\Field\RichText;
+use Studio24\Frontend\Content\Field\ShortText;
+use Studio24\Frontend\Content\Field\Video;
+use Studio24\Frontend\Exception\ConfigParsingException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -13,29 +26,53 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package Studio24\Frontend\Content
  */
-class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
+class ContentType extends \ArrayIterator implements ContentFieldCollectionInterface
 {
+
+    /**
+     * Array of valid content types
+     *
+     * Add any new content types here
+     *
+     * @var array
+     */
+    protected static $validContentFields = [
+        ArrayContent::TYPE,
+        Audio::TYPE,
+        Boolean::TYPE,
+        Date::TYPE,
+        DateTime::TYPE,
+        Document::TYPE,
+        FlexibleContent::TYPE,
+        Image::TYPE,
+        PlainText::TYPE,
+        Relation::TYPE,
+        RichText::TYPE,
+        ShortText::TYPE,
+        Video::TYPE
+    ];
 
     protected $name;
 
     protected $apiEndpoint;
 
-    /**
-     * Collection of content fields
-     * @var array
-     */
-    protected $contentFields = [];
-
-    /**
-     * Content type collection key
-     *
-     * @var string
-     */
-    protected $key;
-
     public function __construct(string $name)
     {
+        parent::__construct();
+
         $this->setName($name);
+    }
+
+    /**
+     * Register a content type name
+     *
+     * If you create a new content type, make sure you register it to ensure the Content Model system recognises it
+     *
+     * @param string $name
+     */
+    public static function registerContentType(string $name)
+    {
+        self::$validContentFields[] = $name;
     }
 
     /**
@@ -65,30 +102,56 @@ class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
      *
      * @param string $name
      * @param array $data
-     * @return ContentFieldInterface
+     * @return FieldInterface
+     * @throws ConfigParsingException
      */
-    public function parseContentFieldArray(string $name, array $data): ContentFieldInterface
+    public function parseContentFieldArray(string $name, array $data): FieldInterface
     {
         if (!isset($data['type'])) {
             throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");
         }
-        if ($data['type'] === FlexibleContent::TYPE) {
-            if (!isset($data['components'])) {
-                throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
-            }
-            $contentField = new FlexibleContentField($name, $data['components']);
-        } else {
-            $contentField = new ContentField($name, $data['type']);
+        if (!$this->validContentFields($data['type'])) {
+            throw new ConfigParsingException(sprintf("Invalid content field type '%s'", $data['type']));
+        }
 
-            unset($data['type']);
-            if (is_array($data)) {
-                foreach ($data as $name => $value) {
-                    $contentField->addOption($name, $value);
+        switch ($data['type']) {
+            case FlexibleContent::TYPE:
+                if (!isset($data['components'])) {
+                    throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
                 }
-            }
+                $contentField = new FlexibleField($name, $data['components']);
+                break;
+
+            case ArrayContent::TYPE:
+                if (!isset($data['content_fields'])) {
+                    throw new ConfigParsingException("You must set a 'content_fields' array for an array content field");
+                }
+                $contentField = new ArrayField($name, $data['content_fields']);
+                break;
+
+            default:
+                $contentField = new Field($name, $data['type']);
+
+                unset($data['type']);
+                if (is_array($data)) {
+                    foreach ($data as $name => $value) {
+                        $contentField->addOption($name, $value);
+                    }
+                }
         }
 
         return $contentField;
+    }
+
+    /**
+     * Is the passed content field name a valid content field type?
+     *
+     * @param string $field Content field type
+     * @return bool
+     */
+    public function validContentFields(string $field)
+    {
+        return in_array($field, self::$validContentFields);
     }
 
     /**
@@ -101,7 +164,7 @@ class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
 
     /**
      * @param string $name
-     * @return ContentModel Fluent interface
+     * @return ContentType Fluent interface
      */
     public function setName(string $name): ContentType
     {
@@ -119,7 +182,7 @@ class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
 
     /**
      * @param string $apiEndpoint
-     * @return ContentModel Fluent interface
+     * @return ContentType Fluent interface
      */
     public function setApiEndpoint(string $apiEndpoint): ContentType
     {
@@ -130,96 +193,33 @@ class ContentType implements \ArrayAccess, \SeekableIterator, \Countable
     /**
      * Add an item to the collection
      *
-     * @param ContentFieldInterface $item
-     * @return ContentModel Fluent interface
+     * @param ContentModelFieldInterface $item
+     * @return ContentType Fluent interface
      */
-    public function addItem(ContentFieldInterface $item): ContentType
+    public function addItem(FieldInterface $item): ContentType
     {
-        $this->contentFields[$item->getName()] = $item;
+        $this->offsetSet($item->getName(), $item);
         return $this;
     }
 
     /**
-     * @return ContentFieldInterface
-     */
-    public function current() : ContentFieldInterface
-    {
-        return $this->contentFields[$this->key];
-    }
-
-    public function next()
-    {
-        $keys = $this->getKeys();
-        foreach ($keys as $num => $key) {
-            if ($this->key === $key) {
-                $this->key = $keys[$num + 1];
-            }
-        }
-    }
-
-    public function key()
-    {
-        return $this->key;
-    }
-
-    public function valid()
-    {
-        return isset($this->array[$this->key]);
-    }
-
-    public function rewind()
-    {
-        $this->key = $this->getKeys()[0];
-    }
-
-    /**
-     * Return current collection array keys
+     * Return current item
      *
-     * @return array
+     * @return FieldInterface
      */
-    public function getKeys() : array
+    public function current(): FieldInterface
     {
-        return array_keys($this->contentFields);
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->contentFields[$offset]);
+        return parent::current();
     }
 
     /**
-     * @param mixed $offset
-     * @return ContentFieldInterface
+     * Return item by key
+     *
+     * @param string $index
+     * @return FieldInterface
      */
-    public function offsetGet($offset) : ContentFieldInterface
+    public function offsetGet($index): FieldInterface
     {
-        return isset($this->contentFields[$offset]) ? $this->contentFields[$offset] : null;
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->contentFields[] = $value;
-        } else {
-            $this->contentFields[$offset] = $value;
-        }
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->contentFields[$offset]);
-    }
-
-    public function count() : int
-    {
-        return count($this->contentFields);
-    }
-
-    public function seek($position)
-    {
-        if (!isset($this->contentFields[$position])) {
-            throw new \OutOfBoundsException(sprintf('Invalid content field key: %s', $position));
-        }
-        $this->key = $position;
+        return parent::offsetGet($index);
     }
 }

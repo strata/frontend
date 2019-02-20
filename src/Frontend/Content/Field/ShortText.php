@@ -20,7 +20,7 @@ class ShortText extends ContentField
      * @param string $name
      * @param string $content
      *
-     * @throws \Studio24\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $content)
     {
@@ -36,7 +36,7 @@ class ShortText extends ContentField
      * @param string $content
      * @return PlainText
      */
-    public function setContent(string $content) : PlainText
+    public function setContent(string $content) : ShortText
     {
         $content = preg_replace('/\R/', '', $content);
         $this->content = $content;
