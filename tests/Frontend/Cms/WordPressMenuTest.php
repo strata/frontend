@@ -37,7 +37,34 @@ class WordPressMenuTest extends TestCase
         // Test it!
         $menu = $wordpress->getMenu(2);
 
-        // @todo tests
+        // @todo tests, example code below (please edit to fit your code!)
+        $x = 0;
+        foreach ($menu as $item) {
+            switch ($x) {
+                case 0:
+                    $this->assertEquals('Explore', $item->getTitle());
+                    $this->assertEquals("http://localhost/explore/", $item->getUrl());
+
+                    $y = 0;
+                    foreach ($item->getChildren() as $childItem) {
+                        switch ($y) {
+                            case 1:
+                                $this->assertEquals("Countries", $childItem->getTitle());
+                                $this->assertEquals("http://localhost/explore/countries/", $childItem->getUrl());
+                                break;
+                            case 2:
+                                $this->assertEquals("Species", $childItem->getTitle());C
+                                break;
+                        }
+                        $y++;
+                    }
+                    break;
+                case 1:
+                    $this->assertEquals("Our Work", $item->getTitle());
+                    break;
+            }
+            $x++;
+        }
 
         // Test it!
         $menu = $wordpress->getMenu(8);
