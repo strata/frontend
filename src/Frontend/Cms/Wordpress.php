@@ -180,7 +180,24 @@ class Wordpress extends ContentRepository
 
         return $page;
     }
-    
+
+
+    public function getMediaField(int $id): AssetField
+    {
+        // @todo get data from API
+
+        // @todo parse data from array into object
+        switch (AssetField::guesser($data['mime_type'])) {
+            case 'Audio':
+                break;
+            case 'Document':
+                break;
+            case 'Image':
+                break;
+            case 'Video':
+                break;
+        }
+    }
 
     /**
      * Generate page object from API data
