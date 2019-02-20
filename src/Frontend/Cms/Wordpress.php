@@ -180,8 +180,8 @@ class Wordpress extends ContentRepository
 
         return $page;
     }
-
     
+
     /**
      * Generate page object from API data
      *

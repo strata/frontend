@@ -134,7 +134,5 @@ class WordPressTest extends TestCase
                     break;
             }
         }
-
-
     }
 }
