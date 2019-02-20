@@ -420,4 +420,28 @@ class Wordpress extends ContentRepository
         }
         return $user;
     }
+
+
+    public function getMenu(int $id)
+    {
+        $cacheKey = sprintf('menu.%s', $id);
+        if ($this->hasCache() && $this->cache->has($cacheKey)) {
+            $page = $this->cache->get($cacheKey);
+            return $page;
+        }
+
+        // Get menu data
+        $data = $this->api->getMenu($id);
+
+        // @todo Create menu object and return this
+        //$menu =
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $page);
+        }
+
+        return $page;
+    }
+
+
 }
