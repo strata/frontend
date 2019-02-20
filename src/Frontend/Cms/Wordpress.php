@@ -6,6 +6,7 @@ namespace Studio24\Frontend\Cms;
 use GuzzleHttp\Client;
 use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
+use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
 use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
@@ -180,6 +181,7 @@ class Wordpress extends ContentRepository
         return $page;
     }
 
+    
     /**
      * Generate page object from API data
      *
@@ -348,7 +350,7 @@ class Wordpress extends ContentRepository
                 $array = new ArrayContent($name);
 
                 if (!is_array($value)) {
-                    continue;
+                    break;
                 }
 
                 // Loop through data array
@@ -382,7 +384,7 @@ class Wordpress extends ContentRepository
              * @todo Build & test Flexible content field
             case 'flexible':
             if (!is_array($value)) {
-            continue;
+            break;
             }
 
             $flexible = new FlexibleContent($name);

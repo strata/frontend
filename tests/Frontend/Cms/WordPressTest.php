@@ -119,5 +119,22 @@ class WordPressTest extends TestCase
                     break;
             }
         }
+
+        // Test documents
+        // @todo Expand documents into actual documents
+        // @see /Users/sjones/Sites/s24/frontend/src/Frontend/Cms/Wordpress.php getMediaField()
+        // @see
+        foreach ($page->getContent()->get('project_documents') as $key => $value) {
+            switch ($key) {
+                case 0:
+                    $this->assertEquals(80, $value->get('project_documents_project_documents_document'));
+                    break;
+                case 1:
+                    $this->assertEquals(81, $value->get('project_documents_project_documents_document'));
+                    break;
+            }
+        }
+
+
     }
 }

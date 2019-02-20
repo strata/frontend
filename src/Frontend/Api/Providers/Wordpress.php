@@ -131,4 +131,12 @@ class Wordpress extends RestApiAbstract
 
         return $data;
     }
+
+
+    public function getMedia(int $id): array
+    {
+        // @todo 
+    }
+
+
 }
