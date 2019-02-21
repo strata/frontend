@@ -381,7 +381,7 @@ class Wordpress extends ContentRepository
                         $childValue = $row[$childField->getName()];
                         $contentField = $this->getContentField($childField, $childValue);
                         if ($contentField !== null) {
-                            $item->addItem($this->getContentField($childField, $childValue));
+                            $item->addItem($contentField);
                         }
                     }
                     $array->addItem($item);
