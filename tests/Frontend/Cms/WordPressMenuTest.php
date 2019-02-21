@@ -9,10 +9,22 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Studio24\Frontend\Cms\Wordpress;
+use Studio24\Frontend\Content\Menus\Menu;
+use Studio24\Frontend\Content\Menus\MenuItem;
+use Studio24\Frontend\Content\Menus\MenuItemCollection;
 
 class WordPressMenuTest extends TestCase
 {
-    public function testMenu()
+    /** @var Wordpress $wordpress */
+
+    /** @var Menu $menu2 */
+    private $menu2;
+    /** @var Menu $menu8 */
+    private $menu8;
+    /** @var Menu $menu10 */
+    private $menu10;
+
+    public function setUp() : void
     {
         // Create a mock and queue responses
         $mock = new MockHandler([
@@ -26,6 +38,11 @@ class WordPressMenuTest extends TestCase
                 [],
                 file_get_contents(__DIR__ . '/../responses/menu/menu.8.json')
             ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/menu/menu.10.json')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -33,14 +50,26 @@ class WordPressMenuTest extends TestCase
 
         $wordpress = new Wordpress('something');
         $wordpress->setClient($client);
+        $this->menu2 = $wordpress->getMenu(2);
+        $this->menu8 = $wordpress->getMenu(8);
+        $this->menu10 = $wordpress->getMenu(10);
+    }
 
-        // Test it!
-        $menu = $wordpress->getMenu(2);
-        $this->assertSame(2, $menu->getId());
+    public function testMenu()
+    {
+        $this->assertSame(8, $this->menu8->getId());
 
-        // @todo tests, example code below (please edit to fit your code!)
+        $this->assertInstanceOf(Menu::class, $this->menu8);
+        $this->assertInstanceOf(MenuItemCollection::class, $this->menu8->getChildren());
+        $this->assertInstanceOf(MenuItem::class, $this->menu8->getChildren()->current());
+    }
+
+    public function testMenuDetailChildren()
+    {
+        $this->assertSame(2, $this->menu2->getId());
+
         $x = 0;
-        $children = $menu->getChildren();
+        $children = $this->menu2->getChildren();
         while ($children->valid()) {
             $item = $children->current();
             switch ($x) {
@@ -72,11 +101,21 @@ class WordPressMenuTest extends TestCase
             $x++;
             $children->next();
         }
+    }
 
-        // Test it!
-//        $menu = $wordpress->getMenu(8);
+    public function testMenuCountChildren()
+    {
+        $this->assertSame(8, $this->menu8->getId());
 
-        // @todo tests
+        $this->assertSame(5, $this->menu8->getChildren()->count());
+        $this->assertSame(1, $this->menu8->getChildren()->current()->getChildren()->count());
+        $this->assertSame(15, $this->menu10->getChildren()->count());
+        $this->assertSame(5, $this->menu10->getChildren()->current()->getChildren()->count());
+    }
+
+    public function testMenuLargeNestedMenu()
+    {
+
     }
 
 }

@@ -6,11 +6,9 @@
  * Time: 09:19
  */
 
-namespace Studio24\Frontend\Content;
+namespace Studio24\Frontend\Content\Menus;
 
-use Studio24\Frontend\Content\Menus\MenuInterface;
-
-class MenuItem implements MenuInterface
+class MenuItem
 {
     /**
      * @var int $id

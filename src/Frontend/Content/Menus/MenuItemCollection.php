@@ -6,7 +6,7 @@
  * Time: 09:54
  */
 
-namespace Studio24\Frontend\Content;
+namespace Studio24\Frontend\Content\Menus;
 
 
 class MenuItemCollection implements \SeekableIterator, \Countable

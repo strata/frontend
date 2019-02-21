@@ -12,11 +12,8 @@ use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
-use Studio24\Frontend\Content\Field\Video;
-use Studio24\Frontend\Content\MenuItem;
-use Studio24\Frontend\Content\MenuItemCollection;
+use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
-use Studio24\Frontend\Content\Menus\MenuInterface;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
@@ -438,12 +435,11 @@ class Wordpress extends ContentRepository
         // Get menu data
         $data = $this->api->getMenu($id);
 
-        // @todo Create menu object and return done
-        $menu = $this->fillMenu($data);
+        $menu = $this->createMenu($data);
         return $menu;
     }
 
-    private function fillMenu($data): MenuInterface
+    private function createMenu($data): Menu
     {
         $menu = new Menu();
 
@@ -452,17 +448,17 @@ class Wordpress extends ContentRepository
         $menu->setSlug($data['slug']);
         $menu->setDescription($data['description']);
 
-        $menu = $this->generateMenuItem($data['items'], $menu);
+        $menu = $this->generateMenuItems($data['items'], $menu);
 
         return $menu;
     }
 
     /**
      * @param $array
-     * @param MenuInterface $menu
-     * @return MenuInterface
+     * @param Menu $menu
+     * @return Menu
      */
-    private function generateMenuItem($array, $menu)
+    private function generateMenuItems($array, $menu)
     {
         $menu = clone $menu;
         foreach ($array as $element) {
@@ -472,11 +468,34 @@ class Wordpress extends ContentRepository
             $menuItem->setLabel($element['title']);
 
             if (isset($element['children'])) {
-                $menu->getChildren()->addItem($this->generateMenuItem($element['children'], $menuItem));
+                $menu->getChildren()->addItem($this->generateMenuItemChildren($element['children'], $menuItem));
             } else {
                 $menu->getChildren()->addItem($menuItem);
             }
         }
         return $menu;
+    }
+    // TODO refactor these duplicate functions
+    /**
+     * @param $array
+     * @param MenuItem $menuItemParent
+     * @return MenuItem
+     */
+    private function generateMenuItemChildren($array, $menuItemParent)
+    {
+        $menuItemParent = clone $menuItemParent;
+        foreach ($array as $element) {
+            $menuItem = new MenuItem();
+            $menuItem->setId($element['id']);
+            $menuItem->setUrl($element['url']);
+            $menuItem->setLabel($element['title']);
+
+            if (isset($element['children'])) {
+                $menuItemParent->getChildren()->addItem($this->generateMenuItemChildren($element['children'], $menuItem));
+            } else {
+                $menuItemParent->getChildren()->addItem($menuItem);
+            }
+        }
+        return $menuItemParent;
     }
 }
