@@ -46,7 +46,7 @@ class MenuItemCollection implements \SeekableIterator, \Countable
 
     public function valid()
     {
-        return isset($this->array[$this->position]);
+        return isset($this->collection[$this->position]);
     }
 
     public function rewind()
