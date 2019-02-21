@@ -53,7 +53,7 @@ class WordPressMenuTest extends TestCase
                                 $this->assertEquals("http://localhost/explore/countries/", $childItem->getUrl());
                                 break;
                             case 2:
-                                $this->assertEquals("Species", $childItem->getTitle());C
+                                $this->assertEquals("Species", $childItem->getTitle());
                                 break;
                         }
                         $y++;
