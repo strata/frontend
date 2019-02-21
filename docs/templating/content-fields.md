@@ -293,9 +293,19 @@ Return the seconds with leading zeros (e.g. 05 for 5 secs, 15 for 15 secs)
 page.content.field.seconds
 ```
 
-### TODO:  Number / Integer / Decimal
+### Number
 
-An integer or decimal number. 
+An integer number.
+
+```
+{{ page.content.field }}
+```
+
+If you want to return an integer rather than a string use:
+
+```
+{{ page.content.field.value }}
+```
 
 ### Boolean
 
