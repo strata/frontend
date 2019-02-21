@@ -11,7 +11,7 @@ namespace Studio24\Frontend\Content\Menus;
 
 use Studio24\Frontend\Content\MenuItemCollection;
 
-class Menu
+class Menu implements MenuInterface
 {
     /**
      * @var int $id

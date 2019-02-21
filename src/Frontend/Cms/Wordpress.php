@@ -16,6 +16,7 @@ use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\MenuItem;
 use Studio24\Frontend\Content\MenuItemCollection;
 use Studio24\Frontend\Content\Menus\Menu;
+use Studio24\Frontend\Content\Menus\MenuInterface;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
@@ -437,18 +438,12 @@ class Wordpress extends ContentRepository
         // Get menu data
         $data = $this->api->getMenu($id);
 
-        // @todo Create menu object and return this
+        // @todo Create menu object and return done
         $menu = $this->fillMenu($data);
         return $menu;
-
-//        if ($this->hasCache()) {
-//            $this->cache->set($cacheKey, $page);
-//        }
-
-//        return $page;
     }
 
-    private function fillMenu($data): Menu
+    private function fillMenu($data): MenuInterface
     {
         $menu = new Menu();
 
@@ -457,32 +452,31 @@ class Wordpress extends ContentRepository
         $menu->setSlug($data['slug']);
         $menu->setDescription($data['description']);
 
-        // PLAIN JSON DATA
-        // TODO make recursive function
-        foreach ($data['items'] as $item) {
-            // FIRST MENU-ITEM
-
-            $menuitemParent = new MenuItem();
-            $menuitemParent->setId($item['id']);
-            $menuitemParent->setUrl($item['url']);
-            $menuitemParent->setLabel($item['title']);
-
-            // IF MENU-ITEM HAS CHILDREN CREATE AND ADD
-            if (isset($item['children'])) {
-                foreach ($item['children'] as $child) {
-                    // 2ND LAYER
-                    $menu_item = new MenuItem();
-                    $menu_item->setId($child['id']);
-                    $menu_item->setUrl($child['url']);
-                    $menu_item->setLabel($child['title']);
-                    $menuitemParent->getChildren()->addItem($menu_item);
-                }
-            }
-
-            $menu->getChildren()->addItem($menuitemParent);
-        }
+        $menu = $this->generateMenuItem($data['items'], $menu);
 
         return $menu;
     }
 
+    /**
+     * @param $array
+     * @param MenuInterface $menu
+     * @return MenuInterface
+     */
+    private function generateMenuItem($array, $menu)
+    {
+        $menu = clone $menu;
+        foreach ($array as $element) {
+            $menuItem = new MenuItem();
+            $menuItem->setId($element['id']);
+            $menuItem->setUrl($element['url']);
+            $menuItem->setLabel($element['title']);
+
+            if (isset($element['children'])) {
+                $menu->getChildren()->addItem($this->generateMenuItem($element['children'], $menuItem));
+            } else {
+                $menu->getChildren()->addItem($menuItem);
+            }
+        }
+        return $menu;
+    }
 }
