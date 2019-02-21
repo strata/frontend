@@ -355,10 +355,21 @@ class Wordpress extends ContentRepository
             case 'document':
                 // Read document data from Media API
                 if (is_numeric($value)) {
-                    // @todo
+                    $media = $this->api->getMedia($value);
                 }
 
-                return null;
+                if (empty($media)) {
+                    return null;
+                }
+
+                $document = new Document(
+                    $name,
+                    $media['source_url'],
+                    $media['title']['rendered'],
+                    $media['alt_text']
+                );
+
+                return $document;
                 break;
 
             // @todo document, video, audio
