@@ -11,6 +11,7 @@ use Studio24\Frontend\Content\Field\DateTime;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\FlexibleContent;
 use Studio24\Frontend\Content\Field\Image;
+use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\PlainText;
 use Studio24\Frontend\Content\Field\Relation;
 use Studio24\Frontend\Content\Field\RichText;
@@ -45,6 +46,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         Document::TYPE,
         FlexibleContent::TYPE,
         Image::TYPE,
+        Number::TYPE,
         PlainText::TYPE,
         Relation::TYPE,
         RichText::TYPE,
@@ -78,6 +80,8 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     /**
      * Parse the content fields YAML config file for this content type
      *
+     * @todo Add more info on where the error is in the YAML file
+     *
      * @param string $file
      * @return ContentType
      * @throws ConfigParsingException
@@ -91,6 +95,9 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         }
 
         foreach ($data as $name => $values) {
+            if (!is_array($values)) {
+                throw new ConfigParsingException(sprintf("Content field definition must contain an array of values, including the 'type' property, %s found", gettype($values)));
+            }
             $this->addItem($this->parseContentFieldArray($name, $values));
         }
 
