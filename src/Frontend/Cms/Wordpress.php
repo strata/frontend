@@ -13,6 +13,9 @@ use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\Video;
+use Studio24\Frontend\Content\MenuItem;
+use Studio24\Frontend\Content\MenuItemCollection;
+use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
@@ -118,7 +121,8 @@ class Wordpress extends ContentRepository
     public function listPages(
         int $page = 1,
         array $options = []
-    ): PageCollection {
+    ): PageCollection
+    {
 
         // @todo Need to add unique identifier for this data based on options array
         $cacheKey = sprintf('%s.list.%s', $this->getContentType()->getName(), $page);
@@ -180,7 +184,7 @@ class Wordpress extends ContentRepository
 
         return $page;
     }
-    
+
 
     /**
      * Generate page object from API data
@@ -382,21 +386,21 @@ class Wordpress extends ContentRepository
 
             /**
              * @todo Build & test Flexible content field
-            case 'flexible':
-            if (!is_array($value)) {
-            break;
-            }
-
-            $flexible = new FlexibleContent($name);
-
-            foreach ($contentField as $componentType) {
-            $component = new Component($componentType->getName());
-            $this->setCustomContentFields($componentType, $component, $value);
-            $flexible->addComponent($component);
-            }
-
-            $content->addContent($flexible);
-            break;
+             * case 'flexible':
+             * if (!is_array($value)) {
+             * break;
+             * }
+             *
+             * $flexible = new FlexibleContent($name);
+             *
+             * foreach ($contentField as $componentType) {
+             * $component = new Component($componentType->getName());
+             * $this->setCustomContentFields($componentType, $component, $value);
+             * $flexible->addComponent($component);
+             * }
+             *
+             * $content->addContent($flexible);
+             * break;
              */
         }
 
@@ -414,7 +418,7 @@ class Wordpress extends ContentRepository
     {
         $user = new User();
         $user->setId($data['id'])
-          ->setName($data['name']);
+            ->setName($data['name']);
         if (!empty($data['description'])) {
             $user->setBio($data['description']);
         }
@@ -434,14 +438,51 @@ class Wordpress extends ContentRepository
         $data = $this->api->getMenu($id);
 
         // @todo Create menu object and return this
-        //$menu =
+        $menu = $this->fillMenu($data);
+        return $menu;
 
-        if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $page);
-        }
+//        if ($this->hasCache()) {
+//            $this->cache->set($cacheKey, $page);
+//        }
 
-        return $page;
+//        return $page;
     }
 
+    private function fillMenu($data): Menu
+    {
+        $menu = new Menu();
+
+        $menu->setId($data['ID']);
+        $menu->setName($data['name']);
+        $menu->setSlug($data['slug']);
+        $menu->setDescription($data['description']);
+
+        // PLAIN JSON DATA
+        // TODO make recursive function
+        foreach ($data['items'] as $item) {
+            // FIRST MENU-ITEM
+
+            $menuitemParent = new MenuItem();
+            $menuitemParent->setId($item['id']);
+            $menuitemParent->setUrl($item['url']);
+            $menuitemParent->setLabel($item['title']);
+
+            // IF MENU-ITEM HAS CHILDREN CREATE AND ADD
+            if (isset($item['children'])) {
+                foreach ($item['children'] as $child) {
+                    // 2ND LAYER
+                    $menu_item = new MenuItem();
+                    $menu_item->setId($child['id']);
+                    $menu_item->setUrl($child['url']);
+                    $menu_item->setLabel($child['title']);
+                    $menuitemParent->getChildren()->addItem($menu_item);
+                }
+            }
+
+            $menu->getChildren()->addItem($menuitemParent);
+        }
+
+        return $menu;
+    }
 
 }

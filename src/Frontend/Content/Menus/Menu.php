@@ -1,34 +1,41 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: BenDB
+ * User: Brian
  * Date: 21/02/2019
- * Time: 09:19
+ * Time: 9:16
  */
 
-namespace Studio24\Frontend\Content;
+namespace Studio24\Frontend\Content\Menus;
 
-class MenuItem
+
+use Studio24\Frontend\Content\MenuItemCollection;
+
+class Menu
 {
     /**
      * @var int $id
      */
     protected $id;
     /**
-     * @var string $label
+     * @var string $name
      */
-    protected $label;
+    protected $name;
     /**
-     * @var string $url
+     * @var string $slug
      */
-    protected $url;
+    protected $slug;
+    /**
+     * @var string $description
+     */
+    protected $description;
     /**
      * @var MenuItemCollection $children
      */
     protected $children;
 
     /**
-     * MenuItem constructor.
+     * Menu constructor.
      */
     public function __construct()
     {
@@ -55,33 +62,49 @@ class MenuItem
     /**
      * @return string
      */
-    public function getLabel(): string
+    public function getName(): string
     {
-        return $this->label;
+        return $this->name;
     }
 
     /**
-     * @param string $label
+     * @param string $name
      */
-    public function setLabel(string $label): void
+    public function setName(string $name): void
     {
-        $this->label = $label;
+        $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getUrl(): string
+    public function getSlug(): string
     {
-        return $this->url;
+        return $this->slug;
     }
 
     /**
-     * @param string $url
+     * @param string $slug
      */
-    public function setUrl(string $url): void
+    public function setSlug(string $slug): void
     {
-        $this->url = $url;
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     /**
