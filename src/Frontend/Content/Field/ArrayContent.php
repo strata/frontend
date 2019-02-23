@@ -18,7 +18,7 @@ namespace Studio24\Frontend\Content\Field;
  *
  * @package Studio24\Frontend\Content\Field
  */
-class ArrayContent extends ContentField
+class ArrayContent extends ContentField implements \SeekableIterator, \Countable
 {
     const TYPE = 'array';
 
@@ -88,7 +88,7 @@ class ArrayContent extends ContentField
      * @param ContentFieldCollection $item Collection of content fields
      * @return ArrayContent Fluent interface
      */
-    public function addItem(ContentFieldCollection $item) : ArrayContent
+    public function addItem(ContentFieldCollection $item): ArrayContent
     {
         $this->collection[] = $item;
         return $this;
@@ -97,7 +97,7 @@ class ArrayContent extends ContentField
     /**
      * @return ContentFieldCollection
      */
-    public function current() : ContentFieldCollection
+    public function current(): ContentFieldCollection
     {
         return $this->collection[$this->position];
     }
@@ -114,7 +114,7 @@ class ArrayContent extends ContentField
 
     public function valid()
     {
-        return isset($this->array[$this->position]);
+        return isset($this->collection[$this->position]);
     }
 
     public function rewind()

@@ -3,29 +3,29 @@
     "_links": {
         "about": [
             {
-                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/types/attachment"
+                "href": "http://localhost/wp-json/wp/v2/types/attachment"
             }
         ],
         "author": [
             {
                 "embeddable": true,
-                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/users/1"
+                "href": "http://localhost/wp-json/wp/v2/users/1"
             }
         ],
         "collection": [
             {
-                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/media"
+                "href": "http://localhost/wp-json/wp/v2/media"
             }
         ],
         "replies": [
             {
                 "embeddable": true,
-                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/comments?post=80"
+                "href": "http://localhost/wp-json/wp/v2/comments?post=80"
             }
         ],
         "self": [
             {
-                "href": "http://ccs-agreements.cabinetoffice.localhost/wp-json/wp/v2/media/80"
+                "href": "http://localhost/wp-json/wp/v2/media/80"
             }
         ]
     },
@@ -39,13 +39,13 @@
     "date": "2019-02-15T15:08:54",
     "date_gmt": "2019-02-15T15:08:54",
     "description": {
-        "rendered": "<p class=\"attachment\"><a href='http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_2.pdf'>test_2</a></p>\n"
+        "rendered": "<p class=\"attachment\"><a href='http://localhost/wp-content/uploads/2019/02/test_2.pdf'>test_2</a></p>\n"
     },
     "guid": {
-        "rendered": "http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_2.pdf"
+        "rendered": "http://localhost/wp-content/uploads/2019/02/test_2.pdf"
     },
     "id": 80,
-    "link": "http://ccs-agreements.cabinetoffice.localhost/frameworks/lorem-ipsum-dolor-sit-school-construction-framework/test_2/",
+    "link": "http://localhost/frameworks/lorem-ipsum-dolor-sit-school-construction-framework/test_2/",
     "media_details": {},
     "media_type": "file",
     "meta": [],
@@ -55,7 +55,7 @@
     "ping_status": "closed",
     "post": 79,
     "slug": "test_2",
-    "source_url": "http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_2.pdf",
+    "source_url": "http://localhost/wp-content/uploads/2019/02/test_2.pdf",
     "status": "inherit",
     "template": "",
     "title": {
