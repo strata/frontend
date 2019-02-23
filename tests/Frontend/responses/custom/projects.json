@@ -1,0 +1,47 @@
+{
+    "meta": {
+        "total_results": 148,
+        "limit": 10,
+        "page": 1
+    },
+    "results": [
+        {
+            "id": 1,
+            "wordpress_id": "1996",
+            "title": "Professional Economist Apprenticeship",
+            "summary": null,
+            "description": "<p>Lorem ipsum text here</p>",
+            "open_date": "2018-07-11",
+            "close_date": "2019-02-01",
+            "updates": [
+                {
+                    "update_title": "An update 1A",
+                    "update_description": "Some more text here and here"
+                },
+                {
+                    "update_title": "An update 2A",
+                    "update_description": "Some more text here and there"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "wordpress_id": "1997",
+            "title": "Smart Energy Cities",
+            "summary": null,
+            "description": "<p>Lorem ipsum text here 2</p>",
+            "open_date": "2019-01-11",
+            "close_date": "2019-06-01",
+            "updates": [
+                {
+                    "update_title": "An update 1B",
+                    "update_description": "Some more text here and here"
+                },
+                {
+                    "update_title": "An update 2B",
+                    "update_description": "Some more text here and there"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+content_types:
+  projects:
+    api_endpoint: projects
+    content_fields: projects.yaml
+

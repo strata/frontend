@@ -32,11 +32,15 @@ class ContentFieldCollection extends \ArrayIterator
      * Get content by name
      *
      * @param $name
-     * @return ContentFieldInterface
+     * @return ContentFieldInterface or null on failure
      */
-    public function get($name): ContentFieldInterface
+    public function get($name): ?ContentFieldInterface
     {
-        return $this->offsetGet($name);
+        if ($this->offsetExists($name)) {
+            return $this->offsetGet($name);
+        } else {
+            return null;
+        }
     }
 
     /**
