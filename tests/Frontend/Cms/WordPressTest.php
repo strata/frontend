@@ -136,8 +136,6 @@ class WordPressTest extends TestCase
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\ArrayContent', $docs);
         $this->assertEquals(2, count($docs));
 
-        // @todo Expand documents into actual documents
-        // @see /Users/sjones/Sites/s24/frontend/src/Frontend/Cms/Wordpress.php getMediaField()
         foreach ($docs as $key => $item) {
             $doc = $item->get('project_documents_project_documents_document');
 
