@@ -52,19 +52,19 @@ class CustomApiTest extends TestCase
                     $this->assertNull($item->getContent()->get('summary'));
 
                     $updates =  $item->getContent()->get('updates');
+                    $y=0;
                     foreach ($updates as $update) {
-                        $y=0;
                         switch ($y) {
                             case 0:
-                                $this->assertEquals( "An update 1B", $update->get('update_title'));
-                                $this->assertEquals( "Some more text here and here", $update->get('update_description'));
+                                $this->assertEquals("An update 1A", $update->get('update_title')->__toString());
+                                $this->assertEquals("Some more text here and here", $update->get('update_description')->__toString());
                                 break;
                             case 1:
-                                $this->assertEquals(  "An update 2B", $update->get('update_title'));
-                                $this->assertEquals( "Some more text here and there", $update->get('update_description'));
+                                $this->assertEquals("An update 2A", $update->get('update_title')->__toString());
+                                $this->assertEquals("Some more text here and there", $update->get('update_description')->__toString());
                                 break;
-                            $y++;
                         }
+                        $y++;
                     }
                     break;
                 case 1:

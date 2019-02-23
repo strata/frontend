@@ -120,6 +120,4 @@ class RestApi extends RestApiAbstract
 
         return $pages;
     }
-
-
 }

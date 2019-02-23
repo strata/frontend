@@ -181,7 +181,62 @@ class Wordpress extends ContentRepository
 
         return $page;
     }
-    
+
+    /**
+     * Return media content field from API
+     *
+     * @param string $name Content field name
+     * @param int $id ID of media item to retrieve
+     * @return AssetField|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getMediaField(string $name, int $id): ?AssetField
+    {
+        $cacheKey = sprintf('media.%s', $id);
+        if ($this->hasCache() && $this->cache->has($cacheKey)) {
+            $media = $this->cache->get($cacheKey);
+            return $media;
+        }
+
+        // Get data from API
+        $data = $this->api->getMedia($id);
+        if (empty($data)) {
+            return null;
+        }
+
+        // Parse data from array into object
+        switch (AssetField::guesser($data['mime_type'])) {
+            case 'Audio':
+                // @todo
+                break;
+
+            case 'Document':
+                $media = new Document(
+                    $name,
+                    $data['source_url'],
+                    $data['title']['rendered'],
+                    $data['alt_text']
+                );
+                break;
+
+            case 'Image':
+                // @todo
+                break;
+
+            case 'Video':
+                // @todo
+                break;
+        }
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $media);
+        }
+
+        return $media;
+    }
 
     /**
      * Generate page object from API data
@@ -342,14 +397,10 @@ class Wordpress extends ContentRepository
 
             case 'document':
                 // Read document data from Media API
-                if (is_numeric($value)) {
-                    // @todo
-                }
-
-                return null;
+                return $this->getMediaField($name, $value);
                 break;
 
-            // @todo document, video, audio
+            // @todo video, audio
 
             case 'array':
                 $array = new ArrayContent($name);
@@ -369,7 +420,7 @@ class Wordpress extends ContentRepository
                         $childValue = $row[$childField->getName()];
                         $contentField = $this->getContentField($childField, $childValue);
                         if ($contentField !== null) {
-                            $item->addItem($this->getContentField($childField, $childValue));
+                            $item->addItem($contentField);
                         }
                     }
                     $array->addItem($item);
