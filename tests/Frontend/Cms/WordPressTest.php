@@ -132,26 +132,27 @@ class WordPressTest extends TestCase
         }
 
         // Test documents
+        $docs = $page->getContent()->get('project_documents');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\ArrayContent', $docs);
+        $this->assertEquals(2, count($docs));
+
         // @todo Expand documents into actual documents
         // @see /Users/sjones/Sites/s24/frontend/src/Frontend/Cms/Wordpress.php getMediaField()
-        // @see
-//        foreach ($page->getContent()->get('project_documents') as $key => $value) {
-//            switch ($key) {
-//                case 0:
-//                    $this->assertEquals("project_documents_project_documents_document", $value->getName());
-//                    $this->assertEquals("http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_2.pdf", $value->getUrl());
-//                    $this->assertEquals("test_2", $value->getTitle());
-//                    $this->assertEquals("", $value->getDescription());
-//                    break;
-//                case 1:
-//                    $this->assertEquals("project_documents_project_documents_document", $value->getName());
-//                    $this->assertEquals("http://ccs-agreements.cabinetoffice.localhost/wp-content/uploads/2019/02/test_4.pdf", $value->getUrl());
-//                    $this->assertEquals("test_4", $value->getTitle());
-//                    $this->assertEquals("", $value->getDescription());
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
+        foreach ($docs as $key => $item) {
+            $doc = $item->get('project_documents_project_documents_document');
+
+            switch ($key) {
+                case 0:
+                    $this->assertEquals("http://localhost/wp-content/uploads/2019/02/test_2.pdf", $doc->getUrl());
+                    $this->assertEquals("test_2", $doc->getTitle());
+                    $this->assertEmpty($doc->getDescription());
+                    break;
+                case 1:
+                    $this->assertEquals("http://localhost/wp-content/uploads/2019/02/test_4.pdf", $doc->getUrl());
+                    $this->assertEquals("test_4", $doc->getTitle());
+                    $this->assertEmpty($doc->getDescription());
+                    break;
+            }
+        }
     }
 }
