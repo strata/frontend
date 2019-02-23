@@ -39,9 +39,9 @@ abstract class ContentRepository
      * Set the content model
      *
      * @param ContentModel $contentModel
-     * @return Wordpress Fluent interface
+     * @return ContentRepository Fluent interface
      */
-    public function setContentModel(ContentModel $contentModel): Wordpress
+    public function setContentModel(ContentModel $contentModel): ContentRepository
     {
         $this->contentModel = $contentModel;
 
@@ -62,9 +62,9 @@ abstract class ContentRepository
      * Set the requested content type
      *
      * @param string $type
-     * @return Wordpress
+     * @return ContentRepository
      */
-    public function setContentType(string $type): Wordpress
+    public function setContentType(string $type): ContentRepository
     {
         if ($this->contentTypeExists($type)) {
             $this->contentType = $this->getContentModel()->getContentType($type);

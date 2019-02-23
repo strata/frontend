@@ -157,9 +157,22 @@ class Wordpress extends RestApiAbstract
     }
 
 
+    /**
+     * @param int $id
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
     public function getMedia(int $id): array
     {
-        // @todo
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
+
+        $response = $this->get("media/$id");
+        $data = $this->parseJsonResponse($response);
+
+        return $data;
     }
 
 

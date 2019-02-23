@@ -60,6 +60,6 @@ class ShortText extends ContentField
      */
     public function __toString() : string
     {
-        return $this->getContent();
+        return $this->getValue();
     }
 }

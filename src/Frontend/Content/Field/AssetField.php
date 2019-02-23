@@ -13,8 +13,8 @@ use Studio24\Frontend\Exception\InvalidMimeTypeException;
 class AssetField extends ContentField
 {
     protected $url;
-    protected $title;
-    protected $description;
+    protected $title = '';
+    protected $description = '';
     protected $mimeType;
 
     /**
