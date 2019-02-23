@@ -39,7 +39,6 @@ use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 
-
 // @todo Review this for custom data.
 // 1) Use content model to define fields
 // 2) Set metadata (total results, page number)
@@ -272,5 +271,4 @@ class RestData extends ContentRepository
 
         return null;
     }
-
 }
