@@ -248,6 +248,20 @@ abstract class RestApiAbstract
     }
 
     /**
+     * Make a HEAD request to the API
+     *
+     * @param string $uri URI relative to base URI
+     * @param array $options
+     * @return ResponseInterface
+     * @throws FailedRequestException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function head($uri, array $options) : ResponseInterface
+    {
+        return $this->request('HEAD', $uri, $options);
+    }
+
+    /**
      * Parse return JSON data and return in decoded format
      *
      * @param ResponseInterface $response

@@ -150,4 +150,39 @@ class Wordpress extends RestApiAbstract
 
         return $data;
     }
+
+    public function getMediaFileSize(string $url): string
+    {
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
+
+        $response = $this->head($url, []);
+
+        $contentLength = $response->getHeader('Content-length');
+
+        $size = '0 B';
+        if ( empty($contentLength) ) {
+
+            return $size;
+        } else {
+            $contentLength = $contentLength[0];
+        }
+
+        switch ($contentLength) {
+            case $contentLength < 1024:
+                $size = $contentLength .' B';
+                break;
+            case $contentLength < 1048576:
+                $size = round($contentLength / 1024, 2) .' KB';
+                break;
+            case $contentLength < 1073741824:
+                $size = round($contentLength / 1048576, 2) . ' MB';
+                break;
+            case $contentLength < 1099511627776:
+                $size = round($contentLength / 1073741824, 2) . ' GB';
+                break;
+        }
+
+        return $size;
+    }
 }

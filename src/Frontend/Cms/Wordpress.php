@@ -214,9 +214,13 @@ class Wordpress extends ContentRepository
                 break;
 
             case 'Document':
+                //get filesize
+                $filesize = $this->api->getMediaFileSize($data['source_url']);
+
                 $media = new Document(
                     $name,
                     $data['source_url'],
+                    $filesize,
                     $data['title']['rendered'],
                     $data['alt_text']
                 );
