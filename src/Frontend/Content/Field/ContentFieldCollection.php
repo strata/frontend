@@ -55,6 +55,18 @@ class ContentFieldCollection extends \ArrayIterator
     }
 
     /**
+     * Enable direct access to content fields
+     *
+     * @param $name
+     * @param $arguments
+     * @return ContentFieldInterface|null
+     */
+    public function __call($name, $arguments)
+    {
+        return $this->get($name);
+    }
+
+    /**
      * Return string representation of content fields
      *
      * @return string
