@@ -142,7 +142,7 @@ class RestData extends ContentRepository
     /**
      * Return a single item
      *
-     * @param int $id
+     * @param mixed $id Identifier value
      * @param string $contentType
      * @return Page
      * @throws ContentFieldNotSetException
@@ -152,7 +152,7 @@ class RestData extends ContentRepository
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getOne(int $id): Page
+    public function getOne($id): Page
     {
         $cacheKey = sprintf('%s.%s', $this->getContentType()->getName(), $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
@@ -303,7 +303,6 @@ class RestData extends ContentRepository
                     return $array;
                     break;
             }
-
         } catch (\Error $e) {
             $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
             throw new ContentFieldException($message, 0, $e);
@@ -314,5 +313,4 @@ class RestData extends ContentRepository
 
         return null;
     }
-
 }

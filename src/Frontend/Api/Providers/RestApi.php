@@ -68,14 +68,14 @@ class RestApi extends RestApiAbstract
      * API endpoint format is expected to be: base_url/content_type/id
      *
      * @param string $apiEndpoint API endpoint to query for posts
-     * @param int $id Post ID
+     * @param mixed $id Post ID
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getOne($apiEndpoint, int $id) : array
+    public function getOne($apiEndpoint, $id) : array
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
@@ -85,7 +85,6 @@ class RestApi extends RestApiAbstract
 
         return $data;
     }
-
 
     /**
      * Return pagination object for current request
