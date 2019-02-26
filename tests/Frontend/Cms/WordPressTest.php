@@ -117,6 +117,7 @@ class WordPressTest extends TestCase
         $page = $pages->current();
         $this->assertEquals('79', $page->getId());
         $this->assertEquals("Lorem ipsum dolor sit school construction project", $page->getTitle());
+        $this->assertEmpty($page->getContent()->get('project_benefits'));
 
         // Test array
         foreach ($page->getContent()->get('project_updates') as $key => $value) {
