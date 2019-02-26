@@ -48,6 +48,14 @@ class ArrayField extends ContentFieldCollection implements FieldInterface, Conte
         return null;
     }
 
+    /**
+     * @param string $name
+     * @return |null
+     */
+    public function hasOption(string $name): bool
+    {
+        return false;
+    }
 
     /**
      * Is the passed content field name a valid content field type?

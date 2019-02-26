@@ -16,6 +16,7 @@ use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\Exception\ContentFieldException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
 use Studio24\Frontend\Content\BaseContent;
@@ -120,8 +121,7 @@ class Wordpress extends ContentRepository
     public function listPages(
         int $page = 1,
         array $options = []
-    ): PageCollection
-    {
+    ): PageCollection {
 
         // @todo Need to add unique identifier for this data based on options array
         $cacheKey = sprintf('%s.list.%s', $this->getContentType()->getName(), $page);
@@ -293,7 +293,8 @@ class Wordpress extends ContentRepository
             $page->addContent(new RichText('content', FieldFinder::content($data)));
         }
 
-        if (isset($data['acf'])) {
+        // ACF content fields
+        if (isset($data['acf']) && is_array($data['acf'])) {
             $this->setCustomContentFields($this->getContentType(), $page, $data['acf']);
         }
     }
@@ -333,129 +334,148 @@ class Wordpress extends ContentRepository
      * @param FieldInterface $field Content field definition
      * @param mixed $value Content field value
      * @return ContentFieldInterface Populated content field object, or null on failure
-     * @throws ContentTypeNotSetException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
-     * @throws ContentFieldNotSetException
+     * @throws ContentFieldException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
     {
-        $name = $field->getName();
-        switch ($field->getType()) {
-            case 'text':
-                return new ShortText($name, $value);
-                break;
-
-            case 'plaintext':
-                return new PlainText($name, $value);
-                break;
-
-            case 'richtext':
-                return new RichText($name, $value);
-                break;
-
-            case 'number':
-                return new Number($name, $value);
-                break;
-
-            case 'date':
-                return new Date($name, $value);
-                break;
-
-            case 'datetime':
-                return new DateTime($name, $value);
-                break;
-
-            case 'boolean':
-                return new Boolean($name, $value);
-                break;
-
-            case 'image':
-                $image = new Image(
-                    $name,
-                    $value['url'],
-                    $value['title'],
-                    $value['caption'],
-                    $value['alt']
-                );
-
-                // Add sizes
-                $availableSizes = $field->getOption('image_sizes');
-                if ($availableSizes !== null) {
-                    foreach ($availableSizes as $sizeName) {
-                        if (isset($value['sizes'][$sizeName])) {
-                            $width = $sizeName . '-width';
-                            $height = $sizeName . '-height';
-                            $image->addSize(
-                                $value['sizes'][$sizeName],
-                                $value['sizes'][$width],
-                                $value['sizes'][$height],
-                                $sizeName
-                            );
-                        }
-                    }
-                }
-                return $image;
-                break;
-
-            case 'document':
-                // Read document data from Media API
-                return $this->getMediaField($name, $value);
-                break;
-
-            // @todo video, audio
-
-            case 'array':
-                $array = new ArrayContent($name);
-
-                if (!is_array($value)) {
+        try {
+            $name = $field->getName();
+            switch ($field->getType()) {
+                case 'text':
+                    return new ShortText($name, $value);
                     break;
-                }
 
-                // Loop through data array
-                foreach ($value as $row) {
-                    // For each row add a set of content fields
-                    $item = new ContentFieldCollection();
-                    foreach ($field as $childField) {
-                        if (!isset($row[$childField->getName()])) {
-                            continue;
-                        }
-                        $childValue = $row[$childField->getName()];
-                        $contentField = $this->getContentField($childField, $childValue);
-                        if ($contentField !== null) {
-                            $item->addItem($contentField);
+                case 'plaintext':
+                    return new PlainText($name, $value);
+                    break;
+
+                case 'richtext':
+                    return new RichText($name, $value);
+                    break;
+
+                case 'number':
+                    return new Number($name, $value);
+                    break;
+
+                case 'date':
+                    return new Date($name, $value);
+                    break;
+
+                case 'datetime':
+                    return new DateTime($name, $value);
+                    break;
+
+                case 'boolean':
+                    return new Boolean($name, $value);
+                    break;
+
+                case 'image':
+                    $image = new Image(
+                        $name,
+                        $value['url'],
+                        $value['title'],
+                        $value['caption'],
+                        $value['alt']
+                    );
+
+                    // Add sizes
+                    $availableSizes = $field->getOption('image_sizes');
+                    if ($availableSizes !== null) {
+                        foreach ($availableSizes as $sizeName) {
+                            if (isset($value['sizes'][$sizeName])) {
+                                $width = $sizeName . '-width';
+                                $height = $sizeName . '-height';
+                                $image->addSize(
+                                    $value['sizes'][$sizeName],
+                                    $value['sizes'][$width],
+                                    $value['sizes'][$height],
+                                    $sizeName
+                                );
+                            }
                         }
                     }
-                    $array->addItem($item);
-                }
+                    return $image;
+                    break;
 
-                return $array;
-                break;
+                case 'document':
+                    // Read document data from Media API
+                    return $this->getMediaField($name, $value);
+                    break;
 
-            // @todo test relation
-            case 'relation':
-                $relation = new Relation($name);
-                $this->setContentFields($relation->getContent(), $value);
-                return $relation;
-                break;
+                // @todo video, audio
 
-            /**
-             * @todo Build & test Flexible content field
-             * case 'flexible':
-             * if (!is_array($value)) {
-             * break;
-             * }
-             *
-             * $flexible = new FlexibleContent($name);
-             *
-             * foreach ($contentField as $componentType) {
-             * $component = new Component($componentType->getName());
-             * $this->setCustomContentFields($componentType, $component, $value);
-             * $flexible->addComponent($component);
-             * }
-             *
-             * $content->addContent($flexible);
-             * break;
-             */
+                case 'array':
+                    $array = new ArrayContent($name);
+
+                    if (!is_array($value)) {
+                        break;
+                    }
+
+                    // Loop through data array
+                    foreach ($value as $row) {
+                        // For each row add a set of content fields
+                        $item = new ContentFieldCollection();
+                        foreach ($field as $childField) {
+                            if (!isset($row[$childField->getName()])) {
+                                continue;
+                            }
+                            $childValue = $row[$childField->getName()];
+                            $contentField = $this->getContentField($childField, $childValue);
+                            if ($contentField !== null) {
+                                $item->addItem($contentField);
+                            }
+                        }
+                        $array->addItem($item);
+                    }
+
+                    return $array;
+                    break;
+
+                // @todo test relation
+                case 'relation':
+                    if (!is_array($value) || !$field->hasOption('content_type')) {
+                        break;
+                    }
+
+                    // Swap to relation content type
+                    $currentContentType = $this->getContentType()->getName();
+
+                    $relation = new Relation($name);
+                    $this->setContentType($field->getOption('content_type'));
+                    $this->setContentFields($relation->getContent(), $value);
+
+                    // Swap back to original content type
+                    $this->setContentType($currentContentType);
+
+                    return $relation;
+                    break;
+
+                /**
+                 * @todo Build & test Flexible content field
+                 * case 'flexible':
+                 * if (!is_array($value)) {
+                 * break;
+                 * }
+                 *
+                 * $flexible = new FlexibleContent($name);
+                 *
+                 * foreach ($contentField as $componentType) {
+                 * $component = new Component($componentType->getName());
+                 * $this->setCustomContentFields($componentType, $component, $value);
+                 * $flexible->addComponent($component);
+                 * }
+                 *
+                 * $content->addContent($flexible);
+                 * break;
+                 */
+            }
+        } catch (\Error $e) {
+            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        } catch (\Exception $e) {
+            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
         }
 
         return null;

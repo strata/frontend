@@ -13,7 +13,7 @@ use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\MenuItemCollection;
 
-class WordPressMenuTest extends TestCase
+class MenuTest extends TestCase
 {
     /** @var Wordpress $wordpress */
 
@@ -112,10 +112,4 @@ class WordPressMenuTest extends TestCase
         $this->assertSame(15, $this->menu10->getChildren()->count());
         $this->assertSame(5, $this->menu10->getChildren()->current()->getChildren()->count());
     }
-
-    public function testMenuLargeNestedMenu()
-    {
-
-    }
-
 }

@@ -8,5 +8,6 @@ interface FieldInterface
     public function getName(): string;
     public function setName(string $name);
     public function getType(): string;
+    public function hasOption(string $name): bool;
     public function getOption(string $name);
 }

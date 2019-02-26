@@ -1,0 +1,23 @@
+post_type:
+  type: text
+theme:
+  type: text
+image:
+  type: image
+image_credit:
+  type: text
+banner_title:
+  type: text
+banner_text:
+  type: text
+video_loop:
+  type: boolean
+video_poster:
+  type: boolean
+author:
+  type: relation
+  content_type: user
+#page_content:
+#  type: flexible
+#type:
+#  type: taxonomy

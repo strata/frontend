@@ -8,7 +8,6 @@
 
 namespace Studio24\Frontend\Content\Menus;
 
-
 class MenuItemCollection implements \SeekableIterator, \Countable
 {
     protected $collection = [];

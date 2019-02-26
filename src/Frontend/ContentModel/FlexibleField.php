@@ -72,6 +72,15 @@ class FlexibleField extends \ArrayIterator implements FieldInterface
     }
 
     /**
+     * @param string $name
+     * @return |null
+     */
+    public function hasOption(string $name): bool
+    {
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function getType(): string

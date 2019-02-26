@@ -174,6 +174,4 @@ class Wordpress extends RestApiAbstract
 
         return $data;
     }
-
-
 }

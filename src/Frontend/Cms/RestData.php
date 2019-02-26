@@ -140,10 +140,44 @@ class RestData extends ContentRepository
     }
 
     /**
+     * Return a single item
+     *
+     * @param int $id
+     * @param string $contentType
+     * @return Page
+     * @throws ContentFieldNotSetException
+     * @throws ContentTypeNotSetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getOne(int $id): Page
+    {
+        $cacheKey = sprintf('%s.%s', $this->getContentType()->getName(), $id);
+        if ($this->hasCache() && $this->cache->has($cacheKey)) {
+            $page = $this->cache->get($cacheKey);
+            return $page;
+        }
+
+        // Get content
+        $data = $this->api->getOne($this->getContentApiEndpoint(), $id);
+        $page = $this->createPage($data);
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $page);
+        }
+
+        return $page;
+    }
+
+
+    /**
      * Generate page object from API data
      *
      * @param array $data
      * @return Page
+     * @throws ContentFieldNotSetException
      * @throws ContentTypeNotSetException
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */

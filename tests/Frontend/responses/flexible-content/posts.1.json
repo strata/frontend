@@ -2254,7 +2254,7 @@
         "filter": "raw",
         "acf": {
           "job_title": "",
-          "ffi_position": "",
+          "position": "",
           "short_biography": "<p>Millie Kerr is a multimedia journalist and wildlife conservationist based in London. Her written work appears in a wide variety of magazines and newspapers, and she publishes most of her wildlife photographs on Instagram (@millieckerr). </p>\n",
           "long_biography": "",
           "image": {
@@ -3501,7 +3501,7 @@
           "video_loop": false,
           "page_content": false,
           "job_title": "Communications Specialist, Conservation Partnerships",
-          "ffi_position": "",
+          "position": "",
           "short_biography": "<p>Tim has worked closely with FFI since 1999. He has edited Fauna & Flora magazine since its inception in 2001 and is co-author of With Honourable Intent - A Natural History of Fauna & Flora International, published in 2017.</p>\n",
           "long_biography": ""
         }
@@ -4355,7 +4355,7 @@
         "post_date": "2017-11-14 16:53:08",
         "post_date_gmt": "2017-11-14 16:53:08",
         "post_content": "",
-        "post_title": "Hazel Akester",
+        "post_title": "Hazel Smith",
         "post_excerpt": "",
         "post_status": "publish",
         "comment_status": "closed",
@@ -4375,9 +4375,9 @@
         "comment_count": "0",
         "filter": "raw",
         "acf": {
-          "short_biography": "<p>Having lived in six countries, including Vietnam for eight years, Hazel has always been interested in preserving local habitats, species, and cultures. Hazel has an MSc in Conservation and Biodiversity and was volunteering in marine conservation with the Peruvian NGO ProDelphinus before joining FFI.</p>\n",
+          "short_biography": "<p>Having lived in six countries, including Vietnam for eight years, Hazel has always been interested in preserving local habitats, species, and cultures. Hazel has an MSc in Conservation and Biodiversity and was volunteering in marine conservation with the Peruvian NGO ProDelphinus before joining ACME.</p>\n",
           "job_title": "Programme Officer, Marine Plastics",
-          "ffi_position": "",
+          "position": "",
           "long_biography": "",
           "image": false
         }
@@ -4758,7 +4758,7 @@
           "video_loop": false,
           "page_content": false,
           "job_title": "Communications Officer",
-          "ffi_position": "",
+          "position": "",
           "short_biography": "<p>With a BSc in Zoology, Olivia is passionate about connecting people with nature to create a sustainable future.</p>\n",
           "long_biography": ""
         }
@@ -6706,7 +6706,7 @@
         "filter": "raw",
         "acf": {
           "job_title": "Ya'axché Conservation Trust",
-          "ffi_position": "",
+          "position": "",
           "short_biography": "<p>Max, an indigenous Q’eqchi’ Maya, joined Ya’axché in 2009. Although a marketer at heart, Max brings wide-ranging skills including project management, GIS, graphic design and photography. Established in 1998, Ya’axché is FFI’s partner in Belize, carrying out crucial work to manage Belize’s critical areas for biodiversity.</p>\n",
           "long_biography": "",
           "image": {
@@ -7018,7 +7018,7 @@
         "filter": "raw",
         "acf": {
           "job_title": "Communications Officer (Project Support)",
-          "ffi_position": "",
+          "position": "",
           "short_biography": "<p>With an MSc in Biodiversity Conservation and a background in plant science, Sarah is keen to get people excited about botanical conservation.</p>\n",
           "long_biography": "",
           "image": {
