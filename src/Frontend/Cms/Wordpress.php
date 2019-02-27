@@ -123,8 +123,7 @@ class Wordpress extends ContentRepository
         array $options = []
     ): PageCollection {
 
-        // @todo Need to add unique identifier for this data based on options array
-        $cacheKey = sprintf('%s.list.%s', $this->getContentType()->getName(), $page);
+        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $pages = $this->cache->get($cacheKey);
             return $pages;
@@ -162,7 +161,7 @@ class Wordpress extends ContentRepository
      */
     public function getPage(int $id): Page
     {
-        $cacheKey = sprintf('%s.%s', $this->getContentType(), $id);
+        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $page = $this->cache->get($cacheKey);
             return $page;
@@ -197,7 +196,7 @@ class Wordpress extends ContentRepository
      */
     public function getMediaField(string $name, int $id): ?AssetField
     {
-        $cacheKey = sprintf('media.%s', $id);
+        $cacheKey = $this->buildCacheKey('media', $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $media = $this->cache->get($cacheKey);
             return $media;
@@ -502,7 +501,7 @@ class Wordpress extends ContentRepository
 
     public function getMenu(int $id)
     {
-        $cacheKey = sprintf('menu.%s', $id);
+        $cacheKey = $this->buildCacheKey('menu', $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $page = $this->cache->get($cacheKey);
             return $page;

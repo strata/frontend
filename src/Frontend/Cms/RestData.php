@@ -17,6 +17,7 @@ use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
 use Studio24\Frontend\Content\BaseContent;
@@ -114,8 +115,7 @@ class RestData extends ContentRepository
      */
     public function list(int $page = 1, array $options = []): PageCollection
     {
-        // @todo Need to add unique identifier for this data based on options array
-        $cacheKey = sprintf('%s.list.%s', $this->getContentType()->getName(), $page);
+        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $pages = $this->cache->get($cacheKey);
             return $pages;
@@ -154,7 +154,7 @@ class RestData extends ContentRepository
      */
     public function getOne($id): Page
     {
-        $cacheKey = sprintf('%s.%s', $this->getContentType()->getName(), $id);
+        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $page = $this->cache->get($cacheKey);
             return $page;

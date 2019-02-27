@@ -8,6 +8,7 @@ use Studio24\Frontend\Content\Page;
 use Studio24\Frontend\Content\PageCollection;
 use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
+use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Traits\CacheTrait;
 
 /**
@@ -126,6 +127,51 @@ abstract class ContentRepository
         $this->setContentFields($page, $data);
 
         return $page;
+    }
+
+    /**
+     * Build a cache key
+     *
+     * @param mixed ...$params An array of strings or single-level arrays used to build a cache key
+     * @return string
+     * @throws ApiException
+     */
+    public function buildCacheKey(...$params): string
+    {
+        $elements = [];
+        foreach ($params as $param) {
+            switch (gettype($param)) {
+                case 'string':
+                    if (!empty($param)) {
+                        $elements[] = $param;
+                    }
+                    break;
+                case 'integer':
+                case 'double':
+                    $elements[] = (string) $param;
+                    break;
+                case 'boolean':
+                    $elements[] = ($param) ? 'true' : 'false';
+                    break;
+                case 'NULL':
+                    $elements[] = 'NULL';
+                    break;
+                case 'array':
+                    foreach ($param as $key => $value) {
+                        if (is_array($value)) {
+                            throw new ApiException('Cannot build cache key from a multidimensional array');
+                        }
+                        $elements[] = (string) $key . ':' . (string) $value;
+                    }
+                    break;
+                default:
+                    throw new ApiException(sprintf('Cannot build cache key from passed param, type: %s', gettype($param)));
+            }
+        }
+        if (empty($elements)) {
+            $elements[] = 'cache';
+        }
+        return implode('.', $elements);
     }
 
     /**
