@@ -80,7 +80,7 @@ class RestApi extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get(sprintf('%s/%d', $apiEndpoint, $id));
+        $response = $this->get(sprintf('%s/%s', $apiEndpoint, $id));
         $data = $this->parseJsonResponse($response);
 
         return $data;
