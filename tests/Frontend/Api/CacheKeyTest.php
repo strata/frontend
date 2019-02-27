@@ -25,6 +25,14 @@ class CacheKeyTest extends TestCase
         $this->assertEquals('search.newstime', $api->buildCacheKey('search', 'news:time'));
         $this->assertEquals('search.news', $api->buildCacheKey('search', '{news}'));
         $this->assertEquals('demoexample.com.test.123', $api->buildCacheKey('demo@example.com', 'test', 123));
+
+        $this->assertEquals('My-Demo.test', $api->buildCacheKey('My Demo', 'test'));
+        $this->assertEquals('Some-Text-here.test', $api->buildCacheKey('Some	Text here', 'test'));
+        $param = <<<EOD
+A
+new line
+EOD;
+        $this->assertEquals('A-new-line.test', $api->buildCacheKey($param, 'test'));
     }
 
     public function testInvalidArray()

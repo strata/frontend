@@ -141,7 +141,9 @@ abstract class ContentRepository
         // Remove disallowed characters
         $filter = function ($string): string {
             $string = (string) $string;
-            return preg_replace('![{}()/\@:]!', '', $string);
+            $string = preg_replace('![{}()/\@:]!', '', $string);
+            $string = preg_replace('/\s/', '-', $string);
+            return $string;
         };
 
         $elements = [];
