@@ -138,17 +138,23 @@ abstract class ContentRepository
      */
     public function buildCacheKey(...$params): string
     {
+        // Remove disallowed characters
+        $filter = function ($string): string {
+            $string = (string) $string;
+            return preg_replace('![{}()/\@:]!', '', $string);
+        };
+
         $elements = [];
         foreach ($params as $param) {
             switch (gettype($param)) {
                 case 'string':
                     if (!empty($param)) {
-                        $elements[] = $param;
+                        $elements[] = $filter($param);
                     }
                     break;
                 case 'integer':
                 case 'double':
-                    $elements[] = (string) $param;
+                    $elements[] = $filter($param);
                     break;
                 case 'boolean':
                     $elements[] = ($param) ? 'true' : 'false';
@@ -161,7 +167,7 @@ abstract class ContentRepository
                         if (is_array($value)) {
                             throw new ApiException('Cannot build cache key from a multidimensional array');
                         }
-                        $elements[] = (string) $key . ':' . (string) $value;
+                        $elements[] = $filter($key) . '=' . $filter($value);
                     }
                     break;
                 default:

@@ -19,8 +19,12 @@ class CacheKeyTest extends TestCase
         $this->assertEquals('news.list.NULL', $api->buildCacheKey('news', 'list', $nullVar));
         $this->assertEquals('news.list.true', $api->buildCacheKey('news', 'list', $boolVar));
         $this->assertEquals('news.list.12.99', $api->buildCacheKey('news', 'list', 12.99));
-        $this->assertEquals('news.list.123.page:1.category:thing', $api->buildCacheKey('news', 'list', '123', ['page' => 1, 'category' => 'thing']));
+        $this->assertEquals('news.list.123.page=1.category=thing', $api->buildCacheKey('news', 'list', '123', ['page' => 1, 'category' => 'thing']));
         $this->assertEquals('cache', $api->buildCacheKey(''));
+
+        $this->assertEquals('search.newstime', $api->buildCacheKey('search', 'news:time'));
+        $this->assertEquals('search.news', $api->buildCacheKey('search', '{news}'));
+        $this->assertEquals('demoexample.com.test.123', $api->buildCacheKey('demo@example.com', 'test', 123));
     }
 
     public function testInvalidArray()
