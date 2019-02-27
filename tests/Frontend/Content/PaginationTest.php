@@ -104,5 +104,4 @@ class PaginationTest extends TestCase
         $this->assertEquals(1, $pages->getFirst());
         $this->assertEquals(1, $pages->getLast());
     }
-
 }

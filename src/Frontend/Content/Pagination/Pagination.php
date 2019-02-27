@@ -126,7 +126,7 @@ class Pagination implements PaginationInterface
     public function getTotalPages(): int
     {
         // Auto-generate
-        if ($this->totalPages === 0)  {
+        if ($this->totalPages === 0) {
             if (!empty($this->getTotalResults()) && !empty($this->getResultsPerPage())) {
                 $this->totalPages = (int) ceil($this->getTotalResults() / $this->getResultsPerPage());
             } else {
