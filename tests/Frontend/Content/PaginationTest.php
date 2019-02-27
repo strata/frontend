@@ -88,4 +88,21 @@ class PaginationTest extends TestCase
         $pages->setPage(8);
         $this->assertEquals([5,6,7,8,9,10,11], $pages->getPageLinks(7));
     }
+
+    public function testEmptyPagination()
+    {
+        $pages = new Pagination();
+        $pages->setTotalResults(0);
+
+        $pages->setPage(1);
+        $this->assertEquals(1, $pages->getPage());
+        $this->assertEquals(0, $pages->getTotalResults());
+        $this->assertEquals(1, $pages->getTotalPages());
+        $this->assertEquals([], $pages->getPageLinks());
+        $this->assertEquals(1, $pages->getNext());
+        $this->assertEquals(1, $pages->getLast());
+        $this->assertEquals(1, $pages->getFirst());
+        $this->assertEquals(1, $pages->getLast());
+    }
+
 }
