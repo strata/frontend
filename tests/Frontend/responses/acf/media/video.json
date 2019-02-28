@@ -1,0 +1,82 @@
+{
+  "id": 3496,
+  "date": "2019-02-28T12:53:40",
+  "date_gmt": "2019-02-28T12:53:40",
+  "guid": {
+    "rendered": "http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4"
+  },
+  "modified": "2019-02-28T12:53:40",
+  "modified_gmt": "2019-02-28T12:53:40",
+  "slug": "saint-lucia-racer-moving-jeremy-holden-ffi",
+  "status": "inherit",
+  "type": "attachment",
+  "link": "http://local.aht.org.uk/saint-lucia-racer-moving-jeremy-holden-ffi",
+  "title": {
+    "rendered": "Saint-Lucia-racer-moving-Jeremy-holden-FFI"
+  },
+  "author": 1,
+  "comment_status": "closed",
+  "ping_status": "closed",
+  "template": "",
+  "meta": [],
+  "description": {
+    "rendered": "<div style=\"width: 1920px;\" class=\"wp-video\"><!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->\n<video class=\"wp-video-shortcode\" id=\"video-3496-1\" width=\"1920\" height=\"1080\" preload=\"metadata\" controls=\"controls\"><source type=\"video/mp4\" src=\"http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4?_=1\" /><a href=\"http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4\">http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4</a></video></div>\n"
+  },
+  "caption": {
+    "rendered": "<p>http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4</p>\n"
+  },
+  "alt_text": "",
+  "media_type": "file",
+  "mime_type": "video/mp4",
+  "media_details": {
+    "bitrate": 1862802,
+    "filesize": 6730353,
+    "mime_type": "video/quicktime",
+    "length": 29,
+    "length_formatted": "0:29",
+    "width": 1920,
+    "height": 1080,
+    "fileformat": "mp4",
+    "dataformat": "quicktime",
+    "created_timestamp": 1511432573,
+    "sizes": {}
+  },
+  "post": null,
+  "source_url": "http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4",
+  "_links": {
+    "self": [
+      {
+        "attributes": [],
+        "href": "http://local.aht.org.uk/wp-json/wp/v2/media/3496"
+      }
+    ],
+    "collection": [
+      {
+        "attributes": [],
+        "href": "http://local.aht.org.uk/wp-json/wp/v2/media"
+      }
+    ],
+    "about": [
+      {
+        "attributes": [],
+        "href": "http://local.aht.org.uk/wp-json/wp/v2/types/attachment"
+      }
+    ],
+    "author": [
+      {
+        "attributes": {
+          "embeddable": true
+        },
+        "href": "http://local.aht.org.uk/wp-json/wp/v2/users/1"
+      }
+    ],
+    "replies": [
+      {
+        "attributes": {
+          "embeddable": true
+        },
+        "href": "http://local.aht.org.uk/wp-json/wp/v2/comments?post=3496"
+      }
+    ]
+  }
+}
