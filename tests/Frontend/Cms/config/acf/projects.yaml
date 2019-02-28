@@ -22,3 +22,5 @@ project_documents:
   content_fields:
     project_documents_project_documents_document:
       type: document
+project_video:
+  type: video

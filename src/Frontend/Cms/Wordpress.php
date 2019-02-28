@@ -36,6 +36,7 @@ use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
+use Studio24\Frontend\Utils\FileInfoFormatter;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 
 /**
@@ -231,7 +232,17 @@ class Wordpress extends ContentRepository
                 break;
 
             case 'Video':
-                // @todo
+                $filesize = FileInfoFormatter::formatFileSize($data['media_details']['filesize']);
+
+                $media = new Video(
+                    $name,
+                    $data['source_url'],
+                    $filesize,
+                    $data['media_details']['bitrate'],
+                    $data['media_details']['length_formatted'],
+                    $data['title']['rendered'],
+                    $data['alt_text']
+                );
                 break;
         }
 
@@ -372,6 +383,7 @@ class Wordpress extends ContentRepository
                 break;
 
             case 'image':
+                //@todo make distinction between image object and image id as can be returned using mediaField
                 $image = new Image(
                     $name,
                     $value['url'],
@@ -400,11 +412,29 @@ class Wordpress extends ContentRepository
                 break;
 
             case 'document':
+                if (!is_int($value)) {
+                    break;
+                }
+
                 // Read document data from Media API
                 return $this->getMediaField($name, $value);
                 break;
 
-            // @todo video, audio
+            case 'video':
+                if (!is_int($value)) {
+                    break;
+                }
+
+                return $this->getMediaField($name, $value);
+                break;
+
+            case 'audio':
+                if (!is_int($value)) {
+                    break;
+                }
+
+                return $this->getMediaField($name, $value);
+                break;
 
             case 'array':
                 $array = new ArrayContent($name);

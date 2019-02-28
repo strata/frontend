@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Studio24\Frontend\Content\Field;
 
 /**
- * Document content field
+ * Video content field
  *
  * @package Studio24\Frontend\Content\Field
  */
-class Video extends AssetField
+class Video extends PlayableMediaAsset
 {
     const TYPE = 'video';
 
@@ -29,44 +29,19 @@ class Video extends AssetField
     ];
 
     /**
-     * Create video content field
+     * Video constructor.
      *
-     * @param string $name Content field name
-     * @param string $url Asset URL
-     * @param string|null $title Title
-     * @param string|null $description Description
+     * @param string $name
+     * @param string $url
+     * @param string $filesize
+     * @param int|string $bitrate
+     * @param string $length
+     * @param string|null $title
+     * @param string|null $description
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function __construct(string $name, string $url, string $title = null, string $description = null)
+    public function __construct(string $name, string $url, string $filesize, $bitrate, string $length, string $title = null, string $description = null)
     {
-        $this->setName($name);
-        $this->setUrl($url);
-
-        if (!empty($title)) {
-            $this->setTitle($title);
-        }
-        if (!empty($description)) {
-            $this->setDescription($description);
-        }
-    }
-
-    /**
-     * Return img URL
-     *
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->getUrl();
-    }
-
-    /**
-     * Return string representation of content field
-     *
-     * @return string
-     */
-    public function __toString() : string
-    {
-        return $this->getUrl();
+        parent::__construct($name, $url, $filesize, $bitrate, $length, $title, $description);
     }
 }
