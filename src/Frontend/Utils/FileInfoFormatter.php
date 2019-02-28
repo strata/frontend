@@ -17,6 +17,11 @@ class FileInfoFormatter
      */
     public static function formatFileSize($sizeInByte = 0 ): string
     {
+        if (empty($sizeInByte)) {
+            $size = '0 B';
+            return $size;
+        }
+
         switch ($sizeInByte) {
             case $sizeInByte < 1024:
                 $size = $sizeInByte .' B';
@@ -29,6 +34,9 @@ class FileInfoFormatter
                 break;
             case $sizeInByte < 1099511627776:
                 $size = round($sizeInByte / 1073741824, 2) . ' GB';
+                break;
+            case $sizeInByte >= 1099511627776:
+                $size = '1 TB+';
                 break;
         }
 
