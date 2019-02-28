@@ -417,7 +417,7 @@ Return image URL by image width and height:
 
 ### Document
 
-Documents can support image thumbnails, so the same sizes methods for images also work for documents.
+A document. Has the filesize property in addition to the default asset fields.
 
 Return document URL:
 
@@ -425,10 +425,10 @@ Return document URL:
 {{ page.content.field }}
 ```
 
-Return thumbnail of document:
+Return document filesize (as a formatted string):
 
 ```
-{{ page.content.field.byName('thumb') }}
+{{ page.content.field.filesize }}
 ```
 
 ### Audio
