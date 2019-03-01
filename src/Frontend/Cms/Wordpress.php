@@ -409,52 +409,63 @@ class Wordpress extends ContentRepository
 
                 break;
             case 'video':
-                //@todo when file data is array rather than attachment id
+                $media_id = null;
 
                 if (is_int($value)) {
-                    $field_data = $this->getMediaDataById($name, $value);
+                    $media_id = $value;
 
-                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
-
-                    $video = new Video(
-                        $name,
-                        $field_data['source_url'],
-                        $filesize,
-                        $field_data['media_details']['bitrate'],
-                        $field_data['media_details']['length_formatted'],
-                        $field_data['title']['rendered'],
-                        $field_data['alt_text']
-                    );
-
-                    return $video;
+                } elseif (is_array($value)) {
+                    $media_id = $value['id'];
                 } else {
                     return null;
                 }
+
+                $field_data = $this->getMediaDataById($name, $media_id);
+
+                $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                $video = new Video(
+                    $name,
+                    $field_data['source_url'],
+                    $filesize,
+                    $field_data['media_details']['bitrate'],
+                    $field_data['media_details']['length_formatted'],
+                    $field_data['title']['rendered'],
+                    $field_data['alt_text']
+                );
+
+                return $video;
 
                 break;
 
             case 'audio':
-                //@todo disctinction between ACF returning attachment ID, URL, or Array
+                $media_id = null;
+
                 if (is_int($value)) {
-                    $field_data = $this->getMediaDataById($name, $value);
+                    $media_id = $value;
 
-                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
-
-                    $audio = new Audio(
-                        $name,
-                        $field_data['source_url'],
-                        $filesize,
-                        $field_data['media_details']['bitrate'],
-                        $field_data['media_details']['length_formatted'],
-                        $field_data['media_details'],
-                        $field_data['title']['rendered'],
-                        $field_data['alt_text']
-                    );
-
-                    return $audio;
+                } elseif (is_array($value)) {
+                    $media_id = $value['id'];
                 } else {
                     return null;
                 }
+
+                $field_data = $this->getMediaDataById($name, $media_id);
+
+                $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                $audio = new Audio(
+                    $name,
+                    $field_data['source_url'],
+                    $filesize,
+                    $field_data['media_details']['bitrate'],
+                    $field_data['media_details']['length_formatted'],
+                    $field_data['media_details'],
+                    $field_data['title']['rendered'],
+                    $field_data['alt_text']
+                );
+
+                return $audio;
 
                 break;
 

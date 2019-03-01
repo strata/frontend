@@ -26,3 +26,7 @@ project_video:
   type: video
 project_audio:
   type: audio
+project_video_array:
+  type: video
+project_audio_array:
+  type: audio

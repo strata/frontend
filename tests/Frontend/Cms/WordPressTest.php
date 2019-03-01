@@ -104,6 +104,16 @@ class WordPressTest extends TestCase
                 200,
                 [],
                 file_get_contents(__DIR__ . '/../responses/acf/media/media.3495.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3496.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3495.json')
             )
         ]);
 
@@ -174,8 +184,28 @@ class WordPressTest extends TestCase
         $this->assertEquals( 'Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
         $this->assertEmpty($video->getDescription());
 
+        $video = $page->getContent()->get('project_video_array');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
+
+        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals( '6.42 MB', $video->getFileSize());
+        $this->assertEquals( '1862802', $video->getBitRate());
+        $this->assertEquals( '0:29', $video->getLength());
+        $this->assertEquals( 'Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
+        $this->assertEmpty($video->getDescription());
+
         //Test audio
         $audio = $page->getContent()->get('project_audio');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
+
+        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals( '32.24 KB', $audio->getFileSize());
+        $this->assertEquals( '128000', $audio->getBitRate());
+        $this->assertEquals( '0:02', $audio->getLength());
+        $this->assertEquals( 'Kyoto Bell', $audio->getTitle());
+        $this->assertEmpty($audio->getDescription());
+
+        $audio = $page->getContent()->get('project_audio_array');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
 
         $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
