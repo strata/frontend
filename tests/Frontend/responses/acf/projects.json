@@ -49,7 +49,8 @@
                     "project_documents_project_documents_document": 81
                 }
             ],
-            "project_video": 3496
+            "project_video": 3496,
+            "project_audio": 3495
         },
         "_links": {
             "self": [
@@ -127,7 +128,8 @@
             "project_how_to_buy": "",
             "project_documents_updates": "",
             "project_documents": false,
-            "project_video": false
+            "project_video": false,
+            "project_audio": false
         },
         "_links": {
             "self": [

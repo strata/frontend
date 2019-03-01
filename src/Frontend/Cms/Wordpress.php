@@ -211,7 +211,18 @@ class Wordpress extends ContentRepository
         // Parse data from array into object
         switch (AssetField::guesser($data['mime_type'])) {
             case 'Audio':
-                // @todo
+                $filesize = FileInfoFormatter::formatFileSize($data['media_details']['filesize']);
+
+                $media = new Audio(
+                    $name,
+                    $data['source_url'],
+                    $filesize,
+                    $data['media_details']['bitrate'],
+                    $data['media_details']['length_formatted'],
+                    $data['media_details'],
+                    $data['title']['rendered'],
+                    $data['alt_text']
+                );
                 break;
 
             case 'Document':

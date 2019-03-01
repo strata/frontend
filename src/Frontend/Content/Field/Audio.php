@@ -38,7 +38,7 @@ class Audio extends PlayableMediaAsset
      * @param string|null $description
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function __construct(string $name, string $url, string $filesize, mixed $bitrate, string $length, array $mediaParameters, string $title = null, string $description = null)
+    public function __construct(string $name, string $url, string $filesize, $bitrate, string $length, array $mediaParameters, string $title = null, string $description = null)
     {
         parent::__construct($name, $url, $filesize, $bitrate, $length, $title, $description);
 

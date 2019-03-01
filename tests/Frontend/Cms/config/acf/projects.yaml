@@ -24,3 +24,5 @@ project_documents:
       type: document
 project_video:
   type: video
+project_audio:
+  type: audio
