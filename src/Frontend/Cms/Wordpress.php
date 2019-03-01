@@ -184,84 +184,35 @@ class Wordpress extends ContentRepository
     }
 
     /**
-     * Return media content field from API
+     * Return media data from API
      *
      * @param string $name Content field name
      * @param int $id ID of media item to retrieve
-     * @return AssetField|null
+     * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getMediaField(string $name, int $id): ?AssetField
+    public function getMediaDataById(string $name, int $id): array
     {
         $cacheKey = sprintf('media.%s', $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $media = $this->cache->get($cacheKey);
-            return $media;
+            $media_data = $this->cache->get($cacheKey);
+            return $media_data;
         }
 
         // Get data from API
-        $data = $this->api->getMedia($id);
-        if (empty($data)) {
+        $media_data = $this->api->getMedia($id);
+        if (empty($media_data)) {
             return null;
         }
 
-        // Parse data from array into object
-        switch (AssetField::guesser($data['mime_type'])) {
-            case 'Audio':
-                $filesize = FileInfoFormatter::formatFileSize($data['media_details']['filesize']);
-
-                $media = new Audio(
-                    $name,
-                    $data['source_url'],
-                    $filesize,
-                    $data['media_details']['bitrate'],
-                    $data['media_details']['length_formatted'],
-                    $data['media_details'],
-                    $data['title']['rendered'],
-                    $data['alt_text']
-                );
-                break;
-
-            case 'Document':
-                //get filesize
-                $filesize = $this->api->getMediaFileSize($data['source_url']);
-
-                $media = new Document(
-                    $name,
-                    $data['source_url'],
-                    $filesize,
-                    $data['title']['rendered'],
-                    $data['alt_text']
-                );
-                break;
-
-            case 'Image':
-                // @todo
-                break;
-
-            case 'Video':
-                $filesize = FileInfoFormatter::formatFileSize($data['media_details']['filesize']);
-
-                $media = new Video(
-                    $name,
-                    $data['source_url'],
-                    $filesize,
-                    $data['media_details']['bitrate'],
-                    $data['media_details']['length_formatted'],
-                    $data['title']['rendered'],
-                    $data['alt_text']
-                );
-                break;
-        }
-
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $media);
+            $this->cache->set($cacheKey, $media_data);
         }
 
-        return $media;
+        return $media_data;
     }
 
     /**
@@ -423,28 +374,88 @@ class Wordpress extends ContentRepository
                 break;
 
             case 'document':
-                if (!is_int($value)) {
-                    break;
+
+                //given an attachment, request data and create field
+                if (is_int($value)) {
+                    $field_data = $this->getMediaDataById($name, $value);
+
+                    $filesize = $this->api->getMediaFileSize($field_data['source_url']);
+
+                    $document = new Document(
+                        $name,
+                        $field_data['source_url'],
+                        $filesize,
+                        $field_data['title']['rendered'],
+                        $field_data['alt_text']
+                    );
+
+                    return $document;
+                } elseif (is_array($value)) {
+                    //given array of data, create field directy
+                    $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
+
+                    $document = new Document(
+                        $name,
+                        $value['url'],
+                        $filesize,
+                        $value['title'],
+                        $value['alt']
+                    );
+
+                    return $document;
+                } else {
+                    return null;
                 }
 
-                // Read document data from Media API
-                return $this->getMediaField($name, $value);
                 break;
-
             case 'video':
-                if (!is_int($value)) {
-                    break;
+                //@todo when file data is array rather than attachment id
+
+                if (is_int($value)) {
+                    $field_data = $this->getMediaDataById($name, $value);
+
+                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                    $video = new Video(
+                        $name,
+                        $field_data['source_url'],
+                        $filesize,
+                        $field_data['media_details']['bitrate'],
+                        $field_data['media_details']['length_formatted'],
+                        $field_data['title']['rendered'],
+                        $field_data['alt_text']
+                    );
+
+                    return $video;
+                } else {
+                    return null;
                 }
 
-                return $this->getMediaField($name, $value);
                 break;
 
             case 'audio':
-                if (!is_int($value)) {
-                    break;
+                //@todo disctinction between ACF returning attachment ID, URL, or Array
+                if (is_int($value)) {
+                    $field_data = $this->getMediaDataById($name, $value);
+
+                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                    $audio = new Audio(
+                        $name,
+                        $field_data['source_url'],
+                        $filesize,
+                        $field_data['media_details']['bitrate'],
+                        $field_data['media_details']['length_formatted'],
+                        $field_data['media_details'],
+                        $field_data['title']['rendered'],
+                        $field_data['alt_text']
+                    );
+
+                    return $audio;
+                } else {
+                    return null;
                 }
 
-                return $this->getMediaField($name, $value);
                 break;
 
             case 'array':

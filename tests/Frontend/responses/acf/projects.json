@@ -46,7 +46,29 @@
                     "project_documents_project_documents_document": 80
                 },
                 {
-                    "project_documents_project_documents_document": 81
+                    "project_documents_project_documents_document": {
+                        "ID": 81,
+                        "id": 81,
+                        "title": "timeline - IRIS Education website roll out",
+                        "filename": "timeline-IRIS-Education-website-roll-out-.pdf",
+                        "filesize": 169812,
+                        "url": "http://local.wp-api.test/wp-content/uploads/2019/03/timeline-IRIS-Education-website-roll-out-.pdf",
+                        "link": "http://local.wp-api.test/test-acf/timeline-iris-education-website-roll-out/",
+                        "alt": "",
+                        "author": "1",
+                        "description": "",
+                        "caption": "",
+                        "name": "timeline-iris-education-website-roll-out",
+                        "status": "inherit",
+                        "uploaded_to": 79,
+                        "date": "2019-03-01 14:24:53",
+                        "modified": "2019-03-01 14:26:42",
+                        "menu_order": 0,
+                        "mime_type": "application/pdf",
+                        "type": "application",
+                        "subtype": "pdf",
+                        "icon": "http://local.wp-api.test/wp-includes/images/media/document.png"
+                    }
                 }
             ],
             "project_video": 3496,

@@ -98,16 +98,6 @@ class WordPressTest extends TestCase
             new Response(
                 200,
                 [],
-                file_get_contents(__DIR__ . '/../responses/acf/media/media.81.json')
-            ),
-            new Response(
-                200,
-                ['Content-length' => 24957 ]
-            )
-            ,
-            new Response(
-                200,
-                [],
                 file_get_contents(__DIR__ . '/../responses/acf/media/media.3496.json')
             ),
             new Response(
@@ -165,9 +155,9 @@ class WordPressTest extends TestCase
                     $this->assertEmpty($doc->getDescription());
                     break;
                 case 1:
-                    $this->assertEquals("http://localhost/wp-content/uploads/2019/02/test_4.pdf", $doc->getUrl());
-                    $this->assertEquals("test_4", $doc->getTitle());
-                    $this->assertEquals("24.37 KB", $doc->getFileSize());
+                    $this->assertEquals("http://local.wp-api.test/wp-content/uploads/2019/03/timeline-IRIS-Education-website-roll-out-.pdf", $doc->getUrl());
+                    $this->assertEquals("timeline - IRIS Education website roll out", $doc->getTitle());
+                    $this->assertEquals("165.83 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
                     break;
             }
