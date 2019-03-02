@@ -2,4 +2,7 @@ composer.phar
 composer.lock
 /vendor/
 .phpunit*
-.idea/*
+
+# Application gitignore
+tests/Frontend/Cms/twig/cache/*
+!tests/Frontend/Cms/twig/cache/.gitkeep

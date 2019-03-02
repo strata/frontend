@@ -72,7 +72,7 @@ class Metadata implements \ArrayAccess
      * @param $arguments
      * @return mixed|null
      */
-    public function __call(string $name)
+    public function __call(string $name , array $arguments)
     {
         if ($this->offsetExists($name)) {
             return $this->offsetGet($name);
