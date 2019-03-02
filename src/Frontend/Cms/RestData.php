@@ -133,10 +133,6 @@ class RestData extends ContentRepository
             $pages->addItem($this->createPage($pageData));
         }
 
-        if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $pages);
-        }
-
         // Any metadata?
         $metadata = $pages->getMetadata();
         $ignoreMetadata = ['total_results', 'limit', 'results', 'page'];
@@ -144,6 +140,10 @@ class RestData extends ContentRepository
             if (!in_array($key, $ignoreMetadata)) {
                 $metadata->add($key, $value);
             }
+        }
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $pages);
         }
 
         return $pages;
