@@ -66,13 +66,13 @@ class Metadata implements \ArrayAccess
     }
 
     /**
-     * Direct access to metadata properties
+     * Direct access to metadata properties in Twig templates
      *
      * @param string $name
      * @param $arguments
      * @return mixed|null
      */
-    public function __get(string $name)
+    public function __call(string $name)
     {
         if ($this->offsetExists($name)) {
             return $this->offsetGet($name);
