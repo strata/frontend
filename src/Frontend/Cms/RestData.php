@@ -15,6 +15,7 @@ use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\Video;
+use Studio24\Frontend\Content\Metadata;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
@@ -134,6 +135,15 @@ class RestData extends ContentRepository
 
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $pages);
+        }
+
+        // Any metadata?
+        $metadata = $pages->getMetadata();
+        $ignoreMetadata = ['total_results', 'limit', 'results', 'page'];
+        foreach ($list->getMetadata() as $key => $value) {
+            if (!in_array($key, $ignoreMetadata)) {
+                $metadata->add($key, $value);
+            }
         }
 
         return $pages;

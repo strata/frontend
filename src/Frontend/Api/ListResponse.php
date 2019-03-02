@@ -125,6 +125,4 @@ class ListResponse
         $this->pagination = $pagination;
         return $this;
     }
-
-
 }
