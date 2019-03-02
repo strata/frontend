@@ -59,7 +59,9 @@ class RestApi extends RestApiAbstract
         }
         $pages = $this->getPagination($page, $limit, $response);
 
-        return new ListResponse($data['results'], $pages);
+        $response = new ListResponse($data['results'], $pages);
+        $response->setMetaData($data['meta']);
+        return $response;
     }
 
     /**
