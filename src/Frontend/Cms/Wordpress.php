@@ -345,32 +345,62 @@ class Wordpress extends ContentRepository
                 break;
 
             case 'image':
-                //@todo make distinction between image object and image id as can be returned using mediaField
-                $image = new Image(
-                    $name,
-                    $value['url'],
-                    $value['title'],
-                    $value['caption'],
-                    $value['alt']
-                );
+                if (is_int($value)) {
+                    //image ID passed on
+                    $field_data = $this->getMediaDataById($name, $value);
 
-                // Add sizes
-                $availableSizes = $field->getOption('image_sizes');
-                if ($availableSizes !== null) {
-                    foreach ($availableSizes as $sizeName) {
-                        if (isset($value['sizes'][$sizeName])) {
-                            $width = $sizeName . '-width';
-                            $height = $sizeName . '-height';
-                            $image->addSize(
-                                $value['sizes'][$sizeName],
-                                $value['sizes'][$width],
-                                $value['sizes'][$height],
-                                $sizeName
-                            );
+                    $image = new Image(
+                        $name,
+                        $field_data['source_url'],
+                        $field_data['title']['rendered'],
+                        $field_data['caption']['rendered'],
+                        $field_data['alt_text']
+                    );
+
+                    // Add sizes
+                    $availableSizes = $field->getOption('image_sizes');
+                    if ($availableSizes !== null) {
+                        foreach ($availableSizes as $sizeName) {
+                            if (isset($field_data['media_details']['sizes'][$sizeName])) {
+                                $image->addSize(
+                                    $field_data['media_details']['sizes'][$sizeName]['source_url'],
+                                    $field_data['media_details']['sizes'][$sizeName]['width'],
+                                    $field_data['media_details']['sizes'][$sizeName]['height'],
+                                    $sizeName
+                                );
+                            }
                         }
                     }
+
+                    return $image;
+                } elseif (is_array($value) ) {
+                    //image array passed on
+                    $image = new Image(
+                        $name,
+                        $value['url'],
+                        $value['title'],
+                        $value['caption'],
+                        $value['alt']
+                    );
+
+                    // Add sizes
+                    $availableSizes = $field->getOption('image_sizes');
+                    if ($availableSizes !== null) {
+                        foreach ($availableSizes as $sizeName) {
+                            if (isset($value['sizes'][$sizeName])) {
+                                $width = $sizeName . '-width';
+                                $height = $sizeName . '-height';
+                                $image->addSize(
+                                    $value['sizes'][$sizeName],
+                                    $value['sizes'][$width],
+                                    $value['sizes'][$height],
+                                    $sizeName
+                                );
+                            }
+                        }
+                    }
+                    return $image;
                 }
-                return $image;
                 break;
 
             case 'document':

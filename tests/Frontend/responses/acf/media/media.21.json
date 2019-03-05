@@ -1,0 +1,140 @@
+{
+  "id": 21,
+  "date": "2019-03-05T15:40:52",
+  "date_gmt": "2019-03-05T15:40:52",
+  "guid": {
+    "rendered": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png"
+  },
+  "modified": "2019-03-05T15:40:52",
+  "modified_gmt": "2019-03-05T15:40:52",
+  "slug": "screen-shot-2019-03-05-at-14-24-48",
+  "status": "inherit",
+  "type": "attachment",
+  "link": "http://local.wp-api.test/test-acf/screen-shot-2019-03-05-at-14-24-48/",
+  "title": {
+    "rendered": "Screen Shot 2019-03-05 at 14.24.48"
+  },
+  "author": 1,
+  "comment_status": "open",
+  "ping_status": "closed",
+  "template": "",
+  "meta": [],
+  "acf": [],
+  "description": {
+    "rendered": "<p class=\"attachment\"><a href='http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png'><img width=\"300\" height=\"23\" src=\"http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-300x23.png\" class=\"attachment-medium size-medium\" alt=\"\" srcset=\"http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-300x23.png 300w, http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-768x60.png 768w, http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png 1024w, http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-640x50.png 640w, http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png 1150w\" sizes=\"(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 300px\" /></a></p>\n"
+  },
+  "caption": {
+    "rendered": ""
+  },
+  "alt_text": "",
+  "media_type": "image",
+  "mime_type": "image/png",
+  "media_details": {
+    "width": 1150,
+    "height": 90,
+    "file": "2019/03/Screen-Shot-2019-03-05-at-14.24.48.png",
+    "sizes": {
+      "thumbnail": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48-150x90.png",
+        "width": 150,
+        "height": 90,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-150x90.png"
+      },
+      "medium": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48-300x23.png",
+        "width": 300,
+        "height": 23,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-300x23.png"
+      },
+      "medium_large": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48-768x60.png",
+        "width": 768,
+        "height": 60,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-768x60.png"
+      },
+      "large": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48-1024x80.png",
+        "width": 1024,
+        "height": 80,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png"
+      },
+      "featured-small": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48-640x90.png",
+        "width": 640,
+        "height": 90,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-640x90.png"
+      },
+      "fp-small": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48-640x50.png",
+        "width": 640,
+        "height": 50,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-640x50.png"
+      },
+      "fp-medium": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48-1024x80.png",
+        "width": 1024,
+        "height": 80,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png"
+      },
+      "full": {
+        "file": "Screen-Shot-2019-03-05-at-14.24.48.png",
+        "width": 1150,
+        "height": 90,
+        "mime_type": "image/png",
+        "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png"
+      }
+    },
+    "image_meta": {
+      "aperture": "0",
+      "credit": "",
+      "camera": "",
+      "caption": "",
+      "created_timestamp": "0",
+      "copyright": "",
+      "focal_length": "0",
+      "iso": "0",
+      "shutter_speed": "0",
+      "title": "",
+      "orientation": "0",
+      "keywords": []
+    }
+  },
+  "post": 11,
+  "source_url": "http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png",
+  "_links": {
+    "self": [
+      {
+        "href": "http://local.wp-api.test/wp-json/wp/v2/media/21"
+      }
+    ],
+    "collection": [
+      {
+        "href": "http://local.wp-api.test/wp-json/wp/v2/media"
+      }
+    ],
+    "about": [
+      {
+        "href": "http://local.wp-api.test/wp-json/wp/v2/types/attachment"
+      }
+    ],
+    "author": [
+      {
+        "embeddable": true,
+        "href": "http://local.wp-api.test/wp-json/wp/v2/users/1"
+      }
+    ],
+    "replies": [
+      {
+        "embeddable": true,
+        "href": "http://local.wp-api.test/wp-json/wp/v2/comments?post=21"
+      }
+    ]
+  }
+}

@@ -114,6 +114,11 @@ class WordPressTest extends TestCase
                 200,
                 [],
                 file_get_contents(__DIR__ . '/../responses/acf/media/media.3495.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.21.json')
             )
         ]);
 
@@ -214,5 +219,11 @@ class WordPressTest extends TestCase
         $this->assertEquals( '0:02', $audio->getLength());
         $this->assertEquals( 'Kyoto Bell', $audio->getTitle());
         $this->assertEmpty($audio->getDescription());
+
+        $image = $page->getContent()->get('image_by_id');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Image', $image);
+
+        $this->assertEquals( 'http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
+
     }
 }

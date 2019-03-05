@@ -30,3 +30,7 @@ project_video_array:
   type: video
 project_audio_array:
   type: audio
+image_by_id:
+  type: image
+image_by_array:
+  type: image
