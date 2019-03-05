@@ -161,7 +161,7 @@ class Wordpress extends ContentRepository
      */
     public function getPage(int $id): Page
     {
-        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), $id);
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $page = $this->cache->get($cacheKey);
             return $page;
@@ -196,7 +196,7 @@ class Wordpress extends ContentRepository
      */
     public function getMediaField(string $name, int $id): ?AssetField
     {
-        $cacheKey = $this->buildCacheKey('media', $id);
+        $cacheKey = $this->getCacheKey('media', $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $media = $this->cache->get($cacheKey);
             return $media;
@@ -501,7 +501,7 @@ class Wordpress extends ContentRepository
 
     public function getMenu(int $id)
     {
-        $cacheKey = $this->buildCacheKey('menu', $id);
+        $cacheKey = $this->getCacheKey('menu', $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $page = $this->cache->get($cacheKey);
             return $page;

@@ -8,6 +8,12 @@ use Twig\TwigFunction;
 /**
  * Twig custom functions and filters
  *
+ * To use add this to your services.yaml:
+
+    # Register Frontend Twig helpers
+    Studio24\Frontend\Twig\FrontendExtension:
+      tags: ['twig.extension']
+
  * @package Studio24\Frontend\Twig
  */
 class FrontendExtension extends AbstractExtension
@@ -16,7 +22,7 @@ class FrontendExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new TwigFunction('slugify', array($this, 'slugify'))
+            new TwigFunction('slugify', [$this, 'slugify'])
         );
     }
 
@@ -26,10 +32,10 @@ class FrontendExtension extends AbstractExtension
      * E.g. convert: My name is Earl
      * into: my-name-is-earl
      *
-     * @param string $string
+     * @param $string
      * @return string
      */
-    public function slugify(string $string): string
+    public function slugify($string): string
     {
         // Filter
         $string = mb_strtolower($string, 'UTF-8');

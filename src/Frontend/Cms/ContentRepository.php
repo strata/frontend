@@ -36,6 +36,8 @@ abstract class ContentRepository
      */
     protected $contentType;
 
+    protected $cacheKey;
+
     /**
      * Set the content model
      *
@@ -87,6 +89,34 @@ abstract class ContentRepository
         }
         return $this->contentType;
     }
+
+    /**
+     * Set cache key for current content request
+     *
+     * @param string $key
+     */
+    public function setCacheKey(string $key)
+    {
+        $this->cacheKey = $key;
+    }
+
+    /**
+     * Get cache key for current request
+     *
+     * If not set, build it from passed params
+     *
+     * @param mixed ...$params
+     * @return string
+     * @throws ApiException
+     */
+    public function getCacheKey(...$params)
+    {
+        if (empty($this->cacheKey)) {
+            return $this->buildCacheKey($params);
+        }
+        return $this->cacheKey ;
+    }
+
 
     /**
      * Does the content type exist?

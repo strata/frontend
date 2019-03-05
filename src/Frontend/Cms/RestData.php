@@ -116,7 +116,7 @@ class RestData extends ContentRepository
      */
     public function list(int $page = 1, array $options = []): PageCollection
     {
-        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), 'list', $options, $page);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $pages = $this->cache->get($cacheKey);
             return $pages;
@@ -164,7 +164,7 @@ class RestData extends ContentRepository
      */
     public function getOne($id): Page
     {
-        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), $id);
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $page = $this->cache->get($cacheKey);
             return $page;
