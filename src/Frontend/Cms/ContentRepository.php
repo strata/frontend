@@ -97,7 +97,7 @@ abstract class ContentRepository
      */
     public function setCacheKey(string $key)
     {
-        $this->cacheKey = $key;
+        $this->cacheKey = $this->filterCacheKey($key);
     }
 
     /**
@@ -160,6 +160,20 @@ abstract class ContentRepository
     }
 
     /**
+     * Filter cache key to ensure it is safe to use
+     *
+     * @param $string
+     * @return string
+     */
+    public function filterCacheKey($string): string
+    {
+        $string = (string) $string;
+        $string = preg_replace('![{}()\@:]!', '', $string);
+        $string = preg_replace('![\s/]!', '-', $string);
+        return $string;
+    }
+
+    /**
      * Build a cache key
      *
      * @param mixed ...$params An array of strings or single-level arrays used to build a cache key
@@ -168,25 +182,17 @@ abstract class ContentRepository
      */
     public function buildCacheKey(...$params): string
     {
-        // Remove disallowed characters
-        $filter = function ($string): string {
-            $string = (string) $string;
-            $string = preg_replace('![{}()/\@:]!', '', $string);
-            $string = preg_replace('/\s/', '-', $string);
-            return $string;
-        };
-
         $elements = [];
         foreach ($params as $param) {
             switch (gettype($param)) {
                 case 'string':
                     if (!empty($param)) {
-                        $elements[] = $filter($param);
+                        $elements[] = $this->filterCacheKey($param);
                     }
                     break;
                 case 'integer':
                 case 'double':
-                    $elements[] = $filter($param);
+                    $elements[] = $this->filterCacheKey($param);
                     break;
                 case 'boolean':
                     $elements[] = ($param) ? 'true' : 'false';
@@ -199,7 +205,7 @@ abstract class ContentRepository
                         if (is_array($value)) {
                             throw new ApiException('Cannot build cache key from a multidimensional array');
                         }
-                        $elements[] = $filter($key) . '=' . $filter($value);
+                        $elements[] = $this->filterCacheKey($key) . '=' . $this->filterCacheKey($value);
                     }
                     break;
                 default:
