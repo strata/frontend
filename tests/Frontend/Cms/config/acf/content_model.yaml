@@ -4,3 +4,18 @@ content_types:
   project:
     api_endpoint: projects
     content_fields: projects.yaml
+
+global:
+  image_sizes:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+    - featured-small
+    - featured-medium
+    - featured-large
+    - featured-xlarge
+    - fp-small
+    - fp-medium
+    - fp-large
+    - fp-xlarge

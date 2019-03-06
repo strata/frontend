@@ -222,7 +222,6 @@ class WordPressTest extends TestCase
 
         $image = $page->getContent()->get('image_by_id');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Image', $image);
-
         $this->assertEquals( 'http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
 
     }
