@@ -1,10 +1,28 @@
+# Application gitignore
+tests/Frontend/Cms/twig/cache/*
+!tests/Frontend/Cms/twig/cache/.gitkeep
 composer.phar
 composer.lock
 /vendor/
 .phpunit*
 
-# Application gitignore
-tests/Frontend/Cms/twig/cache/*
-!tests/Frontend/Cms/twig/cache/.gitkeep
+# Standard ignore rules
 
-.idea/
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs
+nbproject
+.komodotools
+.buildpath
+.project
+.settings
+.idea
+*.sublime-project
+*.sublime-workspace
