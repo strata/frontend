@@ -184,7 +184,7 @@ class WordPressTest extends TestCase
         $video = $page->getContent()->get('project_video');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
 
-        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
         $this->assertEquals('6.42 MB', $video->getFileSize());
         $this->assertEquals('1862802', $video->getBitRate());
         $this->assertEquals('0:29', $video->getLength());
@@ -194,7 +194,7 @@ class WordPressTest extends TestCase
         $video = $page->getContent()->get('project_video_array');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
 
-        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
         $this->assertEquals('6.42 MB', $video->getFileSize());
         $this->assertEquals('1862802', $video->getBitRate());
         $this->assertEquals('0:29', $video->getLength());
@@ -205,7 +205,7 @@ class WordPressTest extends TestCase
         $audio = $page->getContent()->get('project_audio');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
 
-        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
         $this->assertEquals('32.24 KB', $audio->getFileSize());
         $this->assertEquals('128000', $audio->getBitRate());
         $this->assertEquals('0:02', $audio->getLength());
@@ -215,7 +215,7 @@ class WordPressTest extends TestCase
         $audio = $page->getContent()->get('project_audio_array');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
 
-        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
         $this->assertEquals('32.24 KB', $audio->getFileSize());
         $this->assertEquals('128000', $audio->getBitRate());
         $this->assertEquals('0:02', $audio->getLength());

@@ -3,14 +3,14 @@
   "date": "2019-02-28T12:53:37",
   "date_gmt": "2019-02-28T12:53:37",
   "guid": {
-    "rendered": "http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3"
+    "rendered": "http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3"
   },
   "modified": "2019-02-28T12:53:37",
   "modified_gmt": "2019-02-28T12:53:37",
   "slug": "kyoto-bell",
   "status": "inherit",
   "type": "attachment",
-  "link": "http://local.aht.org.uk/kyoto-bell",
+  "link": "http://local.client.com/kyoto-bell",
   "title": {
     "rendered": "Kyoto Bell"
   },
@@ -20,10 +20,10 @@
   "template": "",
   "meta": [],
   "description": {
-    "rendered": "<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n<audio class=\"wp-audio-shortcode\" id=\"audio-3495-1\" preload=\"none\" style=\"width: 100%;\" controls=\"controls\"><source type=\"audio/mpeg\" src=\"http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3?_=1\" /><a href=\"http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3\">http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3</a></audio>\n<p>&#8220;Kyoto Bell&#8221;.</p>\n"
+    "rendered": "<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n<audio class=\"wp-audio-shortcode\" id=\"audio-3495-1\" preload=\"none\" style=\"width: 100%;\" controls=\"controls\"><source type=\"audio/mpeg\" src=\"http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3?_=1\" /><a href=\"http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3\">http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3</a></audio>\n<p>&#8220;Kyoto Bell&#8221;.</p>\n"
   },
   "caption": {
-    "rendered": "<p>http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3 &#8220;Kyoto Bell&#8221;.</p>\n"
+    "rendered": "<p>http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3 &#8220;Kyoto Bell&#8221;.</p>\n"
   },
   "alt_text": "",
   "media_type": "file",
@@ -48,24 +48,24 @@
     "sizes": {}
   },
   "post": null,
-  "source_url": "http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3",
+  "source_url": "http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3",
   "_links": {
     "self": [
       {
         "attributes": [],
-        "href": "http://local.aht.org.uk/wp-json/wp/v2/media/3495"
+        "href": "http://local.client.com/wp-json/wp/v2/media/3495"
       }
     ],
     "collection": [
       {
         "attributes": [],
-        "href": "http://local.aht.org.uk/wp-json/wp/v2/media"
+        "href": "http://local.client.com/wp-json/wp/v2/media"
       }
     ],
     "about": [
       {
         "attributes": [],
-        "href": "http://local.aht.org.uk/wp-json/wp/v2/types/attachment"
+        "href": "http://local.client.com/wp-json/wp/v2/types/attachment"
       }
     ],
     "author": [
@@ -73,7 +73,7 @@
         "attributes": {
           "embeddable": true
         },
-        "href": "http://local.aht.org.uk/wp-json/wp/v2/users/1"
+        "href": "http://local.client.com/wp-json/wp/v2/users/1"
       }
     ],
     "replies": [
@@ -81,7 +81,7 @@
         "attributes": {
           "embeddable": true
         },
-        "href": "http://local.aht.org.uk/wp-json/wp/v2/comments?post=3495"
+        "href": "http://local.client.com/wp-json/wp/v2/comments?post=3495"
       }
     ]
   }
