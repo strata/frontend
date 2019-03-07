@@ -49,7 +49,7 @@ trait SizesTrait
     public function setSizes(array $sizes)
     {
         foreach ($sizes as $size) {
-            if (!empty($size['url'])) {
+            if (empty($size['url'])) {
                 throw new ContentFieldException("You must set 'url' for the image size");
             }
             $width = $size['width'] ?? null;
@@ -72,7 +72,7 @@ trait SizesTrait
             $this->sizes = new ImageSizeCollection();
         }
 
-        return new $this->sizes;
+        return $this->sizes;
     }
 
     /**

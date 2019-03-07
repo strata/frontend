@@ -40,19 +40,26 @@ class Document extends AssetField
         'application/vnd.apple.pages',
     ];
 
+    protected $filesize = '';
+
     /**
      * Create document content field
      *
      * @param string $name Content field name
      * @param string $url Asset URL
+     * @param string $filesize Size of file as formatted string
      * @param string|null $title Title
      * @param string|null $description Description
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function __construct(string $name, string $url, string $title = null, string $description = null)
+    public function __construct(string $name, string $url, string $filesize = null, string $title = null, string $description = null)
     {
         $this->setName($name);
         $this->setUrl($url);
+
+        if (!empty($filesize)) {
+            $this->setFileSize($filesize);
+        }
 
         if (!empty($title)) {
             $this->setTitle($title);
@@ -63,6 +70,16 @@ class Document extends AssetField
     }
 
     /**
+     * Return filezise
+     *
+     * @return string
+     */
+    public function getFileSize(): string
+    {
+        return $this->filesize;
+    }
+
+    /**
      * Return img URL
      *
      * @return string
@@ -70,6 +87,17 @@ class Document extends AssetField
     public function getValue(): string
     {
         return $this->getUrl();
+    }
+
+    /**
+     * Set file size
+     *
+     * @return string
+     */
+    protected function setFileSize(string $filesize)
+    {
+        $this->filesize = $filesize;
+        return $this;
     }
 
     /**

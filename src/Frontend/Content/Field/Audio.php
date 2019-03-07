@@ -8,9 +8,11 @@ namespace Studio24\Frontend\Content\Field;
  *
  * @package Studio24\Frontend\Content\Field
  */
-class Audio extends AssetField
+class Audio extends PlayableMediaAsset
 {
     const TYPE = 'audio';
+
+    protected $mediaParameters;
 
     public static $allowedMimeTypes = [
         'audio/mpeg',
@@ -24,44 +26,46 @@ class Audio extends AssetField
     ];
 
     /**
-     * Create audio content field
+     * Audio constructor.
      *
-     * @param string $name Content field name
-     * @param string $url Asset URL
-     * @param string|null $title Title
-     * @param string|null $description Description
+     * @param string $name
+     * @param string $url
+     * @param string $filesize
+     * @param int|string $bitrate
+     * @param string $length
+     * @param array $media_parameters
+     * @param string|null $title
+     * @param string|null $description
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function __construct(string $name, string $url, string $title = null, string $description = null)
+    public function __construct(string $name, string $url, string $filesize, $bitrate, string $length, array $mediaParameters, string $title = null, string $description = null)
     {
-        $this->setName($name);
-        $this->setUrl($url);
+        parent::__construct($name, $url, $filesize, $bitrate, $length, $title, $description);
 
-        if (!empty($title)) {
-            $this->setTitle($title);
-        }
-        if (!empty($description)) {
-            $this->setDescription($description);
-        }
+        $this->setMediaParameters($mediaParameters);
+    }
+
+
+    /**
+     * Returns array of media parameters, e.g. encoder, sample_rate
+     *
+     * @return array
+     */
+    public function getMediaParameters(): array
+    {
+        return $this->mediaParameters;
     }
 
     /**
-     * Return img URL
+     * Sets media parameters extra properties, e.g. encoder, sample_rate
      *
-     * @return string
+     * @param array $mediaParameters
+     * @return $this
      */
-    public function getValue(): string
+    public function setMediaParameters(array $mediaParameters)
     {
-        return $this->getUrl();
-    }
+        $this->mediaParameters = $mediaParameters;
 
-    /**
-     * Return string representation of content field
-     *
-     * @return string
-     */
-    public function __toString() : string
-    {
-        return $this->getUrl();
+        return $this;
     }
 }

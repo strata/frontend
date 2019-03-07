@@ -93,10 +93,33 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
-                [],
-                file_get_contents(__DIR__ . '/../responses/acf/media/media.81.json')
+                ['Content-length' => 23857 ]
             ),
-
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3496.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3495.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3496.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3495.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.21.json')
+            )
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -145,14 +168,63 @@ class WordPressTest extends TestCase
                 case 0:
                     $this->assertEquals("http://localhost/wp-content/uploads/2019/02/test_2.pdf", $doc->getUrl());
                     $this->assertEquals("test_2", $doc->getTitle());
+                    $this->assertEquals("23.3 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
                     break;
                 case 1:
-                    $this->assertEquals("http://localhost/wp-content/uploads/2019/02/test_4.pdf", $doc->getUrl());
-                    $this->assertEquals("test_4", $doc->getTitle());
+                    $this->assertEquals("http://local.wp-api.test/wp-content/uploads/2019/03/timeline-IRIS-Education-website-roll-out-.pdf", $doc->getUrl());
+                    $this->assertEquals("timeline - IRIS Education website roll out", $doc->getTitle());
+                    $this->assertEquals("165.83 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
                     break;
             }
         }
+
+        //Test video
+        $video = $page->getContent()->get('project_video');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
+
+        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals( '6.42 MB', $video->getFileSize());
+        $this->assertEquals( '1862802', $video->getBitRate());
+        $this->assertEquals( '0:29', $video->getLength());
+        $this->assertEquals( 'Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
+        $this->assertEmpty($video->getDescription());
+
+        $video = $page->getContent()->get('project_video_array');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
+
+        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals( '6.42 MB', $video->getFileSize());
+        $this->assertEquals( '1862802', $video->getBitRate());
+        $this->assertEquals( '0:29', $video->getLength());
+        $this->assertEquals( 'Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
+        $this->assertEmpty($video->getDescription());
+
+        //Test audio
+        $audio = $page->getContent()->get('project_audio');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
+
+        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals( '32.24 KB', $audio->getFileSize());
+        $this->assertEquals( '128000', $audio->getBitRate());
+        $this->assertEquals( '0:02', $audio->getLength());
+        $this->assertEquals( 'Kyoto Bell', $audio->getTitle());
+        $this->assertEmpty($audio->getDescription());
+
+        $audio = $page->getContent()->get('project_audio_array');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
+
+        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals( '32.24 KB', $audio->getFileSize());
+        $this->assertEquals( '128000', $audio->getBitRate());
+        $this->assertEquals( '0:02', $audio->getLength());
+        $this->assertEquals( 'Kyoto Bell', $audio->getTitle());
+        $this->assertEmpty($audio->getDescription());
+
+        $image = $page->getContent()->get('image_by_id');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Image', $image);
+        $this->assertEquals( 'http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
+        $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png', $image->byName('fp-medium'));
     }
 }
