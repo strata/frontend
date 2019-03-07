@@ -345,60 +345,69 @@ class Wordpress extends ContentRepository
                 break;
 
             case 'image':
+                $sizesData = array();
                 if (is_int($value)) {
                     //image ID passed on
                     $field_data = $this->getMediaDataById($name, $value);
+
+                    // Add sizes
+                    $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
+                    if ($availableSizes !== null) {
+                        foreach ($availableSizes as $sizeName) {
+                            if (isset($field_data['media_details']['sizes'][$sizeName])) {
+                                array_push(
+                                    $sizesData,
+                                    array(
+                                        'url' => $field_data['media_details']['sizes'][$sizeName]['source_url'],
+                                        'width' => $field_data['media_details']['sizes'][$sizeName]['width'],
+                                        'height' => $field_data['media_details']['sizes'][$sizeName]['height'],
+                                        'name' => $sizeName
+                                    )
+                                );
+                            }
+                        }
+                    }
 
                     $image = new Image(
                         $name,
                         $field_data['source_url'],
                         $field_data['title']['rendered'],
                         $field_data['caption']['rendered'],
-                        $field_data['alt_text']
+                        $field_data['alt_text'],
+                        $sizesData
                     );
 
+                    return $image;
+                } elseif (is_array($value) ) {
+                    //image array passed on
+
                     // Add sizes
-                    $availableSizes = $field->getOption('image_sizes');
+                    $availableSizes = $field->getOption('image_sizes' , $this->getContentModel());
                     if ($availableSizes !== null) {
                         foreach ($availableSizes as $sizeName) {
-                            if (isset($field_data['media_details']['sizes'][$sizeName])) {
-                                $image->addSize(
-                                    $field_data['media_details']['sizes'][$sizeName]['source_url'],
-                                    $field_data['media_details']['sizes'][$sizeName]['width'],
-                                    $field_data['media_details']['sizes'][$sizeName]['height'],
-                                    $sizeName
+                            if (isset($value['sizes'][$sizeName])) {
+                                array_push(
+                                    $sizesData,
+                                    array(
+                                        'url' => $value['sizes'][$sizeName],
+                                        'width' => $value['sizes'][$sizeName.'-width'],
+                                        'height' => $value['sizes'][$sizeName.'-height'],
+                                        'name' => $sizeName
+                                    )
                                 );
                             }
                         }
                     }
 
-                    return $image;
-                } elseif (is_array($value) ) {
-                    //image array passed on
                     $image = new Image(
                         $name,
                         $value['url'],
                         $value['title'],
                         $value['caption'],
-                        $value['alt']
+                        $value['alt'],
+                        $sizesData
                     );
 
-                    // Add sizes
-                    $availableSizes = $field->getOption('image_sizes');
-                    if ($availableSizes !== null) {
-                        foreach ($availableSizes as $sizeName) {
-                            if (isset($value['sizes'][$sizeName])) {
-                                $width = $sizeName . '-width';
-                                $height = $sizeName . '-height';
-                                $image->addSize(
-                                    $value['sizes'][$sizeName],
-                                    $value['sizes'][$width],
-                                    $value['sizes'][$height],
-                                    $sizeName
-                                );
-                            }
-                        }
-                    }
                     return $image;
                 }
                 break;
