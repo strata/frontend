@@ -15,7 +15,7 @@ class FileInfoFormatter
      * @param int $sizeInByte
      * @return string
      */
-    public static function formatFileSize($sizeInByte = 0 ): string
+    public static function formatFileSize($sizeInByte = 0): string
     {
         if (empty($sizeInByte)) {
             $size = '0 B';
@@ -42,5 +42,4 @@ class FileInfoFormatter
 
         return $size;
     }
-
 }

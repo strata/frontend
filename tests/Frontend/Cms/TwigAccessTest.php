@@ -56,15 +56,13 @@ Some name here
 
 EOD;
         $template = $twig->load('metadata.html.twig');
-        $this->assertEquals( $expected, $template->render(['metadata' => $projects->getMetadata()]));
+        $this->assertEquals($expected, $template->render(['metadata' => $projects->getMetadata()]));
 
         $expected = <<<EOD
 This is page 1, displaying results 1-10
 
 EOD;
         $template = $twig->load('pagination.html.twig');
-        $this->assertEquals( $expected, $template->render(['pagination' => $projects->getPagination()]));
+        $this->assertEquals($expected, $template->render(['pagination' => $projects->getPagination()]));
     }
-
-
 }

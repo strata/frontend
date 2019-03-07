@@ -184,47 +184,47 @@ class WordPressTest extends TestCase
         $video = $page->getContent()->get('project_video');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
 
-        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
-        $this->assertEquals( '6.42 MB', $video->getFileSize());
-        $this->assertEquals( '1862802', $video->getBitRate());
-        $this->assertEquals( '0:29', $video->getLength());
-        $this->assertEquals( 'Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
+        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals('6.42 MB', $video->getFileSize());
+        $this->assertEquals('1862802', $video->getBitRate());
+        $this->assertEquals('0:29', $video->getLength());
+        $this->assertEquals('Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
         $this->assertEmpty($video->getDescription());
 
         $video = $page->getContent()->get('project_video_array');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
 
-        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
-        $this->assertEquals( '6.42 MB', $video->getFileSize());
-        $this->assertEquals( '1862802', $video->getBitRate());
-        $this->assertEquals( '0:29', $video->getLength());
-        $this->assertEquals( 'Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
+        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals('6.42 MB', $video->getFileSize());
+        $this->assertEquals('1862802', $video->getBitRate());
+        $this->assertEquals('0:29', $video->getLength());
+        $this->assertEquals('Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
         $this->assertEmpty($video->getDescription());
 
         //Test audio
         $audio = $page->getContent()->get('project_audio');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
 
-        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
-        $this->assertEquals( '32.24 KB', $audio->getFileSize());
-        $this->assertEquals( '128000', $audio->getBitRate());
-        $this->assertEquals( '0:02', $audio->getLength());
-        $this->assertEquals( 'Kyoto Bell', $audio->getTitle());
+        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals('32.24 KB', $audio->getFileSize());
+        $this->assertEquals('128000', $audio->getBitRate());
+        $this->assertEquals('0:02', $audio->getLength());
+        $this->assertEquals('Kyoto Bell', $audio->getTitle());
         $this->assertEmpty($audio->getDescription());
 
         $audio = $page->getContent()->get('project_audio_array');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
 
-        $this->assertEquals( 'http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
-        $this->assertEquals( '32.24 KB', $audio->getFileSize());
-        $this->assertEquals( '128000', $audio->getBitRate());
-        $this->assertEquals( '0:02', $audio->getLength());
-        $this->assertEquals( 'Kyoto Bell', $audio->getTitle());
+        $this->assertEquals('http://local.aht.org.uk/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals('32.24 KB', $audio->getFileSize());
+        $this->assertEquals('128000', $audio->getBitRate());
+        $this->assertEquals('0:02', $audio->getLength());
+        $this->assertEquals('Kyoto Bell', $audio->getTitle());
         $this->assertEmpty($audio->getDescription());
 
         $image = $page->getContent()->get('image_by_id');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Image', $image);
-        $this->assertEquals( 'http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
+        $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
         $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png', $image->byName('fp-medium'));
     }
 }

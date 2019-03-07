@@ -97,7 +97,7 @@ class Field implements FieldInterface
 
         $globalOptionValue = $contentModel->getGlobal($name);
 
-        if ( !empty($globalOptionValue)) {
+        if (!empty($globalOptionValue)) {
             return $globalOptionValue;
         }
 

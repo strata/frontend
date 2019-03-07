@@ -20,5 +20,4 @@ class TwigTest extends TestCase
         $this->assertEquals('urljavascriptalertthe-secret-is-to-askwindowlocationreplacedo-something', $twig->slugify('url"javascript:alert(\'the secret is to ask.\');window.location.replace(\'Do something\')'));
         $this->assertEquals('a-lot-of-spaces', $twig->slugify('a lot    of         spaces'));
     }
-
 }

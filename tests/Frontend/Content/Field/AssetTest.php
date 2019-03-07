@@ -25,7 +25,7 @@ class AssetTest extends TestCase
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Document', $asset);
         $this->assertEquals('my_document', $asset->getName());
 
-        $asset = AssetField::factory('audio/wav', 'my_audio', 'url' , '219874', '129', '0:30' , []);
+        $asset = AssetField::factory('audio/wav', 'my_audio', 'url', '219874', '129', '0:30', []);
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $asset);
         $this->assertEquals('my_audio', $asset->getName());
     }

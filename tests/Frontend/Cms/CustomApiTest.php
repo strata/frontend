@@ -42,7 +42,7 @@ class CustomApiTest extends TestCase
         $projects = $api->list();
 
         $this->assertEquals(1, $projects->getPagination()->getPage());
-        $this->assertEquals( "Some name here", $projects->getMetadata()->offsetGet('my_title'));
+        $this->assertEquals("Some name here", $projects->getMetadata()->offsetGet('my_title'));
 
         $x = 0;
         foreach ($projects as $item) {
@@ -90,6 +90,4 @@ class CustomApiTest extends TestCase
         $update = $project->getContent()->get('updates')->current();
         $this->assertEquals("An update 2A", $update->get('update_title')->__toString());
     }
-
-
 }
