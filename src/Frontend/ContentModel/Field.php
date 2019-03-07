@@ -105,6 +105,17 @@ class Field implements FieldInterface
     }
 
     /**
+     * Return whether the content field has this option set
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function hasOption(string $name): bool
+    {
+        return isset($this->options[$name]);
+    }
+
+    /**
      * @param string $name
      * @param mixed $value
      * @return Field Fluent interface

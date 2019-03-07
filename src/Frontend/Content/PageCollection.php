@@ -15,9 +15,17 @@ class PageCollection implements \SeekableIterator, \Countable
      */
     protected $pagination;
 
+    /**
+     * Metadata
+     *
+     * @var Metadata
+     */
+    protected $metadata;
+
     public function __construct(PaginationInterface $pagination)
     {
         $this->pagination = $pagination;
+        $this->metadata = new Metadata();
     }
 
     /**
@@ -35,6 +43,11 @@ class PageCollection implements \SeekableIterator, \Countable
     public function getPagination(): PaginationInterface
     {
         return $this->pagination;
+    }
+
+    public function getMetadata(): Metadata
+    {
+        return $this->metadata;
     }
     
     /**

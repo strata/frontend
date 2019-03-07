@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
 
@@ -40,10 +41,17 @@ class Boolean extends ContentField
         if (is_bool($value)) {
             $this->value = $value;
         }
-        if (preg_match('/(y|yes|1)/i', $value)) {
-            $this->value = true;
+        if (!is_string($value)) {
+            if (preg_match('/(y|yes|1)/i', $value)) {
+                $this->value = true;
+            }
+            if (preg_match('/(n|no|0)/i', $value)) {
+                $this->value = false;
+            }
         }
-        if (preg_match('/(n|no|0)/i', $value)) {
+        if ($value === 1) {
+            $this->value = true;
+        } else {
             $this->value = false;
         }
 

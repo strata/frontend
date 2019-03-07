@@ -133,6 +133,30 @@ class Wordpress extends RestApiAbstract
         return $data;
     }
 
+    /**
+     * Get menu data
+     *
+     * URL format https://domain.com/wp-json/wp-api-menus/v2/menus/2
+     * @see https://github.com/unfulvio/wp-api-menus
+     *
+     * @param int $id Menu ID
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getMenu(int $id): array
+    {
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
+
+        // @todo Need to alter other WP base URLs to https://domain.com/wp-json/ & API URL endpoints to the format: wp/v2/posts
+        $response = $this->get("wp-api-menus/v2/menus/$id");
+        $data = $this->parseJsonResponse($response);
+
+        return $data;
+    }
+
 
     /**
      * @param int $id

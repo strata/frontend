@@ -2,7 +2,8 @@
     "meta": {
         "total_results": 148,
         "limit": 10,
-        "page": 1
+        "page": 1,
+        "my_title": "Some name here"
     },
     "results": [
         {

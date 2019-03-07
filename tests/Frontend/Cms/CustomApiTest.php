@@ -24,6 +24,11 @@ class CustomApiTest extends TestCase
                 ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
                 file_get_contents(__DIR__ . '/../responses/custom/projects.json')
             ),
+            new Response(
+                200,
+                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
+                file_get_contents(__DIR__ . '/../responses/custom/project.1.json')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -37,6 +42,8 @@ class CustomApiTest extends TestCase
         $projects = $api->list();
 
         $this->assertEquals(1, $projects->getPagination()->getPage());
+        $this->assertEquals( "Some name here", $projects->getMetadata()->offsetGet('my_title'));
+
         $x = 0;
         foreach ($projects as $item) {
             switch ($x) {
@@ -73,5 +80,16 @@ class CustomApiTest extends TestCase
             }
             $x++;
         }
+
+        $project = $api->getOne(1);
+        $this->assertEquals("Professional Economist Apprenticeship", $project->getContent()->get('title'));
+        $this->assertEquals("<p>Lorem ipsum text here</p>", $project->getContent()->get('description'));
+        $this->assertEquals("2018-07-11", $project->getContent()->get('open_date'));
+
+        $project->getContent()->get('updates')->seek(1);
+        $update = $project->getContent()->get('updates')->current();
+        $this->assertEquals("An update 2A", $update->get('update_title')->__toString());
     }
+
+
 }

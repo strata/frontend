@@ -8,13 +8,16 @@ use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
-use Studio24\Frontend\Content\Field\Video;
+use Studio24\Frontend\Content\Menus\MenuItem;
+use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\Exception\ContentFieldException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
 use Studio24\Frontend\Content\BaseContent;
@@ -122,8 +125,7 @@ class Wordpress extends ContentRepository
         array $options = []
     ): PageCollection {
 
-        // @todo Need to add unique identifier for this data based on options array
-        $cacheKey = sprintf('%s.list.%s', $this->getContentType()->getName(), $page);
+        $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $pages = $this->cache->get($cacheKey);
             return $pages;
@@ -161,7 +163,7 @@ class Wordpress extends ContentRepository
      */
     public function getPage(int $id): Page
     {
-        $cacheKey = sprintf('%s.%s', $this->getContentType(), $id);
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $page = $this->cache->get($cacheKey);
             return $page;
@@ -196,7 +198,7 @@ class Wordpress extends ContentRepository
      */
     public function getMediaDataById(string $name, int $id): array
     {
-        $cacheKey = sprintf('media.%s', $id);
+        $cacheKey = $this->getCacheKey('media', $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $media_data = $this->cache->get($cacheKey);
             return $media_data;
@@ -268,7 +270,8 @@ class Wordpress extends ContentRepository
             $page->addContent(new RichText('content', FieldFinder::content($data)));
         }
 
-        if (isset($data['acf'])) {
+        // ACF content fields
+        if (isset($data['acf']) && is_array($data['acf'])) {
             $this->setCustomContentFields($this->getContentType(), $page, $data['acf']);
         }
     }
@@ -308,41 +311,37 @@ class Wordpress extends ContentRepository
      * @param FieldInterface $field Content field definition
      * @param mixed $value Content field value
      * @return ContentFieldInterface Populated content field object, or null on failure
-     * @throws ContentTypeNotSetException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
-     * @throws ContentFieldNotSetException
+     * @throws ContentFieldException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
     {
-        $name = $field->getName();
-        switch ($field->getType()) {
-            case 'text':
-                return new ShortText($name, $value);
-                break;
+        try {
+            $name = $field->getName();
+            switch ($field->getType()) {
+                case 'text':
+                    return new ShortText($name, $value);
+                    break;
 
-            case 'plaintext':
-                return new PlainText($name, $value);
-                break;
+                case 'plaintext':
+                    return new PlainText($name, $value);
+                    break;
 
-            case 'richtext':
-                return new RichText($name, $value);
-                break;
+                case 'richtext':
+                    return new RichText($name, $value);
+                    break;
 
-            case 'number':
-                return new Number($name, $value);
-                break;
+                case 'number':
+                    return new Number($name, $value);
+                    break;
 
-            case 'date':
-                return new Date($name, $value);
-                break;
+                case 'date':
+                    return new Date($name, $value);
+                    break;
 
-            case 'datetime':
-                return new DateTime($name, $value);
-                break;
-
-            case 'boolean':
-                return new Boolean($name, $value);
-                break;
+                case 'datetime':
+                    return new DateTime($name, $value);
+                    break;
 
             case 'image':
                 $sizesData = array();
@@ -508,58 +507,77 @@ class Wordpress extends ContentRepository
 
                 break;
 
-            case 'array':
-                $array = new ArrayContent($name);
+                case 'array':
+                    $array = new ArrayContent($name);
 
-                if (!is_array($value)) {
-                    break;
-                }
-
-                // Loop through data array
-                foreach ($value as $row) {
-                    // For each row add a set of content fields
-                    $item = new ContentFieldCollection();
-                    foreach ($field as $childField) {
-                        if (!isset($row[$childField->getName()])) {
-                            continue;
-                        }
-                        $childValue = $row[$childField->getName()];
-                        $contentField = $this->getContentField($childField, $childValue);
-                        if ($contentField !== null) {
-                            $item->addItem($contentField);
-                        }
+                    if (!is_array($value)) {
+                        break;
                     }
-                    $array->addItem($item);
-                }
 
-                return $array;
-                break;
+                    // Loop through data array
+                    foreach ($value as $row) {
+                        // For each row add a set of content fields
+                        $item = new ContentFieldCollection();
+                        foreach ($field as $childField) {
+                            if (!isset($row[$childField->getName()])) {
+                                continue;
+                            }
+                            $childValue = $row[$childField->getName()];
+                            $contentField = $this->getContentField($childField, $childValue);
+                            if ($contentField !== null) {
+                                $item->addItem($contentField);
+                            }
+                        }
+                        $array->addItem($item);
+                    }
 
-            // @todo test relation
-            case 'relation':
-                $relation = new Relation($name);
-                $this->setContentFields($relation->getContent(), $value);
-                return $relation;
-                break;
+                    return $array;
+                    break;
 
-            /**
-             * @todo Build & test Flexible content field
-            case 'flexible':
-            if (!is_array($value)) {
-            break;
+                // @todo test relation
+                case 'relation':
+                    if (!is_array($value) || !$field->hasOption('content_type')) {
+                        break;
+                    }
+
+                    // Swap to relation content type
+                    $currentContentType = $this->getContentType()->getName();
+
+                    $relation = new Relation($name);
+                    $this->setContentType($field->getOption('content_type'));
+                    $this->setContentFields($relation->getContent(), $value);
+
+                    // Swap back to original content type
+                    $this->setContentType($currentContentType);
+
+                    return $relation;
+                    break;
+
+                /**
+                 * @todo Build & test Flexible content field
+                 * case 'flexible':
+                 * if (!is_array($value)) {
+                 * break;
+                 * }
+                 *
+                 * $flexible = new FlexibleContent($name);
+                 *
+                 * foreach ($contentField as $componentType) {
+                 * $component = new Component($componentType->getName());
+                 * $this->setCustomContentFields($componentType, $component, $value);
+                 * $flexible->addComponent($component);
+                 * }
+                 *
+                 * $content->addContent($flexible);
+                 * break;
+                 */
             }
-
-            $flexible = new FlexibleContent($name);
-
-            foreach ($contentField as $componentType) {
-            $component = new Component($componentType->getName());
-            $this->setCustomContentFields($componentType, $component, $value);
-            $flexible->addComponent($component);
-            }
-
-            $content->addContent($flexible);
-            break;
-             */
+        } catch (\Error $e) {
+            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        } catch (\Exception $e) {
+            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
         }
 
         return null;
@@ -576,10 +594,86 @@ class Wordpress extends ContentRepository
     {
         $user = new User();
         $user->setId($data['id'])
-          ->setName($data['name']);
+            ->setName($data['name']);
         if (!empty($data['description'])) {
             $user->setBio($data['description']);
         }
         return $user;
+    }
+
+
+    public function getMenu(int $id)
+    {
+        $cacheKey = $this->getCacheKey('menu', $id);
+        if ($this->hasCache() && $this->cache->has($cacheKey)) {
+            $page = $this->cache->get($cacheKey);
+            return $page;
+        }
+
+        // Get menu data
+        $data = $this->api->getMenu($id);
+
+        $menu = $this->createMenu($data);
+        return $menu;
+    }
+
+    private function createMenu($data): Menu
+    {
+        $menu = new Menu();
+
+        $menu->setId($data['ID']);
+        $menu->setName($data['name']);
+        $menu->setSlug($data['slug']);
+        $menu->setDescription($data['description']);
+
+        $menu = $this->generateMenuItems($data['items'], $menu);
+
+        return $menu;
+    }
+
+    /**
+     * @param $array
+     * @param Menu $menu
+     * @return Menu
+     */
+    private function generateMenuItems($array, $menu)
+    {
+        $menu = clone $menu;
+        foreach ($array as $element) {
+            $menuItem = new MenuItem();
+            $menuItem->setId($element['id']);
+            $menuItem->setUrl($element['url']);
+            $menuItem->setLabel($element['title']);
+
+            if (isset($element['children'])) {
+                $menu->getChildren()->addItem($this->generateMenuItemChildren($element['children'], $menuItem));
+            } else {
+                $menu->getChildren()->addItem($menuItem);
+            }
+        }
+        return $menu;
+    }
+    // TODO refactor these duplicate functions
+    /**
+     * @param $array
+     * @param MenuItem $menuItemParent
+     * @return MenuItem
+     */
+    private function generateMenuItemChildren($array, $menuItemParent)
+    {
+        $menuItemParent = clone $menuItemParent;
+        foreach ($array as $element) {
+            $menuItem = new MenuItem();
+            $menuItem->setId($element['id']);
+            $menuItem->setUrl($element['url']);
+            $menuItem->setLabel($element['title']);
+
+            if (isset($element['children'])) {
+                $menuItemParent->getChildren()->addItem($this->generateMenuItemChildren($element['children'], $menuItem));
+            } else {
+                $menuItemParent->getChildren()->addItem($menuItem);
+            }
+        }
+        return $menuItemParent;
     }
 }

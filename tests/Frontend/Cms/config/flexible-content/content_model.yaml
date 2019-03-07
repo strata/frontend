@@ -1,0 +1,7 @@
+content_types:
+  news:
+    api_endpoint: posts
+    content_fields: news.yaml
+  user:
+    api_endpoint: user
+    content_fields: user.yaml

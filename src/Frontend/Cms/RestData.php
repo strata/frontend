@@ -15,8 +15,10 @@ use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\Video;
+use Studio24\Frontend\Content\Metadata;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
 use Studio24\Frontend\Content\BaseContent;
@@ -114,8 +116,7 @@ class RestData extends ContentRepository
      */
     public function list(int $page = 1, array $options = []): PageCollection
     {
-        // @todo Need to add unique identifier for this data based on options array
-        $cacheKey = sprintf('%s.list.%s', $this->getContentType()->getName(), $page);
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), 'list', $page, extract($options));
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
             $pages = $this->cache->get($cacheKey);
             return $pages;
@@ -132,6 +133,15 @@ class RestData extends ContentRepository
             $pages->addItem($this->createPage($pageData));
         }
 
+        // Any metadata?
+        $metadata = $pages->getMetadata();
+        $ignoreMetadata = ['total_results', 'limit', 'results', 'page'];
+        foreach ($list->getMetadata() as $key => $value) {
+            if (!in_array($key, $ignoreMetadata)) {
+                $metadata->add($key, $value);
+            }
+        }
+
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $pages);
         }
@@ -140,10 +150,44 @@ class RestData extends ContentRepository
     }
 
     /**
+     * Return a single item
+     *
+     * @param mixed $id Identifier value
+     * @param string $contentType
+     * @return Page
+     * @throws ContentFieldNotSetException
+     * @throws ContentTypeNotSetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getOne($id): Page
+    {
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
+        if ($this->hasCache() && $this->cache->has($cacheKey)) {
+            $page = $this->cache->get($cacheKey);
+            return $page;
+        }
+
+        // Get content
+        $data = $this->api->getOne($this->getContentApiEndpoint(), $id);
+        $page = $this->createPage($data);
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $page);
+        }
+
+        return $page;
+    }
+
+
+    /**
      * Generate page object from API data
      *
      * @param array $data
      * @return Page
+     * @throws ContentFieldNotSetException
      * @throws ContentTypeNotSetException
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
@@ -211,62 +255,70 @@ class RestData extends ContentRepository
      */
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
     {
-        $name = $field->getName();
-        switch ($field->getType()) {
-            case 'number':
-                return new Number($name, $value);
-                break;
-
-            case 'text':
-                return new ShortText($name, $value);
-                break;
-
-            case 'plaintext':
-                return new PlainText($name, $value);
-                break;
-
-            case 'richtext':
-                return new RichText($name, $value);
-                break;
-
-            case 'date':
-                return new Date($name, $value);
-                break;
-
-            case 'datetime':
-                return new DateTime($name, $value);
-                break;
-
-            case 'boolean':
-                return new Boolean($name, $value);
-                break;
-
-            case 'array':
-                $array = new ArrayContent($name);
-
-                if (!is_array($value)) {
+        try {
+            $name = $field->getName();
+            switch ($field->getType()) {
+                case 'number':
+                    return new Number($name, $value);
                     break;
-                }
 
-                // Loop through data array
-                foreach ($value as $row) {
-                    // For each row add a set of content fields
-                    $item = new ContentFieldCollection();
-                    foreach ($field as $childField) {
-                        if (!isset($row[$childField->getName()])) {
-                            continue;
-                        }
-                        $childValue = $row[$childField->getName()];
-                        $contentField = $this->getContentField($childField, $childValue);
-                        if ($contentField !== null) {
-                            $item->addItem($this->getContentField($childField, $childValue));
-                        }
+                case 'text':
+                    return new ShortText($name, $value);
+                    break;
+
+                case 'plaintext':
+                    return new PlainText($name, $value);
+                    break;
+
+                case 'richtext':
+                    return new RichText($name, $value);
+                    break;
+
+                case 'date':
+                    return new Date($name, $value);
+                    break;
+
+                case 'datetime':
+                    return new DateTime($name, $value);
+                    break;
+
+                case 'boolean':
+                    return new Boolean($name, $value);
+                    break;
+
+                case 'array':
+                    $array = new ArrayContent($name);
+
+                    if (!is_array($value)) {
+                        break;
                     }
-                    $array->addItem($item);
-                }
 
-                return $array;
-                break;
+                    // Loop through data array
+                    foreach ($value as $row) {
+                        // For each row add a set of content fields
+                        $item = new ContentFieldCollection();
+                        foreach ($field as $childField) {
+                            if (!isset($row[$childField->getName()])) {
+                                continue;
+                            }
+                            $childValue = $row[$childField->getName()];
+                            $contentField = $this->getContentField($childField, $childValue);
+                            if ($contentField !== null) {
+                                $item->addItem($this->getContentField($childField, $childValue));
+                            }
+                        }
+                        $array->addItem($item);
+                    }
+
+                    return $array;
+                    break;
+            }
+        } catch (\Error $e) {
+            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        } catch (\Exception $e) {
+            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
         }
 
         return null;

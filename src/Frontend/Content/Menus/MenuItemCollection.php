@@ -1,8 +1,14 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: BenDB
+ * Date: 21/02/2019
+ * Time: 09:54
+ */
 
-namespace Studio24\Frontend\Content\Field;
+namespace Studio24\Frontend\Content\Menus;
 
-class ComponentCollection implements \SeekableIterator, \Countable
+class MenuItemCollection implements \SeekableIterator, \Countable
 {
     protected $collection = [];
     protected $position = 0;
@@ -10,19 +16,19 @@ class ComponentCollection implements \SeekableIterator, \Countable
     /**
      * Add an item to the collection
      *
-     * @param Component $item Component
-     * @return ComponentCollection Fluent interface
+     * @param MenuItem $item MenuItem
+     * @return MenuItemCollection Fluent interface
      */
-    public function addItem(Component $item) : ComponentCollection
+    public function addItem(MenuItem $item) : MenuItemCollection
     {
         $this->collection[] = $item;
         return $this;
     }
 
     /**
-     * @return Component
+     * @return MenuItem
      */
-    public function current() : Component
+    public function current() : MenuItem
     {
         return $this->collection[$this->position];
     }

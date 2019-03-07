@@ -1,0 +1,10 @@
+short_biography:
+  type: richtext
+job_title:
+  type: text
+position:
+  type: text
+long_biography:
+  type: richtext
+image:
+  type: boolean
