@@ -40,6 +40,7 @@ use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
+use Studio24\Frontend\Exception\ContentFieldException;
 
 // @todo Review this for custom data.
 // 1) Use content model to define fields
@@ -250,7 +251,7 @@ class RestData extends ContentRepository
      * @param mixed $value Content field value
      * @return ContentFieldInterface Populated content field object, or null on failure
      * @throws ContentTypeNotSetException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws ContentFieldException
      * @throws ContentFieldNotSetException
      */
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
