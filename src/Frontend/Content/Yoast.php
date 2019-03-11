@@ -8,81 +8,129 @@
 
 namespace Studio24\Frontend\Content;
 
+use phpDocumentor\Reflection\Types\String_;
 
-class Yoast implements \ArrayAccess
+class Yoast
 {
-    protected $yoast_data = [];
+    protected $title;
+    protected $metadescription;
+    protected $metakeywords = [];
+    protected $twitter;
+    protected $opengraph;
 
     /**
-     * Add metadata property
-     *
-     * @param string $key
-     * @param $value
+     * @return mixed
      */
-    public function add(string $key, $value)
+    public function getTwitter()
     {
-        $this->offsetSet($key, $value);
+        $metatags = "";
+        if (isset($this->twitter["title"]) && strlen($this->twitter["title"]) > 0) {
+            $metatags .= "<meta name=\"twitter:title\" content=\"" . $this->twitter["title"] . "\">";
+        }
+        if (isset($this->twitter["description"]) && strlen($this->twitter["description"]) > 0) {
+            $metatags .= "<meta name=\"twitter:description\" content=\"" . $this->twitter["description"] . "\">";
+        }
+        if (isset($this->twitter["image"]) && strlen($this->twitter["image"]) > 0) {
+            $metatags .= "<meta name=\"twitter:image\" content=\"" . $this->twitter["image"] . "\">";
+        }
+        return $metatags;
     }
 
     /**
-     * Whether a offset exists
-     * @link https://php.net/manual/en/arrayaccess.offsetexists.php
-     * @param string $offset <p>
-     * An offset to check for.
-     * </p>
-     * @return boolean true on success or false on failure.
-     * </p>
-     * <p>
-     * The return value will be casted to boolean if non-boolean was returned.
-     * @since 5.0.0
+     * @param $twitter_title
+     * @param $twitter_description
+     * @param $twitter_image
      */
-    public function offsetExists($offset) : bool
+    public function setTwitter($twitter_title, $twitter_description, $twitter_image): void
     {
-        return isset($this->yoast_data[$offset]);
+        $this->twitter = [
+            "title" => $twitter_title,
+            "description" => $twitter_description,
+            "image" => $twitter_image
+        ];
     }
 
     /**
-     * Offset to retrieve
-     * @link https://php.net/manual/en/arrayaccess.offsetget.php
-     * @param string $offset <p>
-     * The offset to retrieve.
-     * </p>
-     * @return mixed Can return all value types.
-     * @since 5.0.0
+     * @return mixed
      */
-    public function offsetGet($offset)
+    public function getOpengraph()
     {
-        return $this->yoast_data[$offset];
+        $metatags = "";
+        if (isset($this->opengraph["title"]) && strlen($this->opengraph["title"]) > 0) {
+            $metatags .= "<meta name=\"og:title\" content=\"" . $this->opengraph["title"] . "\">";
+        }
+        if (isset($this->opengraph["description"]) && strlen($this->opengraph["description"]) > 0) {
+            $metatags .= "<meta name=\"og:description\" content=\"" . $this->opengraph["description"] . "\">";
+        }
+        if (isset($this->opengraph["image"]) && strlen($this->opengraph["image"]) > 0) {
+            $metatags .= "<meta name=\"og:image\" content=\"" . $this->opengraph["image"] . "\">";
+        }
+        return $metatags;
     }
 
     /**
-     * Offset to set
-     * @link https://php.net/manual/en/arrayaccess.offsetset.php
-     * @param mixed $offset <p>
-     * The offset to assign the value to.
-     * </p>
-     * @param mixed $value <p>
-     * The value to set.
-     * </p>
-     * @return void
-     * @since 5.0.0
+     * @param $opengraph_title
+     * @param $opengraph_description
+     * @param $opengraph_image
      */
-    public function offsetSet($offset, $value)
+    public function setOpengraph($opengraph_title, $opengraph_description, $opengraph_image): void
     {
-        $this->yoast_data[$offset] = $value;
+        $this->opengraph = [
+            "title" => $opengraph_title,
+            "description" => $opengraph_description,
+            "image" => $opengraph_image
+        ];
     }
 
     /**
-     * Offset to unset
-     * @link https://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param string $offset <p>
-     * The offset to unset.
-     * </p>
-     * @return void
-     * @since 5.0.0
+     * @return mixed
      */
-    public function offsetUnset($offset)
+    public function getTitle()
     {
-        unset($this->yoast_data[$offset]);
+        if (isset($this->title)) {
+            return $this->title;
+        } else {
+            return ""; // todo return parent title
+        }
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMetadescription()
+    {
+        return strlen($this->metakeywords) > 0 ? "<meta name=\"description\" content=\"" . $this->metadescription . "\">" : "";
+    }
+
+    /**
+     * @param mixed $metadescription
+     */
+    public function setMetadescription($metadescription): void
+    {
+        $this->metadescription = $metadescription;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMetakeywords()
+    {
+        return strlen($this->metakeywords) > 0 ? "<meta name=\"keywords\" content=\"" .  $this->metakeywords . "\">" : "";
+    }
+
+    /**
+     * @param mixed $metakeywords
+     */
+    public function setMetakeywords($metakeywords): void
+    {
+        $this->metakeywords = $metakeywords;
     }
 }

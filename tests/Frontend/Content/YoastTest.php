@@ -15,18 +15,7 @@ class YoastTest extends TestCase
     /** @var Wordpress $wordpress */
     private $wordpress;
 
-    private $test_data = [
-        [
-            "key" => "opengraph-title",
-            "value" => "Exploring the Mozambican Miombo"
-        ],
-        [
-            "key" => "opengraph-image",
-            "value" => "https://complex.demo/wp-content/uploads/2019/02/the-mozambican-miombo1.jpg"
-        ]
-    ];
-
-    public function setUp() : void
+    public function setUp(): void
     {
         // Create a mock and queue responses
         $mock = new MockHandler([
@@ -48,58 +37,81 @@ class YoastTest extends TestCase
         $this->wordpress->setClient($client);
     }
 
-    function testYoastClass() {
+    public function testYoastClass()
+    {
         $yoast = new Yoast();
 
         $this->assertInstanceOf(Yoast::class, $yoast);
     }
 
-    function testYoastAddData()
+    public function testYoastAddData()
     {
         $yoast = new Yoast();
-        $key = $this->test_data[0]["key"];
-        $value = $this->test_data[0]["value"];
-        $key1 = $this->test_data[1]["key"];
-        $value1 = $this->test_data[1]["value"];
 
-        $yoast->add($key, $value);
-        $this->assertTrue($yoast->offsetExists($key));
-        $this->assertSame($value, $yoast->offsetGet($key));
+        $yoast->setTitle("New Title");
+        $yoast->setMetadescription("New Description");
+        $yoast->setMetakeywords("test,php,frontend");
 
-        $yoast->add($key1, $value1);
-        $this->assertTrue($yoast->offsetExists($key1));
-        $this->assertSame($value1, $yoast->offsetGet($key1));
+        $this->assertSame("New Title", $yoast->getTitle());
+        $this->assertSame("<meta name=\"description\" content=\"New Description\">", $yoast->getMetadescription());
     }
 
-    function testAddYoastFromPage() {
+    public function testTwitterYoastData()
+    {
+        $yoast = new Yoast();
 
+        $yoast->setTwitter("twitter_title", "twitter_description", "twitter_image");
+
+        $this->assertSame(
+            '<meta name="twitter:title" content="twitter_title"><meta name="twitter:description" content="twitter_description"><meta name="twitter:image" content="twitter_image">',
+            $yoast->getTwitter()
+        );
+    }
+
+    public function testAddYoastFromPage()
+    {
         $posts = json_decode(file_get_contents(__DIR__ . '/../responses/flexible-content/posts.1.json'));
 
-        /** @var Yoast[] $yoast_array */
-        $yoast_array = [];
+        $post = (array)$posts[7]->yoast;
 
-        foreach ($posts as $post) {
-            if (!isset($post->yoast)) return;
-            $yoast_data = (array) $post->yoast;
-            $yoast = new Yoast();
-            foreach ($yoast_data as $key => $value) {
-                if ($value) {
-                    $yoast->add($key, $value);
-                }
-            }
+        $yoast = new Yoast();
 
-            array_push($yoast_array, $yoast);
-        }
+        $yoast->setOpengraph($post["opengraph-title"], $post["opengraph-description"], $post["opengraph-image"]);
 
-        $this->assertSame(10, sizeof($yoast_array));
-        $this->assertTrue($yoast_array[7]->offsetExists("opengraph-image"));
-        $this->assertTrue($yoast_array[7]->offsetExists("opengraph-title"));
-        $this->assertTrue($yoast_array[7]->offsetExists("opengraph-description"));
-        $this->assertSame("As 2018 comes to a close, we look back at some of your favourite @FaunaFloraInt Instagram posts from the year...", $yoast_array[7]->offsetGet("opengraph-description"));
-        $this->assertSame("https://complex.demo/wp-content/uploads/2019/01/lets-talk-about-the-elephant-that-wasnt-in-the-room-5.png", $yoast_array[3]->offsetGet("twitter-image"));
+        $this->assertSame(
+            '<meta name="og:title" content="10 of your favourite Instagram posts"><meta name="og:description" content="As 2018 comes to a close, we look back at some of your favourite @FaunaFloraInt Instagram posts from the year..."><meta name="og:image" content="https://complex.demo/wp-content/uploads/2018/12/ten-of-your-favourite-instagram-posts-of-2018.png">',
+            $yoast->getOpengraph()
+        );
+        $post = (array)$posts[3]->yoast;
+
+        $yoast->setTwitter($post["twitter-title"], $post["twitter-description"], $post["twitter-image"]);
+
+        $this->assertSame(
+            '<meta name="twitter:image" content="https://complex.demo/wp-content/uploads/2019/01/lets-talk-about-the-elephant-that-wasnt-in-the-room-5.png">',
+            $yoast->getTwitter()
+        );
     }
 
+    public function testFullPostData()
+    {
+        $posts = json_decode(file_get_contents(__DIR__ . '/../responses/flexible-content/posts.1.json'));
 
+        $post = (array)$posts[0];
 
+        $yoast = new Yoast();
 
+        $yoast_data = (array)$post["yoast"];
+
+        $yoast->setTitle(isset($yoast_data["title"]) && strlen($yoast_data["title"]) > 0 ? $yoast_data["title"] : $post["title"]->rendered);
+        $yoast->setMetadescription($yoast_data["metadesc"]);
+        $yoast->setMetakeywords($yoast_data["metakeywords"]);
+        $yoast->setTwitter($yoast_data["twitter-title"], $yoast_data["twitter-description"], $yoast_data["twitter-image"]);
+        $yoast->setTwitter($yoast_data["opengraph-title"], $yoast_data["opengraph-description"], $yoast_data["opengraph-image"]);
+
+        $this->assertSame("", $yoast->getTwitter());
+        $this->assertSame("", $yoast->getOpengraph());
+        $this->assertSame("When is a Marine Protected Area not a Marine Protected Area?", $yoast->getTitle());
+        $this->assertSame("", $yoast->getMetadescription());
+        $this->assertSame("", $yoast->getMetakeywords());
+    }
 }
