@@ -253,7 +253,21 @@ class Wordpress extends ContentRepository
         $page->setContentType($this->getContentType());
         $this->setContentFields($page, $data);
 
+        if (isset($data['yoast'])) {
+
+        }
+
         return $page;
+    }
+
+
+    public function setYoastFields(Page $page, array $data)
+    {
+        if (!empty($data['twitter-title'])) {
+            $head->addMeta("twitter:title", $data['twitter-title']);
+        }
+
+        $head->addMeta("og:title", $data['opengraph-title']);
     }
 
 

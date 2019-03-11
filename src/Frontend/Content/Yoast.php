@@ -24,6 +24,7 @@ class Yoast
         $metatags = "";
         if (isset($this->twitter["title"]) && strlen($this->twitter["title"]) > 0) {
             $metatags .= "<meta name=\"twitter:title\" content=\"" . $this->twitter["title"] . "\">";
+            //$head->addMeta('twitter:title', $title);
         }
         if (isset($this->twitter["description"]) && strlen($this->twitter["description"]) > 0) {
             $metatags .= "<meta name=\"twitter:description\" content=\"" . $this->twitter["description"] . "\">";
@@ -83,12 +84,12 @@ class Yoast
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         if (isset($this->title)) {
             return $this->title;
         } else {
-            return ""; // todo return parent title
+            return null;
         }
     }
 
@@ -121,7 +122,7 @@ class Yoast
      */
     public function getMetakeywords()
     {
-        return strlen($this->metakeywords) > 0 ? "<meta name=\"keywords\" content=\"" .  $this->metakeywords . "\">" : "";
+        return strlen($this->metakeywords) > 0 ? "<meta name=\"keywords\" content=\"" . $this->metakeywords . "\">" : "";
     }
 
     /**
@@ -131,4 +132,21 @@ class Yoast
     {
         $this->metakeywords = $metakeywords;
     }
+
+    public function getAllMetatags()
+    {
+        $metatags = "";
+        $metatags .= $this->getTwitter();
+        $metatags .= $this->getOpengraph();
+        $metatags .= $this->getMetakeywords();
+        $metatags .= $this->getMetadescription();
+//        $metatags .= $this->getTitle();
+        return $metatags;
+    }
+
+    public function __toString()
+    {
+        return $this->getAllMetatags();
+    }
+
 }
