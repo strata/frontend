@@ -127,7 +127,7 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get("users/$id");
+        $response = $this->get("wp/v2/users/$id");
         $data = $this->parseJsonResponse($response);
 
         return $data;
@@ -150,7 +150,6 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        // @todo Need to alter other WP base URLs to https://domain.com/wp-json/ & API URL endpoints to the format: wp/v2/posts
         $response = $this->get("wp-api-menus/v2/menus/$id");
         $data = $this->parseJsonResponse($response);
 
@@ -170,7 +169,7 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get("media/$id");
+        $response = $this->get("wp/v2/media/$id");
         $data = $this->parseJsonResponse($response);
 
         return $data;

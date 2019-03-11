@@ -39,7 +39,6 @@ use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Exception\ContentFieldException;
 
-
 class RestData extends ContentRepository
 {
     /**

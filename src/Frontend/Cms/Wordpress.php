@@ -188,7 +188,7 @@ class Wordpress extends ContentRepository
 
     /**
      * Return page based on slug
-     * 
+     *
      * @param string $slug
      * @return Page
      * @throws ApiException

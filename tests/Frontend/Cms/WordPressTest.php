@@ -265,5 +265,4 @@ EOD;
         $this->assertEquals($expected, $page->getContent()->__toString());
         $this->assertEquals("Joe Bloggs", $page->getAuthor()->getName());
     }
-
 }
