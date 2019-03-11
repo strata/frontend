@@ -14,22 +14,15 @@ class Head
     protected $meta = [];
 
     protected $allowedMeta = [
-        "focuskw",
-        "title",
-        "metadesc",
-        "linkdex",
-        "metakeywords",
-        "meta-robots-noindex",
-        "meta-robots-nofollow",
-        "meta-robots-adv",
-        "canonical",
-        "redirect",
-        "opengraph-title",
-        "opengraph-description",
-        "opengraph-image",
-        "twitter-title",
-        "twitter-description",
-        "twitter-image"
+        "description",
+        "keywords",
+        "robots",
+        "og:title",
+        "og:image",
+        "og:description",
+        "twitter:title",
+        "twitter:description",
+        "twitter:image"
     ];
 
     /**
@@ -51,34 +44,46 @@ class Head
     /**
      * @return mixed
      */
-    public function getMeta(string $name)
+    public function getMeta(string $name): ?string
     {
-
+        if (isset($this->meta[$name])) {
+            return $this->meta[$name];
+        }
+        return null;
     }
 
-    public function getMetaHtml(string $name): string
+    public function getMetaHtml(string $name): ?string
     {
-
+        if (isset($this->meta[$name])) {
+            return "<meta name=\"" . $name . "\" content=\"" . $this->meta[$name] . "\">";
+        }
+        return null;
     }
 
     public function getAllMetaHtml(): string
     {
-
+        $html = "";
+        foreach ($this->meta as $name => $content) {
+            $html .= "<meta name=\"" . $name . "\" content=\"" . $content . "\">\n";
+        }
+        return $html;
     }
-
 
     /**
      * @param mixed $meta
      */
     public function setMeta(array $meta): void
     {
-
-
+        $this->meta = $meta;
     }
 
-    public function addMeta(string $name, string $content)
+    public function addMeta(string $name, string $content): bool
     {
-
+        if (in_array($name, $this->allowedMeta)) {
+            $this->meta[$name] = $content;
+            return true;
+        }
+        return false;
     }
 
     public function __toString(): string
