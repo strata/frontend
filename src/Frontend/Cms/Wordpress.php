@@ -12,6 +12,7 @@ use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
+use Studio24\Frontend\Content\Head;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
@@ -121,7 +122,8 @@ class Wordpress extends ContentRepository
     public function listPages(
         int $page = 1,
         array $options = []
-    ): PageCollection {
+    ): PageCollection
+    {
 
         $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
@@ -254,22 +256,52 @@ class Wordpress extends ContentRepository
         $this->setContentFields($page, $data);
 
         if (isset($data['yoast'])) {
-
+            $this->setYoastMetaData($page->getHead(), $data['yoast']);
         }
 
         return $page;
     }
 
 
-    public function setYoastFields(Page $page, array $data)
+    public function setYoastMetaData(Head $head, array $data)
     {
+        if (!empty($data['title'])) {
+            $head->setTitle($data['title']);
+        }
+        if (!empty($data['metadesc'])) {
+            $head->addMeta("description", $data['metadesc']);
+        }
+        if (!empty($data['metakeywords'])) {
+            $head->addMeta("keywords", $data['metakeywords']);
+        }
+        if (!empty($data['meta-robots-noindex']) || !empty($data['meta-robots-nofollow'])) {
+            $noindex = $data['meta-robots-noindex'];
+            $nofollow = $data['meta-robots-nofollow'];
+            $glue = "";
+            if (!empty($noindex) && !empty($nofollow)) {
+                $glue=", ";
+            }
+            $head->addMeta("robots", $noindex . $glue . $nofollow);
+        }
         if (!empty($data['twitter-title'])) {
             $head->addMeta("twitter:title", $data['twitter-title']);
         }
-
-        $head->addMeta("og:title", $data['opengraph-title']);
+        if (!empty($data['twitter-description'])) {
+            $head->addMeta("twitter:description", $data['twitter-description']);
+        }
+        if (!empty($data['twitter-image'])) {
+            $head->addMeta("twitter:image", $data['twitter-image']);
+        }
+        if (!empty($data['opengraph-title'])) {
+            $head->addMeta("og:title", $data['opengraph-title']);
+        }
+        if (!empty($data['opengraph-description'])) {
+            $head->addMeta("og:description", $data['opengraph-description']);
+        }
+        if (!empty($data['opengraph-image'])) {
+            $head->addMeta("og:image", $data['opengraph-image']);
+        }
     }
-
 
     /**
      * Sets content from data array into the content object
@@ -565,6 +597,7 @@ class Wordpress extends ContentRepository
         return $menu;
     }
     // TODO refactor these duplicate functions
+
     /**
      * @param $array
      * @param MenuItem $menuItemParent

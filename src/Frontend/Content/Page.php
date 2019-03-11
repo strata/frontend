@@ -21,6 +21,28 @@ class Page extends BaseContent
      */
     protected $author;
 
+    /**
+     * Head head
+     * @var $head
+     */
+    protected $head;
+
+    /**
+     * Page constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->head = new Head();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHead()
+    {
+        return $this->head;
+    }
 
     /**
      * Set URL pattern

@@ -8,17 +8,24 @@
 
 namespace App\Tests\Frontend\Content;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use Studio24\Frontend\Cms\Wordpress;
 use Studio24\Frontend\Content\Head;
+use Studio24\Frontend\ContentModel\ContentModel;
+use Studio24\Frontend\Exception\MetaTagNotAllowedException;
 
 class HeadTest extends TestCase
 {
     /**
      * @var Head $test_head
      */
-    protected $test_head;
+    private $test_head;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->test_head = new Head();
         $this->test_head->setTitle("This is the head used in the test");
@@ -34,11 +41,18 @@ class HeadTest extends TestCase
     {
         $head = new Head();
 
-        $og_title = $head->addMeta("og:title", "some title for opengraph");
-        $non_existing = $head->addMeta("non-existing", "This should fail");
+        $head->addMeta("og:title", "some title for opengraph");
+        $head->addMeta("og:image", "some image for opengraph");
+        $head->addMeta("og:description", "some description for opengraph");
 
-        $this->assertTrue($og_title);
-        $this->assertFalse($non_existing);
+        $this->assertTrue(true);
+    }
+
+    public function testAddMetaException()
+    {
+        $this->expectException(MetaTagNotAllowedException::class);
+        $head = clone $this->test_head;
+        $head->addMeta("non-existing", "This should fail");
     }
 
     public function testGetTitle()
@@ -50,8 +64,7 @@ class HeadTest extends TestCase
     {
         $head = clone $this->test_head;
 
-        $this->assertTrue($head->addMeta("og:title", "some title for opengraph"));
-        $this->assertFalse($head->addMeta("non-existing", "This should fail"));
+        $head->addMeta("og:title", "some title for opengraph");
 
         $this->assertSame("some title for opengraph", $head->getMeta("og:title"));
         $this->assertNull($head->getMeta("non-existing"));
@@ -60,7 +73,7 @@ class HeadTest extends TestCase
     public function testGetMetaHtml()
     {
         $head = clone $this->test_head;
-        $this->assertTrue($head->addMeta("og:title", "some title for opengraph"));
+        $head->addMeta("og:title", "some title for opengraph");
         $html = $head->getMetaHtml("og:title");
 
         $this->assertSame("<meta name=\"og:title\" content=\"some title for opengraph\">", $html);

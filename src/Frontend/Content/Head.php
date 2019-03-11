@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Studio24\Frontend\Content;
 
+use Studio24\Frontend\Exception\MetaTagNotAllowedException;
+
 class Head
 {
     protected $title;
@@ -77,18 +79,22 @@ class Head
         $this->meta = $meta;
     }
 
-    public function addMeta(string $name, string $content): bool
+
+    /**
+     * @param string $name
+     * @param string $content
+     * @throws MetaTagNotAllowedException
+     */
+    public function addMeta(string $name, string $content): void
     {
-        if (in_array($name, $this->allowedMeta)) {
-            $this->meta[$name] = $content;
-            return true;
+        if (!in_array($name, $this->allowedMeta)) {
+            throw new MetaTagNotAllowedException();
         }
-        return false;
+        $this->meta[$name] = $content;
     }
 
     public function __toString(): string
     {
         return $this->getAllMetaHtml();
     }
-
 }
