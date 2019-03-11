@@ -17,6 +17,7 @@ use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Exception\ContentFieldException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
@@ -171,6 +172,49 @@ class Wordpress extends ContentRepository
 
         // Get content
         $data = $this->api->getPost($this->getContentApiEndpoint(), $id);
+        $page = $this->createPage($data);
+
+        if (!empty($data['author'])) {
+            $author = $this->api->getAuthor($data['author']);
+            $page->setAuthor($this->createUser($author));
+        }
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $page);
+        }
+
+        return $page;
+    }
+
+    /**
+     * Return page based on slug
+     * 
+     * @param string $slug
+     * @return Page
+     * @throws ApiException
+     * @throws ContentFieldException
+     * @throws ContentTypeNotSetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PaginationException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getPageBySlug(string $slug)
+    {
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $slug);
+        if ($this->hasCache() && $this->cache->has($cacheKey)) {
+            $page = $this->cache->get($cacheKey);
+            return $page;
+        }
+
+        // Get content
+        $results = $this->api->listPosts($this->getContentApiEndpoint(), 1, ['slug' => $slug]);
+        if ($results->getPagination()->getTotalResults() != 1) {
+            throw new ApiException(sprintf('Page not found for slug: %s', $slug));
+        }
+
+        // Get single result
+        $data = $results->getResponseData()[0];
         $page = $this->createPage($data);
 
         if (!empty($data['author'])) {

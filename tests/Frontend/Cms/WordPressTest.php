@@ -227,4 +227,43 @@ class WordPressTest extends TestCase
         $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
         $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png', $image->byName('fp-medium'));
     }
+
+
+    public function testPage()
+    {
+        // Create a mock and queue responses
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/pages.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('page');
+        $wordpress->setClient($client);
+
+        // Test it!
+        $page = $wordpress->getPageBySlug('lorem-ipsum-page-test');
+
+        $this->assertEquals("Lorem ipsum page test", $page->getTitle());
+        $expected = <<<EOD
+<p>This is an example page lorem ipsum dolor sit amet et do lorem this is the page content in here from the main WYSIWYG editor.</p>
+
+EOD;
+
+        $this->assertEquals($expected, $page->getContent()->__toString());
+        $this->assertEquals("Joe Bloggs", $page->getAuthor()->getName());
+    }
+
 }

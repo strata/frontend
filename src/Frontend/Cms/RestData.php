@@ -34,19 +34,11 @@ use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
 use Studio24\Frontend\Content\Page;
 use Studio24\Frontend\Content\PageCollection;
-use Studio24\Frontend\Content\User;
 use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
-use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
-use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 use Studio24\Frontend\Exception\ContentFieldException;
 
-// @todo Review this for custom data.
-// 1) Use content model to define fields
-// 2) Set metadata (total results, page number)
-// 3) Read data from REST endpoint, not WordPress
-// 4) Return a simpler content object without WP default fields
 
 class RestData extends ContentRepository
 {
