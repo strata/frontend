@@ -8,8 +8,6 @@
 
 namespace Studio24\Frontend\Content;
 
-use phpDocumentor\Reflection\Types\String_;
-
 class Yoast
 {
     protected $title;
