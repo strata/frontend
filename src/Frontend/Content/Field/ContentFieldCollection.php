@@ -74,7 +74,7 @@ class ContentFieldCollection extends \ArrayIterator
     public function __toString(): string
     {
         $content = [];
-        foreach ($this->collection as $item) {
+        foreach ($this as $item) {
             $content[] = $item->__toString();
         }
         return implode(' ', $content);

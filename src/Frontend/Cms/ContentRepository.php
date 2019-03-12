@@ -8,8 +8,9 @@ use Studio24\Frontend\Content\Page;
 use Studio24\Frontend\Content\PageCollection;
 use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
-use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Traits\CacheTrait;
+use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Exception\ContentTypeNotSetException;
 
 /**
  * Base class for CMS functionality
