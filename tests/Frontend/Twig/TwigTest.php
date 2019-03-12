@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\Content;
 
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use Studio24\Frontend\Twig\FrontendExtension;
 
 class TwigTest extends TestCase

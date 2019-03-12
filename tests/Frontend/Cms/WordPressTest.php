@@ -25,6 +25,11 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.21.json')
+            ),
+            new Response(
+                200,
                 ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
                 file_get_contents(__DIR__ . '/../responses/demo/posts_2.json')
             ),
@@ -55,6 +60,7 @@ class WordPressTest extends TestCase
         $this->assertEquals("<p>Welcome to <a href=\"http://wp-api.org/\">WP API Demo Sites</a>. This is your first post. Edit or delete it, then start blogging!</p>\n", $page->getContent()->current());
         $this->assertEquals("<p>Welcome to <a href=\"http://wp-api.org/\">WP API Demo Sites</a>. This is your first post. Edit or delete it, then start blogging!</p>\n", (string) $page);
         $this->assertEquals("<p>Welcome to WP API Demo Sites. This is your first post. Edit or delete it, then start blogging!</p>\n", $page->getExcerpt());
+        $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-300x23.png', $page->getFeaturedImage()->byName('medium'));
 
         $pages->next();
         $page = $pages->current();
