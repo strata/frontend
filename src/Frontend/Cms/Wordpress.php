@@ -127,9 +127,12 @@ class Wordpress extends ContentRepository
     ): PageCollection {
 
         $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $pages = $this->cache->get($cacheKey);
-            return $pages;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         $list = $this->api->listPosts(
@@ -144,7 +147,7 @@ class Wordpress extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $pages);
+            $this->cache->set($cacheKey, $pages, $this->getCacheLifetime());
         }
 
         return $pages;
@@ -165,9 +168,12 @@ class Wordpress extends ContentRepository
     public function getPage(int $id): Page
     {
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $page = $this->cache->get($cacheKey);
-            return $page;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get content
@@ -180,7 +186,7 @@ class Wordpress extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $page);
+            $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
         }
 
         return $page;
@@ -202,9 +208,12 @@ class Wordpress extends ContentRepository
     public function getPageBySlug(string $slug)
     {
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $slug);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $page = $this->cache->get($cacheKey);
-            return $page;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get content
@@ -223,7 +232,7 @@ class Wordpress extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $page);
+            $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
         }
 
         return $page;
@@ -242,9 +251,12 @@ class Wordpress extends ContentRepository
     public function getMediaDataById(int $id): array
     {
         $cacheKey = $this->getCacheKey('media', $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $media_data = $this->cache->get($cacheKey);
-            return $media_data;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get data from API
@@ -254,7 +266,7 @@ class Wordpress extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $media_data);
+            $this->cache->set($cacheKey, $media_data, $this->getCacheLifetime());
         }
 
         return $media_data;
@@ -691,9 +703,12 @@ class Wordpress extends ContentRepository
     public function getMenu(int $id)
     {
         $cacheKey = $this->getCacheKey('menu', $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $page = $this->cache->get($cacheKey);
-            return $page;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get menu data

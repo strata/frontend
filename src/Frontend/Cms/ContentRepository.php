@@ -11,6 +11,7 @@ use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\Traits\CacheTrait;
 use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Base class for CMS functionality

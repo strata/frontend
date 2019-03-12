@@ -109,9 +109,12 @@ class RestData extends ContentRepository
     public function list(int $page = 1, array $options = []): PageCollection
     {
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), 'list', $page, extract($options));
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $pages = $this->cache->get($cacheKey);
-            return $pages;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         $list = $this->api->list(
@@ -135,7 +138,7 @@ class RestData extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $pages);
+            $this->cache->set($cacheKey, $pages, $this->getCacheLifetime(), $this->getCacheLifetime());
         }
 
         return $pages;
@@ -157,9 +160,12 @@ class RestData extends ContentRepository
     public function getOne($id): Page
     {
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $page = $this->cache->get($cacheKey);
-            return $page;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get content
@@ -167,7 +173,7 @@ class RestData extends ContentRepository
         $page = $this->createPage($data);
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $page);
+            $this->cache->set($cacheKey, $page, $this->getCacheLifetime(), $this->getCacheLifetime());
         }
 
         return $page;

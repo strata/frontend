@@ -14,6 +14,13 @@ trait CacheTrait
     public $cache;
 
     /**
+     * Default cache lifetime (in seconds)
+     *
+     * @var int
+     */
+    public $defaultLifetime = 3600;
+
+    /**
      * Set the cache object
      *
      * @param CacheInterface $cache
@@ -44,4 +51,37 @@ trait CacheTrait
     {
         return ($this->cache instanceof CacheInterface);
     }
+
+    /**
+     * Set default cache lifetime
+     *
+     * @param int $secs
+     */
+    public function setCacheLifetime(int $secs)
+    {
+        $this->defaultLifetime = $secs;
+    }
+
+    /**
+     * Return default cache lifetime
+     *
+     * @return int
+     */
+    public function getCacheLifetime(): int
+    {
+        return $this->defaultLifetime;
+    }
+
+    /**
+     * Remove cache item
+     *
+     * @param string $key
+     * @return bool True on success, false on error
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function deleteCacheItem(string $key): bool
+    {
+        return $this->cache->delete($key);
+    }
+
 }
