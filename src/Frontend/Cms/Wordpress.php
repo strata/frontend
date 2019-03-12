@@ -188,7 +188,6 @@ class Wordpress extends ContentRepository
     /**
      * Return media data from API
      *
-     * @param string $name Content field name
      * @param int $id ID of media item to retrieve
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -196,7 +195,7 @@ class Wordpress extends ContentRepository
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getMediaDataById(string $name, int $id): array
+    public function getMediaDataById(int $id): array
     {
         $cacheKey = $this->getCacheKey('media', $id);
         if ($this->hasCache() && $this->cache->has($cacheKey)) {
@@ -265,6 +264,10 @@ class Wordpress extends ContentRepository
             $page->setExcerpt(FieldFinder::excerpt($data));
         }
 
+        if (!empty(FieldFinder::featuredImage($data))) {
+            $this->setFeaturedImage($page, FieldFinder::featuredImage($data));
+        }
+
         // Default WordPress content field
         if (!empty(FieldFinder::content($data))) {
             $page->addContent(new RichText('content', FieldFinder::content($data)));
@@ -274,6 +277,48 @@ class Wordpress extends ContentRepository
         if (isset($data['acf']) && is_array($data['acf'])) {
             $this->setCustomContentFields($this->getContentType(), $page, $data['acf']);
         }
+    }
+
+    public function setFeaturedImage(ContentInterface $page, $mediaID)
+    {
+        if (empty($mediaID) || !is_numeric($mediaID) || is_float($mediaID)) {
+            return $page;
+        }
+
+        //image ID passed on
+        $field_data = $this->getMediaDataById($mediaID);
+        $sizesData = array();
+
+        // Add sizes
+        $availableSizes = $this->getContentModel()->getGlobal('image_sizes');
+        if ($availableSizes !== null) {
+            foreach ($availableSizes as $sizeName) {
+                if (isset($field_data['media_details']['sizes'][$sizeName])) {
+                    array_push(
+                        $sizesData,
+                        array(
+                            'url' => $field_data['media_details']['sizes'][$sizeName]['source_url'],
+                            'width' => $field_data['media_details']['sizes'][$sizeName]['width'],
+                            'height' => $field_data['media_details']['sizes'][$sizeName]['height'],
+                            'name' => $sizeName
+                        )
+                    );
+                }
+            }
+        }
+
+        $image = new Image(
+            'featured_image',
+            $field_data['source_url'],
+            $field_data['title']['rendered'],
+            $field_data['caption']['rendered'],
+            $field_data['alt_text'],
+            $sizesData
+        );
+
+        $page->setFeaturedImage($image);
+
+        return $page;
     }
 
     /**
@@ -347,7 +392,7 @@ class Wordpress extends ContentRepository
                     $sizesData = array();
                     if (is_int($value)) {
                         //image ID passed on
-                        $field_data = $this->getMediaDataById($name, $value);
+                        $field_data = $this->getMediaDataById($value);
 
                         // Add sizes
                         $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
@@ -414,7 +459,7 @@ class Wordpress extends ContentRepository
                 case 'document':
                     //given an attachment, request data and create field
                     if (is_int($value)) {
-                        $field_data = $this->getMediaDataById($name, $value);
+                        $field_data = $this->getMediaDataById($value);
 
                         $filesize = $this->api->getMediaFileSize($field_data['source_url']);
 
@@ -456,7 +501,7 @@ class Wordpress extends ContentRepository
                         return null;
                     }
 
-                    $field_data = $this->getMediaDataById($name, $media_id);
+                    $field_data = $this->getMediaDataById($media_id);
 
                     $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
 
@@ -485,7 +530,7 @@ class Wordpress extends ContentRepository
                         return null;
                     }
 
-                    $field_data = $this->getMediaDataById($name, $media_id);
+                    $field_data = $this->getMediaDataById($media_id);
 
                     $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
 

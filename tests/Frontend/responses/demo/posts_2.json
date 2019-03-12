@@ -24,7 +24,7 @@
       "protected": false
     },
     "author": 1,
-    "featured_media": 4,
+    "featured_media": 0,
     "comment_status": "open",
     "ping_status": "open",
     "sticky": false,
@@ -128,7 +128,7 @@
       "protected": false
     },
     "author": 1,
-    "featured_media": 25,
+    "featured_media": 0,
     "comment_status": "open",
     "ping_status": "closed",
     "sticky": false,
