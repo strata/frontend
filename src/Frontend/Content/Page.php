@@ -101,7 +101,7 @@ class Page extends BaseContent
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getAuthor()
     {
