@@ -15,7 +15,7 @@ class Head
      */
     protected $meta = [];
 
-    protected $allowedMeta = [
+    private $allowedMeta = [
         "description",
         "keywords",
         "robots",

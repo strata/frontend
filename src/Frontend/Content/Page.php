@@ -37,9 +37,9 @@ class Page extends BaseContent
     }
 
     /**
-     * @return mixed
+     * @return Head
      */
-    public function getHead()
+    public function getHead(): Head
     {
         return $this->head;
     }

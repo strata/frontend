@@ -256,7 +256,7 @@ class Wordpress extends ContentRepository
         $this->setContentFields($page, $data);
 
         if (isset($data['yoast'])) {
-            $this->setYoastMetaData($page->getHead(), $data['yoast']);
+            $this->setYoastMetaData($page->getHead(), (array)$data['yoast']);
         }
 
         return $page;
