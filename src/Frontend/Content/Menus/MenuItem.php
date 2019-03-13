@@ -8,6 +8,8 @@
 
 namespace Studio24\Frontend\Content\Menus;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class MenuItem
 {
     /**
@@ -104,6 +106,9 @@ class MenuItem
     {
         $urlArray = parse_url($fullUrl);
         $path = (isset($urlArray['path']))? $urlArray['path'] : '/';
-        return $path;
+        $request = Request::createFromGlobals();
+        $baseUrl = $request->getBaseUrl();
+        $url = rtrim($baseUrl,'/').$path;
+        return $url;
     }
 }
