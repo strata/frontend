@@ -23,6 +23,8 @@ class MenuTest extends TestCase
     private $menu8;
     /** @var Menu $menu10 */
     private $menu10;
+    /** @var Menu $menu10 */
+    private $menu3;
 
     public function setUp() : void
     {
