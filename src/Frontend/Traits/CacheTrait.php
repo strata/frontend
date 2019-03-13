@@ -83,5 +83,4 @@ trait CacheTrait
     {
         return $this->cache->delete($key);
     }
-
 }

@@ -108,7 +108,7 @@ class MenuItem
         $path = (isset($urlArray['path']))? $urlArray['path'] : '/';
         $request = Request::createFromGlobals();
         $baseUrl = $request->getBaseUrl();
-        $url = rtrim($baseUrl,'/').$path;
+        $url = rtrim($baseUrl, '/').$path;
         return $url;
     }
 }
