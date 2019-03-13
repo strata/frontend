@@ -719,6 +719,11 @@ class Wordpress extends ContentRepository
         }
 
         $menu = $this->createMenu($data);
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $menu, $this->getCacheLifetime());
+        }
+        
         return $menu;
     }
 
