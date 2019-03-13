@@ -81,7 +81,7 @@ class MenuItem
      */
     public function setUrl(string $url): void
     {
-        $this->url = $url;
+        $this->url = $this->setBaseUrl($url);
     }
 
     /**
@@ -98,5 +98,12 @@ class MenuItem
     public function setChildren(MenuItemCollection $children): void
     {
         $this->children = $children;
+    }
+
+    protected function setBaseUrl(string $fullUrl): string
+    {
+        $urlArray = parse_url($fullUrl);
+        $path = (isset($urlArray['path']))? $urlArray['path'] : '/';
+        return $path;
     }
 }

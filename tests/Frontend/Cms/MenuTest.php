@@ -75,7 +75,7 @@ class MenuTest extends TestCase
             switch ($x) {
                 case 0:
                     $this->assertEquals('Explore', $item->getLabel());
-                    $this->assertEquals("http://localhost/explore/", $item->getUrl());
+                    $this->assertEquals("/explore/", $item->getUrl());
 
                     $y = 0;
                     $childItems = $item->getChildren();
@@ -84,10 +84,11 @@ class MenuTest extends TestCase
                         switch ($y) {
                             case 1:
                                 $this->assertEquals("Countries", $childItem->getLabel());
-                                $this->assertEquals("http://localhost/explore/countries/", $childItem->getUrl());
+                                $this->assertEquals("/explore/countries/", $childItem->getUrl());
                                 break;
                             case 2:
                                 $this->assertEquals("Species", $childItem->getLabel());
+                                $this->assertEquals("/", $childItem->getUrl());
                                 break;
                         }
                         $y++;

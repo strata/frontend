@@ -61,7 +61,7 @@
           "order": 4,
           "parent": 901,
           "title": "Species",
-          "url": "http://localhost/explore/species/",
+          "url": "http://localhost",
           "attr": "",
           "target": "",
           "classes": "",
