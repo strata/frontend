@@ -8,8 +8,6 @@
 
 namespace Studio24\Frontend\Content\Menus;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class MenuItem
 {
     /**
@@ -83,7 +81,7 @@ class MenuItem
      */
     public function setUrl(string $url): void
     {
-        $this->url = $this->setBaseUrl($url);
+        $this->url = $url;
     }
 
     /**
@@ -102,13 +100,17 @@ class MenuItem
         $this->children = $children;
     }
 
-    protected function setBaseUrl(string $fullUrl): string
+    public function setBaseUrl(string $oldDomain, string $newDomain): MenuItem
     {
-        $urlArray = parse_url($fullUrl);
-        $path = (isset($urlArray['path']))? $urlArray['path'] : '/';
-        $request = Request::createFromGlobals();
-        $baseUrl = $request->getBaseUrl();
-        $url = rtrim($baseUrl, '/').$path;
-        return $url;
+        $oldDomain = rtrim($oldDomain, '/');
+        $newDomain = rtrim($newDomain, '/');
+
+        $regex = '/^'.preg_quote($oldDomain,'/').'/';
+
+        $newUrl = preg_replace($regex , $newDomain , $this->getUrl());
+
+        $this->setUrl($newUrl);
+
+        return $this;
     }
 }
