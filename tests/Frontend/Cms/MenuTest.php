@@ -23,6 +23,8 @@ class MenuTest extends TestCase
     private $menu8;
     /** @var Menu $menu10 */
     private $menu10;
+    /** @var Menu $menu10 */
+    private $menu3;
 
     public function setUp() : void
     {
@@ -43,6 +45,11 @@ class MenuTest extends TestCase
                 [],
                 file_get_contents(__DIR__ . '/../responses/menu/menu.10.json')
             ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/menu/menu.3.json')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -53,6 +60,7 @@ class MenuTest extends TestCase
         $this->menu2 = $wordpress->getMenu(2);
         $this->menu8 = $wordpress->getMenu(8);
         $this->menu10 = $wordpress->getMenu(10);
+        $this->menu3 = $wordpress->getMenu(3);
     }
 
     public function testMenu()
@@ -62,6 +70,8 @@ class MenuTest extends TestCase
         $this->assertInstanceOf(Menu::class, $this->menu8);
         $this->assertInstanceOf(MenuItemCollection::class, $this->menu8->getChildren());
         $this->assertInstanceOf(MenuItem::class, $this->menu8->getChildren()->current());
+
+        $this->assertNull($this->menu3);
     }
 
     public function testMenuDetailChildren()
