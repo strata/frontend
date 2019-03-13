@@ -65,4 +65,26 @@ class MenuItemCollection implements \SeekableIterator, \Countable
         }
         $this->position = $position;
     }
+
+    /**
+     * @param string $oldUrl
+     * @param string $newUrl
+     * @return MenuItemCollection
+     */
+    public function setBaseUrls(string $oldUrl = '', string $newUrl = ''): MenuItemCollection
+    {
+        if (empty($this->collection)) {
+            return $this;
+        }
+
+        foreach ($this->collection as $key => $menuItem) {
+            if (!empty($menuItem->getChildren())) {
+                $this->collection[$key]->getChildren()->setBaseUrls($oldUrl, $newUrl);
+            }
+
+            $this->collection[$key]->setBaseUrl($oldUrl, $newUrl);
+        }
+
+        return $this;
+    }
 }

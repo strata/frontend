@@ -98,6 +98,41 @@ class MenuTest extends TestCase
                                 break;
                             case 2:
                                 $this->assertEquals("Species", $childItem->getLabel());
+                                $this->assertEquals("http://localhost", $childItem->getUrl());
+                                break;
+                        }
+                        $y++;
+                        $childItems->next();
+                    }
+                    break;
+            }
+            $x++;
+            $children->next();
+        }
+
+        $this->menu2->setBaseUrls('http://localhost', 'https://newdomain/');
+
+        $x = 0;
+        $children->rewind();
+        while ($children->valid()) {
+            $item = $children->current();
+            switch ($x) {
+                case 0:
+                    $this->assertEquals('Explore', $item->getLabel());
+                    $this->assertEquals("https://newdomain/explore/", $item->getUrl());
+
+                    $y = 0;
+                    $childItems->rewind();
+                    while ($childItems->valid()) {
+                        $childItem = $childItems->current();
+                        switch ($y) {
+                            case 1:
+                                $this->assertEquals("Countries", $childItem->getLabel());
+                                $this->assertEquals("https://newdomain/explore/countries/", $childItem->getUrl());
+                                break;
+                            case 2:
+                                $this->assertEquals("Species", $childItem->getLabel());
+                                $this->assertEquals("https://newdomain", $childItem->getUrl());
                                 break;
                         }
                         $y++;
