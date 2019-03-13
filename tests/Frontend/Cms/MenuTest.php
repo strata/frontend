@@ -110,7 +110,7 @@ class MenuTest extends TestCase
             $children->next();
         }
 
-        $this->menu2->setBaseUrls('http://localhost' , 'https://newdomain/');
+        $this->menu2->setBaseUrls('http://localhost', 'https://newdomain/');
 
         $x = 0;
         $children->rewind();

@@ -105,9 +105,9 @@ class MenuItem
         $oldDomain = rtrim($oldDomain, '/');
         $newDomain = rtrim($newDomain, '/');
 
-        $regex = '/^'.preg_quote($oldDomain,'/').'/';
+        $regex = '/^'.preg_quote($oldDomain, '/').'/';
 
-        $newUrl = preg_replace($regex , $newDomain , $this->getUrl());
+        $newUrl = preg_replace($regex, $newDomain, $this->getUrl());
 
         $this->setUrl($newUrl);
 
