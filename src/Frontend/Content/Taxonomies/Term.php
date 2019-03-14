@@ -32,9 +32,14 @@ class Term
      * @param int $count
      * @param string $description
      */
-    public function __construct(int $id, string $name, string $slug, string $link, int $count = 0,
-                                string $description= '')
-    {
+    public function __construct(
+        int $id,
+        string $name,
+        string $slug,
+        string $link,
+        int $count = 0,
+        string $description = ''
+    ) {
         $this->setID($id);
         $this->setName($name);
         $this->setSlug($slug);

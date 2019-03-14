@@ -29,7 +29,7 @@ class ContentModel extends \ArrayIterator
      * @param string|null $configFile
      * @throws ConfigParsingException
      */
-    public function  __construct(string $configFile = null)
+    public function __construct(string $configFile = null)
     {
         if ($configFile !== null) {
             $this->parseConfig($configFile);

@@ -699,7 +699,7 @@ class Wordpress extends ContentRepository
         return null;
     }
 
-    public function setPageTaxonomies(array $validTaxonomies,BaseContent $page, array $data)
+    public function setPageTaxonomies(array $validTaxonomies, BaseContent $page, array $data)
     {
         $taxonomies = array();
 
@@ -708,7 +708,7 @@ class Wordpress extends ContentRepository
         }
 
         foreach ($validTaxonomies as $taxonomyName) {
-            if ( !isset($data[$taxonomyName])) {
+            if (!isset($data[$taxonomyName])) {
                 continue;
             } elseif (empty($data[$taxonomyName])) {
                 continue;

@@ -310,14 +310,14 @@ EOD;
 
         $pageTaxonomies = $page->getTaxonomies();
 
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection' , $pageTaxonomies['categories'] );
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\Term' , $pageTaxonomies['categories']->current() );
+        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection', $pageTaxonomies['categories']);
+        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\Term', $pageTaxonomies['categories']->current());
 
         foreach ($pageTaxonomies['categories'] as $key => $termObject) {
             switch ($key) {
                 case 0:
-                    $this->assertEquals(28 , $termObject->getId());
-                    $this->assertEquals('http://localhost/category/test/' , $termObject->getlink());
+                    $this->assertEquals(28, $termObject->getId());
+                    $this->assertEquals('http://localhost/category/test/', $termObject->getlink());
                     break;
                 case 1:
                     $this->assertEquals('uncategorized', $termObject->getSlug());
