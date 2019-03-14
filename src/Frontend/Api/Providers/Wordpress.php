@@ -158,6 +158,8 @@ class Wordpress extends RestApiAbstract
 
 
     /**
+     * Get media item data from ID
+     *
      * @param int $id
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -175,6 +177,15 @@ class Wordpress extends RestApiAbstract
         return $data;
     }
 
+    /**
+     * Get media file size from path
+     *
+     * @param string $url
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
     public function getMediaFileSize(string $url): string
     {
         $this->permissionRead();
@@ -195,5 +206,30 @@ class Wordpress extends RestApiAbstract
         $size = FileInfoFormatter::formatFileSize($contentLength);
 
         return $size;
+    }
+
+    /**
+     * Retrieves all terms of a taxonomy
+     *
+     * @param string $taxonomy
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getTaxonomyTerms(string $taxonomy): array
+    {
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
+
+        $response = $this->get("wp/v2/$taxonomy");
+        $data = $this->parseJsonResponse($response);
+
+        return $data;
+    }
+
+    public function getTerm()
+    {
+
     }
 }
