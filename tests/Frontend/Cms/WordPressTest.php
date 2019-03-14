@@ -271,4 +271,59 @@ EOD;
         $this->assertEquals($expected, $page->getContent()->__toString());
         $this->assertEquals("Joe Bloggs", $page->getAuthor()->getName());
     }
+
+    public function testPageTaxonomy()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/taxonomy/post.5049.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/taxonomy/taxonomy.categories.28.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/taxonomy/taxonomy.categories.1.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $contentModel = new ContentModel(__DIR__ . '/config/taxonomies/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('news');
+        $wordpress->setClient($client);
+
+        // Test it!
+        $page = $wordpress->getPage(5049);
+
+        $pageTaxonomies = $page->getTaxonomies();
+
+        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection' , $pageTaxonomies['categories'] );
+        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\Term' , $pageTaxonomies['categories']->current() );
+
+        foreach ($pageTaxonomies['categories'] as $key => $termObject) {
+            switch ($key) {
+                case 0:
+                    $this->assertEquals(28 , $termObject->getId());
+                    $this->assertEquals('http://localhost/category/test/' , $termObject->getlink());
+                    break;
+                case 1:
+                    $this->assertEquals('uncategorized', $termObject->getSlug());
+                    $this->assertEmpty($termObject->getDescription());
+                    break;
+            }
+        }
+    }
 }

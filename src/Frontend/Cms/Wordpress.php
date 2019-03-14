@@ -16,6 +16,7 @@ use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\Content\Taxonomies\Term;
+use Studio24\Frontend\Content\Taxonomies\TermCollection;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
@@ -333,6 +334,13 @@ class Wordpress extends ContentRepository
         // ACF content fields
         if (isset($data['acf']) && is_array($data['acf'])) {
             $this->setCustomContentFields($this->getContentType(), $page, $data['acf']);
+        }
+
+        //taxonomy terms
+        $validTaxonomies = $this->getContentType()->getTaxonomies();
+
+        if (!empty($validTaxonomies)) {
+            $this->setPageTaxonomies($validTaxonomies, $page, $data);
         }
     }
 
@@ -691,6 +699,31 @@ class Wordpress extends ContentRepository
         return null;
     }
 
+    public function setPageTaxonomies(array $validTaxonomies,BaseContent $page, array $data)
+    {
+        $taxonomies = array();
+
+        if (empty($validTaxonomies)) {
+            return;
+        }
+
+        foreach ($validTaxonomies as $taxonomyName) {
+            if ( !isset($data[$taxonomyName])) {
+                continue;
+            } elseif (empty($data[$taxonomyName])) {
+                continue;
+            }
+
+            $taxonomies[$taxonomyName] = new TermCollection();
+
+            foreach ($data[$taxonomyName] as $termID) {
+                $term = $this->createTerm($taxonomyName, $termID);
+                $taxonomies[$taxonomyName]->addItem($term);
+            }
+        }
+
+        $page->setTaxonomies($taxonomies);
+    }
 
     /**
      * Generate user object from API data
@@ -844,10 +877,10 @@ class Wordpress extends ContentRepository
 
         $termData = $this->api->getTerm($taxonomy, $id);
 
-        return $termData;
-
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $termData, $this->getCacheLifetime());
         }
+
+        return $termData;
     }
 }

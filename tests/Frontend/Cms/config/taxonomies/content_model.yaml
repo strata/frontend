@@ -1,0 +1,15 @@
+content_types:
+  news:
+    api_endpoint: pages
+    content_fields: news.yaml
+    taxonomies:
+      - categories
+      - tags
+
+global:
+  image_sizes:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+    - full

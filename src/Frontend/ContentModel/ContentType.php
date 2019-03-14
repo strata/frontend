@@ -58,6 +58,8 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
 
     protected $apiEndpoint;
 
+    protected $taxonomies;
+
     public function __construct(string $name)
     {
         parent::__construct();
@@ -194,6 +196,24 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     public function setApiEndpoint(string $apiEndpoint): ContentType
     {
         $this->apiEndpoint = $apiEndpoint;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTaxonomies(): array
+    {
+        return $this->taxonomies;
+    }
+
+    /**
+     * @param array $taxonomies
+     * @return ContentType Fluent interface
+     */
+    public function setTaxonomies(array $taxonomies): ContentType
+    {
+        $this->taxonomies = $taxonomies;
         return $this;
     }
 

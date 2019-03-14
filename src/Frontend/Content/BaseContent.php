@@ -65,12 +65,20 @@ class BaseContent implements ContentInterface, AddressableInterface
     protected $featuredImage;
 
     /**
+     * Taxonomy terms
+     *
+     * @var array of TermCollection objects
+     */
+    protected $taxonomies;
+
+    /**
      * Page constructor.
      */
     public function __construct()
     {
         $this->content = new ContentFieldCollection();
         $this->featuredImage = null;
+        $this->taxonomies = array();
     }
 
     /**
@@ -308,12 +316,39 @@ class BaseContent implements ContentInterface, AddressableInterface
         return $this->featuredImage;
     }
 
+    /**
+     * @param Image $featuredImage
+     * @return BaseContent
+     */
     public function setFeaturedImage(Image $featuredImage): BaseContent
     {
         $this->featuredImage = $featuredImage;
 
         return $this;
     }
+
+
+    /**
+     * Return array of TermCollection (one per taxonomy)
+     *
+     * @return array
+     */
+    public function getTaxonomies(): array
+    {
+        return $this->taxonomies;
+    }
+
+    /**
+     * @param array $taxonomies
+     * @return BaseContent
+     */
+    public function setTaxonomies(array $taxonomies): BaseContent
+    {
+        $this->taxonomies = $taxonomies;
+
+        return $this;
+    }
+
 
     /**
      * Return string representation of the content
