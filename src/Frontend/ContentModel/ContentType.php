@@ -65,6 +65,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         parent::__construct();
 
         $this->setName($name);
+        $this->taxonomies = array();
     }
 
     /**
