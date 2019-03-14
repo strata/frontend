@@ -15,6 +15,7 @@ use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
+use Studio24\Frontend\Content\Taxonomies\Term;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
@@ -776,5 +777,35 @@ class Wordpress extends ContentRepository
             }
         }
         return $menuItemParent;
+    }
+
+    /**
+     * Create term object from taxonomy and term id
+     *
+     * @param string $taxonomy
+     * @param int $id
+     * @return null|Term
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function createTerm(string $taxonomy, int $id): ?Term
+    {
+        $termData = $this->api->getTerm($taxonomy, $id);
+
+        if (empty($termData)) {
+            return null;
+        }
+
+        $term = new Term(
+            $termData['id'],
+            $termData['name'],
+            $termData['slug'],
+            $termData['link'],
+            $termData['count'],
+            $termData['description']
+        );
+
+        return $term;
     }
 }
