@@ -252,7 +252,7 @@ class Wordpress extends ContentRepository
      */
     public function getMediaDataById(int $id): array
     {
-        $cacheKey = $this->getCacheKey('media', $id);
+        $cacheKey = $this->buildCacheKey('media', $id);
 
         if ($this->hasCache()) {
             $data = $this->cache->get($cacheKey, false);
@@ -745,7 +745,7 @@ class Wordpress extends ContentRepository
 
     public function getMenu(int $id)
     {
-        $cacheKey = $this->getCacheKey('menu', $id);
+        $cacheKey = $this->buildCacheKey('menu', $id);
 
         if ($this->hasCache()) {
             $data = $this->cache->get($cacheKey, false);
@@ -875,7 +875,7 @@ class Wordpress extends ContentRepository
      */
     public function getTerm(string $taxonomy, int $id): ?array
     {
-        $cacheKey = $this->getCacheKey('term', $taxonomy, $id);
+        $cacheKey = $this->buildCacheKey('term', $taxonomy, $id);
 
         if ($this->hasCache()) {
             $data = $this->cache->get($cacheKey, false);
