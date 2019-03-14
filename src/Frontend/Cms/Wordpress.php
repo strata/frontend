@@ -15,6 +15,8 @@ use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
+use Studio24\Frontend\Content\Taxonomies\Term;
+use Studio24\Frontend\Content\Taxonomies\TermCollection;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
@@ -250,7 +252,7 @@ class Wordpress extends ContentRepository
      */
     public function getMediaDataById(int $id): array
     {
-        $cacheKey = $this->getCacheKey('media', $id);
+        $cacheKey = $this->buildCacheKey('media', $id);
 
         if ($this->hasCache()) {
             $data = $this->cache->get($cacheKey, false);
@@ -333,8 +335,24 @@ class Wordpress extends ContentRepository
         if (isset($data['acf']) && is_array($data['acf'])) {
             $this->setCustomContentFields($this->getContentType(), $page, $data['acf']);
         }
+
+        //taxonomy terms
+        $validTaxonomies = $this->getContentType()->getTaxonomies();
+
+        if (!empty($validTaxonomies)) {
+            $this->setPageTaxonomies($validTaxonomies, $page, $data);
+        }
     }
 
+    /**
+     * @param ContentInterface $page
+     * @param $mediaID
+     * @return ContentInterface
+     * @throws ContentFieldException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
     public function setFeaturedImage(ContentInterface $page, $mediaID)
     {
         if (empty($mediaID) || !is_numeric($mediaID) || is_float($mediaID)) {
@@ -681,6 +699,31 @@ class Wordpress extends ContentRepository
         return null;
     }
 
+    public function setPageTaxonomies(array $validTaxonomies, BaseContent $page, array $data)
+    {
+        $taxonomies = array();
+
+        if (empty($validTaxonomies)) {
+            return;
+        }
+
+        foreach ($validTaxonomies as $taxonomyName) {
+            if (!isset($data[$taxonomyName])) {
+                continue;
+            } elseif (empty($data[$taxonomyName])) {
+                continue;
+            }
+
+            $taxonomies[$taxonomyName] = new TermCollection();
+
+            foreach ($data[$taxonomyName] as $termID) {
+                $term = $this->createTerm($taxonomyName, $termID);
+                $taxonomies[$taxonomyName]->addItem($term);
+            }
+        }
+
+        $page->setTaxonomies($taxonomies);
+    }
 
     /**
      * Generate user object from API data
@@ -702,7 +745,7 @@ class Wordpress extends ContentRepository
 
     public function getMenu(int $id)
     {
-        $cacheKey = $this->getCacheKey('menu', $id);
+        $cacheKey = $this->buildCacheKey('menu', $id);
 
         if ($this->hasCache()) {
             $data = $this->cache->get($cacheKey, false);
@@ -785,5 +828,68 @@ class Wordpress extends ContentRepository
             }
         }
         return $menuItemParent;
+    }
+
+    /**
+     * Create term object from taxonomy and term id
+     *
+     * @param string $taxonomy
+     * @param int $id
+     * @return null|Term
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function createTerm(string $taxonomy, int $id): ?Term
+    {
+
+        $termData = $this->getTerm($taxonomy, $id);
+
+        if (empty($termData)) {
+            return null;
+        }
+
+        $term = new Term(
+            $termData['id'],
+            $termData['name'],
+            $termData['slug'],
+            $termData['link'],
+            $termData['count'],
+            $termData['description']
+        );
+
+        return $term;
+    }
+
+    /**
+     * Get term data
+     *
+     * @param string $taxonomy
+     * @param int $id
+     * @return array|null
+     * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getTerm(string $taxonomy, int $id): ?array
+    {
+        $cacheKey = $this->buildCacheKey('term', $taxonomy, $id);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
+        }
+
+        $termData = $this->api->getTerm($taxonomy, $id);
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $termData, $this->getCacheLifetime());
+        }
+
+        return $termData;
     }
 }

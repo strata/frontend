@@ -61,6 +61,9 @@ class ContentModel extends \ArrayIterator
             if (isset($values['api_endpoint'])) {
                 $contentType->setApiEndpoint($values['api_endpoint']);
             }
+            if (isset($values['taxonomies'])) {
+                $contentType->setTaxonomies($values['taxonomies']);
+            }
             if (isset($values['content_fields'])) {
                 $contentType->parseConfig($configDir . '/' . $values['content_fields']);
             }

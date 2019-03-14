@@ -1,0 +1,41 @@
+{
+  "id": 1,
+  "count": 2,
+  "description": "",
+  "link": "http://localhost/category/uncategorized/",
+  "name": "Uncategorized",
+  "slug": "uncategorized",
+  "taxonomy": "category",
+  "parent": 0,
+  "meta": [],
+  "acf": [],
+  "_links": {
+    "self": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/categories/1"
+      }
+    ],
+    "collection": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/categories"
+      }
+    ],
+    "about": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/taxonomies/category"
+      }
+    ],
+    "wp:post_type": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/posts?categories=1"
+      }
+    ],
+    "curies": [
+      {
+        "name": "wp",
+        "href": "https://api.w.org/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}
