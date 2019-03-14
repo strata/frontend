@@ -757,7 +757,16 @@ class Wordpress extends ContentRepository
         // Get menu data
         $data = $this->api->getMenu($id);
 
+        if (empty($data)) {
+            return null;
+        }
+
         $menu = $this->createMenu($data);
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $menu, $this->getCacheLifetime());
+        }
+        
         return $menu;
     }
 

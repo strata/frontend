@@ -119,4 +119,20 @@ class Menu
     {
         $this->children = $children;
     }
+
+    /**
+     * @param string $oldUrl
+     * @param string $newUrl
+     * @return Menu
+     */
+    public function setBaseUrls(string $oldUrl = '', string $newUrl = ''): Menu
+    {
+        if (empty($this->getChildren())) {
+            return $this;
+        }
+
+        $this->getChildren()->setBaseUrls($oldUrl, $newUrl);
+
+        return $this;
+    }
 }

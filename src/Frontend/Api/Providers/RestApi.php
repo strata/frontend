@@ -99,6 +99,8 @@ class RestApi extends RestApiAbstract
      *      "page": 1
      *  },
      *
+     * @todo Is limit the right word here? Consider per_page
+     *
      * @param int $page Current page number
      * @param int $limit Number of results per page
      * @param ResponseInterface $response

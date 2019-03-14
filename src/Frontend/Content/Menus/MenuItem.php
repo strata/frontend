@@ -99,4 +99,18 @@ class MenuItem
     {
         $this->children = $children;
     }
+
+    public function setBaseUrl(string $oldDomain, string $newDomain): MenuItem
+    {
+        $oldDomain = rtrim($oldDomain, '/');
+        $newDomain = rtrim($newDomain, '/');
+
+        $regex = '/^'.preg_quote($oldDomain, '/').'/';
+
+        $newUrl = preg_replace($regex, $newDomain, $this->getUrl());
+
+        $this->setUrl($newUrl);
+
+        return $this;
+    }
 }
