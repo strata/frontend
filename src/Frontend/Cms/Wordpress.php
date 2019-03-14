@@ -336,6 +336,15 @@ class Wordpress extends ContentRepository
         }
     }
 
+    /**
+     * @param ContentInterface $page
+     * @param $mediaID
+     * @return ContentInterface
+     * @throws ContentFieldException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
     public function setFeaturedImage(ContentInterface $page, $mediaID)
     {
         if (empty($mediaID) || !is_numeric($mediaID) || is_float($mediaID)) {
@@ -791,7 +800,8 @@ class Wordpress extends ContentRepository
      */
     public function createTerm(string $taxonomy, int $id): ?Term
     {
-        $termData = $this->api->getTerm($taxonomy, $id);
+
+        $termData = $this->getTerm($taxonomy, $id);
 
         if (empty($termData)) {
             return null;
@@ -807,5 +817,37 @@ class Wordpress extends ContentRepository
         );
 
         return $term;
+    }
+
+    /**
+     * Get term data
+     *
+     * @param string $taxonomy
+     * @param int $id
+     * @return array|null
+     * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getTerm(string $taxonomy, int $id): ?array
+    {
+        $cacheKey = $this->getCacheKey('term', $taxonomy, $id);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
+        }
+
+        $termData = $this->api->getTerm($taxonomy, $id);
+
+        return $termData;
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $termData, $this->getCacheLifetime());
+        }
     }
 }
