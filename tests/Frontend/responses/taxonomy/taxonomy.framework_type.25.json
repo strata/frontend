@@ -1,0 +1,41 @@
+{
+  "id": 25,
+  "count": 0,
+  "description": "",
+  "link": "http://localhost/framework_type/standard/",
+  "name": "Standard",
+  "slug": "standard",
+  "taxonomy": "framework_type",
+  "parent": 0,
+  "meta": [],
+  "acf": [],
+  "_links": {
+    "self": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/framework_type/25"
+      }
+    ],
+    "collection": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/framework_type"
+      }
+    ],
+    "about": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/taxonomies/framework_type"
+      }
+    ],
+    "wp:post_type": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/framework?framework_type=25"
+      }
+    ],
+    "curies": [
+      {
+        "name": "wp",
+        "href": "https://api.w.org/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}

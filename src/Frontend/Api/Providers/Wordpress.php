@@ -228,8 +228,24 @@ class Wordpress extends RestApiAbstract
         return $data;
     }
 
-    public function getTerm()
+    /**
+     * Returns single term data
+     *
+     * @param string $taxonomy
+     * @param int $termID
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getTerm(string $taxonomy, int $termID): array
     {
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
 
+        $response = $this->get("wp/v2/$taxonomy/$termID");
+        $data = $this->parseJsonResponse($response);
+
+        return $data;
     }
 }
