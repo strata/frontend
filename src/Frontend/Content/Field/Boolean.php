@@ -40,6 +40,7 @@ class Boolean extends ContentField
     {
         if (is_bool($value)) {
             $this->value = $value;
+            return $this;
         }
         if (!is_string($value)) {
             if (preg_match('/(y|yes|1)/i', $value)) {
