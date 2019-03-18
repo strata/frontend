@@ -250,7 +250,7 @@ class Wordpress extends ContentRepository
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getMediaDataById(int $id): array
+    public function getMediaDataById(int $id): ?array
     {
         $cacheKey = $this->buildCacheKey('media', $id);
 
