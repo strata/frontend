@@ -361,9 +361,12 @@ class Wordpress extends ContentRepository
 
         //image ID passed on
         $field_data = $this->getMediaDataById($mediaID);
-        $sizesData = array();
+        if (empty($field_data)) {
+            return $page;
+        }
 
         // Add sizes
+        $sizesData = [];
         $availableSizes = $this->getContentModel()->getGlobal('image_sizes');
         if ($availableSizes !== null) {
             foreach ($availableSizes as $sizeName) {
