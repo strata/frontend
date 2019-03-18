@@ -72,4 +72,27 @@ class WordPressApiTest extends TestCase
         $this->assertEquals('http://localhost/framework_type/standard/', $term_data['link']);
         $this->assertEquals(25, $term_data['id']);
     }
+
+    public function testFailedResponses()
+    {
+        // Create a mock and queue two responses
+        $mock = new MockHandler([
+            new Response(
+                401,
+                [],
+                '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $api = new Wordpress('somewhere');
+        $api->setClient($client);
+
+        // Test it!
+        $results = $api->getMedia(1000);
+        $this->assertEmpty($results);
+    }
+
 }
