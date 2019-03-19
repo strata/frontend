@@ -599,6 +599,10 @@ class Wordpress extends ContentRepository
                     } elseif (is_array($value)) {
                         //image array passed on
 
+                        if (empty($value)) {
+                            return null;
+                        }
+
                         // Add sizes
                         $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
                         if ($availableSizes !== null) {
@@ -727,6 +731,10 @@ class Wordpress extends ContentRepository
                     $array = new ArrayContent($name);
 
                     if (!is_array($value)) {
+                        break;
+                    }
+
+                    if (empty($value)) {
                         break;
                     }
 

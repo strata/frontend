@@ -1,4 +1,7 @@
 content_types:
   pages:
     api_endpoint: pages
-    content_fields: page.yaml
+    content_fields: pages.yaml
+  news:
+    api_endpoint: news
+    content_fields: news.yaml
