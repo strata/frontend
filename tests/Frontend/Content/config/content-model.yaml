@@ -1,0 +1,15 @@
+content_types:
+  page:
+    api_endpoint: wp/v2/pages
+    content_fields: page.yaml
+
+global:
+  site_name: 'Name of site'
+  image_sizes:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+    - twentyseventeen-featured-image
+    - twentyseventeen-thumbnail-avatar
+    - issue-post-image
