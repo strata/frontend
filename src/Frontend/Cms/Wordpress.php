@@ -777,6 +777,14 @@ class Wordpress extends ContentRepository
                     return $relation;
                     break;
 
+                case 'flexible':
+                    if (!is_array($value)){
+                        break;
+                    }
+
+                    $flexible = new FlexibleContent($name);
+
+                    break;
                 /**
                  * @todo Build & test Flexible content field
                  * case 'flexible':

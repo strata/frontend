@@ -347,9 +347,9 @@ EOD;
 
         $contentModel = new ContentModel(__DIR__ . '/config/flexible-content/content_model.yaml');
         $wordpress = new Wordpress('something', $contentModel);
-        $wordpress->setContentType('news');
+        $wordpress->setContentType('pages');
         $wordpress->setClient($client);
 
-
+        $page = $wordpress->getPage(15);
     }
 }
