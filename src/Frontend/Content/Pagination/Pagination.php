@@ -245,7 +245,7 @@ class Pagination implements PaginationInterface
         }
 
         if ($this->getTotalPages() <= $maxPages) {
-            return range($from, $to);
+            return range($from, $this->getTotalPages());
         }
 
         $currentPage = $this->getPage();

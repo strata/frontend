@@ -22,7 +22,9 @@
         "guzzlehttp/guzzle": "~6.0",
         "symfony/yaml": "4.2.*",
         "twig/twig": "^2.6",
-        "webmozart/assert": "^1.4"
+        "webmozart/assert": "^1.4",
+        "psr/simple-cache": "^1.0",
+        "symfony/http-foundation": "^4.2"
     },
     "autoload": {
         "psr-4": {

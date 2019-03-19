@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Studio24\Frontend\Api;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Studio24\Frontend\Exception\PermissionException;
 use Studio24\Frontend\Exception\FailedRequestException;
@@ -46,6 +48,13 @@ abstract class RestApiAbstract
      * @var bool
      */
     protected $expectedResponseCode;
+
+    /**
+     * Array of response error codes to ignore and not throw an exception for
+     *
+     * @var array
+     */
+    protected $ignoreErrorCodes = [401];
 
     /**
      * Constructor
@@ -123,6 +132,16 @@ abstract class RestApiAbstract
     public function clearExpectedResponseCode()
     {
         $this->expectedResponseCode = null;
+    }
+
+    /**
+     * Set an error code to be ignored in the response (and not throw an exception)
+     *
+     * @param int $code
+     */
+    public function ignoreErrorCode(int $code)
+    {
+        $this->ignoreErrorCodes[] = $code;
     }
 
     /**
@@ -207,7 +226,17 @@ abstract class RestApiAbstract
      */
     public function request($method, $uri, array $options) : ResponseInterface
     {
-        $response = $this->getClient()->request($method, $uri, $options);
+        try {
+            $response = $this->getClient()->request($method, $uri, $options);
+
+        } catch (RequestException $e) {
+            if (in_array($e->getCode(), $this->ignoreErrorCodes)) {
+                // @todo Log warning?
+
+                // Return empty error response to frontend
+                return new Response($e->getCode(), [], '[]', '1.1', $e->getMessage());
+            }
+        }
 
         if ($this->expectedResponseCode !== null) {
             if ($response->getStatusCode() !== $this->expectedResponseCode) {
@@ -245,6 +274,20 @@ abstract class RestApiAbstract
     public function post($uri, array $options) : ResponseInterface
     {
         return $this->request('POST', $uri, $options);
+    }
+
+    /**
+     * Make a HEAD request to the API
+     *
+     * @param string $uri URI relative to base URI
+     * @param array $options
+     * @return ResponseInterface
+     * @throws FailedRequestException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function head($uri, array $options) : ResponseInterface
+    {
+        return $this->request('HEAD', $uri, $options);
     }
 
     /**

@@ -9,6 +9,7 @@ use Studio24\Frontend\Api\ListResponse;
 use Studio24\Frontend\Content\Pagination\Pagination;
 use Studio24\Frontend\Api\RestApiAbstract;
 use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Utils\FileInfoFormatter;
 
 class Wordpress extends RestApiAbstract
 {
@@ -126,7 +127,7 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get("users/$id");
+        $response = $this->get("wp/v2/users/$id");
         $data = $this->parseJsonResponse($response);
 
         return $data;
@@ -149,7 +150,6 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        // @todo Need to alter other WP base URLs to https://domain.com/wp-json/ & API URL endpoints to the format: wp/v2/posts
         $response = $this->get("wp-api-menus/v2/menus/$id");
         $data = $this->parseJsonResponse($response);
 
@@ -158,6 +158,8 @@ class Wordpress extends RestApiAbstract
 
 
     /**
+     * Get media item data from ID
+     *
      * @param int $id
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -169,7 +171,79 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get("media/$id");
+        $response = $this->get("wp/v2/media/$id");
+        $data = $this->parseJsonResponse($response);
+
+        return $data;
+    }
+
+    /**
+     * Get media file size from path
+     *
+     * @param string $url
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getMediaFileSize(string $url): string
+    {
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
+
+        $response = $this->head($url, []);
+
+        $contentLength = $response->getHeader('Content-length');
+
+        $size = '0 B';
+
+        if (empty($contentLength)) {
+            return $size;
+        } else {
+            $contentLength = $contentLength[0];
+        }
+
+        $size = FileInfoFormatter::formatFileSize($contentLength);
+
+        return $size;
+    }
+
+    /**
+     * Retrieves all terms of a taxonomy
+     *
+     * @param string $taxonomy
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getTaxonomyTerms(string $taxonomy): array
+    {
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
+
+        $response = $this->get("wp/v2/$taxonomy");
+        $data = $this->parseJsonResponse($response);
+
+        return $data;
+    }
+
+    /**
+     * Returns single term data
+     *
+     * @param string $taxonomy
+     * @param int $termID
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getTerm(string $taxonomy, int $termID): array
+    {
+        $this->permissionRead();
+        $this->expectedResponseCode(200);
+
+        $response = $this->get("wp/v2/$taxonomy/$termID");
         $data = $this->parseJsonResponse($response);
 
         return $data;

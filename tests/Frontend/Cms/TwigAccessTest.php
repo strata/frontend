@@ -65,6 +65,4 @@ EOD;
         $template = $twig->load('pagination.html.twig');
         $this->assertEquals($expected, $template->render(['pagination' => $projects->getPagination()]));
     }
-
-
 }

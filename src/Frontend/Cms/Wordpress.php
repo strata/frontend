@@ -8,6 +8,7 @@ use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
@@ -15,8 +16,11 @@ use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Head;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
+use Studio24\Frontend\Content\Taxonomies\Term;
+use Studio24\Frontend\Content\Taxonomies\TermCollection;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
+use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Exception\ContentFieldException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
@@ -39,6 +43,7 @@ use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
+use Studio24\Frontend\Utils\FileInfoFormatter;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 
 /**
@@ -126,9 +131,12 @@ class Wordpress extends ContentRepository
     {
 
         $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $pages = $this->cache->get($cacheKey);
-            return $pages;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         $list = $this->api->listPosts(
@@ -143,7 +151,7 @@ class Wordpress extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $pages);
+            $this->cache->set($cacheKey, $pages, $this->getCacheLifetime());
         }
 
         return $pages;
@@ -164,9 +172,12 @@ class Wordpress extends ContentRepository
     public function getPage(int $id): Page
     {
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $page = $this->cache->get($cacheKey);
-            return $page;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get content
@@ -179,66 +190,90 @@ class Wordpress extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $page);
+            $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
         }
 
         return $page;
     }
 
     /**
-     * Return media content field from API
+     * Return page based on slug
      *
-     * @param string $name Content field name
+     * @param string $slug
+     * @return Page
+     * @throws ApiException
+     * @throws ContentFieldException
+     * @throws ContentTypeNotSetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PaginationException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getPageBySlug(string $slug)
+    {
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $slug);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
+        }
+
+        // Get content
+        $results = $this->api->listPosts($this->getContentApiEndpoint(), 1, ['slug' => $slug]);
+        if ($results->getPagination()->getTotalResults() != 1) {
+            throw new ApiException(sprintf('Page not found for slug: %s', $slug));
+        }
+
+        // Get single result
+        $data = $results->getResponseData()[0];
+        $page = $this->createPage($data);
+
+        if (!empty($data['author'])) {
+            $author = $this->api->getAuthor($data['author']);
+            $page->setAuthor($this->createUser($author));
+        }
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
+        }
+
+        return $page;
+    }
+
+    /**
+     * Return media data from API
+     *
      * @param int $id ID of media item to retrieve
-     * @return AssetField|null
+     * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getMediaField(string $name, int $id): ?AssetField
+    public function getMediaDataById(int $id): ?array
     {
-        $cacheKey = $this->getCacheKey('media', $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $media = $this->cache->get($cacheKey);
-            return $media;
+        $cacheKey = $this->buildCacheKey('media', $id);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get data from API
-        $data = $this->api->getMedia($id);
-        if (empty($data)) {
+        $media_data = $this->api->getMedia($id);
+        if (empty($media_data)) {
             return null;
         }
 
-        // Parse data from array into object
-        switch (AssetField::guesser($data['mime_type'])) {
-            case 'Audio':
-                // @todo
-                break;
-
-            case 'Document':
-                $media = new Document(
-                    $name,
-                    $data['source_url'],
-                    $data['title']['rendered'],
-                    $data['alt_text']
-                );
-                break;
-
-            case 'Image':
-                // @todo
-                break;
-
-            case 'Video':
-                // @todo
-                break;
-        }
-
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $media);
+            $this->cache->set($cacheKey, $media_data, $this->getCacheLifetime());
         }
 
-        return $media;
+        return $media_data;
     }
 
     /**
@@ -333,6 +368,10 @@ class Wordpress extends ContentRepository
             $page->setExcerpt(FieldFinder::excerpt($data));
         }
 
+        if (!empty(FieldFinder::featuredImage($data))) {
+            $this->setFeaturedImage($page, FieldFinder::featuredImage($data));
+        }
+
         // Default WordPress content field
         if (!empty(FieldFinder::content($data))) {
             $page->addContent(new RichText('content', FieldFinder::content($data)));
@@ -342,6 +381,67 @@ class Wordpress extends ContentRepository
         if (isset($data['acf']) && is_array($data['acf'])) {
             $this->setCustomContentFields($this->getContentType(), $page, $data['acf']);
         }
+
+        //taxonomy terms
+        $validTaxonomies = $this->getContentType()->getTaxonomies();
+
+        if (!empty($validTaxonomies)) {
+            $this->setPageTaxonomies($validTaxonomies, $page, $data);
+        }
+    }
+
+    /**
+     * @param ContentInterface $page
+     * @param $mediaID
+     * @return ContentInterface
+     * @throws ContentFieldException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function setFeaturedImage(ContentInterface $page, $mediaID)
+    {
+        if (empty($mediaID) || !is_numeric($mediaID) || is_float($mediaID)) {
+            return $page;
+        }
+
+        //image ID passed on
+        $field_data = $this->getMediaDataById($mediaID);
+        if (empty($field_data)) {
+            return $page;
+        }
+
+        // Add sizes
+        $sizesData = [];
+        $availableSizes = $this->getContentModel()->getGlobal('image_sizes');
+        if ($availableSizes !== null) {
+            foreach ($availableSizes as $sizeName) {
+                if (isset($field_data['media_details']['sizes'][$sizeName])) {
+                    array_push(
+                        $sizesData,
+                        array(
+                            'url' => $field_data['media_details']['sizes'][$sizeName]['source_url'],
+                            'width' => $field_data['media_details']['sizes'][$sizeName]['width'],
+                            'height' => $field_data['media_details']['sizes'][$sizeName]['height'],
+                            'name' => $sizeName
+                        )
+                    );
+                }
+            }
+        }
+
+        $image = new Image(
+            'featured_image',
+            $field_data['source_url'],
+            $field_data['title']['rendered'],
+            $field_data['caption']['rendered'],
+            $field_data['alt_text'],
+            $sizesData
+        );
+
+        $page->setFeaturedImage($image);
+
+        return $page;
     }
 
     /**
@@ -411,44 +511,166 @@ class Wordpress extends ContentRepository
                     return new DateTime($name, $value);
                     break;
 
-                case 'boolean':
-                    return new Boolean($name, $value);
-                    break;
-
                 case 'image':
-                    $image = new Image(
-                        $name,
-                        $value['url'],
-                        $value['title'],
-                        $value['caption'],
-                        $value['alt']
-                    );
+                    $sizesData = array();
+                    if (is_int($value)) {
+                        //image ID passed on
+                        $field_data = $this->getMediaDataById($value);
 
-                    // Add sizes
-                    $availableSizes = $field->getOption('image_sizes');
-                    if ($availableSizes !== null) {
-                        foreach ($availableSizes as $sizeName) {
-                            if (isset($value['sizes'][$sizeName])) {
-                                $width = $sizeName . '-width';
-                                $height = $sizeName . '-height';
-                                $image->addSize(
-                                    $value['sizes'][$sizeName],
-                                    $value['sizes'][$width],
-                                    $value['sizes'][$height],
-                                    $sizeName
-                                );
+                        // Add sizes
+                        $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
+                        if ($availableSizes !== null) {
+                            foreach ($availableSizes as $sizeName) {
+                                if (isset($field_data['media_details']['sizes'][$sizeName])) {
+                                    array_push(
+                                        $sizesData,
+                                        array(
+                                        'url' => $field_data['media_details']['sizes'][$sizeName]['source_url'],
+                                        'width' => $field_data['media_details']['sizes'][$sizeName]['width'],
+                                        'height' => $field_data['media_details']['sizes'][$sizeName]['height'],
+                                        'name' => $sizeName
+                                        )
+                                    );
+                                }
                             }
                         }
+
+                        $image = new Image(
+                            $name,
+                            $field_data['source_url'],
+                            $field_data['title']['rendered'],
+                            $field_data['caption']['rendered'],
+                            $field_data['alt_text'],
+                            $sizesData
+                        );
+
+                        return $image;
+                    } elseif (is_array($value)) {
+                        //image array passed on
+
+                        // Add sizes
+                        $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
+                        if ($availableSizes !== null) {
+                            foreach ($availableSizes as $sizeName) {
+                                if (isset($value['sizes'][$sizeName])) {
+                                    array_push(
+                                        $sizesData,
+                                        array(
+                                        'url' => $value['sizes'][$sizeName],
+                                        'width' => $value['sizes'][$sizeName.'-width'],
+                                        'height' => $value['sizes'][$sizeName.'-height'],
+                                        'name' => $sizeName
+                                        )
+                                    );
+                                }
+                            }
+                        }
+
+                        $image = new Image(
+                            $name,
+                            $value['url'],
+                            $value['title'],
+                            $value['caption'],
+                            $value['alt'],
+                            $sizesData
+                        );
+
+                        return $image;
                     }
-                    return $image;
                     break;
 
                 case 'document':
-                    // Read document data from Media API
-                    return $this->getMediaField($name, $value);
-                    break;
+                    //given an attachment, request data and create field
+                    if (is_int($value)) {
+                        $field_data = $this->getMediaDataById($value);
 
-                // @todo video, audio
+                        $filesize = $this->api->getMediaFileSize($field_data['source_url']);
+
+                        $document = new Document(
+                            $name,
+                            $field_data['source_url'],
+                            $filesize,
+                            $field_data['title']['rendered'],
+                            $field_data['alt_text']
+                        );
+
+                        return $document;
+                    } elseif (is_array($value)) {
+                        //given array of data, create field directy
+                        $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
+
+                        $document = new Document(
+                            $name,
+                            $value['url'],
+                            $filesize,
+                            $value['title'],
+                            $value['alt']
+                        );
+
+                        return $document;
+                    } else {
+                        return null;
+                    }
+
+                    break;
+                case 'video':
+                    $media_id = null;
+
+                    if (is_int($value)) {
+                        $media_id = $value;
+                    } elseif (is_array($value)) {
+                        $media_id = $value['id'];
+                    } else {
+                        return null;
+                    }
+
+                    $field_data = $this->getMediaDataById($media_id);
+
+                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                    $video = new Video(
+                        $name,
+                        $field_data['source_url'],
+                        $filesize,
+                        $field_data['media_details']['bitrate'],
+                        $field_data['media_details']['length_formatted'],
+                        $field_data['title']['rendered'],
+                        $field_data['alt_text']
+                    );
+
+                    return $video;
+
+                break;
+
+                case 'audio':
+                    $media_id = null;
+
+                    if (is_int($value)) {
+                        $media_id = $value;
+                    } elseif (is_array($value)) {
+                        $media_id = $value['id'];
+                    } else {
+                        return null;
+                    }
+
+                    $field_data = $this->getMediaDataById($media_id);
+
+                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                    $audio = new Audio(
+                        $name,
+                        $field_data['source_url'],
+                        $filesize,
+                        $field_data['media_details']['bitrate'],
+                        $field_data['media_details']['length_formatted'],
+                        $field_data['media_details'],
+                        $field_data['title']['rendered'],
+                        $field_data['alt_text']
+                    );
+
+                    return $audio;
+
+                break;
 
                 case 'array':
                     $array = new ArrayContent($name);
@@ -526,6 +748,31 @@ class Wordpress extends ContentRepository
         return null;
     }
 
+    public function setPageTaxonomies(array $validTaxonomies, BaseContent $page, array $data)
+    {
+        $taxonomies = array();
+
+        if (empty($validTaxonomies)) {
+            return;
+        }
+
+        foreach ($validTaxonomies as $taxonomyName) {
+            if (!isset($data[$taxonomyName])) {
+                continue;
+            } elseif (empty($data[$taxonomyName])) {
+                continue;
+            }
+
+            $taxonomies[$taxonomyName] = new TermCollection();
+
+            foreach ($data[$taxonomyName] as $termID) {
+                $term = $this->createTerm($taxonomyName, $termID);
+                $taxonomies[$taxonomyName]->addItem($term);
+            }
+        }
+
+        $page->setTaxonomies($taxonomies);
+    }
 
     /**
      * Generate user object from API data
@@ -547,16 +794,28 @@ class Wordpress extends ContentRepository
 
     public function getMenu(int $id)
     {
-        $cacheKey = $this->getCacheKey('menu', $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $page = $this->cache->get($cacheKey);
-            return $page;
+        $cacheKey = $this->buildCacheKey('menu', $id);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get menu data
         $data = $this->api->getMenu($id);
 
+        if (empty($data)) {
+            return null;
+        }
+
         $menu = $this->createMenu($data);
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $menu, $this->getCacheLifetime());
+        }
+        
         return $menu;
     }
 
@@ -619,5 +878,68 @@ class Wordpress extends ContentRepository
             }
         }
         return $menuItemParent;
+    }
+
+    /**
+     * Create term object from taxonomy and term id
+     *
+     * @param string $taxonomy
+     * @param int $id
+     * @return null|Term
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function createTerm(string $taxonomy, int $id): ?Term
+    {
+
+        $termData = $this->getTerm($taxonomy, $id);
+
+        if (empty($termData)) {
+            return null;
+        }
+
+        $term = new Term(
+            $termData['id'],
+            $termData['name'],
+            $termData['slug'],
+            $termData['link'],
+            $termData['count'],
+            $termData['description']
+        );
+
+        return $term;
+    }
+
+    /**
+     * Get term data
+     *
+     * @param string $taxonomy
+     * @param int $id
+     * @return array|null
+     * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getTerm(string $taxonomy, int $id): ?array
+    {
+        $cacheKey = $this->buildCacheKey('term', $taxonomy, $id);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
+        }
+
+        $termData = $this->api->getTerm($taxonomy, $id);
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $termData, $this->getCacheLifetime());
+        }
+
+        return $termData;
     }
 }

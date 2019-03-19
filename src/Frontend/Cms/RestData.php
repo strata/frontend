@@ -34,18 +34,10 @@ use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
 use Studio24\Frontend\Content\Page;
 use Studio24\Frontend\Content\PageCollection;
-use Studio24\Frontend\Content\User;
 use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
-use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
-use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
-
-// @todo Review this for custom data.
-// 1) Use content model to define fields
-// 2) Set metadata (total results, page number)
-// 3) Read data from REST endpoint, not WordPress
-// 4) Return a simpler content object without WP default fields
+use Studio24\Frontend\Exception\ContentFieldException;
 
 class RestData extends ContentRepository
 {
@@ -117,9 +109,12 @@ class RestData extends ContentRepository
     public function list(int $page = 1, array $options = []): PageCollection
     {
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), 'list', $page, extract($options));
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $pages = $this->cache->get($cacheKey);
-            return $pages;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         $list = $this->api->list(
@@ -143,7 +138,7 @@ class RestData extends ContentRepository
         }
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $pages);
+            $this->cache->set($cacheKey, $pages, $this->getCacheLifetime(), $this->getCacheLifetime());
         }
 
         return $pages;
@@ -165,9 +160,12 @@ class RestData extends ContentRepository
     public function getOne($id): Page
     {
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
-        if ($this->hasCache() && $this->cache->has($cacheKey)) {
-            $page = $this->cache->get($cacheKey);
-            return $page;
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+            if ($data !== false) {
+                return $data;
+            }
         }
 
         // Get content
@@ -175,7 +173,7 @@ class RestData extends ContentRepository
         $page = $this->createPage($data);
 
         if ($this->hasCache()) {
-            $this->cache->set($cacheKey, $page);
+            $this->cache->set($cacheKey, $page, $this->getCacheLifetime(), $this->getCacheLifetime());
         }
 
         return $page;
@@ -250,7 +248,7 @@ class RestData extends ContentRepository
      * @param mixed $value Content field value
      * @return ContentFieldInterface Populated content field object, or null on failure
      * @throws ContentTypeNotSetException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws ContentFieldException
      * @throws ContentFieldNotSetException
      */
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface

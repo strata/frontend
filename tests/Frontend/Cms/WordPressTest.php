@@ -25,6 +25,11 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.21.json')
+            ),
+            new Response(
+                200,
                 ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
                 file_get_contents(__DIR__ . '/../responses/demo/posts_2.json')
             ),
@@ -55,6 +60,7 @@ class WordPressTest extends TestCase
         $this->assertEquals("<p>Welcome to <a href=\"http://wp-api.org/\">WP API Demo Sites</a>. This is your first post. Edit or delete it, then start blogging!</p>\n", $page->getContent()->current());
         $this->assertEquals("<p>Welcome to <a href=\"http://wp-api.org/\">WP API Demo Sites</a>. This is your first post. Edit or delete it, then start blogging!</p>\n", (string) $page);
         $this->assertEquals("<p>Welcome to WP API Demo Sites. This is your first post. Edit or delete it, then start blogging!</p>\n", $page->getExcerpt());
+        $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-300x23.png', $page->getFeaturedImage()->byName('medium'));
 
         $pages->next();
         $page = $pages->current();
@@ -93,10 +99,33 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
-                [],
-                file_get_contents(__DIR__ . '/../responses/acf/media/media.81.json')
+                ['Content-length' => 23857 ]
             ),
-
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3496.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3495.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3496.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.3495.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.21.json')
+            )
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -145,12 +174,154 @@ class WordPressTest extends TestCase
                 case 0:
                     $this->assertEquals("http://localhost/wp-content/uploads/2019/02/test_2.pdf", $doc->getUrl());
                     $this->assertEquals("test_2", $doc->getTitle());
+                    $this->assertEquals("23.3 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
                     break;
                 case 1:
-                    $this->assertEquals("http://localhost/wp-content/uploads/2019/02/test_4.pdf", $doc->getUrl());
-                    $this->assertEquals("test_4", $doc->getTitle());
+                    $this->assertEquals("http://local.wp-api.test/wp-content/uploads/2019/03/timeline-IRIS-Education-website-roll-out-.pdf", $doc->getUrl());
+                    $this->assertEquals("timeline - IRIS Education website roll out", $doc->getTitle());
+                    $this->assertEquals("165.83 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
+                    break;
+            }
+        }
+
+        //Test video
+        $video = $page->getContent()->get('project_video');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
+
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals('6.42 MB', $video->getFileSize());
+        $this->assertEquals('1862802', $video->getBitRate());
+        $this->assertEquals('0:29', $video->getLength());
+        $this->assertEquals('Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
+        $this->assertEmpty($video->getDescription());
+
+        $video = $page->getContent()->get('project_video_array');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
+
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
+        $this->assertEquals('6.42 MB', $video->getFileSize());
+        $this->assertEquals('1862802', $video->getBitRate());
+        $this->assertEquals('0:29', $video->getLength());
+        $this->assertEquals('Saint-Lucia-racer-moving-Jeremy-holden-FFI', $video->getTitle());
+        $this->assertEmpty($video->getDescription());
+
+        //Test audio
+        $audio = $page->getContent()->get('project_audio');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
+
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals('32.24 KB', $audio->getFileSize());
+        $this->assertEquals('128000', $audio->getBitRate());
+        $this->assertEquals('0:02', $audio->getLength());
+        $this->assertEquals('Kyoto Bell', $audio->getTitle());
+        $this->assertEmpty($audio->getDescription());
+
+        $audio = $page->getContent()->get('project_audio_array');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
+
+        $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
+        $this->assertEquals('32.24 KB', $audio->getFileSize());
+        $this->assertEquals('128000', $audio->getBitRate());
+        $this->assertEquals('0:02', $audio->getLength());
+        $this->assertEquals('Kyoto Bell', $audio->getTitle());
+        $this->assertEmpty($audio->getDescription());
+
+        $image = $page->getContent()->get('image_by_id');
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Image', $image);
+        $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
+        $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png', $image->byName('fp-medium'));
+    }
+
+
+    public function testPage()
+    {
+        // Create a mock and queue responses
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/pages.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('page');
+        $wordpress->setClient($client);
+
+        // Test it!
+        $page = $wordpress->getPageBySlug('lorem-ipsum-page-test');
+
+        $this->assertEquals("Lorem ipsum page test", $page->getTitle());
+        $expected = <<<EOD
+<p>This is an example page lorem ipsum dolor sit amet et do lorem this is the page content in here from the main WYSIWYG editor.</p>
+
+EOD;
+
+        $this->assertEquals($expected, $page->getContent()->__toString());
+        $this->assertEquals("Joe Bloggs", $page->getAuthor()->getName());
+    }
+
+    public function testPageTaxonomy()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/taxonomy/post.5049.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/taxonomy/taxonomy.categories.28.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/taxonomy/taxonomy.categories.1.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $contentModel = new ContentModel(__DIR__ . '/config/taxonomies/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('news');
+        $wordpress->setClient($client);
+
+        // Test it!
+        $page = $wordpress->getPage(5049);
+
+        $pageTaxonomies = $page->getTaxonomies();
+
+        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection', $pageTaxonomies['categories']);
+        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\Term', $pageTaxonomies['categories']->current());
+
+        foreach ($pageTaxonomies['categories'] as $key => $termObject) {
+            switch ($key) {
+                case 0:
+                    $this->assertEquals(28, $termObject->getId());
+                    $this->assertEquals('http://localhost/category/test/', $termObject->getlink());
+                    break;
+                case 1:
+                    $this->assertEquals('uncategorized', $termObject->getSlug());
+                    $this->assertEmpty($termObject->getDescription());
                     break;
             }
         }

@@ -6,6 +6,7 @@ namespace Studio24\Frontend\Content;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\DateTime;
+use Studio24\Frontend\Content\Field\Image;
 use Studio24\Frontend\ContentModel\ContentType;
 
 class BaseContent implements ContentInterface, AddressableInterface
@@ -57,11 +58,27 @@ class BaseContent implements ContentInterface, AddressableInterface
     protected $content;
 
     /**
+     * Image object
+     *
+     * @var Image
+     */
+    protected $featuredImage;
+
+    /**
+     * Taxonomy terms
+     *
+     * @var array of TermCollection objects
+     */
+    protected $taxonomies;
+
+    /**
      * Page constructor.
      */
     public function __construct()
     {
         $this->content = new ContentFieldCollection();
+        $this->featuredImage = null;
+        $this->taxonomies = array();
     }
 
     /**
@@ -288,6 +305,50 @@ class BaseContent implements ContentInterface, AddressableInterface
     {
         return $this->content;
     }
+
+    /**
+     * Return featured image as Image Object (or null)
+     *
+     * @return Image
+     */
+    public function getFeaturedImage() : ?Image
+    {
+        return $this->featuredImage;
+    }
+
+    /**
+     * @param Image $featuredImage
+     * @return BaseContent
+     */
+    public function setFeaturedImage(Image $featuredImage): BaseContent
+    {
+        $this->featuredImage = $featuredImage;
+
+        return $this;
+    }
+
+
+    /**
+     * Return array of TermCollection (one per taxonomy)
+     *
+     * @return array
+     */
+    public function getTaxonomies(): array
+    {
+        return $this->taxonomies;
+    }
+
+    /**
+     * @param array $taxonomies
+     * @return BaseContent
+     */
+    public function setTaxonomies(array $taxonomies): BaseContent
+    {
+        $this->taxonomies = $taxonomies;
+
+        return $this;
+    }
+
 
     /**
      * Return string representation of the content

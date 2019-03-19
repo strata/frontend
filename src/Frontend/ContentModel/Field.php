@@ -85,13 +85,21 @@ class Field implements FieldInterface
      * @param string $name
      * @return mixed|null
      */
-    public function getOption(string $name)
+    public function getOption(string $name, ContentModel $contentModel = null)
     {
         if (isset($this->options[$name])) {
             return $this->options[$name];
         }
 
-        // @todo Check global option
+        if (empty($contentModel)) {
+            return null;
+        }
+
+        $globalOptionValue = $contentModel->getGlobal($name);
+
+        if (!empty($globalOptionValue)) {
+            return $globalOptionValue;
+        }
 
         return null;
     }

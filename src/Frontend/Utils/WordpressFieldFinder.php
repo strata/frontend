@@ -153,7 +153,23 @@ class WordpressFieldFinder
             $searchFields = ['content' => ['rendered']];
         }
 
-        return self::findFirstFieldFromSearch($searchFields, $data);
+        return self::findFirstFieldFromSearch($searchFields, $data, 'integer');
+    }
+
+    /**
+     * Attempt to find the featured image field from an array of data
+     *
+     * @param array $data
+     * @param array $searchFields
+     * @return null|string
+     */
+    public static function featuredImage(array $data, array $searchFields = null): ?int
+    {
+        if (empty($searchFields)) {
+            $searchFields = ['featured_media'];
+        }
+
+        return self::findFirstFieldFromSearch($searchFields, $data, 'integer');
     }
 
     /**

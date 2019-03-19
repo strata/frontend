@@ -104,4 +104,26 @@ class PaginationTest extends TestCase
         $this->assertEquals(1, $pages->getFirst());
         $this->assertEquals(1, $pages->getLast());
     }
+
+    public function testIncorrectOrderResultsPerPage()
+    {
+        $pages = new Pagination();
+        $pages->setTotalResults(37);
+
+        $this->expectException('Studio24\Frontend\Exception\PaginationException');
+        $pages->setPage(9);
+
+        $pages->setResultsPerPage(4);
+        $pages->setPage(9);
+        $this->assertEquals(10, $pages->getTotalPages());
+    }
+
+    public function testSmallPageLinks()
+    {
+        $pages = new Pagination();
+        $pages->setTotalResults(12);
+        $pages->setResultsPerPage(4);
+        $this->assertEquals(3, $pages->getTotalPages());
+        $this->assertEquals([1,2,3], $pages->getPageLinks());
+    }
 }
