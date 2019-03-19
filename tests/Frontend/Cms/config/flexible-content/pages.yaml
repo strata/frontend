@@ -1,0 +1,38 @@
+post_type:
+  type: text
+theme:
+  type: text
+image:
+  type: image
+image_credit:
+  type: text
+banner_title:
+  type: text
+banner_text:
+  type: text
+video_loop:
+  type: boolean
+video_poster:
+  type: boolean
+author:
+  type: relation
+  content_type: user
+page_content:
+  type: flexible
+  components:
+    statement_block:
+      statement_title:
+        type: text
+      statement:
+        type: richtext
+    content:
+      title:
+        type: text
+      content:
+        type: richtext
+      full_width:
+        type: boolean
+      trigger:
+        type: boolean
+      number_of_elements:
+        type: number

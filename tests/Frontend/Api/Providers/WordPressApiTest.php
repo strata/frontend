@@ -94,5 +94,4 @@ class WordPressApiTest extends TestCase
         $results = $api->getMedia(1000);
         $this->assertEmpty($results);
     }
-
 }
