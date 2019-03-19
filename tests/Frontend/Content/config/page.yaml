@@ -1,0 +1,8 @@
+post_type:
+  type: text
+theme:
+  type: plaintext
+description:
+  type: richtext
+image:
+  type: image

@@ -13,6 +13,7 @@ use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
+use Studio24\Frontend\Content\Head;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\Content\Taxonomies\Term;
@@ -288,9 +289,105 @@ class Wordpress extends ContentRepository
         $page->setContentType($this->getContentType());
         $this->setContentFields($page, $data);
 
+        $this->setMetaTagsAndTitle($page, $data);
+
         return $page;
     }
 
+    /**
+     * @param Page $page
+     * @param array $data
+     * @throws ContentTypeNotSetException
+     * @throws \Studio24\Frontend\Exception\MetaTagNotAllowedException
+     */
+    public function setMetaTagsAndTitle(Page $page, array $data)
+    {
+        //default page title, description and featured image
+        $title = $page->getTitle();
+
+        if (!empty($this->getContentModel()->getGlobal('site_name'))) {
+            $title .= ' | '.$this->getContentModel()->getGlobal('site_name');
+        }
+
+        $description = $page->getExcerpt();
+        $postImage = null;
+
+        if (!empty($page->getFeaturedImage())) {
+            $postImage = $page->getFeaturedImage()->getUrl();
+        }
+
+        //override default title and description by those set via Yoast
+        if (isset($data['yoast'])) {
+            if (isset($data['yoast']['title'])) {
+                if (!empty($data['yoast']['title'])) {
+                    $title = $data['yoast']['title'];
+                }
+            }
+
+            if (isset($data['yoast']['metadesc'])) {
+                if (!empty($data['yoast']['metadesc'])) {
+                    $description = $data['yoast']['metadesc'];
+                }
+            }
+        }
+
+        //set page title and meta description tags
+        $page->getHead()->setTitle($title);
+        $page->getHead()->addMeta("description", $description);
+
+        if (!empty($data['yoast']['metakeywords'])) {
+            $page->getHead()->addMeta('keywords', $data['yoast']['metakeywords']);
+        }
+
+        //meta robots tags
+        if (!empty($data['yoast']['meta-robots-noindex']) || !empty($data['yoast']['meta-robots-nofollow'])) {
+            $noindex = $data['yoast']['meta-robots-noindex'];
+            $nofollow = $data['yoast']['meta-robots-nofollow'];
+            $glue = "";
+            if (!empty($noindex) && !empty($nofollow)) {
+                $glue=", ";
+            }
+            $page->getHead()->addMeta("robots", $noindex . $glue . $nofollow);
+        }
+
+        //twitter card tags
+        if (!empty($data['yoast']['twitter-title'])) {
+            $page->getHead()->addMeta("twitter:title", $data['yoast']['twitter-title']);
+        } else {
+            $page->getHead()->addMeta("twitter:title", $title);
+        }
+
+        if (!empty($data['yoast']['twitter-description'])) {
+            $page->getHead()->addMeta("twitter:description", $data['yoast']['twitter-description']);
+        } else {
+            $page->getHead()->addMeta("twitter:description", $description);
+        }
+
+        if (!empty($data['yoast']['twitter-image'])) {
+            $page->getHead()->addMeta("twitter:image", $data['yoast']['twitter-image']);
+        } elseif (!empty($postImage)) {
+            $page->getHead()->addMeta("twitter:image", $postImage);
+        }
+
+        //opengraph tags
+        if (!empty($data['yoast']['opengraph-title'])) {
+            $page->getHead()->addMeta("og:title", $data['yoast']['opengraph-title']);
+        } else {
+            $page->getHead()->addMeta("og:title", $title);
+        }
+
+        if (!empty($data['yoast']['opengraph-description'])) {
+            $page->getHead()->addMeta("og:description", $data['yoast']['opengraph-description']);
+        } else {
+            $page->getHead()->addMeta("og:description", $description);
+        }
+
+        if (!empty($data['yoast']['opengraph-image'])) {
+            $page->getHead()->addMeta("og:image", $data['yoast']['opengraph-image']);
+        } elseif (!empty($postImage)) {
+            $page->getHead()->addMeta("og:image", $postImage);
+        }
+    }
 
     /**
      * Sets content from data array into the content object
@@ -810,6 +907,7 @@ class Wordpress extends ContentRepository
         return $menu;
     }
     // TODO refactor these duplicate functions
+
     /**
      * @param $array
      * @param MenuItem $menuItemParent
