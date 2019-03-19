@@ -8,7 +8,6 @@
 
 namespace App\Tests\Frontend\Cms;
 
-
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -90,6 +89,5 @@ EOD;
 EOD;
         // html needs to be escaped! -> twig escapes html
         $this->assertEquals($expected, $template->render(['page' => $page]));
-
     }
 }

@@ -228,7 +228,6 @@ abstract class RestApiAbstract
     {
         try {
             $response = $this->getClient()->request($method, $uri, $options);
-
         } catch (RequestException $e) {
             if (in_array($e->getCode(), $this->ignoreErrorCodes)) {
                 // @todo Log warning?

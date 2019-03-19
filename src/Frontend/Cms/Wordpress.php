@@ -127,8 +127,7 @@ class Wordpress extends ContentRepository
     public function listPages(
         int $page = 1,
         array $options = []
-    ): PageCollection
-    {
+    ): PageCollection {
 
         $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
 
@@ -290,51 +289,103 @@ class Wordpress extends ContentRepository
         $page->setContentType($this->getContentType());
         $this->setContentFields($page, $data);
 
-        if (isset($data['yoast'])) {
-            $this->setYoastMetaData($page->getHead(), (array)$data['yoast']);
-        }
+        $this->setMetaTagsAndTitle($page, $data);
 
         return $page;
     }
 
-
-    public function setYoastMetaData(Head $head, array $data)
+    /**
+     * @param Page $page
+     * @param array $data
+     * @throws ContentTypeNotSetException
+     * @throws \Studio24\Frontend\Exception\MetaTagNotAllowedException
+     */
+    public function setMetaTagsAndTitle(Page $page, array $data)
     {
-        if (!empty($data['title'])) {
-            $head->setTitle($data['title']);
+        //default page title, description and featured image
+        $title = $page->getTitle();
+
+        if (!empty($this->getContentModel()->getGlobal('site_name'))) {
+            $title .= ' | '.$this->getContentModel()->getGlobal('site_name');
         }
-        if (!empty($data['metadesc'])) {
-            $head->addMeta("description", $data['metadesc']);
+
+        $description = $page->getExcerpt();
+        $postImage = null;
+
+        if (!empty($page->getFeaturedImage())) {
+            $postImage = $page->getFeaturedImage()->getUrl();
         }
-        if (!empty($data['metakeywords'])) {
-            $head->addMeta("keywords", $data['metakeywords']);
+
+        //override default title and description by those set via Yoast
+        if (isset($data['yoast'])) {
+            if (isset($data['yoast']['title'])) {
+                if (!empty($data['yoast']['title'])) {
+                    $title = $data['yoast']['title'];
+                }
+            }
+
+            if (isset($data['yoast']['metadesc'])) {
+                if (!empty($data['yoast']['metadesc'])) {
+                    $description = $data['yoast']['metadesc'];
+                }
+            }
         }
-        if (!empty($data['meta-robots-noindex']) || !empty($data['meta-robots-nofollow'])) {
-            $noindex = $data['meta-robots-noindex'];
-            $nofollow = $data['meta-robots-nofollow'];
+
+        //set page title and meta description tags
+        $page->getHead()->setTitle($title);
+        $page->getHead()->addMeta("description", $description);
+
+        if (!empty($data['yoast']['metakeywords'])) {
+            $page->getHead()->addMeta('keywords', $data['yoast']['metakeywords']);
+        }
+
+        //meta robots tags
+        if (!empty($data['yoast']['meta-robots-noindex']) || !empty($data['yoast']['meta-robots-nofollow'])) {
+            $noindex = $data['yoast']['meta-robots-noindex'];
+            $nofollow = $data['yoast']['meta-robots-nofollow'];
             $glue = "";
             if (!empty($noindex) && !empty($nofollow)) {
                 $glue=", ";
             }
-            $head->addMeta("robots", $noindex . $glue . $nofollow);
+            $page->getHead()->addMeta("robots", $noindex . $glue . $nofollow);
         }
-        if (!empty($data['twitter-title'])) {
-            $head->addMeta("twitter:title", $data['twitter-title']);
+
+        //twitter card tags
+        if (!empty($data['yoast']['twitter-title'])) {
+            $page->getHead()->addMeta("twitter:title", $data['yoast']['twitter-title']);
+        } else {
+            $page->getHead()->addMeta("twitter:title", $title);
         }
-        if (!empty($data['twitter-description'])) {
-            $head->addMeta("twitter:description", $data['twitter-description']);
+
+        if (!empty($data['yoast']['twitter-description'])) {
+            $page->getHead()->addMeta("twitter:description", $data['yoast']['twitter-description']);
+        } else {
+            $page->getHead()->addMeta("twitter:description", $description);
         }
-        if (!empty($data['twitter-image'])) {
-            $head->addMeta("twitter:image", $data['twitter-image']);
+
+        if (!empty($data['yoast']['twitter-image'])) {
+            $page->getHead()->addMeta("twitter:image", $data['yoast']['twitter-image']);
+        } elseif (!empty($postImage)) {
+            $page->getHead()->addMeta("twitter:image", $postImage);
         }
-        if (!empty($data['opengraph-title'])) {
-            $head->addMeta("og:title", $data['opengraph-title']);
+
+        //opengraph tags
+        if (!empty($data['yoast']['opengraph-title'])) {
+            $page->getHead()->addMeta("og:title", $data['yoast']['opengraph-title']);
+        } else {
+            $page->getHead()->addMeta("og:title", $title);
         }
-        if (!empty($data['opengraph-description'])) {
-            $head->addMeta("og:description", $data['opengraph-description']);
+
+        if (!empty($data['yoast']['opengraph-description'])) {
+            $page->getHead()->addMeta("og:description", $data['yoast']['opengraph-description']);
+        } else {
+            $page->getHead()->addMeta("og:description", $description);
         }
-        if (!empty($data['opengraph-image'])) {
-            $head->addMeta("og:image", $data['opengraph-image']);
+
+        if (!empty($data['yoast']['opengraph-image'])) {
+            $page->getHead()->addMeta("og:image", $data['yoast']['opengraph-image']);
+        } elseif (!empty($postImage)) {
+            $page->getHead()->addMeta("og:image", $postImage);
         }
     }
 

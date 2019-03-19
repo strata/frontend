@@ -148,5 +148,4 @@ class Yoast
     {
         return $this->getAllMetatags();
     }
-
 }
