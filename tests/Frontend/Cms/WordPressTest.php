@@ -327,29 +327,29 @@ EOD;
         }
     }
 
-//    public function testFlexibleContent()
-//    {
-//        $mock = new MockHandler([
-//            new Response(
-//                200,
-//                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
-//                file_get_contents(__DIR__ . '/../responses/flexible-content/page.15.json')
-//            ),
-//            new Response(
-//                200,
-//                [],
-//                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
-//            ),
-//        ]);
-//
-//        $handler = HandlerStack::create($mock);
-//        $client = new Client(['handler' => $handler]);
-//
-//        $contentModel = new ContentModel(__DIR__ . '/config/flexible-content/content_model.yaml');
-//        $wordpress = new Wordpress('something', $contentModel);
-//        $wordpress->setContentType('news');
-//        $wordpress->setClient($client);
-//
-//
-//    }
+    public function testFlexibleContent()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/flexible-content/page.15.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $contentModel = new ContentModel(__DIR__ . '/config/flexible-content/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('news');
+        $wordpress->setClient($client);
+
+
+    }
 }
