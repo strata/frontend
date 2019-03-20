@@ -562,6 +562,11 @@ class Wordpress extends ContentRepository
                     return new DateTime($name, $value);
                     break;
 
+                case 'boolean':
+                    return new Boolean($name, $value);
+                    break;
+
+
                 case 'image':
                     $sizesData = array();
                     if (is_int($value)) {

@@ -44,7 +44,7 @@
         "acf_fc_layout": "content",
         "title": "Biodiversity Champions",
         "content": "<p>Established over a century ago, Fauna &amp; Flora International (FFI) was the world’s first international wildlife conservation organisation.</p>\n",
-        "full_width": false,
+        "full_width": true,
         "trigger": false,
         "number_of_elements": 1
       },
@@ -58,7 +58,7 @@
         "title": "",
         "content": "<p>Our focus is on protecting biodiversity (the diversity of life on Earth), which underpins healthy ecosystems and is critical for the life support systems that humans and all other species rely on.</p>\n",
         "full_width": false,
-        "trigger": false,
+        "trigger": true,
         "number_of_elements": 1
       },
       {
