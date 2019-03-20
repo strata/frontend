@@ -87,4 +87,30 @@ class MenuItemCollection implements \SeekableIterator, \Countable
 
         return $this;
     }
+
+    /**
+     * @param string $currentPath
+     * @return MenuItemCollection
+     */
+    public function setActiveItems(string $currentPath = ''): MenuItemCollection
+    {
+        if (empty($this->collection)) {
+            return $this;
+        }
+
+        foreach ($this->collection as $key => $menuItem) {
+            if (!empty($menuItem->getChildren())) {
+                $this->collection[$key]->getChildren()->setActiveItems($currentPath);
+            }
+
+            // Set the menu item active if this is the current path
+            if ($this->collection[$key]->urlContainsPath($currentPath))
+            {
+                $this->collection[$key]->setActive(true);
+            }
+
+        }
+
+        return $this;
+    }
 }
