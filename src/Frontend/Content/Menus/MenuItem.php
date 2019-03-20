@@ -23,7 +23,7 @@ class MenuItem
      */
     protected $url;
     /**
-     * @var bool $url
+     * @var bool $active
      */
     protected $active;
     /**
