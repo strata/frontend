@@ -147,7 +147,7 @@ class MenuItem
             $currentPath = rtrim($currentPath, '/');
         }
 
-        if (strpos($this->getUrl(), $currentPath) !== false) {
+        if (!empty($currentPath) && strpos($this->getUrl(), $currentPath) !== false) {
             return true;
         }
 
