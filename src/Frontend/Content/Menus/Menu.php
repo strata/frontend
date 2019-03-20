@@ -135,4 +135,19 @@ class Menu
 
         return $this;
     }
+
+    /**
+     * @param string $currentPath
+     * @return Menu
+     */
+    public function setActiveItems(string $currentPath = '/'): Menu
+    {
+        if (empty($this->getChildren())) {
+            return $this;
+        }
+
+        $this->getChildren()->setActiveItems($currentPath);
+
+        return $this;
+    }
 }

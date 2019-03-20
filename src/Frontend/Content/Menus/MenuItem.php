@@ -23,6 +23,10 @@ class MenuItem
      */
     protected $url;
     /**
+     * @var bool $active
+     */
+    protected $active = false;
+    /**
      * @var MenuItemCollection $children
      */
     protected $children;
@@ -85,6 +89,22 @@ class MenuItem
     }
 
     /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
+    /**
      * @return MenuItemCollection
      */
     public function getChildren(): MenuItemCollection
@@ -112,5 +132,25 @@ class MenuItem
         $this->setUrl($newUrl);
 
         return $this;
+    }
+
+    /**
+     * Does the current URL contain the
+     *
+     * @param $currentPath
+     * @return bool
+     */
+    public function urlContainsPath(string $currentPath)
+    {
+        // Remove the final slash from currentPath if it exists
+        if (substr($this->getUrl(), -1) !== '/') {
+            $currentPath = rtrim($currentPath, '/');
+        }
+
+        if (strpos($this->getUrl(), $currentPath) !== false) {
+            return true;
+        }
+
+        return false;
     }
 }
