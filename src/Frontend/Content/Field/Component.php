@@ -72,4 +72,22 @@ class Component implements ContentInterface
         $this->name = $name;
         return $this;
     }
+
+    /**
+     * Return string representation of content field
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        $componentContent = '';
+
+        if (count($this->content) >= 1) {
+            foreach ($this->content as $contentField) {
+                $componentContent .= $contentField->__toString();
+            }
+        }
+
+        return $componentContent;
+    }
 }
