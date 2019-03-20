@@ -779,10 +779,41 @@ class Wordpress extends ContentRepository
 
                 case 'flexible':
                     if (!is_array($value)){
-                        break;
+                        return null;
+                    } elseif (empty($value)) {
+                        return null;
                     }
 
                     $flexible = new FlexibleContent($name);
+
+                    foreach ($value as $componentValue) {
+                        if (!isset($field[$componentValue['acf_fc_layout']])) {
+                            continue;
+                        }
+
+                        $componentName = $componentValue['acf_fc_layout'];
+
+                        if (empty($field[$componentName])) {
+                            continue;
+                        }
+
+                        $component = new Component($componentName);
+
+                        foreach ($field[$componentName] as $componentFieldItem) {
+                                if (!isset($componentValue[$componentFieldItem->getName()])) {
+                                    continue;
+                                }
+                                $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
+                                $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+                                if ($componentFieldItemObject !== null) {
+                                    $component->addContent($componentFieldItemObject);
+                                }
+                        }
+
+                        $flexible->addComponent($component);
+                    }
+
+                    return $flexible;
 
                     break;
                 /**
