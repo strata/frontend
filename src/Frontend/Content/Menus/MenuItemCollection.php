@@ -104,11 +104,9 @@ class MenuItemCollection implements \SeekableIterator, \Countable
             }
 
             // Set the menu item active if this is the current path
-            if ($this->collection[$key]->urlContainsPath($currentPath))
-            {
+            if ($this->collection[$key]->urlContainsPath($currentPath)) {
                 $this->collection[$key]->setActive(true);
             }
-
         }
 
         return $this;

@@ -143,13 +143,11 @@ class MenuItem
     public function urlContainsPath(string $currentPath)
     {
         // Remove the final slash from currentPath if it exists
-        if (substr($this->getUrl(), -1) !== '/')
-        {
+        if (substr($this->getUrl(), -1) !== '/') {
             $currentPath = rtrim($currentPath, '/');
         }
 
-        if (strpos($this->getUrl(), $currentPath) !== false)
-        {
+        if (strpos($this->getUrl(), $currentPath) !== false) {
             return true;
         }
 
