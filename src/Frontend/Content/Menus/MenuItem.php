@@ -23,6 +23,10 @@ class MenuItem
      */
     protected $url;
     /**
+     * @var bool $url
+     */
+    protected $active;
+    /**
      * @var MenuItemCollection $children
      */
     protected $children;
@@ -82,6 +86,22 @@ class MenuItem
     public function setUrl(string $url): void
     {
         $this->url = $url;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
     }
 
     /**
