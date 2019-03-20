@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Frontend\Cms\Content;
 
+use function GuzzleHttp\default_ca_bundle;
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -322,6 +323,88 @@ EOD;
                 case 1:
                     $this->assertEquals('uncategorized', $termObject->getSlug());
                     $this->assertEmpty($termObject->getDescription());
+                    break;
+            }
+        }
+    }
+
+    public function testFlexibleContent()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/flexible-content/page.15.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $contentModel = new ContentModel(__DIR__ . '/config/flexible-content/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('pages');
+        $wordpress->setClient($client);
+
+        $page = $wordpress->getPage(15);
+
+        $flexibleContent = $page->getContent()->get('page_content');
+
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent', $flexibleContent);
+
+        foreach ($flexibleContent->getValue() as $key => $flexibleComponent) {
+            $this->assertInstanceOf('Studio24\Frontend\Content\Field\Component', $flexibleComponent);
+
+            switch ($key) {
+                case 0:
+                    $this->assertEquals('content', $flexibleComponent->getName());
+                    foreach ($flexibleComponent->getContent() as $fieldName => $fieldValue) {
+                        switch ($fieldName) {
+                            case 'title':
+                                $this->assertEquals('title', $fieldValue->getName());
+                                $this->assertEquals('Biodiversity Champions', $fieldValue->getValue());
+                                break;
+                            case 'content':
+                                $this->assertEquals('content', $fieldValue->getName());
+                                $this->assertEquals('<p>Established over a century ago, Fauna &amp; Flora International (FFI) was the world’s first international wildlife conservation organisation.</p>', $fieldValue->getValue());
+                                break;
+                            case 'full_width':
+                                $this->assertEquals('full_width', $fieldValue->getName());
+                                $this->assertTrue($fieldValue->getValue());
+                                break;
+                            case 'trigger':
+                                $this->assertEquals('trigger', $fieldValue->getName());
+                                $this->assertFalse($fieldValue->getValue());
+                                break;
+                            case 'number_of_elements':
+                                $this->assertEquals('number_of_elements', $fieldValue->getName());
+                                $this->assertIsNumeric($fieldValue->getValue());
+                                $this->assertEquals(1, $fieldValue->getValue());
+                                break;
+                        }
+                    }
+                    break;
+                case 1:
+                    $this->assertEquals('statement_block', $flexibleComponent->getName());
+                    foreach ($flexibleComponent->getContent() as $fieldName => $fieldValue) {
+                        switch ($fieldName) {
+                            case 'statement_title':
+                                $this->assertEquals('statement_title', $fieldValue->getName());
+                                $this->assertEquals('Our mission', $fieldValue->getValue());
+                                break;
+                            case 'statement':
+                                $this->assertEquals('statement', $fieldValue->getName());
+                                $this->assertEquals('<p>is to conserve threatened species and ecosystems worldwide, choosing solutions that are sustainable, based on sound science, and which take into account human needs.</p>', $fieldValue->getValue());
+                                break;
+                        }
+                    }
+                    break;
+                case 2:
                     break;
             }
         }

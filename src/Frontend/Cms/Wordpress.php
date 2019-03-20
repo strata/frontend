@@ -562,6 +562,11 @@ class Wordpress extends ContentRepository
                     return new DateTime($name, $value);
                     break;
 
+                case 'boolean':
+                    return new Boolean($name, $value);
+                    break;
+
+
                 case 'image':
                     $sizesData = array();
                     if (is_int($value)) {
@@ -598,6 +603,10 @@ class Wordpress extends ContentRepository
                         return $image;
                     } elseif (is_array($value)) {
                         //image array passed on
+
+                        if (empty($value)) {
+                            return null;
+                        }
 
                         // Add sizes
                         $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
@@ -730,6 +739,10 @@ class Wordpress extends ContentRepository
                         break;
                     }
 
+                    if (empty($value)) {
+                        break;
+                    }
+
                     // Loop through data array
                     foreach ($value as $row) {
                         // For each row add a set of content fields
@@ -769,6 +782,45 @@ class Wordpress extends ContentRepository
                     return $relation;
                     break;
 
+                case 'flexible':
+                    if (!is_array($value)) {
+                        return null;
+                    } elseif (empty($value)) {
+                        return null;
+                    }
+
+                    $flexible = new FlexibleContent($name);
+
+                    foreach ($value as $componentValue) {
+                        if (!isset($field[$componentValue['acf_fc_layout']])) {
+                            continue;
+                        }
+
+                        $componentName = $componentValue['acf_fc_layout'];
+
+                        if (empty($field[$componentName])) {
+                            continue;
+                        }
+
+                        $component = new Component($componentName);
+
+                        foreach ($field[$componentName] as $componentFieldItem) {
+                            if (!isset($componentValue[$componentFieldItem->getName()])) {
+                                continue;
+                            }
+                                $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
+                                $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+                            if ($componentFieldItemObject !== null) {
+                                $component->addContent($componentFieldItemObject);
+                            }
+                        }
+
+                        $flexible->addComponent($component);
+                    }
+
+                    return $flexible;
+
+                    break;
                 /**
                  * @todo Build & test Flexible content field
                  * case 'flexible':
