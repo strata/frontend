@@ -783,7 +783,7 @@ class Wordpress extends ContentRepository
                     break;
 
                 case 'flexible':
-                    if (!is_array($value)){
+                    if (!is_array($value)) {
                         return null;
                     } elseif (empty($value)) {
                         return null;
@@ -805,14 +805,14 @@ class Wordpress extends ContentRepository
                         $component = new Component($componentName);
 
                         foreach ($field[$componentName] as $componentFieldItem) {
-                                if (!isset($componentValue[$componentFieldItem->getName()])) {
-                                    continue;
-                                }
+                            if (!isset($componentValue[$componentFieldItem->getName()])) {
+                                continue;
+                            }
                                 $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
                                 $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
-                                if ($componentFieldItemObject !== null) {
-                                    $component->addContent($componentFieldItemObject);
-                                }
+                            if ($componentFieldItemObject !== null) {
+                                $component->addContent($componentFieldItemObject);
+                            }
                         }
 
                         $flexible->addComponent($component);

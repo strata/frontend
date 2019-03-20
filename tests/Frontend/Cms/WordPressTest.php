@@ -355,17 +355,16 @@ EOD;
 
         $flexibleContent = $page->getContent()->get('page_content');
 
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent' , $flexibleContent);
+        $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent', $flexibleContent);
 
         foreach ($flexibleContent->getValue() as $key => $flexibleComponent) {
-
             $this->assertInstanceOf('Studio24\Frontend\Content\Field\Component', $flexibleComponent);
 
-            switch($key) {
+            switch ($key) {
                 case 0:
-                    $this->assertEquals('content' , $flexibleComponent->getName());
+                    $this->assertEquals('content', $flexibleComponent->getName());
                     foreach ($flexibleComponent->getContent() as $fieldName => $fieldValue) {
-                        switch($fieldName){
+                        switch ($fieldName) {
                             case 'title':
                                 $this->assertEquals('title', $fieldValue->getName());
                                 $this->assertEquals('Biodiversity Champions', $fieldValue->getValue());
@@ -391,9 +390,9 @@ EOD;
                     }
                     break;
                 case 1:
-                    $this->assertEquals('statement_block' , $flexibleComponent->getName());
+                    $this->assertEquals('statement_block', $flexibleComponent->getName());
                     foreach ($flexibleComponent->getContent() as $fieldName => $fieldValue) {
-                        switch($fieldName){
+                        switch ($fieldName) {
                             case 'statement_title':
                                 $this->assertEquals('statement_title', $fieldValue->getName());
                                 $this->assertEquals('Our mission', $fieldValue->getValue());
