@@ -104,6 +104,10 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
+                ['Content-length' => 169812 ]
+            ),
+            new Response(
+                200,
                 [],
                 file_get_contents(__DIR__ . '/../responses/acf/media/media.3496.json')
             ),
@@ -166,7 +170,7 @@ class WordPressTest extends TestCase
         // Test documents
         $docs = $page->getContent()->get('project_documents');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\ArrayContent', $docs);
-        $this->assertEquals(2, count($docs));
+        $this->assertEquals(3, count($docs));
 
         foreach ($docs as $key => $item) {
             $doc = $item->get('project_documents_project_documents_document');
@@ -183,6 +187,9 @@ class WordPressTest extends TestCase
                     $this->assertEquals("timeline - IRIS Education website roll out", $doc->getTitle());
                     $this->assertEquals("165.83 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
+                    break;
+                case 2:
+                    $this->assertEquals("165.83 KB", $doc->getFileSize());
                     break;
             }
         }
