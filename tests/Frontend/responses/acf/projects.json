@@ -92,7 +92,7 @@
                         "type": "application",
                         "subtype": "pdf",
                         "icon": "http://local.wp-api.test/wp-includes/images/media/document.png"
-                    },
+                    }
                 }
             ],
             "project_video": 3496,

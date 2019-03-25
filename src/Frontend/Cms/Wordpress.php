@@ -657,7 +657,11 @@ class Wordpress extends ContentRepository
                         return $document;
                     } elseif (is_array($value)) {
                         //given array of data, create field directy
-                        $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
+                        if ( isset($value['filesize'])) {
+                            $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
+                        } else {
+                            $filesize = $this->api->getMediaFileSize($value['url']);
+                        }
 
                         $document = new Document(
                             $name,

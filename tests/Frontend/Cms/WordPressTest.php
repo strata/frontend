@@ -100,12 +100,11 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
-                [],
-                file_get_contents(__DIR__ . '/../responses/acf/media/media.81.json')
+                ['Content-length' => 23857 ]
             ),
             new Response(
                 200,
-                ['Content-length' => 23857 ]
+                ['Content-length' => 169812 ]
             ),
             new Response(
                 200,
@@ -171,7 +170,7 @@ class WordPressTest extends TestCase
         // Test documents
         $docs = $page->getContent()->get('project_documents');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\ArrayContent', $docs);
-        $this->assertEquals(2, count($docs));
+        $this->assertEquals(3, count($docs));
 
         foreach ($docs as $key => $item) {
             $doc = $item->get('project_documents_project_documents_document');
