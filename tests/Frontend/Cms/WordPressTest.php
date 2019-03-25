@@ -100,6 +100,11 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/media/media.81.json')
+            ),
+            new Response(
+                200,
                 ['Content-length' => 23857 ]
             ),
             new Response(
@@ -183,6 +188,9 @@ class WordPressTest extends TestCase
                     $this->assertEquals("timeline - IRIS Education website roll out", $doc->getTitle());
                     $this->assertEquals("165.83 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
+                    break;
+                case 2:
+                    $this->assertEquals("165.83 KB", $doc->getFileSize());
                     break;
             }
         }
