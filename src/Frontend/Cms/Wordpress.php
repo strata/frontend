@@ -539,15 +539,15 @@ class Wordpress extends ContentRepository
             $name = $field->getName();
             switch ($field->getType()) {
                 case 'text':
-                    return new ShortText($name, $value);
+                    return new ShortText($name, (string) $value);
                     break;
 
                 case 'plaintext':
-                    return new PlainText($name, $value);
+                    return new PlainText($name, (string) $value);
                     break;
 
                 case 'richtext':
-                    return new RichText($name, $value);
+                    return new RichText($name, (string) $value);
                     break;
 
                 case 'number':
