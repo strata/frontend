@@ -261,7 +261,7 @@ class WordPressTest extends TestCase
         $wordpress->setClient($client);
 
         // Test it!
-        $page = $wordpress->getPageBySlug('lorem-ipsum-page-test');
+        $page = $wordpress->getPageByUrl('/lorem-ipsum-page-test/');
 
         $this->assertEquals("Lorem ipsum page test", $page->getTitle());
         $expected = <<<EOD
@@ -408,5 +408,44 @@ EOD;
                     break;
             }
         }
+    }
+
+
+    public function testInvalidPageUrl()
+    {
+        // Create a mock and queue two responses
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/demo/post.1.json')
+            ),
+            new Response(
+                200,
+                [],
+                '[]'
+            ),
+            new Response(
+                200,
+                [],
+                '[]'
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $api = new Wordpress('http://demo.wp-api.org/wp-json/wp/v2/');
+        $api->setClient($client);
+        $contentModel = new ContentModel(__DIR__ . '/config/demo/content_model.yaml');
+        $api->setContentModel($contentModel);
+        $api->setContentType('news');
+
+        // Test it!
+        $this->expectExceptionCode(400);
+        $page = $api->getPageByUrl('/made/up/hello-world/');
+
+        $this->expectExceptionCode(404);
+        $page = $api->getPageByUrl('/made/up/url/');
     }
 }
