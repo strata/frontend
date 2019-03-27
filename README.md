@@ -5,6 +5,8 @@ Framework to build an efficient front-end website with content from a Headless C
 [![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend) 
 [![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
 
+[version-badge]: https://img.shields.io/badge/version-0.5.0-blue.svg
+
 ## Status
 
 Please note this is development software, usage and the project name may change before the 1.0 release. 
@@ -17,10 +19,8 @@ See the [roadmap](ROADMAP.md) for more details on future development plans.
 
 ## Installation
 
-Until version 0.5 you need to install via dev-master. 
-
 ```
-composer require studio24/frontend:dev-master
+composer require studio24/frontend:0.5.*
 ```
 
 ## Documentation
@@ -83,5 +83,4 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 [CHANGELOG]: ./CHANGELOG.md
 [LICENSE]: ./LICENSE
-[version-badge]: https://img.shields.io/badge/version-1.0.0-blue.svg
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
