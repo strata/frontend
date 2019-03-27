@@ -21,6 +21,7 @@ use Studio24\Frontend\Content\Taxonomies\TermCollection;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\ContentFieldException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
@@ -239,7 +240,7 @@ class Wordpress extends ContentRepository
         // Get content
         $results = $this->api->listPosts($this->getContentApiEndpoint(), 1, ['slug' => $slug]);
         if ($results->getPagination()->getTotalResults() != 1) {
-            throw new ApiException(sprintf('Page not found for requested URL: %s, slug: %s', $url, $slug), 404);
+            throw new NotFoundException(sprintf('Page not found for requested URL: %s, slug: %s', $url, $slug), 404);
         }
 
         // Get single result
@@ -248,7 +249,7 @@ class Wordpress extends ContentRepository
         // Check this page matches requested URL, if not return 404
         $pageUrlParts = parse_url($data['link']);
         if (rtrim($pageUrlParts['path'], '/') != rtrim($parts['path'], '/')) {
-            throw new ApiException(sprintf('Page URL %s does not match for requested URL: %s, slug: %s', $pageUrlParts['path'], $url, $slug), 400);
+            throw new NotFoundException(sprintf('Page URL %s does not match for requested URL: %s, slug: %s', $pageUrlParts['path'], $url, $slug), 400);
         }
 
         $page = $this->createPage($data);
