@@ -91,6 +91,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      */
     public function parseConfig(string $file): ContentType
     {
+        $configDir = dirname($file);
         $data = Yaml::parseFile($file);
 
         if (!is_array($data)) {
@@ -98,6 +99,9 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         }
 
         foreach ($data as $name => $values) {
+            if (is_string($values)) {
+                $values = Yaml::parseFile($configDir.'/'.$values);
+            }
             if (!is_array($values)) {
                 throw new ConfigParsingException(sprintf("Content field definition must contain an array of values, including the 'type' property, %s found", gettype($values)));
             }
