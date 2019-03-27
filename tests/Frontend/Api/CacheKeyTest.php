@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Frontend\Api\Providers;
+namespace App\Tests\Frontend\Api;
 
 use PHPUnit\Framework\TestCase;
 use Studio24\Frontend\Cms\RestData;
