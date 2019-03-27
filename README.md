@@ -81,3 +81,7 @@ on all merges into master.
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
+[CHANGELOG]: ./CHANGELOG.md
+[LICENSE]: ./LICENSE
+[version-badge]: https://img.shields.io/badge/version-1.0.0-blue.svg
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
