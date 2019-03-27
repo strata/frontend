@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
+use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\PermissionException;
 use Studio24\Frontend\Exception\FailedRequestException;
 use Studio24\Frontend\Exception\ApiException;
@@ -47,7 +48,7 @@ abstract class RestApiAbstract
      *
      * @var bool
      */
-    protected $expectedResponseCode;
+    protected $expectedResponseCode = 200;
 
     /**
      * Array of response error codes to ignore and not throw an exception for
@@ -217,35 +218,39 @@ abstract class RestApiAbstract
     /**
      * Make a request to the API
      *
-     * @param $method (GET, POST)
-     * @param $uri  URI relative to base URI
+     * @param $method
+     * @param $uri
      * @param array $options
      * @return ResponseInterface
      * @throws FailedRequestException
+     * @throws NotFoundException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function request($method, $uri, array $options) : ResponseInterface
+    public function request($method, $uri, array $options): ResponseInterface
     {
-        try {
-            $response = $this->getClient()->request($method, $uri, $options);
-        } catch (RequestException $e) {
-            if (in_array($e->getCode(), $this->ignoreErrorCodes)) {
-                // @todo Log warning?
+        // Suppress HTTP errors raising Guzzle exceptions
+        $options = array_merge($options, ['http_errors' => false]);
 
-                // Return empty error response to frontend
-                return new Response($e->getCode(), [], '[]', '1.1', $e->getMessage());
-            }
+        $response = $this->getClient()->request($method, $uri, $options);
+        if ($response->getStatusCode() == $this->expectedResponseCode) {
+            return $response;
         }
 
-        if ($this->expectedResponseCode !== null) {
-            if ($response->getStatusCode() !== $this->expectedResponseCode) {
-                $message = sprintf('Expected HTTP response code error. Expected: %s, Actual: %s, Error: %s', $this->expectedResponseCode, $response->getStatusCode(), $response->getReasonPhrase());
-                throw new FailedRequestException($message);
+        // Return empty response for expected errors
+        if (in_array($response->getStatusCode(), $this->ignoreErrorCodes)) {
+            return new Response($response->getStatusCode(), [], '[]', '1.1', $response->getReasonPhrase());
+
+        } else {
+            $message = sprintf('Failed HTTP response. Expected: %s, Actual: %s, Error: %s', $this->expectedResponseCode, $response->getStatusCode(), $response->getReasonPhrase());
+
+            if (substr((string) $response->getStatusCode(), 0, 1) === '4') {
+                throw new NotFoundException($message, $response->getStatusCode());
+            } else {
+                throw new FailedRequestException($message, $response->getStatusCode());
             }
         }
-
-        return $response;
     }
+    
 
     /**
      * Make a GET request to the API
