@@ -239,7 +239,6 @@ abstract class RestApiAbstract
         // Return empty response for expected errors
         if (in_array($response->getStatusCode(), $this->ignoreErrorCodes)) {
             return new Response($response->getStatusCode(), [], '[]', '1.1', $response->getReasonPhrase());
-
         } else {
             $message = sprintf('Failed HTTP response. Expected: %s, Actual: %s, Error: %s', $this->expectedResponseCode, $response->getStatusCode(), $response->getReasonPhrase());
 

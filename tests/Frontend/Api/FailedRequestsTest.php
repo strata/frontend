@@ -122,5 +122,4 @@ class FailedRequestsTest extends TestCase
         $this->expectException(\Studio24\Frontend\Exception\FailedRequestException::class);
         $results = $api->getOne('endpoint', 1);
     }
-
 }
