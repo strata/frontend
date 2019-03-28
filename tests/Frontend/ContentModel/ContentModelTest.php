@@ -121,4 +121,80 @@ class ContentModelTest extends TestCase
             $x++;
         }
     }
+
+    public function testYamlConfigKey()
+    {
+        $contentModel = new ContentModel(__DIR__ . '/config/content_model_flexible_components.yaml');
+
+        $d = 1;
+        foreach ($contentModel as $contentType) {
+            switch ($d) {
+                case 1:
+                    //should be the news contentType
+                    $c = 1;
+                    foreach ($contentType as $contentField) {
+                        switch ($c) {
+                            case 1:
+                                $this->assertEquals('post_type', $contentField->getName());
+                                $this->assertEquals('plaintext', $contentField->getType());
+                                break;
+                            case 16:
+                                $this->assertEquals('page_content', $contentField->getName());
+                                $this->assertEquals('flexible', $contentField->getType());
+
+                                $b = 1;
+                                foreach ($contentField as $component) {
+                                    switch ($b) {
+                                        case 1:
+                                            $this->assertEquals('fullbleed', $component->getName());
+
+                                            $a = 1;
+                                            foreach ($component as $componentContentFields) {
+                                                switch ($a) {
+                                                    case 1:
+                                                        $this->assertEquals('title', $componentContentFields->getName());
+                                                        $this->assertEquals('text', $componentContentFields->getType());
+                                                        break;
+                                                    case 2:
+                                                        $this->assertEquals('bg_image', $componentContentFields->getName());
+                                                        $this->assertEquals('image', $componentContentFields->getType());
+                                                }
+                                                $a++;
+                                            }
+                                            break;
+                                        case 4:
+                                            $this->assertEquals('donation_block', $component->getName());
+
+                                            $a = 1;
+                                            foreach ($component as $componentContentFields) {
+                                                switch ($a) {
+                                                    case 1:
+                                                        $this->assertEquals('title', $componentContentFields->getName());
+                                                        $this->assertEquals('text', $componentContentFields->getType());
+                                                        break;
+                                                    case 2:
+                                                        $this->assertEquals('text', $componentContentFields->getName());
+                                                        $this->assertEquals('text', $componentContentFields->getType());
+                                                }
+                                                $a++;
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    $b++;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        $c++;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            $d++;
+        }
+    }
 }

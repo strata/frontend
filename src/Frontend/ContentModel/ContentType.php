@@ -91,6 +91,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      */
     public function parseConfig(string $file): ContentType
     {
+        $configDir = dirname($file);
         $data = Yaml::parseFile($file);
 
         if (!is_array($data)) {
@@ -101,7 +102,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
             if (!is_array($values)) {
                 throw new ConfigParsingException(sprintf("Content field definition must contain an array of values, including the 'type' property, %s found", gettype($values)));
             }
-            $this->addItem($this->parseContentFieldArray($name, $values));
+            $this->addItem($this->parseContentFieldArray($name, $values, $configDir));
         }
 
         return $this;
@@ -112,11 +113,15 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      *
      * @param string $name
      * @param array $data
+     * @param string $configDir
      * @return FieldInterface
      * @throws ConfigParsingException
      */
-    public function parseContentFieldArray(string $name, array $data): FieldInterface
+    public function parseContentFieldArray(string $name, array $data, string $configDir = ''): FieldInterface
     {
+        if (isset($data['config'])) {
+            $data = YAML::parseFile($configDir.'/'.$data['config']);
+        }
         if (!isset($data['type'])) {
             throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");
         }

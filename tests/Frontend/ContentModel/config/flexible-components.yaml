@@ -1,0 +1,170 @@
+type: flexible
+components:
+  fullbleed:
+    title:
+      type: text
+    bg_image:
+      type: image
+    strapline:
+      type: text
+    appeal_type:
+      type: plaintext
+    include_button:
+      type: boolean
+    button_text:
+      type: plaintext
+    button_link:
+      type: plaintext
+    include_newsletter:
+      type: boolean
+    newsletter_source:
+      type: plaintext
+    add_bottom_margin:
+      type: boolean
+  statement_block:
+    statement_title:
+      type: text
+    statement:
+      type: richtext
+  content:
+    title:
+      type: text
+    content:
+      type: richtext
+    full_width:
+      type: boolean
+    trigger:
+      type: boolean
+    number_of_elements:
+      type: number
+  donation_block:
+    title:
+      type: text
+    text:
+      type: text
+    donation_amounts:
+      type: array
+      content_fields:
+        amount:
+          type: number
+        benefit:
+          type: text
+    regulator_text:
+      type: text
+    button_text:
+      type: text
+  highlight:
+    numbers_left:
+      type: text
+    numbers_left_description:
+      type: richtext
+    numbers_right:
+      type: text
+    numbers_right_description:
+      type: richtext
+  latest_news:
+    news_block:
+      type: boolean
+  membership_block:
+    title:
+      type: text
+    introduction:
+      type: text
+    membership_name:
+      type: text
+    benefits_introduction:
+      type: text
+    benefits:
+      type: array
+      content_fields:
+        benefit:
+          type: text
+    button_text:
+      type: text
+    membership_amount_monthly:
+      type: number
+    membership_amount_annual:
+      type: number
+  quote:
+    author:
+      type: relation
+      content_type: people
+    authors_quote:
+      type: text
+  feature_quote:
+    authors_quote:
+      type: text
+    author:
+      type: relation
+      content_type: people
+    author_link:
+      type: text
+    add_bottom_margin:
+      type: boolean
+  media_contact:
+    name:
+      type: text
+    job_title:
+      type: text
+    email:
+      type: text
+    phone:
+      type: text
+  reasons_to_donate:
+    reasons:
+      type: array
+      content_fields:
+        post_object:
+          type: relation
+          content_type: donation_reasons
+  documents_sidebar:
+    title:
+      type: text
+    add_sidebar:
+      type: array
+      content_fields:
+        external_resource:
+          type: boolean
+        post_object:
+          type: relation
+          content_type: document
+        external_link:
+          type: text
+        external_link_title:
+          type: text
+        related_post_link_title:
+          type: text
+  content_sidebar:
+    add_sidebar:
+      type: array
+      content_fields:
+        title:
+          type: text
+        content:
+          type: text
+  timeline:
+    timeline_title:
+      type: text
+    timeline:
+      type: array
+      content_fields:
+        year:
+          type: text
+        date_text:
+          type: text
+  video:
+    title:
+      type: text
+    video:
+      type: richtext
+    content:
+      type: text
+  ways_to_give:
+    ways_to_give:
+      type: relation
+      content_type: ways_to_give
+  newsletter_block:
+    introduction:
+      type: richtext
+    newsletter_source:
+      type: plaintext
