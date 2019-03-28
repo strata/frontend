@@ -5,5 +5,5 @@ namespace Studio24\Frontend\ContentModel;
 
 interface ContentFieldCollectionInterface
 {
-    public function parseContentFieldArray(string $name, array $data): FieldInterface;
+    public function parseContentFieldArray(string $name, array $data, string $configDir): FieldInterface;
 }
