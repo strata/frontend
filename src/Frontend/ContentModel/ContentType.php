@@ -99,7 +99,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         }
 
         foreach ($data as $name => $values) {
-            if (is_string($values)) {
+            if ($name = 'config') {
                 $values = Yaml::parseFile($configDir.'/'.$values);
             }
             if (!is_array($values)) {
