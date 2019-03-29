@@ -115,7 +115,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      * @param mixed $slug
      * @return Page
      */
-    public function setUrlSlug(? string $slug): Page
+    public function setUrlSlug(? string $slug): BaseContent
     {
         $this->urlSlug = $slug;
         return $this;
