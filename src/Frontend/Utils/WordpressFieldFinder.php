@@ -85,7 +85,7 @@ class WordpressFieldFinder
     public static function slug(array $data, array $searchFields = null): ?string
     {
         if (empty($searchFields)) {
-            $searchFields = ['slug'];
+            $searchFields = ['slug', 'post_name'];
         }
 
         return self::findFirstFieldFromSearch($searchFields, $data);
