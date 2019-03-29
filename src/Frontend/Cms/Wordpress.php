@@ -21,6 +21,7 @@ use Studio24\Frontend\Content\Taxonomies\TermCollection;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\ContentFieldException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
 use Studio24\Frontend\Exception\ContentTypeNotSetException;
@@ -196,9 +197,20 @@ class Wordpress extends ContentRepository
     }
 
     /**
-     * Return page based on slug
+     * Backward-compatibility for getPageBySlug() method
      *
      * @param string $slug
+     * @return Page
+     */
+    public function getPageBySlug(string $slug)
+    {
+        return $this->getPageByUrl('/' . trim($slug, '/') . '/');
+    }
+
+    /**
+     * Return page based on slug
+     *
+     * @param string $url URL to select for this page (excluding domain)
      * @return Page
      * @throws ApiException
      * @throws ContentFieldException
@@ -208,9 +220,9 @@ class Wordpress extends ContentRepository
      * @throws \Studio24\Frontend\Exception\PaginationException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getPageBySlug(string $slug)
+    public function getPageByUrl(string $url)
     {
-        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $slug);
+        $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $url);
 
         if ($this->hasCache()) {
             $data = $this->cache->get($cacheKey, false);
@@ -219,14 +231,27 @@ class Wordpress extends ContentRepository
             }
         }
 
+        // Get end part of page slug which should allow us to retrieve page in WordPress
+        $parts = parse_url($url);
+        $slug = rtrim($parts['path'], '/');
+        $slug = explode('/', $slug);
+        $slug = end($slug);
+
         // Get content
         $results = $this->api->listPosts($this->getContentApiEndpoint(), 1, ['slug' => $slug]);
         if ($results->getPagination()->getTotalResults() != 1) {
-            throw new ApiException(sprintf('Page not found for slug: %s', $slug));
+            throw new NotFoundException(sprintf('Page not found for requested URL: %s, slug: %s', $url, $slug), 404);
         }
 
         // Get single result
         $data = $results->getResponseData()[0];
+
+        // Check this page matches requested URL, if not return 404
+        $pageUrlParts = parse_url($data['link']);
+        if (rtrim($pageUrlParts['path'], '/') != rtrim($parts['path'], '/')) {
+            throw new NotFoundException(sprintf('Page URL %s does not match for requested URL: %s, slug: %s', $pageUrlParts['path'], $url, $slug), 400);
+        }
+
         $page = $this->createPage($data);
 
         if (!empty($data['author'])) {

@@ -2,7 +2,10 @@
 
 Framework to build an efficient front-end website with content from a Headless CMS or other data sources.
 
-[![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend)
+[![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend) 
+[![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
+
+[version-badge]: https://img.shields.io/badge/version-0.5.0-blue.svg
 
 ## Status
 
@@ -16,10 +19,8 @@ See the [roadmap](ROADMAP.md) for more details on future development plans.
 
 ## Installation
 
-Until version 0.5 you need to install via dev-master. 
-
 ```
-composer require studio24/frontend:dev-master
+composer require studio24/frontend:0.5.*
 ```
 
 ## Documentation
@@ -42,13 +43,6 @@ Your Markdown here
 
 {% endraw %}
 ```
-
-## Making changes
-
-Commit to a branch, request a PR to merge into master.
-
-Please note [Travis CI](https://travis-ci.org/studio24/frontend) is setup to run PHP linting, PHPUnit and PHP CodeSniffer 
-on all merges into master.
 
 ## Tests
 
@@ -75,7 +69,18 @@ Where possible you can auto-fix code via:
 ```
 vendor/bin/phpcbf
 ```
+
+## Contributions
+
+Please do contribute! Issues and pull requests are welcome.
+
+Please note [Travis CI](https://travis-ci.org/studio24/frontend) is setup to run PHP linting, PHPUnit and PHP CodeSniffer 
+on all merges into master.
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
+[CHANGELOG]: ./CHANGELOG.md
+[LICENSE]: ./LICENSE
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
