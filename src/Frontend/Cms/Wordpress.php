@@ -334,7 +334,7 @@ class Wordpress extends ContentRepository
             $title .= ' | '.$this->getContentModel()->getGlobal('site_name');
         }
 
-        $description = $page->getExcerpt();
+        $description = strip_tags($page->getExcerpt());
         $postImage = null;
 
         if (!empty($page->getFeaturedImage())) {
@@ -351,7 +351,7 @@ class Wordpress extends ContentRepository
 
             if (isset($data['yoast']['metadesc'])) {
                 if (!empty($data['yoast']['metadesc'])) {
-                    $description = $data['yoast']['metadesc'];
+                    $description = strip_tags($data['yoast']['metadesc']);
                 }
             }
         }
