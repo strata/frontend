@@ -39,22 +39,41 @@ class FailedRequestsTest extends TestCase
         $this->assertEmpty($results);
     }
 
-    public function testFailedResponsesExceoptionCodes()
+    public function testFailedResponsesExceptionCodes401404()
     {
         // Create a mock and queue two responses
         $mock = new MockHandler([
+            new Response(
+                401,
+                [],
+                'Exception error data not found'
+            ),
             new Response(
                 404,
                 [],
                 '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
             ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $api = new RestApi('somewhere');
+        $api->setClient($client);
+
+        // 401 are ignored by default so shouldn't stop execution
+        $results = $api->getOne('endpoint', 1);
+
+        $this->expectExceptionCode(404);
+        $results = $api->getOne('endpoint', 1);
+    }
+
+    public function testFailedResponsesExceptionCodes500()
+    {
+        // Create a mock and queue two responses
+        $mock = new MockHandler([
             new Response(
                 500,
-                [],
-                'Exception error data not found'
-            ),
-            new Response(
-                401,
                 [],
                 'Exception error data not found'
             ),
@@ -66,14 +85,7 @@ class FailedRequestsTest extends TestCase
         $api = new RestApi('somewhere');
         $api->setClient($client);
 
-        // Test it!
-        $this->expectExceptionCode(404);
-        $results = $api->getOne('endpoint', 1);
-
         $this->expectExceptionCode(500);
-        $results = $api->getOne('endpoint', 1);
-
-        $this->expectExceptionCode(401);
         $results = $api->getOne('endpoint', 1);
     }
 
@@ -148,8 +160,14 @@ class FailedRequestsTest extends TestCase
         } catch (NotFoundException $e) {
         }
 
+        //simply checking execution hasn't stopped above (checking no exception was thrown)
+        $this->assertTrue(true);
+
         $api->ignoreErrorCode(404);
         $results = $api->getOne('endpoint', 1);
+
+        //simply checking execution hasn't stopped above (checking no exception was thrown)
+        $this->assertTrue(true);
 
         $api->restoreDefaultIgnoredErrorCodes();
 
@@ -159,5 +177,7 @@ class FailedRequestsTest extends TestCase
         } catch (NotFoundException $e) {
         }
 
+        //simply checking execution hasn't stopped above (checking no exception was thrown)
+        $this->assertTrue(true);
     }
 }
