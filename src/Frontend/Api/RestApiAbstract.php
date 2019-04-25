@@ -58,6 +58,13 @@ abstract class RestApiAbstract
     protected $ignoreErrorCodes = [401];
 
     /**
+     * Default values for response error codes to ignore
+     *
+     * @var array
+     */
+    protected $defaultIgnoredErrorCodes = [401];
+
+    /**
      * Constructor
      *
      * @param string $baseUri API base URI
@@ -143,6 +150,18 @@ abstract class RestApiAbstract
     public function ignoreErrorCode(int $code)
     {
         $this->ignoreErrorCodes[] = $code;
+    }
+
+    /**
+     * Restore default error codes to be ignored in the response (and not throw an exception)
+     *
+     * Example use case: when querying a page that exists but has a featured media that does not exist (returns a 404),
+     * it's best to ignore the 404 error returned by the media query but revert to catching 404 errors for subsequent queries.
+     *
+     */
+    public function restoreDefaultIgnoredErrorCodes()
+    {
+        $this->ignoreErrorCodes = $this->defaultIgnoredErrorCodes;
     }
 
     /**
@@ -258,6 +277,7 @@ abstract class RestApiAbstract
      * @param array $options
      * @return ResponseInterface
      * @throws FailedRequestException
+     * @throws NotFoundException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get($uri, array $options = []) : ResponseInterface
