@@ -1,0 +1,16 @@
+content_types:
+  news:
+    api_endpoint: posts
+    content_fields: news.yaml
+    taxonomies:
+      - categories
+
+global:
+  image_sizes:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+    - twentyseventeen-featured-image
+    - twentyseventeen-thumbnail-avatar
+    - issue-post-image

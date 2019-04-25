@@ -185,7 +185,9 @@ class Wordpress extends ContentRepository
         $page = $this->createPage($data);
 
         if (!empty($data['author'])) {
+            $this->api->ignoreErrorCode(404);
             $author = $this->api->getAuthor($data['author']);
+            $this->api->restoreDefaultIgnoredErrorCodes();
             $page->setAuthor($this->createUser($author));
         }
 
@@ -255,7 +257,9 @@ class Wordpress extends ContentRepository
         $page = $this->createPage($data);
 
         if (!empty($data['author'])) {
+            $this->api->ignoreErrorCode(404);
             $author = $this->api->getAuthor($data['author']);
+            $this->api->restoreDefaultIgnoredErrorCodes();
             $page->setAuthor($this->createUser($author));
         }
 
@@ -482,7 +486,9 @@ class Wordpress extends ContentRepository
         }
 
         //image ID passed on
+        $this->api->ignoreErrorCode(404);
         $field_data = $this->getMediaDataById($mediaID);
+        $this->api->restoreDefaultIgnoredErrorCodes();
         if (empty($field_data)) {
             return $page;
         }
@@ -899,6 +905,9 @@ class Wordpress extends ContentRepository
 
             foreach ($data[$taxonomyName] as $termID) {
                 $term = $this->createTerm($taxonomyName, $termID);
+                if ($term == null) {
+                    continue;
+                }
                 $taxonomies[$taxonomyName]->addItem($term);
             }
         }
@@ -912,8 +921,11 @@ class Wordpress extends ContentRepository
      * @param array $data
      * @return User
      */
-    public function createUser(array $data): User
+    public function createUser(array $data): ?User
     {
+        if (empty($data)) {
+            return null;
+        }
         $user = new User();
         $user->setId($data['id'])
             ->setName($data['name']);
@@ -1066,7 +1078,9 @@ class Wordpress extends ContentRepository
             }
         }
 
+        $this->api->ignoreErrorCode(404);
         $termData = $this->api->getTerm($taxonomy, $id);
+        $this->api->restoreDefaultIgnoredErrorCodes();
 
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $termData, $this->getCacheLifetime());
