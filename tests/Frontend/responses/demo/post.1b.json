@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": 1234,
     "date": "2017-05-23T06:25:50",
     "date_gmt": "2017-05-23T06:25:50",
     "guid": {
@@ -11,7 +11,7 @@
     "slug": "hello-world",
     "status": "publish",
     "type": "post",
-    "link": "https://demo.wp-api.org/2017/05/23/hello-world/",
+    "link": "https://demo.wp-api.org/20171234/05/23/hello-world/",
     "title": {
       "rendered": "Hello world!"
     },

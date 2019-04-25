@@ -463,7 +463,7 @@ EOD;
             new Response(
                 200,
                 ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
-                file_get_contents(__DIR__ . '/../responses/demo/post.1-missing-data.json')
+                file_get_contents(__DIR__ . '/../responses/demo/post.1b.json')
             ),
             new Response(
                 404,
@@ -483,7 +483,7 @@ EOD;
             new Response(
                 200,
                 ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
-                file_get_contents(__DIR__ . '/../responses/demo/post.1-missing-data.json')
+                file_get_contents(__DIR__ . '/../responses/demo/post.1c.json')
             ),
             new Response(
                 404,
@@ -506,13 +506,14 @@ EOD;
         $client = new Client(['handler' => $handler]);
 
         $api = new Wordpress('http://demo.wp-api.org/wp-json/wp/v2/');
+        $api->setClient($client);
 
-        $contentModel = new ContentModel(__DIR__ . '/config/demo/content_model.yaml');
+        $contentModel = new ContentModel(__DIR__ . '/config/demo/content_model_with_taxonomy.yaml');
         $api->setContentModel($contentModel);
         $api->setContentType('news');
 
         try {
-            $page = $api->getPageByUrl('/2017/05/23/hello-world/');
+            $page = $api->getPageByUrl('/20171234/05/23/hello-world/');
         } catch (NotFoundHttpException $e) {
             throw new NotFoundHttpException('Resource not found', $e);
         }
@@ -521,7 +522,7 @@ EOD;
         $this->assertTrue(true);
 
         try {
-            $page = $api->getPage(1);
+            $page = $api->getPage(1234);
         } catch (NotFoundHttpException $e) {
             throw new NotFoundHttpException('Resource not found', $e);
         }
