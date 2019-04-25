@@ -277,6 +277,7 @@ abstract class RestApiAbstract
      * @param array $options
      * @return ResponseInterface
      * @throws FailedRequestException
+     * @throws NotFoundException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get($uri, array $options = []) : ResponseInterface
