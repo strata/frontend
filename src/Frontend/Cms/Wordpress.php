@@ -1091,4 +1091,67 @@ class Wordpress extends ContentRepository
 
         return $termData;
     }
+
+    /**
+     * @param string $taxonomy
+     * @return null|TermCollection
+     */
+    public function getAllTerms(string $taxonomy): ?TermCollection
+    {
+        //@todo do we need to restrict to a list of allowed taxonomies (defined in config file?)
+        $taxonomyTermsData = $this->getAllTermsData($taxonomy);
+
+        if (empty($taxonomyTermsData)) {
+            return null;
+        }
+
+        $taxonomyTerms = new TermCollection();
+        foreach ($taxonomyTermsData as $singleTermData) {
+            $currentTerm = new Term(
+                $singleTermData['id'],
+                $singleTermData['name'],
+                $singleTermData['slug'],
+                $singleTermData['link'],
+                $singleTermData['count'],
+                $singleTermData['description']
+            );
+            $taxonomyTerms->addItem($currentTerm);
+        }
+
+        return $taxonomyTerms;
+    }
+
+    /**
+     * @param string $taxonomy
+     * @return array|null
+     * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getAllTermsData(string $taxonomy): ?array
+    {
+        $cacheKey = $this->buildCacheKey('allterms', $taxonomy);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+
+            if (!empty($data)) {
+                return $data;
+            }
+        }
+
+        //ignore 404s, usually a list of terms is used to displayed filters or menus on the side,
+        //it's not the core of the page
+        $this->api->ignoreErrorCode(404);
+        $allTermsData = $this->api->getTaxonomyTerms($taxonomy);
+        $this->api->restoreDefaultIgnoredErrorCodes();
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $allTermsData, $this->getCacheLifetime());
+        }
+
+        return $allTermsData;
+    }
 }
