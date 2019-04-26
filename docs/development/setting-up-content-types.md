@@ -92,6 +92,7 @@ as options.
 * `date` - date 
 * `datetime` - date and time
 * `boolean` - true or false
+* `plainarray` - array with simple values (strings, numbers, boolean values), keys can be integers or strings
 * `image` - image, supports multiple image sizes and content such as alt text and captions
 * `relation` - a relation to another content type
 * `flexible` - flexible content
