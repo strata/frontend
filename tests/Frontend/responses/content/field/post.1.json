@@ -40,6 +40,14 @@
         "apple",
         "pear",
         "banana"
+      ],
+      "yesno": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        true
       ]
     },
     "format": "standard",

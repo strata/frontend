@@ -6,3 +6,5 @@ icon_type:
   type: plainarray
 fruits:
   type: plainarray
+yesno:
+  type: plainarray

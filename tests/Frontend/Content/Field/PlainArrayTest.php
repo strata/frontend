@@ -66,6 +66,27 @@ class PlainArrayTest extends TestCase
             }
         }
 
+        //non-associative array with bool values
+        $arrayOfBool = $project->getContent()->get('yesno')->getValue();
+
+        $this->assertIsArray($arrayOfBool);
+
+        foreach ($arrayOfBool as $intKey => $itemValue) {
+            $this->assertIsInt($intKey);
+            switch ($intKey) {
+                case 0:
+                    $this->assertIsInt($itemValue);
+                    $this->assertEquals(0, $itemValue);
+                    break;
+                case 2:
+                    $this->assertIsInt($itemValue);
+                    $this->assertEquals(1, $itemValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         $this->assertTrue(true);
     }
 }

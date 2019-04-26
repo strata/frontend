@@ -49,13 +49,14 @@ class PlainArray extends ContentField
                 continue;
             }
 
-            if (!(is_numeric($value) || is_string($value))) {
+            if (!(is_numeric($value) || is_string($value) || is_bool($value))) {
                 continue;
             }
 
             $new_key = (is_numeric($key))? (int) $key: (string) $key;
+            $new_value = (is_bool($value))? (int) $value: $value;
 
-            $this->content[$new_key] = $value;
+            $this->content[$new_key] = $new_value;
         }
 
         return $this;
