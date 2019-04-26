@@ -872,7 +872,7 @@ class Wordpress extends ContentRepository
                     }
 
                     $terms = new TermCollection();
-                    if (isset($value['id'])) {
+                    if (isset($value['term_id'])) {
                         //we've got a single term, not an array of terms
                         $termsData = array($value);
                     } else {
@@ -880,11 +880,12 @@ class Wordpress extends ContentRepository
                     }
 
                     foreach ($termsData as $singleTermData) {
+                        $link = $singleTermData['taxonomy'].'/'.$singleTermData['slug'];
                         $currentTerm = new Term(
-                            $singleTermData['id'],
+                            $singleTermData['term_id'],
                             $singleTermData['name'],
                             $singleTermData['slug'],
-                            $singleTermData['link'],
+                            $link,
                             $singleTermData['count'],
                             $singleTermData['description']
                         );
@@ -894,6 +895,7 @@ class Wordpress extends ContentRepository
                     $taxonomyTermField = new TaxonomyTerms($name);
                     $taxonomyTermField->setContent($terms);
 
+                    return $taxonomyTermField;
                     break;
             }
         } catch (\Error $e) {
