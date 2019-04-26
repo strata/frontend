@@ -8,6 +8,7 @@ use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
@@ -597,6 +598,8 @@ class Wordpress extends ContentRepository
                     return new Boolean($name, $value);
                     break;
 
+                case 'plainarray':
+                    return new PlainArray($name, $value);
 
                 case 'image':
                     $sizesData = array();

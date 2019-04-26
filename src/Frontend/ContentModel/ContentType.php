@@ -13,6 +13,7 @@ use Studio24\Frontend\Content\Field\FlexibleContent;
 use Studio24\Frontend\Content\Field\Image;
 use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\PlainText;
+use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\Relation;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
@@ -48,6 +49,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         Image::TYPE,
         Number::TYPE,
         PlainText::TYPE,
+        PlainArray::TYPE,
         Relation::TYPE,
         RichText::TYPE,
         ShortText::TYPE,
