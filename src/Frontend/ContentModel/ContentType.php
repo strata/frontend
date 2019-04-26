@@ -17,6 +17,7 @@ use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\Relation;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
+use Studio24\Frontend\Content\Field\TaxonomyTerms;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Exception\ConfigParsingException;
 use Symfony\Component\Yaml\Yaml;
@@ -48,11 +49,12 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         FlexibleContent::TYPE,
         Image::TYPE,
         Number::TYPE,
-        PlainText::TYPE,
         PlainArray::TYPE,
+        PlainText::TYPE,
         Relation::TYPE,
         RichText::TYPE,
         ShortText::TYPE,
+        TaxonomyTerms::TYPE,
         Video::TYPE
     ];
 

@@ -9,6 +9,7 @@ use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
 use Studio24\Frontend\Content\Field\PlainArray;
+use Studio24\Frontend\Content\Field\TaxonomyTerms;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
@@ -859,24 +860,41 @@ class Wordpress extends ContentRepository
                     return $flexible;
 
                     break;
-                /**
-                 * @todo Build & test Flexible content field
-                 * case 'flexible':
-                 * if (!is_array($value)) {
-                 * break;
-                 * }
-                 *
-                 * $flexible = new FlexibleContent($name);
-                 *
-                 * foreach ($contentField as $componentType) {
-                 * $component = new Component($componentType->getName());
-                 * $this->setCustomContentFields($componentType, $component, $value);
-                 * $flexible->addComponent($component);
-                 * }
-                 *
-                 * $content->addContent($flexible);
-                 * break;
-                 */
+
+                case 'taxonomyterms':
+                    //@todo cater for situation in which term ID is returned as opposed to term object
+                    //can receive single term or array of terms
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    if (empty($value)) {
+                        return null;
+                    }
+
+                    $terms = new TermCollection();
+                    if (isset($value['id'])) {
+                        //we've got a single term, not an array of terms
+                        $termsData = array($value);
+                    } else {
+                        $termsData = $value;
+                    }
+
+                    foreach ($termsData as $singleTermData) {
+                        $currentTerm = new Term(
+                            $singleTermData['id'],
+                            $singleTermData['name'],
+                            $singleTermData['slug'],
+                            $singleTermData['link'],
+                            $singleTermData['count'],
+                            $singleTermData['description']
+                        );
+                        $terms->addItem($currentTerm);
+                    }
+
+                    $taxonomyTermField = new TaxonomyTerms($name);
+                    $taxonomyTermField->setContent($terms);
+
+                    break;
             }
         } catch (\Error $e) {
             $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
