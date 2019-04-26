@@ -5,6 +5,9 @@ content_types:
   project:
     api_endpoint: wp/v2/projects
     content_fields: project.yaml
+  post:
+    api_endpoint: wp/v2/posts
+    content_fields: post.yaml
 
 global:
   site_name: 'Name of site'
