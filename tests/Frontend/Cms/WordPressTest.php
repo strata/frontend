@@ -494,16 +494,28 @@ EOD;
         $careers = $page->getContent()->get('page_content')->get('careers');
         $this->assertEquals(1, count($careers));
 
-        /*
         $x = 0;
         foreach ($careers as $career) {
             switch ($x) {
                 case 0:
-                    $this->assertEquals("ACME Manager", $career->get('title'));
+                    $careerItems = $career->getContent()->get('career');
+                    $this->assertEquals(3, count($careerItems));
+
+                    $y = 0;
+                    foreach ($careerItems as $item) {
+                        switch ($y) {
+                            case 0:
+                                // @todo This is currently null since relation not populated from an array
+                                $this->assertEquals("ACME Manager", $item->get('title'));
+                                break;
+                        }
+
+                        $y++;
+                    }
+
                     break;
             }
             $x++;
         }
-        */
     }
 }
