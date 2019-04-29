@@ -364,10 +364,11 @@ EOD;
 
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent', $flexibleContent);
 
-        foreach ($flexibleContent->getValue() as $key => $flexibleComponent) {
+        $x = 0;
+        foreach ($flexibleContent as $flexibleComponent) {
             $this->assertInstanceOf('Studio24\Frontend\Content\Field\Component', $flexibleComponent);
 
-            switch ($key) {
+            switch ($x) {
                 case 0:
                     $this->assertEquals('content', $flexibleComponent->getName());
                     foreach ($flexibleComponent->getContent() as $fieldName => $fieldValue) {
@@ -414,6 +415,8 @@ EOD;
                 case 2:
                     break;
             }
+
+            $x++;
         }
     }
 
@@ -455,4 +458,37 @@ EOD;
         $this->expectExceptionCode(404);
         $page = $api->getPageByUrl('/made/up/url/');
     }
+
+
+    public function testRelationArray()
+    {
+        // Create a mock and queue response
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/page.9.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $api = new Wordpress('something');
+        $api->setClient($client);
+        $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
+        $api->setContentModel($contentModel);
+        $api->setContentType('page2');
+
+        // Test it!
+        $page = $api->getPage(9);
+        $this->assertEquals("ACME Manager", $page->getContent()->get('page_content')->get('careers')[0]);
+    }
+
+
 }
