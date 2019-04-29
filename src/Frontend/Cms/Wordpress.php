@@ -600,6 +600,9 @@ class Wordpress extends ContentRepository
                     break;
 
                 case 'plainarray':
+                    if (!is_array($value)) {
+                        return null;
+                    }
                     return new PlainArray($name, $value);
 
                 case 'image':
