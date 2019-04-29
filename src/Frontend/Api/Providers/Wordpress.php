@@ -102,7 +102,7 @@ class Wordpress extends RestApiAbstract
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getPost($apiEndpoint, int $id) : array
+    public function getPost($apiEndpoint, int $id): array
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
