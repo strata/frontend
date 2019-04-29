@@ -222,7 +222,7 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get("wp/v2/$taxonomy", ['per_page' => 100]);
+        $response = $this->get("wp/v2/$taxonomy", ['query' => ['per_page' => 100]]);
         $data = $this->parseJsonResponse($response);
 
         return $data;
