@@ -1,0 +1,26 @@
+banner_text:
+  type: text
+description:
+  type: richtext
+page_content:
+  type: flexible
+  components:
+    content:
+      title:
+        type: text
+      content:
+        type: richtext
+      full_width:
+        type: boolean
+      number_of_elements:
+        type: number
+    careers:
+      career:
+        type: array
+        content_fields:
+          career:
+            type: relation
+            content_type: career
+
+
+

@@ -4,6 +4,9 @@ content_types:
   project:
     api_endpoint: projects
     content_fields: projects.yaml
+  page2:
+    api_endpoint: pages2
+    content_fields: pages2.yaml
 
 global:
   image_sizes:

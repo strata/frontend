@@ -363,6 +363,9 @@ EOD;
         $flexibleContent = $page->getContent()->get('page_content');
 
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent', $flexibleContent);
+        $this->assertEquals(3, count($flexibleContent));
+        $this->assertEquals(1, count($flexibleContent->get('statement_block')));
+        $this->assertEquals(2, count($flexibleContent->get('content')));
 
         $x = 0;
         foreach ($flexibleContent as $flexibleComponent) {
@@ -487,8 +490,20 @@ EOD;
 
         // Test it!
         $page = $api->getPage(9);
-        $this->assertEquals("ACME Manager", $page->getContent()->get('page_content')->get('careers')[0]);
+
+        $careers = $page->getContent()->get('page_content')->get('careers');
+        $this->assertEquals(1, count($careers));
+
+        /*
+        $x = 0;
+        foreach ($careers as $career) {
+            switch ($x) {
+                case 0:
+                    $this->assertEquals("ACME Manager", $career->get('title'));
+                    break;
+            }
+            $x++;
+        }
+        */
     }
-
-
 }

@@ -308,5 +308,4 @@ abstract class RestApiAbstract
 
         throw new FailedRequestException('Error parsing JSON response body: ' . json_last_error_msg());
     }
-
 }

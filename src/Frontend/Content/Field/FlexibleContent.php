@@ -85,6 +85,25 @@ class FlexibleContent extends ContentField implements \SeekableIterator, \Counta
     }
 
     /**
+     * Return subset of flexible content that matches the component name
+     *
+     * @param string $name Component name to return
+     * @return ComponentCollection
+     */
+    public function get(string $name): ComponentCollection
+    {
+        $components = new ComponentCollection();
+
+        foreach ($this->components as $item) {
+            if ($item->getName() === $name) {
+                $components->addItem($item);
+            }
+        }
+
+        return $components;
+    }
+
+    /**
      * Return collection of components
      *
      * @return Collection
