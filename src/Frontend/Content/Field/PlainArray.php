@@ -79,6 +79,17 @@ class PlainArray extends ContentField
      */
     public function __toString() : string
     {
-        return (string) $this->content;
+        $contentString = '';
+        if (empty($this->content)) {
+            return $contentString;
+        }
+
+        foreach ($this->content as $item) {
+            $contentString .= (string) $item.'. ';
+        }
+
+        $contentString = substr($contentString, 0, -1);
+
+        return $contentString;
     }
 }

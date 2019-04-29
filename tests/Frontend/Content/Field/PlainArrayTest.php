@@ -51,6 +51,7 @@ class PlainArrayTest extends TestCase
         $intIndexArray = $project->getContent()->get('fruits')->getValue();
 
         $this->assertIsArray($intIndexArray);
+        $this->assertIsString($project->getContent()->get('fruits')->__toString());
 
         foreach ($intIndexArray as $intKey => $itemValue) {
             $this->assertIsInt($intKey);
