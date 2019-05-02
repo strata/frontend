@@ -506,7 +506,7 @@ EOD;
                         switch ($y) {
                             case 0:
                                 // @todo This is currently null since relation not populated from an array
-                                $this->assertEquals("ACME Manager", $item->get('title'));
+                                $this->assertEquals("ACME Manager", $item->getContent()->getTitle());
                                 break;
                         }
 

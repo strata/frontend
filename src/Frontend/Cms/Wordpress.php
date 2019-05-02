@@ -37,6 +37,7 @@ use Studio24\Frontend\Content\Field\PlainText;
 use Studio24\Frontend\Content\Field\Relation;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
+use Studio24\Frontend\Content\Field\RelationArray;
 use Studio24\Frontend\Content\Page;
 use Studio24\Frontend\Content\PageCollection;
 use Studio24\Frontend\Content\User;
@@ -792,7 +793,6 @@ class Wordpress extends ContentRepository
                     return $array;
                     break;
 
-                // @todo test relation
                 case 'relation':
                     if (!is_array($value) || !$field->hasOption('content_type')) {
                         break;
@@ -809,6 +809,28 @@ class Wordpress extends ContentRepository
                     $this->setContentType($currentContentType);
 
                     return $relation;
+                    break;
+
+                case 'relation_array':
+                    if (!is_array($value) || !$field->hasOption('content_type')) {
+                        break;
+                    }
+
+                    // Swap to relation content type
+                    $currentContentType = $this->getContentType()->getName();
+
+                    $relationArray = new RelationArray($name, $field->getOption('content_type'));
+                    foreach ($value as $row) {
+                        $item = new Relation($name);
+                        $this->setContentType($field->getOption('content_type'));
+                        $this->setContentFields($item->getContent(), $row);
+                        $relationArray->addItem($item);
+                    }
+
+                    // Swap back to original content type
+                    $this->setContentType($currentContentType);
+
+                    return $relationArray;
                     break;
 
                 case 'flexible':
@@ -848,26 +870,7 @@ class Wordpress extends ContentRepository
                     }
 
                     return $flexible;
-
                     break;
-                /**
-                 * @todo Build & test Flexible content field
-                 * case 'flexible':
-                 * if (!is_array($value)) {
-                 * break;
-                 * }
-                 *
-                 * $flexible = new FlexibleContent($name);
-                 *
-                 * foreach ($contentField as $componentType) {
-                 * $component = new Component($componentType->getName());
-                 * $this->setCustomContentFields($componentType, $component, $value);
-                 * $flexible->addComponent($component);
-                 * }
-                 *
-                 * $content->addContent($flexible);
-                 * break;
-                 */
             }
         } catch (\Error $e) {
             $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));

@@ -26,3 +26,7 @@ page_content:
       author:
         type: relation
         content_type: user
+    careers:
+      careers_list:
+        type: relation_array
+        content_type: career

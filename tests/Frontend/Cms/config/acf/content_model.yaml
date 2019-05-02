@@ -7,6 +7,9 @@ content_types:
   page2:
     api_endpoint: pages2
     content_fields: pages2.yaml
+  career:
+    api_endpoint: career
+    content_fields: career.yaml
 
 global:
   image_sizes:

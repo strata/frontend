@@ -16,11 +16,8 @@ page_content:
         type: number
     careers:
       career:
-        type: array
-        content_fields:
-          career:
-            type: relation
-            content_type: career
+        type: relation_array
+        content_type: career
 
 
 
