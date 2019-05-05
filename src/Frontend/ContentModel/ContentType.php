@@ -8,6 +8,7 @@ use Studio24\Frontend\Content\Field\Audio;
 use Studio24\Frontend\Content\Field\Boolean;
 use Studio24\Frontend\Content\Field\Date;
 use Studio24\Frontend\Content\Field\DateTime;
+use Studio24\Frontend\Content\Field\Decimal;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\FlexibleContent;
 use Studio24\Frontend\Content\Field\Image;
@@ -49,6 +50,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         FlexibleContent::TYPE,
         Image::TYPE,
         Number::TYPE,
+        Decimal::TYPE,
         PlainArray::TYPE,
         PlainText::TYPE,
         Relation::TYPE,

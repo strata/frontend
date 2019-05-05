@@ -7,4 +7,10 @@ image:
     - medium
     - medium_large
     - large
+price:
+  type: decimal
+length:
+  type: decimal
+  precision: 4
+
 
