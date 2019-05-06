@@ -589,7 +589,7 @@ class Wordpress extends ContentRepository
                     break;
 
                 case 'decimal':
-                    $precision = $field->getOption('precision', $this->getContentModel();
+                    $precision = $field->getOption('precision', $this->getContentModel());
                     $round = $field->getOption('round', $this->getContentModel());
                     return new Decimal($name, $value, $precision, $round);
                     break;

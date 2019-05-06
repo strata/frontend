@@ -48,7 +48,9 @@
         true,
         false,
         true
-      ]
+      ],
+      "price": 19.99,
+      "price_round": 15.499
     },
     "format": "standard",
     "meta": [],

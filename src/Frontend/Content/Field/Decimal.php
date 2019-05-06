@@ -63,8 +63,8 @@ class Decimal extends ContentField
             $this->setRounding($round);
         }
 
-        if ($decimalPlaces !== null) {
-            $this->setPrecision($decimalPlaces);
+        if ($precision !== null) {
+            $this->setPrecision($precision);
         }
     }
 

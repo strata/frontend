@@ -8,3 +8,7 @@ fruits:
   type: plainarray
 yesno:
   type: plainarray
+price:
+  type: decimal
+price_round:
+  type: decimal
