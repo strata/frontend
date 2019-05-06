@@ -841,7 +841,6 @@ class Wordpress extends ContentRepository
 
                     $relationArray = new RelationArray($name);
                     foreach ($value as $row) {
-
                         // Detect content type of relation item
                         $relationContentType = $field->getOption('content_type');
                         if (is_array($relationContentType)) {

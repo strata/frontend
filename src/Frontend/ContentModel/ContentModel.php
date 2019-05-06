@@ -130,7 +130,7 @@ class ContentModel extends \ArrayIterator
      * @param string $sourceContentType
      * @return ContentType|null
      */
-    public function getBySourceContentType (string $sourceContentType): ?ContentType
+    public function getBySourceContentType(string $sourceContentType): ?ContentType
     {
         foreach ($this as $contentType) {
             if ($contentType->getSourceContentType() === $sourceContentType) {
