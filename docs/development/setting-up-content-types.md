@@ -30,22 +30,24 @@ You start with one YAML file with two root elements:
 
 #### content_types
 
-An array of content types, with two properties per content type:
+An array of content types, with three properties per content type:
 
 * `content type name` - it is recommended to use plurals for content types (e.g. news, case_studies)
     * `api_endpoint` - The API endpoint URL when accessing data
     * `content_fields` - The YAML file to load for custom fields for this content type 
-
+    * `source_content_type` - The content type in the data source (e.g. in WordPress CMS this is the post_type)  
 E.g. 
 
 ```yaml
 content_types:
   news:
-    api_endpoint: posts
+    api_endpoint: wp-json/v2/posts
     content_fields: news.yaml
+    source_content_type: posts
   projects:
-    api_endpoint: projects
+    api_endpoint: wp-json/v2/projects
     content_fields: projects.yaml
+    source_content_type: projects
 ```
 
 #### global
@@ -132,13 +134,26 @@ hero_image:
 #### Relation options
 
 Accepts the option `content_type` which is the type of content this field points to. This must match up with 
-the content type name used in `content-model.yaml`. E.g.
+the content type name used in `content-model.yaml`. This can be defined as one content type:
 
 ```yaml
 team_member:
   type: relation
   content_type: person
 ```
+
+Or multiple content types:
+
+```yaml
+related_posts:
+  type: relation
+  content_type: 
+    - news
+    - person
+```
+
+When defining multiple content types for a relation you must also define the `source_content_type` which will match the 
+`post_type` (in WordPress) with the content type in the returned data.
 
 #### Relation Array options
 

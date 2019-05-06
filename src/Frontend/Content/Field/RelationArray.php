@@ -9,7 +9,7 @@ use Studio24\Frontend\Exception\ContentFieldException;
 /**
  * Relation field
  *
- * Contains a collection of components, which contain content fields
+ * Contains a collection of relation items
  *
  * @package Studio24\Frontend\Content\Field
  */
@@ -21,13 +21,6 @@ class RelationArray extends ContentField implements \SeekableIterator, \Countabl
     protected $position = 0;
 
     /**
-     * Content type of relation
-     *
-     * @var string
-     */
-    protected $contentType;
-
-    /**
      * Create flexible content field
      *
      * @param string $name
@@ -35,33 +28,11 @@ class RelationArray extends ContentField implements \SeekableIterator, \Countabl
      *
      * @throws ContentFieldException
      */
-    public function __construct(string $name, string $contentType)
+    public function __construct(string $name)
     {
         $this->setName($name);
-        $this->setContentType($contentType);
     }
 
-    /**
-     * Set content type for child relations
-     *
-     * @param string $contentType
-     * @return RelationArray Fluent interface
-     */
-    public function setContentType($contentType): RelationArray
-    {
-        $this->contentType = $contentType;
-        return $this;
-    }
-
-    /**
-     * Return content type for child relations
-     *
-     * @return string
-     */
-    public function getContentType(): string
-    {
-        return $this->contentType;
-    }
 
     /**
      * Add relation item

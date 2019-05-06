@@ -552,8 +552,10 @@ EOD;
         $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
         $api->setContentModel($contentModel);
         $api->setContentType('page2');
+
         // Test it!
         $page = $api->getPage(9);
+
         $careers = $page->getContent()->get('page_content')->get('careers');
         $this->assertEquals(1, count($careers));
         $x = 0;
@@ -566,15 +568,37 @@ EOD;
                     foreach ($careerItems as $item) {
                         switch ($y) {
                             case 0:
-                                // @todo This is currently null since relation not populated from an array
                                 $this->assertEquals("ACME Manager", $item->getContent()->getTitle());
+                                $this->assertEquals('career', $item->getContentType());
                                 break;
+                            case 1:
+                                $this->assertEquals("Project Manager", $item->getContent()->getTitle());
                         }
                         $y++;
                     }
+
+                    $relatedPosts = $career->getContent()->get('related_posts');
+                    $this->assertEquals(2, count($relatedPosts));
+                    $y = 0;
+                    foreach ($relatedPosts as $item) {
+                        switch ($y) {
+                            case 0:
+                                $this->assertEquals("ACME Manager", $item->getContent()->getTitle());
+                                $this->assertEquals('career', $item->getContentType());
+                                $this->assertEquals("Permanent", $item->getContent()->getContent()->get('contract_length'));
+                                break;
+                            case 1:
+                                $this->assertEquals("ABC123 Project", $item->getContent()->getTitle());
+                                $this->assertEquals('project', $item->getContentType());
+                                $this->assertEquals("ABC123", $item->getContent()->getContent()->get('project_id'));
+                        }
+                        $y++;
+                    }
+
                     break;
             }
             $x++;
         }
+
     }
 }

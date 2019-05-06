@@ -64,6 +64,9 @@ class ContentModel extends \ArrayIterator
             if (isset($values['taxonomies'])) {
                 $contentType->setTaxonomies($values['taxonomies']);
             }
+            if (isset($values['source_content_type'])) {
+                $contentType->setSourceContentType($values['source_content_type']);
+            }
             if (isset($values['content_fields'])) {
                 $contentType->parseConfig($configDir . '/' . $values['content_fields']);
             }
@@ -114,6 +117,25 @@ class ContentModel extends \ArrayIterator
     {
         if ($this->hasContentType($contentType)) {
             return $this->offsetGet($contentType);
+        }
+        return null;
+    }
+
+    /**
+     * Return a content type matched by the source content type
+     *
+     * E.g. For a content model that has News articles which are stored in WordPress as "posts",
+     * ContentType::getBySourceContentType('posts') will return the News content type
+     *
+     * @param string $sourceContentType
+     * @return ContentType|null
+     */
+    public function getBySourceContentType (string $sourceContentType): ?ContentType
+    {
+        foreach ($this as $contentType) {
+            if ($contentType->getSourceContentType() === $sourceContentType) {
+                return $contentType;
+            }
         }
         return null;
     }

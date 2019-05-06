@@ -68,6 +68,15 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
 
     protected $taxonomies;
 
+    /**
+     * Content type from source CMS
+     *
+     * @todo Consider creating source_ options for other content model options
+     *
+     * @var string
+     */
+    protected $sourceContentType;
+
     public function __construct(string $name)
     {
         parent::__construct();
@@ -86,6 +95,24 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     public static function registerContentType(string $name)
     {
         self::$validContentFields[] = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourceContentType(): ?string
+    {
+        return $this->sourceContentType;
+    }
+
+    /**
+     * @param string $sourceContentType
+     * @return ContentType Fluent interface
+     */
+    public function setSourceContentType(string $sourceContentType): ContentType
+    {
+        $this->sourceContentType = $sourceContentType;
+        return $this;
     }
 
     /**

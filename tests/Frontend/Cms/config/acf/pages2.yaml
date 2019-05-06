@@ -18,6 +18,11 @@ page_content:
       career:
         type: relation_array
         content_type: career
+      related_posts:
+        type: relation_array
+        content_type:
+          - career
+          - project
 
 
 

@@ -839,10 +839,21 @@ class Wordpress extends ContentRepository
                     // Swap to relation content type
                     $currentContentType = $this->getContentType()->getName();
 
-                    $relationArray = new RelationArray($name, $field->getOption('content_type'));
+                    $relationArray = new RelationArray($name);
                     foreach ($value as $row) {
-                        $item = new Relation($name);
-                        $this->setContentType($field->getOption('content_type'));
+
+                        // Detect content type of relation item
+                        $relationContentType = $field->getOption('content_type');
+                        if (is_array($relationContentType)) {
+                            $contentType = $this->getContentModel()->getBySourceContentType($row['post_type']);
+                            if (!($contentType instanceof ContentType)) {
+                                return null;
+                            }
+                            $relationContentType = $contentType->getName();
+                        }
+
+                        $item = new Relation($name, $relationContentType);
+                        $this->setContentType($relationContentType);
                         $this->setContentFields($item->getContent(), $row);
                         $relationArray->addItem($item);
                     }
@@ -879,8 +890,9 @@ class Wordpress extends ContentRepository
                             if (!isset($componentValue[$componentFieldItem->getName()])) {
                                 continue;
                             }
-                                $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
-                                $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+                            $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
+                            $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+
                             if ($componentFieldItemObject !== null) {
                                 $component->addContent($componentFieldItemObject);
                             }
