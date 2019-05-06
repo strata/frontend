@@ -2,6 +2,12 @@ content_types:
   page:
     api_endpoint: wp/v2/pages
     content_fields: page.yaml
+  project:
+    api_endpoint: wp/v2/projects
+    content_fields: project.yaml
+  post:
+    api_endpoint: wp/v2/posts
+    content_fields: post.yaml
 
 global:
   site_name: 'Name of site'

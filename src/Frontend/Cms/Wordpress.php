@@ -8,6 +8,9 @@ use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\Decimal;
+use Studio24\Frontend\Content\Field\PlainArray;
+use Studio24\Frontend\Content\Field\TaxonomyTerms;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
@@ -186,7 +189,9 @@ class Wordpress extends ContentRepository
         $page = $this->createPage($data);
 
         if (!empty($data['author'])) {
+            $this->api->ignoreErrorCode(404);
             $author = $this->api->getAuthor($data['author']);
+            $this->api->restoreDefaultIgnoredErrorCodes();
             $page->setAuthor($this->createUser($author));
         }
 
@@ -256,7 +261,9 @@ class Wordpress extends ContentRepository
         $page = $this->createPage($data);
 
         if (!empty($data['author'])) {
+            $this->api->ignoreErrorCode(404);
             $author = $this->api->getAuthor($data['author']);
+            $this->api->restoreDefaultIgnoredErrorCodes();
             $page->setAuthor($this->createUser($author));
         }
 
@@ -335,7 +342,7 @@ class Wordpress extends ContentRepository
             $title .= ' | '.$this->getContentModel()->getGlobal('site_name');
         }
 
-        $description = $page->getExcerpt();
+        $description = strip_tags($page->getExcerpt());
         $postImage = null;
 
         if (!empty($page->getFeaturedImage())) {
@@ -352,7 +359,7 @@ class Wordpress extends ContentRepository
 
             if (isset($data['yoast']['metadesc'])) {
                 if (!empty($data['yoast']['metadesc'])) {
-                    $description = $data['yoast']['metadesc'];
+                    $description = strip_tags($data['yoast']['metadesc']);
                 }
             }
         }
@@ -483,7 +490,9 @@ class Wordpress extends ContentRepository
         }
 
         //image ID passed on
+        $this->api->ignoreErrorCode(404);
         $field_data = $this->getMediaDataById($mediaID);
+        $this->api->restoreDefaultIgnoredErrorCodes();
         if (empty($field_data)) {
             return $page;
         }
@@ -580,6 +589,12 @@ class Wordpress extends ContentRepository
                     return new Number($name, $value);
                     break;
 
+                case 'decimal':
+                    $precision = $field->getOption('precision', $this->getContentModel());
+                    $round = $field->getOption('round', $this->getContentModel());
+                    return new Decimal($name, $value, $precision, $round);
+                    break;
+
                 case 'date':
                     return new Date($name, $value);
                     break;
@@ -592,6 +607,11 @@ class Wordpress extends ContentRepository
                     return new Boolean($name, $value);
                     break;
 
+                case 'plainarray':
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    return new PlainArray($name, $value);
 
                 case 'image':
                     $sizesData = array();
@@ -871,6 +891,43 @@ class Wordpress extends ContentRepository
 
                     return $flexible;
                     break;
+
+                case 'taxonomyterms':
+                    //@todo cater for situation in which term ID is returned as opposed to term object
+                    //can receive single term or array of terms
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    if (empty($value)) {
+                        return null;
+                    }
+
+                    $terms = new TermCollection();
+                    if (isset($value['term_id'])) {
+                        //we've got a single term, not an array of terms
+                        $termsData = array($value);
+                    } else {
+                        $termsData = $value;
+                    }
+
+                    foreach ($termsData as $singleTermData) {
+                        $link = $singleTermData['taxonomy'].'/'.$singleTermData['slug'];
+                        $currentTerm = new Term(
+                            $singleTermData['term_id'],
+                            $singleTermData['name'],
+                            $singleTermData['slug'],
+                            $link,
+                            $singleTermData['count'],
+                            $singleTermData['description']
+                        );
+                        $terms->addItem($currentTerm);
+                    }
+
+                    $taxonomyTermField = new TaxonomyTerms($name);
+                    $taxonomyTermField->setContent($terms);
+
+                    return $taxonomyTermField;
+                    break;
             }
         } catch (\Error $e) {
             $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
@@ -902,6 +959,9 @@ class Wordpress extends ContentRepository
 
             foreach ($data[$taxonomyName] as $termID) {
                 $term = $this->createTerm($taxonomyName, $termID);
+                if ($term == null) {
+                    continue;
+                }
                 $taxonomies[$taxonomyName]->addItem($term);
             }
         }
@@ -915,8 +975,11 @@ class Wordpress extends ContentRepository
      * @param array $data
      * @return User
      */
-    public function createUser(array $data): User
+    public function createUser(array $data): ?User
     {
+        if (empty($data)) {
+            return null;
+        }
         $user = new User();
         $user->setId($data['id'])
             ->setName($data['name']);
@@ -1069,12 +1132,77 @@ class Wordpress extends ContentRepository
             }
         }
 
+        $this->api->ignoreErrorCode(404);
         $termData = $this->api->getTerm($taxonomy, $id);
+        $this->api->restoreDefaultIgnoredErrorCodes();
 
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $termData, $this->getCacheLifetime());
         }
 
         return $termData;
+    }
+
+    /**
+     * @param string $taxonomy
+     * @return null|TermCollection
+     */
+    public function getAllTerms(string $taxonomy): ?TermCollection
+    {
+        //@todo do we need to restrict to a list of allowed taxonomies (defined in config file?)
+        $taxonomyTermsData = $this->getAllTermsData($taxonomy);
+
+        if (empty($taxonomyTermsData)) {
+            return null;
+        }
+
+        $taxonomyTerms = new TermCollection();
+        foreach ($taxonomyTermsData as $singleTermData) {
+            $currentTerm = new Term(
+                $singleTermData['id'],
+                $singleTermData['name'],
+                $singleTermData['slug'],
+                $singleTermData['link'],
+                $singleTermData['count'],
+                $singleTermData['description']
+            );
+            $taxonomyTerms->addItem($currentTerm);
+        }
+
+        return $taxonomyTerms;
+    }
+
+    /**
+     * @param string $taxonomy
+     * @return array|null
+     * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getAllTermsData(string $taxonomy): ?array
+    {
+        $cacheKey = $this->buildCacheKey('allterms', $taxonomy);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+
+            if (!empty($data)) {
+                return $data;
+            }
+        }
+
+        //ignore 404s, usually a list of terms is used to displayed filters or menus on the side,
+        //it's not the core of the page
+        $this->api->ignoreErrorCode(404);
+        $allTermsData = $this->api->getTaxonomyTerms($taxonomy);
+        $this->api->restoreDefaultIgnoredErrorCodes();
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $allTermsData, $this->getCacheLifetime());
+        }
+
+        return $allTermsData;
     }
 }

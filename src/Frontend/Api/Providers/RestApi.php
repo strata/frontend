@@ -76,6 +76,7 @@ class RestApi extends RestApiAbstract
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Studio24\Frontend\Exception\NotFoundException
      */
     public function getOne($apiEndpoint, $id) : array
     {

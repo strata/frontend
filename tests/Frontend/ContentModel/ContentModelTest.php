@@ -129,6 +129,15 @@ class ContentModelTest extends TestCase
                                 $this->assertTrue(in_array('medium', $contentField->getOption('thumbnails')));
                                 $this->assertFalse(in_array('twentyseventeen-featured-image', $contentField->getOption('thumbnails')));
                                 break;
+                            case 3:
+                                $this->assertEquals('price', $contentField->getName());
+                                $this->assertEquals('decimal', $contentField->getType());
+                                break;
+                            case 4:
+                                $this->assertEquals('length', $contentField->getName());
+                                $this->assertEquals('decimal', $contentField->getType());
+                                $this->assertEquals(4, $contentField->getOption('precision'));
+                                break;
                         }
 
                         $y++;

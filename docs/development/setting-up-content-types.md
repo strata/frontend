@@ -92,11 +92,30 @@ as options.
 * `date` - date 
 * `datetime` - date and time
 * `boolean` - true or false
+* `number` - integer number
+* `decimal` - decimal number
+* `plainarray` - array with simple values (strings, numbers, boolean values), keys can be integers or strings
 * `image` - image, supports multiple image sizes and content such as alt text and captions
 * `relation` - a relation to another content type
 * `relation_array` - an array of relations
 * `array` - an array (list) of multiple records of one type
 * `flexible` - flexible content
+
+#### Decimal options
+
+* `precision` - the number of decimal places to round to (default = 2)
+* `round` - rounding mode used if the passed number needs to be rounding to the required decimal places (default = up). See https://www.php.net/round
+    * `up` - rounds up when number is halfway there (e.g. making 1.555 into 1.56)
+    * `down` - rounds down when number is halfway there (e.g. making 1.555 into 1.55)
+    * `even` - rounds towards the nearest even value (e.g. making 1.551 into 1.56)
+    * `odd` - rounds towards the nearest odd value (e.g. making 1.561 into 1.55)
+
+```yaml
+length:
+  type: decimal
+  precision: 4
+  round: down
+```
 
 #### Image options
 
