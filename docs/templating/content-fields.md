@@ -447,7 +447,41 @@ Return video URL:
 {{ page.content.field }}
 ```
 
-### Flexible Content
+## Array
+
+You can loop over array content and output this:
+
+TODO
+
+## Relation
+
+At present the syntax is rather confusing, we do plan to clean this up. To output a relation which is on field `page.content.author`:
+
+```
+// Output title
+{{ page.content.author.content.title }}
+
+// Output ACF custom field
+{{ page.content.author.content.content.short_biography }}
+```
+
+## Relation array
+
+Relation arrays support multiple relations. 
+
+```
+{% for author in page.content.authors %}
+
+    // Output title
+    {{ author.content.title }}
+    
+    // Output ACF custom field
+    {{ author.content.content.short_biography }}
+
+{% endfor %}
+```
+
+## Flexible Content
 
 **Flexible content** is a way of supporting flexible mix of content types that may apply to a piece of content. They are built 
 up of **Components** which themselves are a set of different **Content fields**. 

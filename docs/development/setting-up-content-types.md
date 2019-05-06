@@ -97,6 +97,8 @@ as options.
 * `plainarray` - array with simple values (strings, numbers, boolean values), keys can be integers or strings
 * `image` - image, supports multiple image sizes and content such as alt text and captions
 * `relation` - a relation to another content type
+* `relation_array` - an array of relations
+* `array` - an array (list) of multiple records of one type
 * `flexible` - flexible content
 
 #### Decimal options
@@ -135,10 +137,32 @@ the content type name used in `content-model.yaml`. E.g.
 ```yaml
 team_member:
   type: relation
-  content_type: people
+  content_type: person
 ```
 
-#### Flexible content 
+#### Relation Array options
+
+Accepts the option `content_type` which is the type of content this field points to. This must match up with 
+the content type name used in `content-model.yaml`. E.g.
+
+```yaml
+team:
+  type: relation_array
+  content_type: person
+```
+
+#### Array options
+
+Accepts the option `content_fields` which contains multiple child content fields.
+
+```yaml
+careers:
+  type: array
+  content_fields:
+    #content_fields
+```          
+ 
+#### Flexible content options
 
 Accepts the option `components` which contains multiple child components. 
 

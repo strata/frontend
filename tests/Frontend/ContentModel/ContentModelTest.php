@@ -77,6 +77,24 @@ class ContentModelTest extends TestCase
                                                         $this->assertEquals('author', $componentContentFields->getName());
                                                         $this->assertEquals('relation', $componentContentFields->getType());
                                                         $this->assertEquals('user', $componentContentFields->getOption('content_type'));
+                                                        $this->assertEquals(false, $componentContentFields->getOption('array'));
+                                                        break;
+                                                }
+                                                $a++;
+                                            }
+
+                                            break;
+
+                                        case 3:
+                                            $this->assertEquals('careers', $component->getName());
+
+                                            $a = 1;
+                                            foreach ($component as $componentContentFields) {
+                                                switch ($a) {
+                                                    case 1:
+                                                        $this->assertEquals('careers_list', $componentContentFields->getName());
+                                                        $this->assertEquals('relation_array', $componentContentFields->getType());
+                                                        $this->assertEquals('career', $componentContentFields->getOption('content_type'));
                                                         break;
                                                 }
                                                 $a++;

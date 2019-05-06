@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Studio24\Frontend\Api;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Studio24\Frontend\Exception\NotFoundException;
@@ -320,13 +319,13 @@ abstract class RestApiAbstract
      * @return array Array of response data
      * @throws FailedRequestException
      */
-    public function parseJsonResponse(ResponseInterface $response) : array
+    public function parseJsonResponse(ResponseInterface $response): array
     {
         $data = json_decode($response->getBody()->__toString(), true);
-        if ($data !== false) {
+        if (json_last_error() === JSON_ERROR_NONE) {
             return $data;
         }
 
-        throw new FailedRequestException('Cannot parse JSON response body');
+        throw new FailedRequestException('Error parsing JSON response body: ' . json_last_error_msg());
     }
 }

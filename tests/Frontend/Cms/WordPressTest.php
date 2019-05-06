@@ -364,11 +364,15 @@ EOD;
         $flexibleContent = $page->getContent()->get('page_content');
 
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent', $flexibleContent);
+        $this->assertEquals(3, count($flexibleContent));
+        $this->assertEquals(1, count($flexibleContent->get('statement_block')));
+        $this->assertEquals(2, count($flexibleContent->get('content')));
 
-        foreach ($flexibleContent->getValue() as $key => $flexibleComponent) {
+        $x = 0;
+        foreach ($flexibleContent as $flexibleComponent) {
             $this->assertInstanceOf('Studio24\Frontend\Content\Field\Component', $flexibleComponent);
 
-            switch ($key) {
+            switch ($x) {
                 case 0:
                     $this->assertEquals('content', $flexibleComponent->getName());
                     foreach ($flexibleComponent->getContent() as $fieldName => $fieldValue) {
@@ -415,6 +419,8 @@ EOD;
                 case 2:
                     break;
             }
+
+            $x++;
         }
     }
 
@@ -501,33 +507,74 @@ EOD;
                 '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
             ),
         ]);
-
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
-
         $api = new Wordpress('http://demo.wp-api.org/wp-json/wp/v2/');
         $api->setClient($client);
-
         $contentModel = new ContentModel(__DIR__ . '/config/demo/content_model_with_taxonomy.yaml');
         $api->setContentModel($contentModel);
         $api->setContentType('news');
-
         try {
             $page = $api->getPageByUrl('/20171234/05/23/hello-world/');
         } catch (NotFoundHttpException $e) {
             throw new NotFoundHttpException('Resource not found', $e);
         }
-
         //test execution didn't stop due to 404 thrown by missing author, image, or taxonomy term
         $this->assertTrue(true);
-
         try {
             $page = $api->getPage(1234);
         } catch (NotFoundHttpException $e) {
             throw new NotFoundHttpException('Resource not found', $e);
         }
-
         //test execution didn't stop due to 404 thrown by missing author, image, or taxonomy term
         $this->assertTrue(true);
+    }
+
+    public function testRelationArray()
+    {
+        // Create a mock and queue response
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/page.9.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+        $api = new Wordpress('something');
+        $api->setClient($client);
+        $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
+        $api->setContentModel($contentModel);
+        $api->setContentType('page2');
+        // Test it!
+        $page = $api->getPage(9);
+        $careers = $page->getContent()->get('page_content')->get('careers');
+        $this->assertEquals(1, count($careers));
+        $x = 0;
+        foreach ($careers as $career) {
+            switch ($x) {
+                case 0:
+                    $careerItems = $career->getContent()->get('career');
+                    $this->assertEquals(3, count($careerItems));
+                    $y = 0;
+                    foreach ($careerItems as $item) {
+                        switch ($y) {
+                            case 0:
+                                // @todo This is currently null since relation not populated from an array
+                                $this->assertEquals("ACME Manager", $item->getContent()->getTitle());
+                                break;
+                        }
+                        $y++;
+                    }
+                    break;
+            }
+            $x++;
+        }
     }
 }

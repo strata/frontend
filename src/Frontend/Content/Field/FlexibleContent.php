@@ -10,7 +10,7 @@ namespace Studio24\Frontend\Content\Field;
  *
  * @package Studio24\Frontend\Content\Field
  */
-class FlexibleContent extends ContentField
+class FlexibleContent extends ContentField implements \SeekableIterator, \Countable
 {
     const TYPE = 'flexible';
 
@@ -44,6 +44,63 @@ class FlexibleContent extends ContentField
     {
         $this->components->addItem($item);
         return $this;
+    }
+
+    /**
+     * @return Component
+     */
+    public function current() : Component
+    {
+        return $this->components->current();
+    }
+
+    public function next()
+    {
+        $this->components->next();
+    }
+
+    public function key()
+    {
+        return $this->components->key();
+    }
+
+    public function valid()
+    {
+        return $this->components->valid();
+    }
+
+    public function rewind()
+    {
+        $this->components->rewind();
+    }
+
+    public function count() : int
+    {
+        return $this->components->count();
+    }
+
+    public function seek($position)
+    {
+        $this->components->seek($position);
+    }
+
+    /**
+     * Return subset of flexible content that matches the component name
+     *
+     * @param string $name Component name to return
+     * @return ComponentCollection
+     */
+    public function get(string $name): ComponentCollection
+    {
+        $components = new ComponentCollection();
+
+        foreach ($this->components as $item) {
+            if ($item->getName() === $name) {
+                $components->addItem($item);
+            }
+        }
+
+        return $components;
     }
 
     /**

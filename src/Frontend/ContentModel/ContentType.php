@@ -16,6 +16,7 @@ use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\PlainText;
 use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\Relation;
+use Studio24\Frontend\Content\Field\RelationArray;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
 use Studio24\Frontend\Content\Field\TaxonomyTerms;
@@ -54,6 +55,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         PlainArray::TYPE,
         PlainText::TYPE,
         Relation::TYPE,
+        RelationArray::TYPE,
         RichText::TYPE,
         ShortText::TYPE,
         TaxonomyTerms::TYPE,
@@ -151,6 +153,11 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
                 break;
 
             default:
+                // Validation
+                if ($data['type'] === RelationArray::TYPE && !isset($data['content_type'])) {
+                    throw new ConfigParsingException("You must set a 'content_type' array for a relation array content field");
+                }
+
                 $contentField = new Field($name, $data['type']);
 
                 unset($data['type']);
