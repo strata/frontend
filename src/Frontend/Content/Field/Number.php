@@ -13,7 +13,7 @@ class Number extends ContentField
     const TYPE = 'number';
 
     protected $number;
-    
+
     /**
      * Create text content field
      *
@@ -36,7 +36,7 @@ class Number extends ContentField
      * @param mixed $number
      * @return Number
      */
-    public function setNumber($number) : ?Number
+    public function setNumber($number): Number
     {
         if (is_numeric($number)) {
             $this->number = (int) $number;
@@ -60,8 +60,8 @@ class Number extends ContentField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
-        return (string) $this->number;
+        return (string) $this->getValue();
     }
 }

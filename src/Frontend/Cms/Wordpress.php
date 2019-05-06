@@ -8,6 +8,7 @@ use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\Decimal;
 use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\TaxonomyTerms;
 use Studio24\Frontend\Content\Field\Video;
@@ -585,6 +586,12 @@ class Wordpress extends ContentRepository
 
                 case 'number':
                     return new Number($name, $value);
+                    break;
+
+                case 'decimal':
+                    $precision = $field->getOption('precision', $this->getContentModel());
+                    $round = $field->getOption('round', $this->getContentModel());
+                    return new Decimal($name, $value, $precision, $round);
                     break;
 
                 case 'date':
