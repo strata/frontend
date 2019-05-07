@@ -157,6 +157,22 @@ class WordpressFieldFinder
     }
 
     /**
+     * Attempt to find the author field from an array of data
+     *
+     * @param array $data
+     * @param array $searchFields
+     * @return null|string
+     */
+    public static function author(array $data, array $searchFields = null): ?int
+    {
+        if (empty($searchFields)) {
+            $searchFields = ['author', 'post_author'];
+        }
+
+        return self::findFirstFieldFromSearch($searchFields, $data, 'integer');
+    }
+
+    /**
      * Attempt to find the featured image field from an array of data
      *
      * @param array $data

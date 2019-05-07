@@ -32,6 +32,11 @@ class WordPressTest extends TestCase
             ),
             new Response(
                 200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+            new Response(
+                200,
                 ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
                 file_get_contents(__DIR__ . '/../responses/demo/posts_2.json')
             ),
