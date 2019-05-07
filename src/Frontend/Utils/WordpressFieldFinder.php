@@ -232,6 +232,9 @@ class WordpressFieldFinder
                         Assert::string($potentialValue);
                         break;
                     case 'integer':
+                        if(is_string($potentialValue) && is_numeric($potentialValue)) {
+                            (int) $potentialValue;
+                        }
                         Assert::integer($potentialValue);
                         break;
                     default:
