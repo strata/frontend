@@ -188,13 +188,6 @@ class Wordpress extends ContentRepository
         $data = $this->api->getPost($this->getContentApiEndpoint(), $id);
         $page = $this->createPage($data);
 
-        if (!empty($data['author'])) {
-            $this->api->ignoreErrorCode(404);
-            $author = $this->api->getAuthor($data['author']);
-            $this->api->restoreDefaultIgnoredErrorCodes();
-            $page->setAuthor($this->createUser($author));
-        }
-
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
         }
@@ -259,13 +252,6 @@ class Wordpress extends ContentRepository
         }
 
         $page = $this->createPage($data);
-
-        if (!empty($data['author'])) {
-            $this->api->ignoreErrorCode(404);
-            $author = $this->api->getAuthor($data['author']);
-            $this->api->restoreDefaultIgnoredErrorCodes();
-            $page->setAuthor($this->createUser($author));
-        }
 
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
@@ -452,6 +438,7 @@ class Wordpress extends ContentRepository
             $page->setExcerpt(FieldFinder::excerpt($data));
         }
 
+
         if (!empty(FieldFinder::featuredImage($data))) {
             $this->setFeaturedImage($page, FieldFinder::featuredImage($data));
         }
@@ -472,6 +459,34 @@ class Wordpress extends ContentRepository
         if (!empty($validTaxonomies)) {
             $this->setPageTaxonomies($validTaxonomies, $page, $data);
         }
+
+        if (!empty(FieldFinder::author($data))) {
+            $this->setAuthor($page, FieldFinder::author($data));
+        }
+    }
+
+    /**
+     * @param ContentInterface $page
+     * @param $authorID
+     * @return ContentInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function setAuthor(ContentInterface $page, $authorID) {
+        if (empty($authorID) || !is_numeric($authorID) || is_float($authorID)) {
+            return $page;
+        }
+
+        $this->api->ignoreErrorCode(404);
+        $author = $this->api->getAuthor($authorID);
+        $this->api->restoreDefaultIgnoredErrorCodes();
+        if(empty($author)) {
+            return $page;
+        }
+        $page->setAuthor($this->createUser($author));
+
+        return $page;
     }
 
     /**
