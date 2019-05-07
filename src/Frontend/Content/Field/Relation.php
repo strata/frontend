@@ -37,7 +37,7 @@ class Relation extends ContentField
     public function __construct(string $name, $contentType = null)
     {
         $this->setName($name);
-        $this->content = new BaseContent();
+        $this->content = new Page();
         if ($contentType !== null) {
             $this->setContentType($contentType);
         }
