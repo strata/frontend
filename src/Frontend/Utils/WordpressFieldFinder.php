@@ -153,7 +153,7 @@ class WordpressFieldFinder
             $searchFields = ['content' => ['rendered'], 'post_content'];
         }
 
-        return self::findFirstFieldFromSearch($searchFields, $data, 'integer');
+        return self::findFirstFieldFromSearch($searchFields, $data, 'string');
     }
 
     /**
