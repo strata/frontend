@@ -133,7 +133,7 @@ class WordpressFieldFinder
     public static function excerpt(array $data, array $searchFields = null): ?string
     {
         if (empty($searchFields)) {
-            $searchFields = ['excerpt' => ['rendered']];
+            $searchFields = ['excerpt' => ['rendered'], 'post_excerpt'];
         }
 
         return self::findFirstFieldFromSearch($searchFields, $data);
@@ -150,7 +150,7 @@ class WordpressFieldFinder
     public static function content(array $data, array $searchFields = null): ?string
     {
         if (empty($searchFields)) {
-            $searchFields = ['content' => ['rendered']];
+            $searchFields = ['content' => ['rendered'], 'post_content'];
         }
 
         return self::findFirstFieldFromSearch($searchFields, $data, 'integer');
