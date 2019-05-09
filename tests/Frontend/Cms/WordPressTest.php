@@ -549,6 +549,31 @@ EOD;
                 ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
                 file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
             ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
         ]);
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
