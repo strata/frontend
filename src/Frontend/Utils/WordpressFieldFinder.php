@@ -232,7 +232,7 @@ class WordpressFieldFinder
                         Assert::string($potentialValue);
                         break;
                     case 'integer':
-                        if(is_string($potentialValue) && is_numeric($potentialValue)) {
+                        if (is_string($potentialValue) && is_numeric($potentialValue)) {
                             $potentialValue = (int) $potentialValue;
                         }
                         Assert::integer($potentialValue);

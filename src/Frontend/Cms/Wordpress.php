@@ -473,7 +473,8 @@ class Wordpress extends ContentRepository
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function setAuthor(ContentInterface $page, $authorID) {
+    public function setAuthor(ContentInterface $page, $authorID)
+    {
         if (empty($authorID) || !is_numeric($authorID) || is_float($authorID)) {
             return $page;
         }
@@ -481,7 +482,7 @@ class Wordpress extends ContentRepository
         $this->api->ignoreErrorCode(404);
         $author = $this->api->getAuthor($authorID);
         $this->api->restoreDefaultIgnoredErrorCodes();
-        if(empty($author)) {
+        if (empty($author)) {
             return $page;
         }
         $page->setAuthor($this->createUser($author));
@@ -837,7 +838,18 @@ class Wordpress extends ContentRepository
                     $currentContentType = $this->getContentType()->getName();
 
                     $relation = new Relation($name);
-                    $this->setContentType($field->getOption('content_type'));
+
+                    $relationContentType = $field->getOption('content_type');
+                    if (is_array($relationContentType)) {
+                        $contentType = $this->getContentModel()->getBySourceContentType($value['post_type']);
+                        if (!($contentType instanceof ContentType)) {
+                            return null;
+                        }
+                        $relationContentType = $contentType->getName();
+                    }
+
+                    $this->setContentType($relationContentType);
+                    $relation->setContentType($relationContentType);
                     $this->setContentFields($relation->getContent(), $value);
 
                     // Swap back to original content type

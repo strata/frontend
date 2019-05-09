@@ -1,0 +1,338 @@
+{
+  "id": 10,
+  "date": "2017-07-12T15:57:01",
+  "date_gmt": "2017-07-12T14:57:01",
+  "guid": {
+    "rendered": "http://localhost/?page_id=9"
+  },
+  "modified": "2019-04-04T10:48:52",
+  "modified_gmt": "2019-04-04T09:48:52",
+  "slug": "careers",
+  "status": "publish",
+  "type": "page2",
+  "link": "http://localhost/careers/",
+  "title": {
+    "rendered": "Careers"
+  },
+  "content": {
+    "rendered": "",
+    "protected": false
+  },
+  "excerpt": {
+    "rendered": "",
+    "protected": false
+  },
+  "author": 1,
+  "featured_media": 0,
+  "parent": 0,
+  "menu_order": 0,
+  "comment_status": "closed",
+  "ping_status": "closed",
+  "template": "",
+  "meta": [],
+  "yst_prominent_words": [],
+  "acf": {
+    "theme": "theme--green",
+    "banner_text": "<p>Do you have what it takes to work at the forefront of project description</p>\n",
+    "video_loop": false,
+    "post_type": "Job",
+    "description": "<p>Do dolor amet et project description aqui.</p>\n",
+    "image": {
+      "ID": 12934,
+      "id": 12934,
+      "title": "Careers. Credit: John Smith/ACME.",
+      "filename": "careers-23.jpg",
+      "url": "http://localhost/wp-content/uploads/2017/07/careers-23.jpg",
+      "alt": "Careers. Credit: John Smith/ACME.",
+      "author": "59",
+      "description": "Careers. Credit: John Smith/ACME.",
+      "caption": "Careers. Credit: John Smith/ACME.",
+      "name": "careers-23",
+      "date": "2017-11-28 15:16:49",
+      "modified": "2017-11-28 15:18:14",
+      "mime_type": "image/jpeg",
+      "type": "image",
+      "icon": "http://localhost/wp-includes/images/media/default.png",
+      "width": 2500,
+      "height": 1667,
+      "sizes": {
+        "thumbnail": "http://localhost/wp-content/uploads/2017/07/careers-23-400x400.jpg",
+        "thumbnail-width": 150,
+        "thumbnail-height": 150,
+        "medium": "http://localhost/wp-content/uploads/2017/07/careers-23-300x200.jpg",
+        "medium-width": 300,
+        "medium-height": 200,
+        "medium_large": "http://localhost/wp-content/uploads/2017/07/careers-23-768x512.jpg",
+        "medium_large-width": 525,
+        "medium_large-height": 350,
+        "large": "http://localhost/wp-content/uploads/2017/07/careers-23-1920x1280.jpg",
+        "large-width": 525,
+        "large-height": 350,
+        "twentyseventeen-featured-image": "http://localhost/wp-content/uploads/2017/07/careers-23-2000x1200.jpg",
+        "twentyseventeen-featured-image-width": 2000,
+        "twentyseventeen-featured-image-height": 1200,
+        "twentyseventeen-thumbnail-avatar": "http://localhost/wp-content/uploads/2017/07/careers-23-400x400.jpg",
+        "twentyseventeen-thumbnail-avatar-width": 400,
+        "twentyseventeen-thumbnail-avatar-height": 400,
+        "issue-post-image": "http://localhost/wp-content/uploads/2017/07/careers-23.jpg",
+        "issue-post-image-width": 1000,
+        "issue-post-image-height": 667
+      }
+    },
+    "related_post" : {
+      "ID": 24249,
+      "post_author": "195",
+      "post_date": "2019-04-04 10:46:06",
+      "post_date_gmt": "2019-04-04 09:46:06",
+      "post_content": "Do dolor amet et project description aqui",
+      "post_title": "ACME Manager",
+      "post_excerpt": "Do dolor amet et project description aqui.",
+      "post_status": "publish",
+      "comment_status": "closed",
+      "ping_status": "closed",
+      "post_password": "",
+      "post_name": "programme-manager",
+      "to_ping": "",
+      "pinged": "",
+      "post_modified": "2019-04-04 12:16:21",
+      "post_modified_gmt": "2019-04-04 11:16:21",
+      "post_content_filtered": "",
+      "post_parent": 0,
+      "guid": "http://localhost/?post_type=careers&#038;p=24249",
+      "menu_order": 0,
+      "post_type": "careers",
+      "post_mime_type": "",
+      "comment_count": "0",
+      "filter": "raw",
+      "acf": {
+        "salary": "£33,000 - £35,000 per annum",
+        "location": "Place",
+        "contract_length": "Permanent"
+      }
+    },
+    "banner_title": "",
+    "page_content": [
+      {
+        "acf_fc_layout": "content",
+        "title": "A career with a difference",
+        "content": "<p>Do dolor amet et project description aqui.</p>\n",
+        "full_width": true,
+        "trigger": false,
+        "number_of_elements": 1
+      },
+      {
+        "acf_fc_layout": "careers",
+        "title_override": "4 vacancies",
+        "career": [
+          {
+            "ID": 24249,
+            "post_author": "195",
+            "post_date": "2019-04-04 10:46:06",
+            "post_date_gmt": "2019-04-04 09:46:06",
+            "post_content": "Do dolor amet et project description aqui",
+            "post_title": "ACME Manager",
+            "post_excerpt": "Do dolor amet et project description aqui.",
+            "post_status": "publish",
+            "comment_status": "closed",
+            "ping_status": "closed",
+            "post_password": "",
+            "post_name": "programme-manager",
+            "to_ping": "",
+            "pinged": "",
+            "post_modified": "2019-04-04 12:16:21",
+            "post_modified_gmt": "2019-04-04 11:16:21",
+            "post_content_filtered": "",
+            "post_parent": 0,
+            "guid": "http://localhost/?post_type=careers&#038;p=24249",
+            "menu_order": 0,
+            "post_type": "careers",
+            "post_mime_type": "",
+            "comment_count": "0",
+            "filter": "raw",
+            "acf": {
+              "salary": "£33,000 - £35,000 per annum",
+              "location": "Place",
+              "contract_length": "Permanent"
+            }
+          },
+          {
+            "ID": 23768,
+            "post_author": "195",
+            "post_date": "2019-03-20 09:55:27",
+            "post_date_gmt": "2019-03-20 09:55:27",
+            "post_content": "Do dolor amet et project description aqui",
+            "post_title": "Project Manager",
+            "post_excerpt": "ACME is seeking an experienced project manager to ...",
+            "post_status": "publish",
+            "comment_status": "closed",
+            "ping_status": "closed",
+            "post_password": "",
+            "post_name": "project-manager",
+            "to_ping": "",
+            "pinged": "",
+            "post_modified": "2019-03-20 09:55:43",
+            "post_modified_gmt": "2019-03-20 09:55:43",
+            "post_content_filtered": "",
+            "post_parent": 0,
+            "guid": "http://localhost/?post_type=careers&#038;p=23768",
+            "menu_order": 0,
+            "post_type": "careers",
+            "post_mime_type": "",
+            "comment_count": "0",
+            "filter": "raw",
+            "acf": {
+              "salary": "Circa USD 35,000 per annum",
+              "location": "Location",
+              "contract_length": "One-year fixed-term contract"
+            }
+          },
+          {
+            "ID": 23280,
+            "post_author": "195",
+            "post_date": "2019-03-12 11:25:33",
+            "post_date_gmt": "2019-03-12 11:25:33",
+            "post_content": "Do dolor amet et project description aqui",
+            "post_title": "Technical Adviser",
+            "post_excerpt": "ACME is seeking an experienced technical adviser ...",
+            "post_status": "publish",
+            "comment_status": "closed",
+            "ping_status": "closed",
+            "post_password": "",
+            "post_name": "technical-adviser",
+            "to_ping": "",
+            "pinged": "",
+            "post_modified": "2019-03-13 11:47:10",
+            "post_modified_gmt": "2019-03-13 11:47:10",
+            "post_content_filtered": "",
+            "post_parent": 0,
+            "guid": "http://localhost/?post_type=careers&#038;p=23280",
+            "menu_order": 0,
+            "post_type": "careers",
+            "post_mime_type": "",
+            "comment_count": "0",
+            "filter": "raw",
+            "acf": {
+              "salary": "Circa USD 30,000 per annum",
+              "location": "City",
+              "contract_length": "One-year fixed-term contract"
+            }
+          }
+        ],
+        "related_post":
+          {
+            "ID": 24249,
+            "post_author": "195",
+            "post_date": "2019-04-04 10:46:06",
+            "post_date_gmt": "2019-04-04 09:46:06",
+            "post_content": "Do dolor amet et project description aqui",
+            "post_title": "ACME Manager",
+            "post_excerpt": "Do dolor amet et project description aqui.",
+            "post_status": "publish",
+            "comment_status": "closed",
+            "ping_status": "closed",
+            "post_password": "",
+            "post_name": "programme-manager",
+            "to_ping": "",
+            "pinged": "",
+            "post_modified": "2019-04-04 12:16:21",
+            "post_modified_gmt": "2019-04-04 11:16:21",
+            "post_content_filtered": "",
+            "post_parent": 0,
+            "guid": "http://localhost/?post_type=careers&#038;p=24249",
+            "menu_order": 0,
+            "post_type": "careers",
+            "post_mime_type": "",
+            "comment_count": "0",
+            "filter": "raw",
+            "acf": {
+              "salary": "£33,000 - £35,000 per annum",
+              "location": "Place",
+              "contract_length": "Permanent"
+            }
+          }
+      },
+      {
+        "acf_fc_layout": "content",
+        "title": "",
+        "content": "<p>Text here...</p>\n",
+        "full_width": false,
+        "trigger": false,
+        "number_of_elements": 1
+      }
+    ],
+    "image_credit": "",
+    "video_poster": false,
+    "exclude_from_search": false
+  },
+  "yoast": {
+    "focuskw": "careers",
+    "title": "",
+    "metadesc": "Looking for a career in a vibrant, fast-paced, intellectually stimulating organisation? Find out what ACME offers:",
+    "linkdex": "35",
+    "metakeywords": "",
+    "meta-robots-noindex": "",
+    "meta-robots-nofollow": "",
+    "meta-robots-adv": "",
+    "canonical": "",
+    "redirect": "",
+    "opengraph-title": "",
+    "opengraph-description": "",
+    "opengraph-image": "http://localhost/wp-content/uploads/2018/01/team-image.jpg",
+    "twitter-title": "",
+    "twitter-description": "",
+    "twitter-image": ""
+  },
+  "_links": {
+    "self": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/pages/929"
+      }
+    ],
+    "collection": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/pages"
+      }
+    ],
+    "about": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/types/page"
+      }
+    ],
+    "author": [
+      {
+        "embeddable": true,
+        "href": "http://localhost/wp-json/wp/v2/users/4"
+      }
+    ],
+    "replies": [
+      {
+        "embeddable": true,
+        "href": "http://localhost/wp-json/wp/v2/comments?post=929"
+      }
+    ],
+    "version-history": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/pages/929/revisions"
+      }
+    ],
+    "wp:attachment": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/media?parent=929"
+      }
+    ],
+    "wp:term": [
+      {
+        "taxonomy": "yst_prominent_words",
+        "embeddable": true,
+        "href": "http://localhost/wp-json/wp/v2/yst_prominent_words?post=929"
+      }
+    ],
+    "curies": [
+      {
+        "name": "wp",
+        "href": "https://api.w.org/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}

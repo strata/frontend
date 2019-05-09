@@ -1,0 +1,27 @@
+{
+  "id": 195,
+  "name": "Joe Bloggs",
+  "url": "",
+  "description": "",
+  "link": "http://localhost/author/joebloggs/",
+  "slug": "joebloggs",
+  "avatar_urls": {
+    "24": "http://0.gravatar.com/avatar/3af1798374cfce6f32de70dc6f2ab412?s=24&d=mm&r=g",
+    "48": "http://0.gravatar.com/avatar/3af1798374cfce6f32de70dc6f2ab412?s=48&d=mm&r=g",
+    "96": "http://0.gravatar.com/avatar/3af1798374cfce6f32de70dc6f2ab412?s=96&d=mm&r=g"
+  },
+  "meta": [],
+  "acf": false,
+  "_links": {
+    "self": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/users/4"
+      }
+    ],
+    "collection": [
+      {
+        "href": "http://localhost/wp-json/wp/v2/users"
+      }
+    ]
+  }
+}
