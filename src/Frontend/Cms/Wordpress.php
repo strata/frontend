@@ -837,7 +837,18 @@ class Wordpress extends ContentRepository
                     $currentContentType = $this->getContentType()->getName();
 
                     $relation = new Relation($name);
-                    $this->setContentType($field->getOption('content_type'));
+
+                    $relationContentType = $field->getOption('content_type');
+                    if (is_array($relationContentType)) {
+                        $contentType = $this->getContentModel()->getBySourceContentType($value['post_type']);
+                        if (!($contentType instanceof ContentType)) {
+                            return null;
+                        }
+                        $relationContentType = $contentType->getName();
+                    }
+
+                    $this->setContentType($relationContentType);
+                    $relation->setContentType($relationContentType);
                     $this->setContentFields($relation->getContent(), $value);
 
                     // Swap back to original content type
