@@ -473,7 +473,8 @@ class Wordpress extends ContentRepository
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function setAuthor(ContentInterface $page, $authorID) {
+    public function setAuthor(ContentInterface $page, $authorID)
+    {
         if (empty($authorID) || !is_numeric($authorID) || is_float($authorID)) {
             return $page;
         }
@@ -481,7 +482,7 @@ class Wordpress extends ContentRepository
         $this->api->ignoreErrorCode(404);
         $author = $this->api->getAuthor($authorID);
         $this->api->restoreDefaultIgnoredErrorCodes();
-        if(empty($author)) {
+        if (empty($author)) {
             return $page;
         }
         $page->setAuthor($this->createUser($author));

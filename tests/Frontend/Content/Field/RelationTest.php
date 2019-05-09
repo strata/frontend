@@ -51,5 +51,4 @@ class RelationTest extends TestCase
         $this->assertEquals('careers', $related_post->getContentType());
         $this->assertEquals('Joe Bloggs', $related_post->getContent()->getAuthor()->getName());
     }
-
 }
