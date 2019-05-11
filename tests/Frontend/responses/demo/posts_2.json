@@ -23,7 +23,11 @@
       "rendered": "<p>Quibusdam omnis impedit veniam omnis Illum illum aliquam minus in. Enim ratione non quis velit ullam error earum Est corporis Tempora id nisi aut voluptas Quo quaerat maxime rerum at. Dolorum qui molestias vel neque placeat sit ratione. Eos totam nostrum officiis et delectus. Minus et non accusamus illo omnis Deleniti laudantium Rerum velit autem &hellip; </p>\n<p class=\"link-more\"><a href=\"https://demo.wp-api.org/2017/05/22/et-aut-qui-a-qui-dolorum/\" class=\"more-link\">Continue reading<span class=\"screen-reader-text\"> &#8220;Et aut qui a qui dolorum&#8221;</span></a></p>\n",
       "protected": false
     },
-    "author": 0,
+    "author": {
+      "id": 1928,
+      "name": "Jane Doe",
+      "description": "A famous author"
+    },
     "featured_media": 0,
     "comment_status": "open",
     "ping_status": "open",

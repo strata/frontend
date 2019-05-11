@@ -157,13 +157,13 @@ class WordpressFieldFinder
     }
 
     /**
-     * Attempt to find the author field from an array of data
+     * Attempt to find the author ID field from an array of data
      *
      * @param array $data
      * @param array $searchFields
      * @return null|string
      */
-    public static function author(array $data, array $searchFields = null): ?int
+    public static function authorID(array $data, array $searchFields = null): ?int
     {
         if (empty($searchFields)) {
             $searchFields = ['author', 'post_author'];
@@ -195,9 +195,9 @@ class WordpressFieldFinder
      * @param array $searchFields in order of preference
      * @param array $data
      * @param string $type
-     * @return null|string
+     * @return mixed
      */
-    protected static function findFirstFieldFromSearch(array $searchFields, array $data, $type = 'string'): ?string
+    protected static function findFirstFieldFromSearch(array $searchFields, array $data, $type = 'string')
     {
         // Lets lowercase the data array keys for easier searching;
         $data = array_change_key_case($data, CASE_LOWER);

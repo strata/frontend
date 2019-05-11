@@ -460,8 +460,21 @@ class Wordpress extends ContentRepository
             $this->setPageTaxonomies($validTaxonomies, $page, $data);
         }
 
-        if (!empty(FieldFinder::author($data))) {
-            $this->setAuthor($page, FieldFinder::author($data));
+        if ((isset($data['author']) || isset($data['post_author']))) {
+            $potentialAuthor = null;
+            if ((isset($data['author']))) {
+                $potentialAuthor = $data['author'];
+            } elseif (isset($data['post_author'])) {
+                $potentialAuthor = $data['post_author'];
+            }
+
+            if (is_array($potentialAuthor)) {
+                $this->setAuthorFromArray($page, $potentialAuthor);
+            }
+        }
+
+        if ($page->getAuthor() == null && !empty(FieldFinder::authorID($data))) {
+            $this->setAuthorFromID($page, FieldFinder::authorID($data));
         }
     }
 
@@ -473,7 +486,7 @@ class Wordpress extends ContentRepository
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function setAuthor(ContentInterface $page, $authorID)
+    public function setAuthorFromID(ContentInterface $page, int $authorID)
     {
         if (empty($authorID) || !is_numeric($authorID) || is_float($authorID)) {
             return $page;
@@ -486,6 +499,26 @@ class Wordpress extends ContentRepository
             return $page;
         }
         $page->setAuthor($this->createUser($author));
+
+        return $page;
+    }
+
+    /**
+     * @param ContentInterface $page
+     * @param array $authorArray
+     * @return ContentInterface
+     */
+    public function setAuthorFromArray(ContentInterface $page, array $authorArray)
+    {
+        if (empty($authorArray)) {
+            return $page;
+        }
+
+        if (!isset($authorArray['id']) || !isset($authorArray['name'])) {
+            return $page;
+        }
+
+        $page->setAuthor($this->createUser($authorArray));
 
         return $page;
     }
