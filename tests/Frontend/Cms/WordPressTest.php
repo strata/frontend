@@ -83,6 +83,7 @@ class WordPressTest extends TestCase
         $page = $pages->current();
         $this->assertEquals(5, $page->getId());
         $this->assertEquals("Et aut qui a qui dolorum", $page->getTitle());
+        $this->assertEquals("Jane Doe", $page->getAuthor()->getName());
 
         $pages->next();
         $page = $pages->current();
