@@ -863,7 +863,7 @@ class Wordpress extends ContentRepository
                     break;
 
                 case 'relation':
-                    if (!is_array($value) || !$field->hasOption('content_type')) {
+                    if (!is_array($value) || empty($value) ||!$field->hasOption('content_type')) {
                         break;
                     }
 
@@ -892,7 +892,7 @@ class Wordpress extends ContentRepository
                     break;
 
                 case 'relation_array':
-                    if (!is_array($value) || !$field->hasOption('content_type')) {
+                    if (!is_array($value) || empty($value) || !$field->hasOption('content_type')) {
                         break;
                     }
 
