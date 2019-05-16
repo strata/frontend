@@ -43,5 +43,8 @@ class TwigTest extends TestCase
         $this->assertEquals('http://domain.com/search?k=maths', $twig->fixUrl('domain.com/search?k=maths'));
         $this->assertEquals('http://domain.com/search?k=maths#3', $twig->fixUrl('domain.com/search?k=maths#3'));
         $this->assertEquals('https://me:pass@staging.domain.com/', $twig->fixUrl('https://me:pass@staging.domain.com/'));
+        $this->assertEquals('/team/bob', $twig->fixUrl('/team/bob'));
+        $this->assertEquals('../contact', $twig->fixUrl('../contact'));
+        $this->assertEquals('fake url', $twig->fixUrl('fake url'));
     }
 }

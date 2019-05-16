@@ -2,8 +2,10 @@
 
 ## fix_url()
 
-Fixes a URL by prepending with http:// or https:// so you can reliably use it in a hyperlink. This function only adds
-the http scheme is required and otherwise should leave the URL untouched.
+Fixes a URL by prepending with http:// or https:// so you can reliably use it in a hyperlink. For example converts 
+`domain.com` into `http://domain.com` 
+
+This function only adds the http scheme if required and otherwise will leave the URL untouched.
 
 Usage:
 
