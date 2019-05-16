@@ -85,7 +85,6 @@ class FrontendExtension extends AbstractExtension
         }
 
         if (isset($parts['host'])) {
-
             $url .= $parts['scheme'] . '://';
             if (isset($parts['user']) || isset($parts['pass'])) {
                 $url .= $parts['user'] . ':' . $parts['pass'] . '@';

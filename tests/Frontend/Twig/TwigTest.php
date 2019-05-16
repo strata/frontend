@@ -30,11 +30,11 @@ class TwigTest extends TestCase
         $twig = new FrontendExtension();
 
         $this->assertEquals('http://www.domain.com', $twig->fixUrl('//www.domain.com'));
-        $this->assertEquals('https://www.domain.com', $twig->fixUrl('//www.domain.com','https'));
+        $this->assertEquals('https://www.domain.com', $twig->fixUrl('//www.domain.com', 'https'));
         $this->assertEquals('http://domain.com', $twig->fixUrl('domain.com'));
-        $this->assertEquals('https://domain.com', $twig->fixUrl('domain.com','https'));
+        $this->assertEquals('https://domain.com', $twig->fixUrl('domain.com', 'https'));
         $this->assertEquals('http://www.domain.com', $twig->fixUrl('www.domain.com'));
-        $this->assertEquals('https://www.domain.com', $twig->fixUrl('www.domain.com','https'));
+        $this->assertEquals('https://www.domain.com', $twig->fixUrl('www.domain.com', 'https'));
         $this->assertEquals('http://domain.com', $twig->fixUrl('domain.com'));
         $this->assertEquals('http://domain.co.uk', $twig->fixUrl('domain.co.uk'));
         $this->assertEquals('http://domain.com/contact/', $twig->fixUrl('domain.com/contact/'));
@@ -44,7 +44,4 @@ class TwigTest extends TestCase
         $this->assertEquals('http://domain.com/search?k=maths#3', $twig->fixUrl('domain.com/search?k=maths#3'));
         $this->assertEquals('https://me:pass@staging.domain.com/', $twig->fixUrl('https://me:pass@staging.domain.com/'));
     }
-
-
-
 }
