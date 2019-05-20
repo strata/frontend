@@ -592,6 +592,23 @@ class Wordpress extends ContentRepository
      */
     public function setCustomContentFields(ContentType $contentType, ContentInterface $content, array $data): ContentInterface
     {
+        foreach ($data as $name => $value) {
+            if (!$contentType->offsetExists($name)) {
+                trigger_error(sprintf("Content field definition not found for field '%s' in content type '%s'", $name, $contentType->getName()), E_USER_NOTICE);
+                continue;
+            }
+
+            $fieldModel     = $contentType->offsetGet($name);
+            $fieldContent   = $this->getContentField($fieldModel, $value);
+            if ($fieldContent !== null) {
+                $content->addContent($fieldContent);
+            }
+        }
+
+        return $content;
+
+        /** testing above
+
         foreach ($contentType as $contentField) {
             $name = $contentField->getName();
             if (!isset($data[$name])) {
@@ -606,6 +623,8 @@ class Wordpress extends ContentRepository
         }
 
         return $content;
+
+        */
     }
 
     /**
@@ -661,6 +680,7 @@ class Wordpress extends ContentRepository
                         return null;
                     }
                     return new PlainArray($name, $value);
+                    break;
 
                 case 'image':
                     $sizesData = array();
@@ -696,6 +716,7 @@ class Wordpress extends ContentRepository
                         );
 
                         return $image;
+                        break;
                     } elseif (is_array($value)) {
                         //image array passed on
 
@@ -798,8 +819,7 @@ class Wordpress extends ContentRepository
                     );
 
                     return $video;
-
-                break;
+                    break;
 
                 case 'audio':
                     $media_id = null;
@@ -828,8 +848,7 @@ class Wordpress extends ContentRepository
                     );
 
                     return $audio;
-
-                break;
+                    break;
 
                 case 'array':
                     $array = new ArrayContent($name);
@@ -906,6 +925,7 @@ class Wordpress extends ContentRepository
                         if (is_array($relationContentType)) {
                             $contentType = $this->getContentModel()->getBySourceContentType($row['post_type']);
                             if (!($contentType instanceof ContentType)) {
+                                trigger_error(sprintf("Invalid content type '%s' set in relation array", $row['post_type']), E_USER_NOTICE);
                                 return null;
                             }
                             $relationContentType = $contentType->getName();

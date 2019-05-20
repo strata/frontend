@@ -16,6 +16,13 @@ use Studio24\Frontend\Exception\NotFoundException;
 
 class WordPressTest extends TestCase
 {
+
+    public function setup()
+    {
+        // Ignore E_USER_NOTICE that may be raised by content data that does not match a content definition
+        error_reporting(E_ALL & ~E_USER_NOTICE);
+    }
+
     public function testBasicData()
     {
         // Create a mock and queue responses
@@ -158,7 +165,7 @@ class WordPressTest extends TestCase
         $page = $pages->current();
         $this->assertEquals('79', $page->getId());
         $this->assertEquals("Lorem ipsum dolor sit school construction project", $page->getTitle());
-        $this->assertEmpty($page->getContent()->get('project_benefits'));
+        $this->assertEmpty($page->getContent()->get('project_benefits')->__toString());
         $this->assertEmpty($page->getContent()->get('fake_field'));
 
         // Test array
