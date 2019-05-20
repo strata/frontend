@@ -88,6 +88,29 @@ class Wordpress extends ContentRepository
     }
 
     /**
+     * Return API
+     *
+     * @return WordpressApi
+     */
+    public function getApi(): WordpressApi
+    {
+        return $this->api;
+    }
+
+    /**
+     * Set the logger object in CMS and API classes
+     *
+     * This overrides the LoggerTrait::setLogger method
+     *
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        $this->api->setLogger($logger);
+    }
+
+    /**
      * Set HTTP client
      *
      * Useful for testing

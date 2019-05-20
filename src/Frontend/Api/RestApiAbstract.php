@@ -23,6 +23,13 @@ abstract class RestApiAbstract
     use LoggerTrait;
 
     /**
+     * Keep track of total number of requests per page load
+     *
+     * @var int
+     */
+    protected $totalRequests = 0;
+
+    /**
      * API base URI
      *
      * @var string
@@ -257,6 +264,8 @@ abstract class RestApiAbstract
         }
 
         $response = $this->getClient()->request($method, $uri, $options);
+        $this->totalRequests++;
+
         if ($response->getStatusCode() == $this->expectedResponseCode) {
             return $response;
         }
@@ -335,4 +344,15 @@ abstract class RestApiAbstract
 
         throw new FailedRequestException('Error parsing JSON response body: ' . json_last_error_msg());
     }
+
+    /**
+     * Return number of total requests made
+     *
+     * @return int
+     */
+    public function getTotalRequests(): int
+    {
+        return $this->totalRequests;
+    }
+
 }
