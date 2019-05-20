@@ -17,12 +17,6 @@ use Studio24\Frontend\Exception\NotFoundException;
 class WordPressTest extends TestCase
 {
 
-    public function setup()
-    {
-        // Ignore E_USER_NOTICE that may be raised by content data that does not match a content definition
-        error_reporting(E_ALL & ~E_USER_NOTICE);
-    }
-
     public function testBasicData()
     {
         // Create a mock and queue responses

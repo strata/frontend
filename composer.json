@@ -15,6 +15,12 @@
             "email": "hello@studio24.net",
             "homepage": "https://studio24.net/",
             "role": "Developer"
+        },
+        {
+            "name": "Marie Manandise",
+            "email": "hello@studio24.net",
+            "homepage": "https://studio24.net/",
+            "role": "Developer"
         }
     ],
     "require": {
@@ -24,7 +30,8 @@
         "twig/twig": "^2.6",
         "webmozart/assert": "^1.4",
         "psr/simple-cache": "^1.0",
-        "symfony/http-foundation": "^4.2"
+        "symfony/http-foundation": "^4.2",
+        "monolog/monolog": "^1.24"
     },
     "autoload": {
         "psr-4": {

@@ -48,6 +48,7 @@ use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
+use Studio24\Frontend\Traits\LoggerTrait;
 use Studio24\Frontend\Utils\FileInfoFormatter;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 
@@ -62,6 +63,8 @@ use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
  */
 class Wordpress extends ContentRepository
 {
+    use LoggerTrait;
+
     /**
      * API
      *
@@ -594,7 +597,9 @@ class Wordpress extends ContentRepository
     {
         foreach ($data as $name => $value) {
             if (!$contentType->offsetExists($name)) {
-                trigger_error(sprintf("Content field definition not found for field '%s' in content type '%s'", $name, $contentType->getName()), E_USER_NOTICE);
+                if ($this->hasLogger()) {
+                    $this->getLogger()->info(sprintf("Content field definition not found for field '%s' in content type '%s'", $name, $contentType->getName()));
+                }
                 continue;
             }
 
@@ -925,7 +930,9 @@ class Wordpress extends ContentRepository
                         if (is_array($relationContentType)) {
                             $contentType = $this->getContentModel()->getBySourceContentType($row['post_type']);
                             if (!($contentType instanceof ContentType)) {
-                                trigger_error(sprintf("Invalid content type '%s' set in relation array", $row['post_type']), E_USER_NOTICE);
+                                if ($this->hasLogger()) {
+                                    $this->getLogger()->info(sprintf("Invalid content type '%s' set in relation array", $row['post_type']));
+                                }
                                 return null;
                             }
                             $relationContentType = $contentType->getName();
