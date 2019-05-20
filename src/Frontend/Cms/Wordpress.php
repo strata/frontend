@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Studio24\Frontend\Cms;
 
 use GuzzleHttp\Client;
+use Psr\Log\LoggerInterface;
 use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
