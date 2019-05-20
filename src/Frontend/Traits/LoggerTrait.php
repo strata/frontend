@@ -49,4 +49,15 @@ trait LoggerTrait
     {
         return $this->logger;
     }
+
+    /**
+     * Format an associate array into a human-readable string for logging purposes
+     *
+     * @param array $data
+     * @return string
+     */
+    public function formatArray(array $data): string
+    {
+        return str_replace('&', ', ', http_build_query($data));
+    }
 }

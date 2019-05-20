@@ -611,25 +611,6 @@ class Wordpress extends ContentRepository
         }
 
         return $content;
-
-        /** testing above
-
-        foreach ($contentType as $contentField) {
-            $name = $contentField->getName();
-            if (!isset($data[$name])) {
-                continue;
-            }
-
-            $value = $data[$name];
-            $contentField = $this->getContentField($contentField, $value);
-            if ($contentField !== null) {
-                $content->addContent($contentField);
-            }
-        }
-
-        return $content;
-
-        */
     }
 
     /**

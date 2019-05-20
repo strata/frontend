@@ -10,6 +10,7 @@ use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\PermissionException;
 use Studio24\Frontend\Exception\FailedRequestException;
 use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Traits\LoggerTrait;
 use Studio24\Frontend\Version;
 
 /**
@@ -19,6 +20,8 @@ use Studio24\Frontend\Version;
  */
 abstract class RestApiAbstract
 {
+    use LoggerTrait;
+
     /**
      * API base URI
      *
@@ -248,6 +251,10 @@ abstract class RestApiAbstract
     {
         // Suppress HTTP errors raising Guzzle exceptions
         $options = array_merge($options, ['http_errors' => false]);
+
+        if ($this->hasLogger()) {
+            $this->getLogger()->info(sprintf('REST API request: %s %s (options: %s)', $method, $uri, $this->formatArray($options)));
+        }
 
         $response = $this->getClient()->request($method, $uri, $options);
         if ($response->getStatusCode() == $this->expectedResponseCode) {
