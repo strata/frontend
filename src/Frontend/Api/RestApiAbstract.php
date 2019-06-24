@@ -354,5 +354,4 @@ abstract class RestApiAbstract
     {
         return $this->totalRequests;
     }
-
 }
