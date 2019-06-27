@@ -29,6 +29,7 @@ class RedirectsTest extends TestCase
         $this->assertEquals('/news/1234/foo/5678/bar/', $redirects->replace('/news/*/foo/*/bar/*', [1234, 5678]));
         $this->assertEquals('1234/news', $redirects->replace('*/news', [1234]));
         $this->assertEquals('news', $redirects->replace('news', []));
+        $this->assertEquals('/news?foo=bar', $redirects->replace('/news?foo=bar', [1234]));
     }
 
     public function testRedirects()

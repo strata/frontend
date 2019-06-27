@@ -177,6 +177,11 @@ class Redirects
         $redirect = '';
         $x = 0;
 
+        // If no * in destination, just return it
+        if (strpos($destination, '*') === false) {
+            return $destination;
+        }
+
         // Check if * is at start
         if (strpos($destination, '*') === 0) {
             $redirect .= $replace[0];
