@@ -1,0 +1,10 @@
+/support/shop,/shop
+/publications/magazine, /support
+/publications/update-newsletter/, /support
+/support/leave-a-legacy, /gifts-in-wills
+/publications/update, /membership
+/support/membership, /membership, 302
+/why-do-we-work-with-big-business, /why-we-work-with-big-business
+/conservation/*, /conservation-challenges/*
+/marine-plastics, /conservation-challenges/ocean-plastic-pollution?utm_medium=social&utm_source=twitter.com&utm_campaign=marine+plastics
+/donation?amount=10&currency=USD&type=donation&frequency=single&reason=default, /donation?amount=10&currency=USD&type=donation&frequency=single&reason=testing123&source=ACME
