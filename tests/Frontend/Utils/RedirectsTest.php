@@ -96,4 +96,25 @@ class RedirectsTest extends TestCase
         $this->assertTrue($redirects->match('/donation?amount=10&currency=USD&type=donation&frequency=single&reason=default'));
         $this->assertEquals('/donation?amount=10&currency=USD&type=donation&frequency=single&reason=testing123&source=ACME', $redirects->getLastDestination());
     }
+
+    public function testTrailingSlash()
+    {
+        $redirects = new Redirects();
+
+        $redirects->addRedirect('/shop', '/support');
+        $redirects->addRedirect('/about/team', '/team');
+        $redirects->addRedirect('/news/', '/posts/');
+        $redirects->addRedirect('/about/charity/', '/charity');
+
+        $this->assertTrue($redirects->match('/shop/'));
+        $this->assertEquals('/support', $redirects->getLastDestination());
+        $this->assertTrue($redirects->match('/about/team/'));
+        $this->assertEquals('/team', $redirects->getLastDestination());
+        $this->assertTrue($redirects->match('/news'));
+        $this->assertEquals('/posts/', $redirects->getLastDestination());
+        $this->assertTrue($redirects->match('/about/charity'));
+        $this->assertEquals('/charity', $redirects->getLastDestination());
+    }
+
+
 }

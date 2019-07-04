@@ -118,7 +118,20 @@ class Redirects
     public function match(string $url): bool
     {
         // Try one to one match first
-        $result = array_search($url, array_column($this->redirectsOneToOne, self::SOURCE));
+        $matchOne = function($url) {
+            return array_search($url, array_column($this->redirectsOneToOne, self::SOURCE));
+        };
+        $result = $matchOne($url);
+
+        // Try to remove/add trailing slash from URL
+        if ($result === false) {
+            if (substr($url, strlen($url)-1, 1) === '/') {
+                $result = $matchOne(substr($url, 0,strlen($url)-1));
+            } else {
+                $result = $matchOne($url . '/');
+            }
+        }
+
         if ($result !== false) {
             $redirect = $this->redirectsOneToOne[$result];
             $this->setLastDestination($redirect[self::DESTINATION]);
@@ -165,7 +178,7 @@ class Redirects
      * Replace matched params into a redirect destination
      *
      * E.g. for destination URL /news/* and param 1234 returned string = /news/1234
-     * This can replace multiple params into the destinartion URL
+     * This can replace multiple params into the destination URL
      * Any missing params are removed so there are no * characters left in the URL
      *
      * @param string $destination Destination redirect, must contain '*' characters to replace params into
