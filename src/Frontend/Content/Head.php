@@ -22,6 +22,7 @@ class Head
         "og:title",
         "og:image",
         "og:description",
+        "twitter:card",
         "twitter:title",
         "twitter:description",
         "twitter:image"
