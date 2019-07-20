@@ -1,0 +1,14 @@
+project_id:
+  type: plaintext
+project_summary:
+  type: text
+icon_type:
+  type: plainarray
+fruits:
+  type: plainarray
+yesno:
+  type: plainarray
+price:
+  type: decimal
+price_round:
+  type: decimal

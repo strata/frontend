@@ -30,22 +30,24 @@ You start with one YAML file with two root elements:
 
 #### content_types
 
-An array of content types, with two properties per content type:
+An array of content types, with three properties per content type:
 
 * `content type name` - it is recommended to use plurals for content types (e.g. news, case_studies)
     * `api_endpoint` - The API endpoint URL when accessing data
     * `content_fields` - The YAML file to load for custom fields for this content type 
-
+    * `source_content_type` - The content type in the data source (e.g. in WordPress CMS this is the post_type)  
 E.g. 
 
 ```yaml
 content_types:
   news:
-    api_endpoint: posts
+    api_endpoint: wp-json/v2/posts
     content_fields: news.yaml
+    source_content_type: posts
   projects:
-    api_endpoint: projects
+    api_endpoint: wp-json/v2/projects
     content_fields: projects.yaml
+    source_content_type: projects
 ```
 
 #### global
@@ -92,9 +94,30 @@ as options.
 * `date` - date 
 * `datetime` - date and time
 * `boolean` - true or false
+* `number` - integer number
+* `decimal` - decimal number
+* `plainarray` - array with simple values (strings, numbers, boolean values), keys can be integers or strings
 * `image` - image, supports multiple image sizes and content such as alt text and captions
 * `relation` - a relation to another content type
+* `relation_array` - an array of relations
+* `array` - an array (list) of multiple records of one type
 * `flexible` - flexible content
+
+#### Decimal options
+
+* `precision` - the number of decimal places to round to (default = 2)
+* `round` - rounding mode used if the passed number needs to be rounding to the required decimal places (default = up). See https://www.php.net/round
+    * `up` - rounds up when number is halfway there (e.g. making 1.555 into 1.56)
+    * `down` - rounds down when number is halfway there (e.g. making 1.555 into 1.55)
+    * `even` - rounds towards the nearest even value (e.g. making 1.551 into 1.56)
+    * `odd` - rounds towards the nearest odd value (e.g. making 1.561 into 1.55)
+
+```yaml
+length:
+  type: decimal
+  precision: 4
+  round: down
+```
 
 #### Image options
 
@@ -111,15 +134,50 @@ hero_image:
 #### Relation options
 
 Accepts the option `content_type` which is the type of content this field points to. This must match up with 
-the content type name used in `content-model.yaml`. E.g.
+the content type name used in `content-model.yaml`. This can be defined as one content type:
 
 ```yaml
 team_member:
   type: relation
-  content_type: people
+  content_type: person
 ```
 
-#### Flexible content 
+Or multiple content types:
+
+```yaml
+related_posts:
+  type: relation
+  content_type: 
+    - news
+    - person
+```
+
+When defining multiple content types for a relation you must also define the `source_content_type` which will match the 
+`post_type` (in WordPress) with the content type in the returned data.
+
+#### Relation Array options
+
+Accepts the option `content_type` which is the type of content this field points to. This must match up with 
+the content type name used in `content-model.yaml`. E.g.
+
+```yaml
+team:
+  type: relation_array
+  content_type: person
+```
+
+#### Array options
+
+Accepts the option `content_fields` which contains multiple child content fields.
+
+```yaml
+careers:
+  type: array
+  content_fields:
+    #content_fields
+```          
+ 
+#### Flexible content options
 
 Accepts the option `components` which contains multiple child components. 
 

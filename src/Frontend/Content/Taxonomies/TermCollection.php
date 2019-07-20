@@ -2,6 +2,7 @@
 
 namespace Studio24\Frontend\Content\Taxonomies;
 
+//@todo setBaseUrls function similar to that of the Menus class to swap API domain for app domain in term links
 class TermCollection implements \SeekableIterator, \Countable
 {
     protected $collection = [];

@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Studio24\Frontend\Api;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\PermissionException;
 use Studio24\Frontend\Exception\FailedRequestException;
 use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Traits\LoggerTrait;
 use Studio24\Frontend\Version;
 
 /**
@@ -20,6 +20,15 @@ use Studio24\Frontend\Version;
  */
 abstract class RestApiAbstract
 {
+    use LoggerTrait;
+
+    /**
+     * Keep track of total number of requests per page load
+     *
+     * @var int
+     */
+    protected $totalRequests = 0;
+
     /**
      * API base URI
      *
@@ -56,6 +65,13 @@ abstract class RestApiAbstract
      * @var array
      */
     protected $ignoreErrorCodes = [401];
+
+    /**
+     * Default values for response error codes to ignore
+     *
+     * @var array
+     */
+    protected $defaultIgnoredErrorCodes = [401];
 
     /**
      * Constructor
@@ -146,6 +162,18 @@ abstract class RestApiAbstract
     }
 
     /**
+     * Restore default error codes to be ignored in the response (and not throw an exception)
+     *
+     * Example use case: when querying a page that exists but has a featured media that does not exist (returns a 404),
+     * it's best to ignore the 404 error returned by the media query but revert to catching 404 errors for subsequent queries.
+     *
+     */
+    public function restoreDefaultIgnoredErrorCodes()
+    {
+        $this->ignoreErrorCodes = $this->defaultIgnoredErrorCodes;
+    }
+
+    /**
      * Check whether you are allowed to perform the following action on the API
      *
      * @param int $action
@@ -231,7 +259,13 @@ abstract class RestApiAbstract
         // Suppress HTTP errors raising Guzzle exceptions
         $options = array_merge($options, ['http_errors' => false]);
 
+        if ($this->hasLogger()) {
+            $this->getLogger()->info(sprintf('REST API request: %s %s (options: %s)', $method, $uri, $this->formatArray($options)));
+        }
+
         $response = $this->getClient()->request($method, $uri, $options);
+        $this->totalRequests++;
+
         if ($response->getStatusCode() == $this->expectedResponseCode) {
             return $response;
         }
@@ -258,6 +292,7 @@ abstract class RestApiAbstract
      * @param array $options
      * @return ResponseInterface
      * @throws FailedRequestException
+     * @throws NotFoundException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get($uri, array $options = []) : ResponseInterface
@@ -300,13 +335,23 @@ abstract class RestApiAbstract
      * @return array Array of response data
      * @throws FailedRequestException
      */
-    public function parseJsonResponse(ResponseInterface $response) : array
+    public function parseJsonResponse(ResponseInterface $response): array
     {
         $data = json_decode($response->getBody()->__toString(), true);
-        if ($data !== false) {
+        if (json_last_error() === JSON_ERROR_NONE) {
             return $data;
         }
 
-        throw new FailedRequestException('Cannot parse JSON response body');
+        throw new FailedRequestException('Error parsing JSON response body: ' . json_last_error_msg());
+    }
+
+    /**
+     * Return number of total requests made
+     *
+     * @return int
+     */
+    public function getTotalRequests(): int
+    {
+        return $this->totalRequests;
     }
 }

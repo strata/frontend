@@ -12,9 +12,11 @@ use GuzzleHttp\Psr7\Response;
 use Studio24\Frontend\Cms\Wordpress;
 use Studio24\Frontend\Content\Url;
 use Studio24\Frontend\ContentModel\ContentModel;
+use Studio24\Frontend\Exception\NotFoundException;
 
 class WordPressTest extends TestCase
 {
+
     public function testBasicData()
     {
         // Create a mock and queue responses
@@ -28,6 +30,11 @@ class WordPressTest extends TestCase
                 200,
                 [],
                 file_get_contents(__DIR__ . '/../responses/acf/media/media.21.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
             ),
             new Response(
                 200,
@@ -77,6 +84,7 @@ class WordPressTest extends TestCase
         $page = $pages->current();
         $this->assertEquals(5, $page->getId());
         $this->assertEquals("Et aut qui a qui dolorum", $page->getTitle());
+        $this->assertEquals("Jane Doe", $page->getAuthor()->getName());
 
         $pages->next();
         $page = $pages->current();
@@ -101,6 +109,10 @@ class WordPressTest extends TestCase
             new Response(
                 200,
                 ['Content-length' => 23857 ]
+            ),
+            new Response(
+                200,
+                ['Content-length' => 169812 ]
             ),
             new Response(
                 200,
@@ -147,7 +159,7 @@ class WordPressTest extends TestCase
         $page = $pages->current();
         $this->assertEquals('79', $page->getId());
         $this->assertEquals("Lorem ipsum dolor sit school construction project", $page->getTitle());
-        $this->assertEmpty($page->getContent()->get('project_benefits'));
+        $this->assertEmpty($page->getContent()->get('project_benefits')->__toString());
         $this->assertEmpty($page->getContent()->get('fake_field'));
 
         // Test array
@@ -166,7 +178,7 @@ class WordPressTest extends TestCase
         // Test documents
         $docs = $page->getContent()->get('project_documents');
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\ArrayContent', $docs);
-        $this->assertEquals(2, count($docs));
+        $this->assertEquals(3, count($docs));
 
         foreach ($docs as $key => $item) {
             $doc = $item->get('project_documents_project_documents_document');
@@ -183,6 +195,9 @@ class WordPressTest extends TestCase
                     $this->assertEquals("timeline - IRIS Education website roll out", $doc->getTitle());
                     $this->assertEquals("165.83 KB", $doc->getFileSize());
                     $this->assertEmpty($doc->getDescription());
+                    break;
+                case 2:
+                    $this->assertEquals("165.83 KB", $doc->getFileSize());
                     break;
             }
         }
@@ -356,11 +371,15 @@ EOD;
         $flexibleContent = $page->getContent()->get('page_content');
 
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent', $flexibleContent);
+        $this->assertEquals(3, count($flexibleContent));
+        $this->assertEquals(1, count($flexibleContent->get('statement_block')));
+        $this->assertEquals(2, count($flexibleContent->get('content')));
 
-        foreach ($flexibleContent->getValue() as $key => $flexibleComponent) {
+        $x = 0;
+        foreach ($flexibleContent as $flexibleComponent) {
             $this->assertInstanceOf('Studio24\Frontend\Content\Field\Component', $flexibleComponent);
 
-            switch ($key) {
+            switch ($x) {
                 case 0:
                     $this->assertEquals('content', $flexibleComponent->getName());
                     foreach ($flexibleComponent->getContent() as $fieldName => $fieldValue) {
@@ -407,6 +426,8 @@ EOD;
                 case 2:
                     break;
             }
+
+            $x++;
         }
     }
 
@@ -447,5 +468,168 @@ EOD;
 
         $this->expectExceptionCode(404);
         $page = $api->getPageByUrl('/made/up/url/');
+    }
+
+    public function testMissingPageImageAuthorTaxonomy()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/demo/post.1b.json')
+            ),
+            new Response(
+                404,
+                [],
+                '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
+            ),
+            new Response(
+                404,
+                [],
+                '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
+            ),
+            new Response(
+                404,
+                [],
+                '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/demo/post.1c.json')
+            ),
+            new Response(
+                404,
+                [],
+                '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
+            ),
+            new Response(
+                404,
+                [],
+                '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
+            ),
+            new Response(
+                404,
+                [],
+                '{"code":"rest_invalid_param","message":"page not found","data":{"status":404}}'
+            ),
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+        $api = new Wordpress('http://demo.wp-api.org/wp-json/wp/v2/');
+        $api->setClient($client);
+        $contentModel = new ContentModel(__DIR__ . '/config/demo/content_model_with_taxonomy.yaml');
+        $api->setContentModel($contentModel);
+        $api->setContentType('news');
+        try {
+            $page = $api->getPageByUrl('/20171234/05/23/hello-world/');
+        } catch (NotFoundHttpException $e) {
+            throw new NotFoundHttpException('Resource not found', $e);
+        }
+        //test execution didn't stop due to 404 thrown by missing author, image, or taxonomy term
+        $this->assertTrue(true);
+        try {
+            $page = $api->getPage(1234);
+        } catch (NotFoundHttpException $e) {
+            throw new NotFoundHttpException('Resource not found', $e);
+        }
+        //test execution didn't stop due to 404 thrown by missing author, image, or taxonomy term
+        $this->assertTrue(true);
+    }
+
+    public function testRelationArray()
+    {
+        // Create a mock and queue response
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/page.9.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+            new Response(
+                200,
+                ['X-WP-Total' => 1, 'X-WP-TotalPages' => 1],
+                file_get_contents(__DIR__ . '/../responses/acf/users.195.json')
+            ),
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+        $api = new Wordpress('something');
+        $api->setClient($client);
+        $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
+        $api->setContentModel($contentModel);
+        $api->setContentType('page2');
+
+        // Test it!
+        $page = $api->getPage(9);
+
+        $careers = $page->getContent()->get('page_content')->get('careers');
+        $this->assertEquals(1, count($careers));
+        $x = 0;
+        foreach ($careers as $career) {
+            switch ($x) {
+                case 0:
+                    $careerItems = $career->getContent()->get('career');
+                    $this->assertEquals(3, count($careerItems));
+                    $y = 0;
+                    foreach ($careerItems as $item) {
+                        switch ($y) {
+                            case 0:
+                                $this->assertEquals("ACME Manager", $item->getContent()->getTitle());
+                                $this->assertEquals('career', $item->getContentType());
+                                break;
+                            case 1:
+                                $this->assertEquals("Project Manager", $item->getContent()->getTitle());
+                        }
+                        $y++;
+                    }
+
+                    $relatedPosts = $career->getContent()->get('related_posts');
+                    $this->assertEquals(2, count($relatedPosts));
+                    $y = 0;
+                    foreach ($relatedPosts as $item) {
+                        switch ($y) {
+                            case 0:
+                                $this->assertEquals("ACME Manager", $item->getContent()->getTitle());
+                                $this->assertEquals('career', $item->getContentType());
+                                $this->assertEquals("Permanent", $item->getContent()->getContent()->get('contract_length'));
+                                break;
+                            case 1:
+                                $this->assertEquals("ABC123 Project", $item->getContent()->getTitle());
+                                $this->assertEquals('project', $item->getContentType());
+                                $this->assertEquals("ABC123", $item->getContent()->getContent()->get('project_id'));
+                        }
+                        $y++;
+                    }
+
+                    break;
+            }
+            $x++;
+        }
     }
 }

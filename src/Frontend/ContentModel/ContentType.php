@@ -8,14 +8,18 @@ use Studio24\Frontend\Content\Field\Audio;
 use Studio24\Frontend\Content\Field\Boolean;
 use Studio24\Frontend\Content\Field\Date;
 use Studio24\Frontend\Content\Field\DateTime;
+use Studio24\Frontend\Content\Field\Decimal;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\FlexibleContent;
 use Studio24\Frontend\Content\Field\Image;
 use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\PlainText;
+use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\Relation;
+use Studio24\Frontend\Content\Field\RelationArray;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
+use Studio24\Frontend\Content\Field\TaxonomyTerms;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Exception\ConfigParsingException;
 use Symfony\Component\Yaml\Yaml;
@@ -47,10 +51,14 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         FlexibleContent::TYPE,
         Image::TYPE,
         Number::TYPE,
+        Decimal::TYPE,
+        PlainArray::TYPE,
         PlainText::TYPE,
         Relation::TYPE,
+        RelationArray::TYPE,
         RichText::TYPE,
         ShortText::TYPE,
+        TaxonomyTerms::TYPE,
         Video::TYPE
     ];
 
@@ -59,6 +67,15 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     protected $apiEndpoint;
 
     protected $taxonomies;
+
+    /**
+     * Content type from source CMS
+     *
+     * @todo Consider creating source_ options for other content model options
+     *
+     * @var string
+     */
+    protected $sourceContentType;
 
     public function __construct(string $name)
     {
@@ -81,6 +98,24 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     }
 
     /**
+     * @return string
+     */
+    public function getSourceContentType(): ?string
+    {
+        return $this->sourceContentType;
+    }
+
+    /**
+     * @param string $sourceContentType
+     * @return ContentType Fluent interface
+     */
+    public function setSourceContentType(string $sourceContentType): ContentType
+    {
+        $this->sourceContentType = $sourceContentType;
+        return $this;
+    }
+
+    /**
      * Parse the content fields YAML config file for this content type
      *
      * @todo Add more info on where the error is in the YAML file
@@ -91,6 +126,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      */
     public function parseConfig(string $file): ContentType
     {
+        $configDir = dirname($file);
         $data = Yaml::parseFile($file);
 
         if (!is_array($data)) {
@@ -101,7 +137,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
             if (!is_array($values)) {
                 throw new ConfigParsingException(sprintf("Content field definition must contain an array of values, including the 'type' property, %s found", gettype($values)));
             }
-            $this->addItem($this->parseContentFieldArray($name, $values));
+            $this->addItem($this->parseContentFieldArray($name, $values, $configDir));
         }
 
         return $this;
@@ -112,11 +148,15 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      *
      * @param string $name
      * @param array $data
+     * @param string $configDir
      * @return FieldInterface
      * @throws ConfigParsingException
      */
-    public function parseContentFieldArray(string $name, array $data): FieldInterface
+    public function parseContentFieldArray(string $name, array $data, string $configDir = ''): FieldInterface
     {
+        if (isset($data['config'])) {
+            $data = YAML::parseFile($configDir.'/'.$data['config']);
+        }
         if (!isset($data['type'])) {
             throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");
         }
@@ -140,6 +180,11 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
                 break;
 
             default:
+                // Validation
+                if ($data['type'] === RelationArray::TYPE && !isset($data['content_type'])) {
+                    throw new ConfigParsingException("You must set a 'content_type' array for a relation array content field");
+                }
+
                 $contentField = new Field($name, $data['type']);
 
                 unset($data['type']);

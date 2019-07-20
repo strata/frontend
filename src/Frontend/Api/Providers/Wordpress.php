@@ -102,7 +102,7 @@ class Wordpress extends RestApiAbstract
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
      */
-    public function getPost($apiEndpoint, int $id) : array
+    public function getPost($apiEndpoint, int $id): array
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
@@ -222,7 +222,7 @@ class Wordpress extends RestApiAbstract
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get("wp/v2/$taxonomy");
+        $response = $this->get("wp/v2/$taxonomy", ['query' => ['per_page' => 100]]);
         $data = $this->parseJsonResponse($response);
 
         return $data;

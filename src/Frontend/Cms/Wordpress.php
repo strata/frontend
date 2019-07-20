@@ -4,10 +4,14 @@ declare(strict_types=1);
 namespace Studio24\Frontend\Cms;
 
 use GuzzleHttp\Client;
+use Psr\Log\LoggerInterface;
 use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
+use Studio24\Frontend\Content\Field\Decimal;
+use Studio24\Frontend\Content\Field\PlainArray;
+use Studio24\Frontend\Content\Field\TaxonomyTerms;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
@@ -37,6 +41,7 @@ use Studio24\Frontend\Content\Field\PlainText;
 use Studio24\Frontend\Content\Field\Relation;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
+use Studio24\Frontend\Content\Field\RelationArray;
 use Studio24\Frontend\Content\Page;
 use Studio24\Frontend\Content\PageCollection;
 use Studio24\Frontend\Content\User;
@@ -44,6 +49,7 @@ use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
 use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
+use Studio24\Frontend\Traits\LoggerTrait;
 use Studio24\Frontend\Utils\FileInfoFormatter;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
 
@@ -58,6 +64,8 @@ use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
  */
 class Wordpress extends ContentRepository
 {
+    use LoggerTrait;
+
     /**
      * API
      *
@@ -78,6 +86,29 @@ class Wordpress extends ContentRepository
         if ($contentModel instanceof ContentModel) {
             $this->setContentModel($contentModel);
         }
+    }
+
+    /**
+     * Return API
+     *
+     * @return WordpressApi
+     */
+    public function getApi(): WordpressApi
+    {
+        return $this->api;
+    }
+
+    /**
+     * Set the logger object in CMS and API classes
+     *
+     * This overrides the LoggerTrait::setLogger method
+     *
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        $this->api->setLogger($logger);
     }
 
     /**
@@ -184,11 +215,6 @@ class Wordpress extends ContentRepository
         $data = $this->api->getPost($this->getContentApiEndpoint(), $id);
         $page = $this->createPage($data);
 
-        if (!empty($data['author'])) {
-            $author = $this->api->getAuthor($data['author']);
-            $page->setAuthor($this->createUser($author));
-        }
-
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
         }
@@ -253,11 +279,6 @@ class Wordpress extends ContentRepository
         }
 
         $page = $this->createPage($data);
-
-        if (!empty($data['author'])) {
-            $author = $this->api->getAuthor($data['author']);
-            $page->setAuthor($this->createUser($author));
-        }
 
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $page, $this->getCacheLifetime());
@@ -334,7 +355,7 @@ class Wordpress extends ContentRepository
             $title .= ' | '.$this->getContentModel()->getGlobal('site_name');
         }
 
-        $description = $page->getExcerpt();
+        $description = strip_tags($page->getExcerpt());
         $postImage = null;
 
         if (!empty($page->getFeaturedImage())) {
@@ -351,7 +372,7 @@ class Wordpress extends ContentRepository
 
             if (isset($data['yoast']['metadesc'])) {
                 if (!empty($data['yoast']['metadesc'])) {
-                    $description = $data['yoast']['metadesc'];
+                    $description = strip_tags($data['yoast']['metadesc']);
                 }
             }
         }
@@ -444,6 +465,7 @@ class Wordpress extends ContentRepository
             $page->setExcerpt(FieldFinder::excerpt($data));
         }
 
+
         if (!empty(FieldFinder::featuredImage($data))) {
             $this->setFeaturedImage($page, FieldFinder::featuredImage($data));
         }
@@ -464,6 +486,68 @@ class Wordpress extends ContentRepository
         if (!empty($validTaxonomies)) {
             $this->setPageTaxonomies($validTaxonomies, $page, $data);
         }
+
+        if ((isset($data['author']) || isset($data['post_author']))) {
+            $potentialAuthor = null;
+            if ((isset($data['author']))) {
+                $potentialAuthor = $data['author'];
+            } elseif (isset($data['post_author'])) {
+                $potentialAuthor = $data['post_author'];
+            }
+
+            if (is_array($potentialAuthor)) {
+                $this->setAuthorFromArray($page, $potentialAuthor);
+            }
+        }
+
+        if ($page->getAuthor() == null && !empty(FieldFinder::authorID($data))) {
+            $this->setAuthorFromID($page, FieldFinder::authorID($data));
+        }
+    }
+
+    /**
+     * @param ContentInterface $page
+     * @param $authorID
+     * @return ContentInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function setAuthorFromID(ContentInterface $page, int $authorID)
+    {
+        if (empty($authorID) || !is_numeric($authorID) || is_float($authorID)) {
+            return $page;
+        }
+
+        $this->api->ignoreErrorCode(404);
+        $author = $this->api->getAuthor($authorID);
+        $this->api->restoreDefaultIgnoredErrorCodes();
+        if (empty($author)) {
+            return $page;
+        }
+        $page->setAuthor($this->createUser($author));
+
+        return $page;
+    }
+
+    /**
+     * @param ContentInterface $page
+     * @param array $authorArray
+     * @return ContentInterface
+     */
+    public function setAuthorFromArray(ContentInterface $page, array $authorArray)
+    {
+        if (empty($authorArray)) {
+            return $page;
+        }
+
+        if (!isset($authorArray['id']) || !isset($authorArray['name'])) {
+            return $page;
+        }
+
+        $page->setAuthor($this->createUser($authorArray));
+
+        return $page;
     }
 
     /**
@@ -482,7 +566,9 @@ class Wordpress extends ContentRepository
         }
 
         //image ID passed on
+        $this->api->ignoreErrorCode(404);
         $field_data = $this->getMediaDataById($mediaID);
+        $this->api->restoreDefaultIgnoredErrorCodes();
         if (empty($field_data)) {
             return $page;
         }
@@ -533,16 +619,18 @@ class Wordpress extends ContentRepository
      */
     public function setCustomContentFields(ContentType $contentType, ContentInterface $content, array $data): ContentInterface
     {
-        foreach ($contentType as $contentField) {
-            $name = $contentField->getName();
-            if (!isset($data[$name])) {
+        foreach ($data as $name => $value) {
+            if (!$contentType->offsetExists($name)) {
+                if ($this->hasLogger()) {
+                    $this->getLogger()->info(sprintf("Content field definition not found for field '%s' in content type '%s'", $name, $contentType->getName()));
+                }
                 continue;
             }
 
-            $value = $data[$name];
-            $contentField = $this->getContentField($contentField, $value);
-            if ($contentField !== null) {
-                $content->addContent($contentField);
+            $fieldModel     = $contentType->offsetGet($name);
+            $fieldContent   = $this->getContentField($fieldModel, $value);
+            if ($fieldContent !== null) {
+                $content->addContent($fieldContent);
             }
         }
 
@@ -579,6 +667,12 @@ class Wordpress extends ContentRepository
                     return new Number($name, $value);
                     break;
 
+                case 'decimal':
+                    $precision = $field->getOption('precision', $this->getContentModel());
+                    $round = $field->getOption('round', $this->getContentModel());
+                    return new Decimal($name, $value, $precision, $round);
+                    break;
+
                 case 'date':
                     return new Date($name, $value);
                     break;
@@ -591,6 +685,12 @@ class Wordpress extends ContentRepository
                     return new Boolean($name, $value);
                     break;
 
+                case 'plainarray':
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    return new PlainArray($name, $value);
+                    break;
 
                 case 'image':
                     $sizesData = array();
@@ -626,6 +726,7 @@ class Wordpress extends ContentRepository
                         );
 
                         return $image;
+                        break;
                     } elseif (is_array($value)) {
                         //image array passed on
 
@@ -682,7 +783,11 @@ class Wordpress extends ContentRepository
                         return $document;
                     } elseif (is_array($value)) {
                         //given array of data, create field directy
-                        $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
+                        if (isset($value['filesize'])) {
+                            $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
+                        } else {
+                            $filesize = $this->api->getMediaFileSize($value['url']);
+                        }
 
                         $document = new Document(
                             $name,
@@ -724,8 +829,7 @@ class Wordpress extends ContentRepository
                     );
 
                     return $video;
-
-                break;
+                    break;
 
                 case 'audio':
                     $media_id = null;
@@ -754,8 +858,7 @@ class Wordpress extends ContentRepository
                     );
 
                     return $audio;
-
-                break;
+                    break;
 
                 case 'array':
                     $array = new ArrayContent($name);
@@ -788,9 +891,8 @@ class Wordpress extends ContentRepository
                     return $array;
                     break;
 
-                // @todo test relation
                 case 'relation':
-                    if (!is_array($value) || !$field->hasOption('content_type')) {
+                    if (!is_array($value) || empty($value) ||!$field->hasOption('content_type')) {
                         break;
                     }
 
@@ -798,13 +900,59 @@ class Wordpress extends ContentRepository
                     $currentContentType = $this->getContentType()->getName();
 
                     $relation = new Relation($name);
-                    $this->setContentType($field->getOption('content_type'));
+
+                    $relationContentType = $field->getOption('content_type');
+                    if (is_array($relationContentType)) {
+                        $contentType = $this->getContentModel()->getBySourceContentType($value['post_type']);
+                        if (!($contentType instanceof ContentType)) {
+                            return null;
+                        }
+                        $relationContentType = $contentType->getName();
+                    }
+
+                    $this->setContentType($relationContentType);
+                    $relation->setContentType($relationContentType);
                     $this->setContentFields($relation->getContent(), $value);
 
                     // Swap back to original content type
                     $this->setContentType($currentContentType);
 
                     return $relation;
+                    break;
+
+                case 'relation_array':
+                    if (!is_array($value) || empty($value) || !$field->hasOption('content_type')) {
+                        break;
+                    }
+
+                    // Swap to relation content type
+                    $currentContentType = $this->getContentType()->getName();
+
+                    $relationArray = new RelationArray($name);
+                    foreach ($value as $row) {
+                        // Detect content type of relation item
+                        $relationContentType = $field->getOption('content_type');
+                        if (is_array($relationContentType)) {
+                            $contentType = $this->getContentModel()->getBySourceContentType($row['post_type']);
+                            if (!($contentType instanceof ContentType)) {
+                                if ($this->hasLogger()) {
+                                    $this->getLogger()->info(sprintf("Invalid content type '%s' set in relation array", $row['post_type']));
+                                }
+                                return null;
+                            }
+                            $relationContentType = $contentType->getName();
+                        }
+
+                        $item = new Relation($name, $relationContentType);
+                        $this->setContentType($relationContentType);
+                        $this->setContentFields($item->getContent(), $row);
+                        $relationArray->addItem($item);
+                    }
+
+                    // Swap back to original content type
+                    $this->setContentType($currentContentType);
+
+                    return $relationArray;
                     break;
 
                 case 'flexible':
@@ -833,8 +981,9 @@ class Wordpress extends ContentRepository
                             if (!isset($componentValue[$componentFieldItem->getName()])) {
                                 continue;
                             }
-                                $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
-                                $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+                            $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
+                            $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+
                             if ($componentFieldItemObject !== null) {
                                 $component->addContent($componentFieldItemObject);
                             }
@@ -844,26 +993,44 @@ class Wordpress extends ContentRepository
                     }
 
                     return $flexible;
-
                     break;
-                /**
-                 * @todo Build & test Flexible content field
-                 * case 'flexible':
-                 * if (!is_array($value)) {
-                 * break;
-                 * }
-                 *
-                 * $flexible = new FlexibleContent($name);
-                 *
-                 * foreach ($contentField as $componentType) {
-                 * $component = new Component($componentType->getName());
-                 * $this->setCustomContentFields($componentType, $component, $value);
-                 * $flexible->addComponent($component);
-                 * }
-                 *
-                 * $content->addContent($flexible);
-                 * break;
-                 */
+
+                case 'taxonomyterms':
+                    //@todo cater for situation in which term ID is returned as opposed to term object
+                    //can receive single term or array of terms
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    if (empty($value)) {
+                        return null;
+                    }
+
+                    $terms = new TermCollection();
+                    if (isset($value['term_id'])) {
+                        //we've got a single term, not an array of terms
+                        $termsData = array($value);
+                    } else {
+                        $termsData = $value;
+                    }
+
+                    foreach ($termsData as $singleTermData) {
+                        $link = $singleTermData['taxonomy'].'/'.$singleTermData['slug'];
+                        $currentTerm = new Term(
+                            $singleTermData['term_id'],
+                            $singleTermData['name'],
+                            $singleTermData['slug'],
+                            $link,
+                            $singleTermData['count'],
+                            $singleTermData['description']
+                        );
+                        $terms->addItem($currentTerm);
+                    }
+
+                    $taxonomyTermField = new TaxonomyTerms($name);
+                    $taxonomyTermField->setContent($terms);
+
+                    return $taxonomyTermField;
+                    break;
             }
         } catch (\Error $e) {
             $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
@@ -895,6 +1062,9 @@ class Wordpress extends ContentRepository
 
             foreach ($data[$taxonomyName] as $termID) {
                 $term = $this->createTerm($taxonomyName, $termID);
+                if ($term == null) {
+                    continue;
+                }
                 $taxonomies[$taxonomyName]->addItem($term);
             }
         }
@@ -908,8 +1078,11 @@ class Wordpress extends ContentRepository
      * @param array $data
      * @return User
      */
-    public function createUser(array $data): User
+    public function createUser(array $data): ?User
     {
+        if (empty($data)) {
+            return null;
+        }
         $user = new User();
         $user->setId($data['id'])
             ->setName($data['name']);
@@ -1062,12 +1235,77 @@ class Wordpress extends ContentRepository
             }
         }
 
+        $this->api->ignoreErrorCode(404);
         $termData = $this->api->getTerm($taxonomy, $id);
+        $this->api->restoreDefaultIgnoredErrorCodes();
 
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $termData, $this->getCacheLifetime());
         }
 
         return $termData;
+    }
+
+    /**
+     * @param string $taxonomy
+     * @return null|TermCollection
+     */
+    public function getAllTerms(string $taxonomy): ?TermCollection
+    {
+        //@todo do we need to restrict to a list of allowed taxonomies (defined in config file?)
+        $taxonomyTermsData = $this->getAllTermsData($taxonomy);
+
+        if (empty($taxonomyTermsData)) {
+            return null;
+        }
+
+        $taxonomyTerms = new TermCollection();
+        foreach ($taxonomyTermsData as $singleTermData) {
+            $currentTerm = new Term(
+                $singleTermData['id'],
+                $singleTermData['name'],
+                $singleTermData['slug'],
+                $singleTermData['link'],
+                $singleTermData['count'],
+                $singleTermData['description']
+            );
+            $taxonomyTerms->addItem($currentTerm);
+        }
+
+        return $taxonomyTerms;
+    }
+
+    /**
+     * @param string $taxonomy
+     * @return array|null
+     * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    public function getAllTermsData(string $taxonomy): ?array
+    {
+        $cacheKey = $this->buildCacheKey('allterms', $taxonomy);
+
+        if ($this->hasCache()) {
+            $data = $this->cache->get($cacheKey, false);
+
+            if (!empty($data)) {
+                return $data;
+            }
+        }
+
+        //ignore 404s, usually a list of terms is used to displayed filters or menus on the side,
+        //it's not the core of the page
+        $this->api->ignoreErrorCode(404);
+        $allTermsData = $this->api->getTaxonomyTerms($taxonomy);
+        $this->api->restoreDefaultIgnoredErrorCodes();
+
+        if ($this->hasCache()) {
+            $this->cache->set($cacheKey, $allTermsData, $this->getCacheLifetime());
+        }
+
+        return $allTermsData;
     }
 }

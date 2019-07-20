@@ -1,0 +1,146 @@
+{
+  "id": 17343,
+  "date": "2010-08-23T10:00:13",
+  "date_gmt": "2010-08-23T09:00:13",
+  "guid": {
+    "rendered": "http://local.apiurl.com/?p=17343"
+  },
+  "modified": "2010-08-24T13:46:01",
+  "modified_gmt": "2010-08-24T12:46:01",
+  "slug": "first-chance-seeor-last-shining-spotlight-vietnams-primates",
+  "status": "publish",
+  "type": "post",
+  "link": "http://local.apiurl.com/first-chance-seeor-last-shining-spotlight-vietnams-primates/",
+  "title": {
+    "rendered": "First chance to see…or last? Spectacular new footage of Vietnam’s primates"
+  },
+  "content": {
+    "rendered": "",
+    "protected": false
+  },
+  "excerpt": {
+    "rendered": "",
+    "protected": false
+  },
+  "author": 1,
+  "featured_media": 0,
+  "comment_status": "open",
+  "ping_status": "open",
+  "sticky": false,
+  "template": "",
+  "format": "standard",
+  "meta": [],
+  "acf": {
+    "type": {
+      "term_id": 48,
+      "name": "Views",
+      "slug": "views",
+      "term_group": 0,
+      "term_taxonomy_id": 48,
+      "taxonomy": "news_type",
+      "description": "",
+      "parent": 0,
+      "count": 347,
+      "filter": "raw"
+    },
+    "news_theme": [
+      {
+        "term_id": 244,
+        "name": "Landscapes &amp; habitats",
+        "slug": "landscapes-habitats",
+        "term_group": 0,
+        "term_taxonomy_id": 244,
+        "taxonomy": "news_theme",
+        "description": "",
+        "parent": 0,
+        "count": 0,
+        "filter": "raw"
+      },
+      {
+        "term_id": 248,
+        "name": "Species on the brink",
+        "slug": "species-on-the-brink",
+        "term_group": 0,
+        "term_taxonomy_id": 248,
+        "taxonomy": "news_theme",
+        "description": "",
+        "parent": 0,
+        "count": 0,
+        "filter": "raw"
+      }
+    ]
+  },
+  "_links": {
+    "self": [
+      {
+        "href": "http://local.apiurl.com/wp-json/wp/v2/posts/17343"
+      }
+    ],
+    "collection": [
+      {
+        "href": "http://local.apiurl.com/wp-json/wp/v2/posts"
+      }
+    ],
+    "about": [
+      {
+        "href": "http://local.apiurl.com/wp-json/wp/v2/types/post"
+      }
+    ],
+    "author": [
+      {
+        "embeddable": true,
+        "href": "http://local.apiurl.com/wp-json/wp/v2/users/145"
+      }
+    ],
+    "replies": [
+      {
+        "embeddable": true,
+        "href": "http://local.apiurl.com/wp-json/wp/v2/comments?post=17343"
+      }
+    ],
+    "version-history": [
+      {
+        "href": "http://local.apiurl.com/wp-json/wp/v2/posts/17343/revisions"
+      }
+    ],
+    "wp:attachment": [
+      {
+        "href": "http://local.apiurl.com/wp-json/wp/v2/media?parent=17343"
+      }
+    ],
+    "wp:term": [
+      {
+        "taxonomy": "category",
+        "embeddable": true,
+        "href": "http://local.apiurl.com/wp-json/wp/v2/categories?post=17343"
+      },
+      {
+        "taxonomy": "post_tag",
+        "embeddable": true,
+        "href": "http://local.apiurl.com/wp-json/wp/v2/tags?post=17343"
+      },
+      {
+        "taxonomy": "yst_prominent_words",
+        "embeddable": true,
+        "href": "http://local.apiurl.com/wp-json/wp/v2/yst_prominent_words?post=17343"
+      },
+      {
+        "taxonomy": "news_type",
+        "embeddable": true,
+        "href": "http://local.apiurl.com/wp-json/wp/v2/news-types?post=17343"
+      },
+      {
+        "taxonomy": "news_theme",
+        "embeddable": true,
+        "href": "http://local.apiurl.com/wp-json/wp/v2/news-themes?post=17343"
+      }
+    ],
+    "curies": [
+      {
+        "name": "wp",
+        "href": "https://api.w.org/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}

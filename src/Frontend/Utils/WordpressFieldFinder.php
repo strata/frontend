@@ -85,7 +85,7 @@ class WordpressFieldFinder
     public static function slug(array $data, array $searchFields = null): ?string
     {
         if (empty($searchFields)) {
-            $searchFields = ['slug'];
+            $searchFields = ['slug', 'post_name'];
         }
 
         return self::findFirstFieldFromSearch($searchFields, $data);
@@ -133,7 +133,7 @@ class WordpressFieldFinder
     public static function excerpt(array $data, array $searchFields = null): ?string
     {
         if (empty($searchFields)) {
-            $searchFields = ['excerpt' => ['rendered']];
+            $searchFields = ['excerpt' => ['rendered'], 'post_excerpt'];
         }
 
         return self::findFirstFieldFromSearch($searchFields, $data);
@@ -150,7 +150,23 @@ class WordpressFieldFinder
     public static function content(array $data, array $searchFields = null): ?string
     {
         if (empty($searchFields)) {
-            $searchFields = ['content' => ['rendered']];
+            $searchFields = ['content' => ['rendered'], 'post_content'];
+        }
+
+        return self::findFirstFieldFromSearch($searchFields, $data, 'string');
+    }
+
+    /**
+     * Attempt to find the author ID field from an array of data
+     *
+     * @param array $data
+     * @param array $searchFields
+     * @return null|string
+     */
+    public static function authorID(array $data, array $searchFields = null): ?int
+    {
+        if (empty($searchFields)) {
+            $searchFields = ['author', 'post_author'];
         }
 
         return self::findFirstFieldFromSearch($searchFields, $data, 'integer');
@@ -179,9 +195,9 @@ class WordpressFieldFinder
      * @param array $searchFields in order of preference
      * @param array $data
      * @param string $type
-     * @return null|string
+     * @return mixed
      */
-    protected static function findFirstFieldFromSearch(array $searchFields, array $data, $type = 'string'): ?string
+    protected static function findFirstFieldFromSearch(array $searchFields, array $data, $type = 'string')
     {
         // Lets lowercase the data array keys for easier searching;
         $data = array_change_key_case($data, CASE_LOWER);
@@ -216,6 +232,9 @@ class WordpressFieldFinder
                         Assert::string($potentialValue);
                         break;
                     case 'integer':
+                        if (is_string($potentialValue) && is_numeric($potentialValue)) {
+                            $potentialValue = (int) $potentialValue;
+                        }
                         Assert::integer($potentialValue);
                         break;
                     default:

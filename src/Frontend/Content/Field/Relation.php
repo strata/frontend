@@ -20,17 +20,51 @@ class Relation extends ContentField
     protected $content;
 
     /**
+     * Content type of relation
+     *
+     * @var string
+     */
+    protected $contentType;
+
+    /**
      * Create Relation content field
      *
      * @param string $name
+     * @param string $contentType
      *
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function __construct(string $name)
+    public function __construct(string $name, $contentType = null)
     {
         $this->setName($name);
-        $this->content = new BaseContent();
+        $this->content = new Page();
+        if ($contentType !== null) {
+            $this->setContentType($contentType);
+        }
     }
+
+    /**
+     * Set content type for this relation item
+     *
+     * @param string $contentType
+     * @return Relation Fluent interface
+     */
+    public function setContentType($contentType): Relation
+    {
+        $this->contentType = $contentType;
+        return $this;
+    }
+
+    /**
+     * Return content type for this relation item
+     *
+     * @return string
+     */
+    public function getContentType(): string
+    {
+        return $this->contentType;
+    }
+
 
     /**
      * Set the Page Object

@@ -2,6 +2,23 @@ content_types:
   page:
     api_endpoint: wp/v2/pages
     content_fields: page.yaml
+    source_content_type: page
+  page2:
+    api_endpoint: wp/v2/pages
+    content_fields: page2.yaml
+    source_content_type: page
+  project:
+    api_endpoint: wp/v2/projects
+    content_fields: project.yaml
+    source_content_type: project
+  post:
+    api_endpoint: wp/v2/posts
+    content_fields: post.yaml
+    source_content_type: post
+  careers:
+    api_endpoint: wp/v2/careers
+    content_fields: career.yaml
+    source_content_type: careers
 
 global:
   site_name: 'Name of site'

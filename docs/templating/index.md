@@ -2,6 +2,7 @@
 
 * [Debugging](debugging.md)
 * [Content fields](content-fields.md) 
+* [Twig functions](twig-functions.md)
 * [Pagination](pagination.md)
 
 ## Templates
