@@ -115,6 +115,4 @@ class RedirectsTest extends TestCase
         $this->assertTrue($redirects->match('/about/charity'));
         $this->assertEquals('/charity', $redirects->getLastDestination());
     }
-
-
 }
