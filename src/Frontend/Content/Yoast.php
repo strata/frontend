@@ -56,13 +56,13 @@ class Yoast
     {
         $metatags = "";
         if (isset($this->opengraph["title"]) && strlen($this->opengraph["title"]) > 0) {
-            $metatags .= "<meta name=\"og:title\" content=\"" . $this->opengraph["title"] . "\">";
+            $metatags .= "<meta property=\"og:title\" content=\"" . $this->opengraph["title"] . "\">";
         }
         if (isset($this->opengraph["description"]) && strlen($this->opengraph["description"]) > 0) {
-            $metatags .= "<meta name=\"og:description\" content=\"" . $this->opengraph["description"] . "\">";
+            $metatags .= "<meta property=\"og:description\" content=\"" . $this->opengraph["description"] . "\">";
         }
         if (isset($this->opengraph["image"]) && strlen($this->opengraph["image"]) > 0) {
-            $metatags .= "<meta name=\"og:image\" content=\"" . $this->opengraph["image"] . "\">";
+            $metatags .= "<meta property=\"og:image\" content=\"" . $this->opengraph["image"] . "\">";
         }
         return $metatags;
     }
