@@ -99,6 +99,7 @@ class HeadTest extends TestCase
         $this->assertSame("<meta name=\"og:description\" content=\"description\">
 <meta name=\"og:image\" content=\"image\">
 <meta name=\"og:title\" content=\"title\">
+<meta name=\"twitter:card\" content=\"summary\">
 <meta name=\"twitter:description\" content=\"description\">
 <meta name=\"twitter:image\" content=\"description\">
 <meta name=\"twitter:title\" content=\"description\">

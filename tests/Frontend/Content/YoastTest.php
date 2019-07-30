@@ -102,6 +102,7 @@ class YoastTest extends TestCase
         $this->assertSame("<meta name=\"description\" content=\"Focus is on protecting biodiversity, which underpins healthy ecosystems and is critical for the life support systems that all living things rely on.\">
 <meta name=\"twitter:title\" content=\"About | Name of site\">
 <meta name=\"twitter:description\" content=\"Focus is on protecting biodiversity, which underpins healthy ecosystems and is critical for the life support systems that all living things rely on.\">
+<meta name=\"twitter:card\" content=\"summary_large_image\">
 <meta name=\"og:title\" content=\"Facebook override title\">
 <meta name=\"og:description\" content=\"Facebook override description\">
 <meta name=\"og:image\" content=\"http://localhost/wp-content/uploads/2018/08/first-chance-to-seeor-last-spectacular-new-footage-of-vietnams-primates-3.png\">
