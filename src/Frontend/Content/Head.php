@@ -58,7 +58,7 @@ class Head
     public function getMetaHtml(string $name): ?string
     {
         if (isset($this->meta[$name])) {
-            return "<meta name=\"" . $name . "\" content=\"" . $this->meta[$name] . "\">";
+            return $this->createMetaOutput($name, $this->meta[$name], false);
         }
         return null;
     }
@@ -67,7 +67,7 @@ class Head
     {
         $html = "";
         foreach ($this->meta as $name => $content) {
-            $html .= "<meta name=\"" . $name . "\" content=\"" . $content . "\">\n";
+            $html .= $this->createMetaOutput($name, $content);
         }
         return $html;
     }
@@ -92,6 +92,21 @@ class Head
             throw new MetaTagNotAllowedException();
         }
         $this->meta[$name] = $content;
+    }
+
+    private function createMetaOutput(string $name, string $content, bool $linebreak = true): string
+    {
+        $output = '';
+        if (preg_match('/^og:/', $name)) {
+            $output = "<meta property=\"" . $name . "\" content=\"" . $content . "\">";
+        } else {
+            $output = "<meta name=\"" . $name . "\" content=\"" . $content . "\">";
+        }
+
+        if ($linebreak == true) {
+            $output .= "\n";
+        }
+        return $output;
     }
 
     public function __toString(): string
