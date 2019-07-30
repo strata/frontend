@@ -415,6 +415,8 @@ class Wordpress extends ContentRepository
             $page->getHead()->addMeta("twitter:image", $postImage);
         }
 
+        $page->getHead()->addMeta("twitter:card", 'summary_large_image');
+
         //opengraph tags
         if (!empty($data['yoast']['opengraph-title'])) {
             $page->getHead()->addMeta("og:title", $data['yoast']['opengraph-title']);

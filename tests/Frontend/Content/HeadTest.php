@@ -87,6 +87,7 @@ class HeadTest extends TestCase
         $head->addMeta("og:description", "description");
         $head->addMeta("og:image", "image");
         $head->addMeta("og:title", "title");
+        $head->addMeta("twitter:card", "summary");
         $head->addMeta("twitter:description", "description");
         $head->addMeta("twitter:image", "description");
         $head->addMeta("twitter:title", "description");
@@ -98,6 +99,7 @@ class HeadTest extends TestCase
         $this->assertSame("<meta name=\"og:description\" content=\"description\">
 <meta name=\"og:image\" content=\"image\">
 <meta name=\"og:title\" content=\"title\">
+<meta name=\"twitter:card\" content=\"summary\">
 <meta name=\"twitter:description\" content=\"description\">
 <meta name=\"twitter:image\" content=\"description\">
 <meta name=\"twitter:title\" content=\"description\">
