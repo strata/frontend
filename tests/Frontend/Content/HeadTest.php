@@ -76,7 +76,7 @@ class HeadTest extends TestCase
         $head->addMeta("og:title", "some title for opengraph");
         $html = $head->getMetaHtml("og:title");
 
-        $this->assertSame("<meta name=\"og:title\" content=\"some title for opengraph\">", $html);
+        $this->assertSame("<meta property=\"og:title\" content=\"some title for opengraph\">", $html);
         $this->assertNull($head->getMetaHtml("non-existing"));
     }
 
@@ -96,9 +96,9 @@ class HeadTest extends TestCase
         $head->addMeta("robots", "noindex, nofollow");
         $head->addMeta("description", "Hello test");
 
-        $this->assertSame("<meta name=\"og:description\" content=\"description\">
-<meta name=\"og:image\" content=\"image\">
-<meta name=\"og:title\" content=\"title\">
+        $this->assertSame("<meta property=\"og:description\" content=\"description\">
+<meta property=\"og:image\" content=\"image\">
+<meta property=\"og:title\" content=\"title\">
 <meta name=\"twitter:card\" content=\"summary\">
 <meta name=\"twitter:description\" content=\"description\">
 <meta name=\"twitter:image\" content=\"description\">

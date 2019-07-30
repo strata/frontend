@@ -55,7 +55,7 @@ class YoastTest extends TestCase
         $yoast->setOpengraph($post["opengraph-title"], $post["opengraph-description"], $post["opengraph-image"]);
 
         $this->assertSame(
-            '<meta name="og:title" content="10 of your favourite Instagram posts"><meta name="og:description" content="As 2018 comes to a close, we look back at some of your favourite @FaunaFloraInt Instagram posts from the year..."><meta name="og:image" content="https://complex.demo/wp-content/uploads/2018/12/ten-of-your-favourite-instagram-posts-of-2018.png">',
+            '<meta property="og:title" content="10 of your favourite Instagram posts"><meta property="og:description" content="As 2018 comes to a close, we look back at some of your favourite @FaunaFloraInt Instagram posts from the year..."><meta property="og:image" content="https://complex.demo/wp-content/uploads/2018/12/ten-of-your-favourite-instagram-posts-of-2018.png">',
             $yoast->getOpengraph()
         );
         $post = (array)$posts[3]->yoast;
@@ -103,9 +103,9 @@ class YoastTest extends TestCase
 <meta name=\"twitter:title\" content=\"About | Name of site\">
 <meta name=\"twitter:description\" content=\"Focus is on protecting biodiversity, which underpins healthy ecosystems and is critical for the life support systems that all living things rely on.\">
 <meta name=\"twitter:card\" content=\"summary_large_image\">
-<meta name=\"og:title\" content=\"Facebook override title\">
-<meta name=\"og:description\" content=\"Facebook override description\">
-<meta name=\"og:image\" content=\"http://localhost/wp-content/uploads/2018/08/first-chance-to-seeor-last-spectacular-new-footage-of-vietnams-primates-3.png\">
+<meta property=\"og:title\" content=\"Facebook override title\">
+<meta property=\"og:description\" content=\"Facebook override description\">
+<meta property=\"og:image\" content=\"http://localhost/wp-content/uploads/2018/08/first-chance-to-seeor-last-spectacular-new-footage-of-vietnams-primates-3.png\">
 ", $page->getHead()->getAllMetaHtml());
     }
 }
