@@ -118,7 +118,7 @@ class Redirects
     public function match(string $url): bool
     {
         // Try one to one match first
-        $matchOne = function($url) {
+        $matchOne = function ($url) {
             return array_search($url, array_column($this->redirectsOneToOne, self::SOURCE));
         };
         $result = $matchOne($url);
@@ -126,7 +126,7 @@ class Redirects
         // Try to remove/add trailing slash from URL
         if ($result === false) {
             if (substr($url, strlen($url)-1, 1) === '/') {
-                $result = $matchOne(substr($url, 0,strlen($url)-1));
+                $result = $matchOne(substr($url, 0, strlen($url)-1));
             } else {
                 $result = $matchOne($url . '/');
             }
