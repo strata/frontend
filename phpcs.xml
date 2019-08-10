@@ -3,7 +3,7 @@
 
     <file>src</file>
     <file>tests</file>
-    <exclude-pattern>tests/Frontend/Cms/twig/cache/*</exclude-pattern>
+    <exclude-pattern>tests/Cms/twig/cache/*</exclude-pattern>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>

@@ -35,7 +35,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Studio24\\Frontend\\": "src/Frontend/"
+            "Studio24\\Frontend\\": "src/"
         }
     },
     "require-dev": {

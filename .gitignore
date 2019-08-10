@@ -4,5 +4,5 @@ composer.lock
 .phpunit*
 
 # Application gitignore
-tests/Frontend/Cms/twig/cache/*
-!tests/Frontend/Cms/twig/cache/.gitkeep
+/tests/Cms/twig/cache/*
+!/tests/Cms/twig/cache/.gitkeep
