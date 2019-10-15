@@ -16,6 +16,7 @@ use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\Document;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Metadata;
+use Studio24\Frontend\Content\Translation\ContentFieldTranslator;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
 use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
@@ -49,6 +50,11 @@ class RestData extends ContentRepository
     protected $api;
 
     /**
+     * @var \Studio24\Frontend\Content\Translation\ContentFieldTranslator
+     */
+    protected $contentFieldTranslator;
+
+    /**
      * Constructor
      *
      * @param string $baseUrl API base URI
@@ -58,9 +64,14 @@ class RestData extends ContentRepository
     {
         $this->api = new RestApiProvider($baseUrl);
 
+        $this->contentFieldTranslator = new ContentFieldTranslator();
+
         if ($contentModel instanceof ContentModel) {
             $this->setContentModel($contentModel);
+            $this->contentFieldTranslator->setContentModel($this->getContentModel());
         }
+
+
     }
 
     /**
@@ -254,63 +265,7 @@ class RestData extends ContentRepository
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
     {
         try {
-            $name = $field->getName();
-            switch ($field->getType()) {
-                case 'number':
-                    return new Number($name, $value);
-                    break;
-
-                case 'text':
-                    return new ShortText($name, $value);
-                    break;
-
-                case 'plaintext':
-                    return new PlainText($name, $value);
-                    break;
-
-                case 'richtext':
-                    return new RichText($name, $value);
-                    break;
-
-                case 'date':
-                    return new Date($name, $value);
-                    break;
-
-                case 'datetime':
-                    return new DateTime($name, $value);
-                    break;
-
-                case 'boolean':
-                    return new Boolean($name, $value);
-                    break;
-
-                case 'array':
-                    $array = new ArrayContent($name);
-
-                    if (!is_array($value)) {
-                        break;
-                    }
-
-                    // Loop through data array
-                    foreach ($value as $row) {
-                        // For each row add a set of content fields
-                        $item = new ContentFieldCollection();
-                        foreach ($field as $childField) {
-                            if (!isset($row[$childField->getName()])) {
-                                continue;
-                            }
-                            $childValue = $row[$childField->getName()];
-                            $contentField = $this->getContentField($childField, $childValue);
-                            if ($contentField !== null) {
-                                $item->addItem($this->getContentField($childField, $childValue));
-                            }
-                        }
-                        $array->addItem($item);
-                    }
-
-                    return $array;
-                    break;
-            }
+            return $this->contentFieldTranslator->resolveContentField($field, $value);
         } catch (\Error $e) {
             $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
             throw new ContentFieldException($message, 0, $e);
