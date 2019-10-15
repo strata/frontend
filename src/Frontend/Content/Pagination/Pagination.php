@@ -8,7 +8,7 @@ use Studio24\Frontend\Exception\PaginationException;
 /**
  * Simple class to manage API pagination
  *
- * @package Studio24\Frontend\Api
+ * @package Studio24\Frontend\Api\Response
  */
 class Pagination implements PaginationInterface
 {

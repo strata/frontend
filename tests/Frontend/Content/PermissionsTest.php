@@ -3,14 +3,14 @@
 namespace App\Tests\Frontend\Content;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Api\Permissions;
+use Studio24\Frontend\Api\ApiPermissionHelper;
 
 class PermissionsTest extends TestCase
 {
 
     public function testDefault()
     {
-        $perms = new Permissions();
+        $perms = new ApiPermissionHelper();
         $this->assertTrue($perms->read());
         $this->assertFalse($perms->write());
         $this->assertFalse($perms->delete());
@@ -18,7 +18,7 @@ class PermissionsTest extends TestCase
 
     public function testRead()
     {
-        $perms = new Permissions(Permissions::READ);
+        $perms = new ApiPermissionHelper(ApiPermissionHelper::READ);
         $this->assertTrue($perms->read());
         $this->assertFalse($perms->write());
         $this->assertFalse($perms->delete());
@@ -26,7 +26,7 @@ class PermissionsTest extends TestCase
 
     public function testWrite()
     {
-        $perms = new Permissions(Permissions::WRITE);
+        $perms = new ApiPermissionHelper(ApiPermissionHelper::WRITE);
         $this->assertFalse($perms->read());
         $this->assertTrue($perms->write());
         $this->assertFalse($perms->delete());
@@ -34,7 +34,7 @@ class PermissionsTest extends TestCase
 
     public function testDelete()
     {
-        $perms = new Permissions(Permissions::DELETE);
+        $perms = new ApiPermissionHelper(ApiPermissionHelper::DELETE);
         $this->assertFalse($perms->read());
         $this->assertFalse($perms->write());
         $this->assertTrue($perms->delete());
@@ -42,7 +42,7 @@ class PermissionsTest extends TestCase
 
     public function testReadWrite()
     {
-        $perms = new Permissions(Permissions::WRITE | Permissions::READ);
+        $perms = new ApiPermissionHelper(ApiPermissionHelper::WRITE | ApiPermissionHelper::READ);
         $this->assertTrue($perms->read());
         $this->assertTrue($perms->write());
         $this->assertFalse($perms->delete());
@@ -50,7 +50,7 @@ class PermissionsTest extends TestCase
 
     public function testReadDelete()
     {
-        $perms = new Permissions(Permissions::DELETE | Permissions::READ);
+        $perms = new ApiPermissionHelper(ApiPermissionHelper::DELETE | ApiPermissionHelper::READ);
         $this->assertTrue($perms->read());
         $this->assertFalse($perms->write());
         $this->assertTrue($perms->delete());
@@ -58,7 +58,7 @@ class PermissionsTest extends TestCase
 
     public function testReadWriteDelete()
     {
-        $perms = new Permissions(Permissions::WRITE | Permissions::READ | Permissions::DELETE);
+        $perms = new ApiPermissionHelper(ApiPermissionHelper::WRITE | ApiPermissionHelper::READ | ApiPermissionHelper::DELETE);
         $this->assertTrue($perms->read());
         $this->assertTrue($perms->write());
         $this->assertTrue($perms->delete());

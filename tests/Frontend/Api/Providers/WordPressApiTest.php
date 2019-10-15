@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Api\Providers\Wordpress;
+use Studio24\Frontend\Api\Provider\WordpressApiProvider;
 
 class WordPressApiTest extends TestCase
 {
@@ -41,11 +41,11 @@ class WordPressApiTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new Wordpress('http://demo.wp-api.org/wp-json/wp/v2/');
+        $api = new WordpressApiProvider('http://demo.wp-api.org/wp-json/wp/v2/');
         $api->setClient($client);
 
         // Test it!
-        $posts = $api->listPosts('posts');
+        $posts = $api->list('posts');
         $this->assertEquals(1, $posts->getPagination()->getPage());
         $this->assertEquals(12, $posts->getPagination()->getTotalResults());
         $this->assertEquals(2, $posts->getPagination()->getTotalPages());
@@ -54,7 +54,7 @@ class WordPressApiTest extends TestCase
         $this->assertEquals(1, $data[0]['id']);
         $this->assertTrue(!empty($data[0]['title']['rendered']));
 
-        $posts = $api->listPosts('posts', 2);
+        $posts = $api->list('posts', 2);
         $this->assertEquals(2, $posts->getPagination()->getPage());
 
         $data = $posts->getResponseData();
@@ -87,7 +87,7 @@ class WordPressApiTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new Wordpress('somewhere');
+        $api = new WordpressApiProvider('somewhere');
         $api->setClient($client);
 
         // Test it!

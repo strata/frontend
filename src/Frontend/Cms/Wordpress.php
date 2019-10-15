@@ -7,23 +7,18 @@ use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
-use Studio24\Frontend\Content\Field\AssetField;
 use Studio24\Frontend\Content\Field\Audio;
 use Studio24\Frontend\Content\Field\Decimal;
 use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\TaxonomyTerms;
 use Studio24\Frontend\Content\Field\Video;
-use Studio24\Frontend\Content\Field\ContentField;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Document;
-use Studio24\Frontend\Content\Head;
 use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\Content\Taxonomies\Term;
 use Studio24\Frontend\Content\Taxonomies\TermCollection;
-use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
-use Studio24\Frontend\ContentModel\Field;
 use Studio24\Frontend\Exception\ApiException;
 use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\ContentFieldException;
@@ -48,7 +43,7 @@ use Studio24\Frontend\Content\User;
 use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\ContentType;
 use Studio24\Frontend\ContentModel\FieldInterface;
-use Studio24\Frontend\Api\Providers\Wordpress as WordpressApi;
+use Studio24\Frontend\Api\Provider\WordpressApiProvider as WordpressApi;
 use Studio24\Frontend\Traits\LoggerTrait;
 use Studio24\Frontend\Utils\FileInfoFormatter;
 use Studio24\Frontend\Utils\WordpressFieldFinder as FieldFinder;
@@ -170,7 +165,7 @@ class Wordpress extends ContentRepository
             }
         }
 
-        $list = $this->api->listPosts(
+        $list = $this->api->list(
             $this->getContentApiEndpoint(),
             $page,
             $options
@@ -212,7 +207,7 @@ class Wordpress extends ContentRepository
         }
 
         // Get content
-        $data = $this->api->getPost($this->getContentApiEndpoint(), $id);
+        $data = $this->api->getOne($this->getContentApiEndpoint(), $id);
         $page = $this->createPage($data);
 
         if ($this->hasCache()) {
@@ -264,7 +259,7 @@ class Wordpress extends ContentRepository
         $slug = end($slug);
 
         // Get content
-        $results = $this->api->listPosts($this->getContentApiEndpoint(), 1, ['slug' => $slug]);
+        $results = $this->api->list($this->getContentApiEndpoint(), 1, ['slug' => $slug]);
         if ($results->getPagination()->getTotalResults() != 1) {
             throw new NotFoundException(sprintf('Page not found for requested URL: %s, slug: %s', $url, $slug), 404);
         }

@@ -7,7 +7,7 @@ namespace Studio24\Frontend\Api;
  * Class to manage allowed actions on an API and to protect against misuse
  *
  */
-class Permissions
+class ApiPermissionHelper
 {
     const READ = 1;
     const WRITE = 2;
@@ -18,7 +18,7 @@ class Permissions
     /**
      * Set which actions you are allowed to access via this API
      *
-     * @param int $actions (Permissions::READ, Permissions::WRITE, Permissions::DELETE)
+     * @param int $actions (ApiPermissionHelper::READ, ApiPermissionHelper::WRITE, ApiPermissionHelper::DELETE)
      */
     public function __construct(int $actions = self::READ)
     {

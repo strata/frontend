@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api;
+namespace Studio24\Frontend\Api\Response;
 
 use Studio24\Frontend\Content\Pagination\PaginationInterface;
 
 /**
  * Simple class to model the response data for lists of data
  *
- * @package Studio24\Frontend\Api
+ * @package Studio24\Frontend\Api\Response
  */
-class ListResponse
+class ApiListResponse
 {
     /**
      * Array of response data
@@ -44,7 +44,16 @@ class ListResponse
     public function __construct(array $data, PaginationInterface $pagination)
     {
         $this->setPagination($pagination);
-        $this->setResponseData($data);
+
+        if (isset($data['results']) && is_array($data['results'])) {
+            $this->setResponseData($data['results']);
+        } else {
+            $this->setResponseData($data);
+        }
+
+        if (isset($data['meta'])) {
+            $this->setMetadata($data['meta']);
+        }
     }
 
     /**
@@ -81,9 +90,9 @@ class ListResponse
      * Set the response data
      *
      * @param array $responseData
-     * @return ListResponse
+     * @return ApiListResponse
      */
-    public function setResponseData(array $responseData): ListResponse
+    public function setResponseData(array $responseData): ApiListResponse
     {
         $this->responseData = $responseData;
         return $this;
@@ -93,9 +102,9 @@ class ListResponse
      * Set the metadata
      *
      * @param array $metadata
-     * @return ListResponse
+     * @return ApiListResponse
      */
-    public function setMetadata(array $metadata): ListResponse
+    public function setMetadata(array $metadata): ApiListResponse
     {
         $this->metadata = $metadata;
         return $this;
@@ -106,9 +115,9 @@ class ListResponse
      *
      * @param string $key
      * @param $value
-     * @return ListResponse
+     * @return ApiListResponse
      */
-    public function addMetadata(string $key, $value): ListResponse
+    public function addMetadata(string $key, $value): ApiListResponse
     {
         $this->metadata[$key] = $value;
         return $this;
@@ -118,9 +127,9 @@ class ListResponse
      * Set pagination object
      *
      * @param PaginationInterface $pagination
-     * @return ListResponse
+     * @return ApiListResponse
      */
-    public function setPagination(PaginationInterface $pagination): ListResponse
+    public function setPagination(PaginationInterface $pagination): ApiListResponse
     {
         $this->pagination = $pagination;
         return $this;

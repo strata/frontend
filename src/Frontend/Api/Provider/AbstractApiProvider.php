@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api;
+namespace Studio24\Frontend\Api\Provider;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
+use Studio24\Frontend\Api\ApiPermissionHelper;
 use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\PermissionException;
 use Studio24\Frontend\Exception\FailedRequestException;
@@ -18,7 +19,7 @@ use Studio24\Frontend\Version;
  *
  * @package Studio24\Frontend
  */
-abstract class RestApiAbstract
+abstract class AbstractApiProvider
 {
     use LoggerTrait;
 
@@ -28,6 +29,13 @@ abstract class RestApiAbstract
      * @var int
      */
     protected $totalRequests = 0;
+
+    /**
+     * What is the limit for paginated results
+     *
+     * @var int
+     */
+    public $paginationLimit = 10;
 
     /**
      * API base URI
@@ -44,11 +52,11 @@ abstract class RestApiAbstract
     protected $client;
 
     /**
-     * Permissions for accessing the API
+     * ApiPermissionHelper for accessing the API
      *
      * Used to protect against accidental misuse
      *
-     * @var Permissions
+     * @var ApiPermissionHelper
      */
     protected $permissions;
 
@@ -77,16 +85,16 @@ abstract class RestApiAbstract
      * Constructor
      *
      * @param string $baseUri API base URI
-     * @param Permissions $permissions (if not passed, default = read-only)
+     * @param ApiPermissionHelper $permissions (if not passed, default = read-only)
      */
-    public function __construct(string $baseUri, Permissions $permissions = null)
+    public function __construct(string $baseUri, ApiPermissionHelper $permissions = null)
     {
         $this->setBaseUri($baseUri);
 
-        if ($permissions instanceof Permissions) {
+        if ($permissions instanceof ApiPermissionHelper) {
             $this->permissions = $permissions;
         } else {
-            $this->permissions = new Permissions(Permissions::READ);
+            $this->permissions = new ApiPermissionHelper(ApiPermissionHelper::READ);
         }
     }
 
@@ -119,8 +127,17 @@ abstract class RestApiAbstract
      * Setup and return the HTTP client to communicate with the API
      *
      * @return Client
+     * @throws \Studio24\Frontend\Exception\ApiException
      */
-    abstract public function setupHttpClient() : Client;
+    public function setupHttpClient() : Client
+    {
+        return new Client([
+            'base_uri' => $this->getBaseUri(),
+            'headers' => [
+                'User-Agent' => $this->getUserAgent(),
+            ]
+        ]);
+    }
 
     /**
      * Return the user agent string to use with HTTP requests
@@ -194,7 +211,7 @@ abstract class RestApiAbstract
      */
     public function permissionRead()
     {
-        $this->checkPermission(Permissions::READ);
+        $this->checkPermission(ApiPermissionHelper::READ);
     }
 
     /**
@@ -204,7 +221,7 @@ abstract class RestApiAbstract
      */
     public function permissionWrite()
     {
-        $this->checkPermission(Permissions::WRITE);
+        $this->checkPermission(ApiPermissionHelper::WRITE);
     }
 
     /**
@@ -214,7 +231,7 @@ abstract class RestApiAbstract
      */
     public function permissionDelete()
     {
-        $this->checkPermission(Permissions::DELETE);
+        $this->checkPermission(ApiPermissionHelper::DELETE);
     }
 
     /**
@@ -353,5 +370,24 @@ abstract class RestApiAbstract
     public function getTotalRequests(): int
     {
         return $this->totalRequests;
+    }
+
+    /**
+     * Determine what the limit for the number of paginated results is
+     *
+     * @param array $options
+     * @return int
+     */
+    public function resolvePaginationLimit(array $options): int
+    {
+        if (isset($options['limit'])) {
+            return $options['limit'];
+        }
+
+        if (isset($options['per_page'])) {
+            return $options['per_page'];
+        }
+
+        return $this->paginationLimit;
     }
 }

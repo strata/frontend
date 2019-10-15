@@ -1,31 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api\Providers;
+namespace Studio24\Frontend\Api\Provider;
 
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use Studio24\Frontend\Api\RestApiAbstract;
-use Studio24\Frontend\Api\ListResponse;
+use Studio24\Frontend\Api\Response\ApiListResponse;
 use Studio24\Frontend\Content\Pagination\Pagination;
 
-class RestApi extends RestApiAbstract
+class RestApiProvider extends AbstractApiProvider
 {
-    /**
-     * Setup HTTP client
-     *
-     * @return Client
-     * @throws \Studio24\Frontend\Exception\ApiException
-     */
-    public function setupHttpClient() : Client
-    {
-        return new Client([
-            'base_uri' => $this->getBaseUri(),
-            'headers' => [
-                'User-Agent' => $this->getUserAgent(),
-            ]
-        ]);
-    }
 
     /**
      * Return a collection of content items
@@ -33,18 +16,17 @@ class RestApi extends RestApiAbstract
      * @param string $apiEndpoint API endpoint to query for posts
      * @param int $page Page number to return
      * @param array $options Options to use when querying data from WordPress
-     * @return ListResponse
+     * @return ApiListResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Studio24\Frontend\Exception\NotFoundException
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
-    public function list(string $apiEndpoint, $page = 1, array $options = []) : ListResponse
+    public function list(string $apiEndpoint, $page = 1, array $options = []) : ApiListResponse
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
-
-        // @todo May need to create patterns for REST APIs for things like pagination, returning meta data. This is fixed for now.
 
         // Build query params
         $query = array_merge(['page' => $page], $options);
@@ -52,25 +34,20 @@ class RestApi extends RestApiAbstract
         $response = $this->get($apiEndpoint, ['query' => $query]);
         $data = $this->parseJsonResponse($response);
 
-        if (isset($options['limit'])) {
-            $limit = $options['limit'];
-        } else {
-            $limit = 10;
-        }
+        $limit = $this->resolvePaginationLimit($options);
+
         $pages = $this->getPagination($page, $limit, $response);
 
-        $response = new ListResponse($data['results'], $pages);
-        $response->setMetaData($data['meta']);
-        return $response;
+        return new ApiListResponse($data, $pages);
     }
 
     /**
      * Get a single content item
      *
-     * API endpoint format is expected to be: base_url/content_type/id
+     * @see https://developer.wordpress.org/rest-api/reference/posts/#retrieve-a-post
      *
      * @param string $apiEndpoint API endpoint to query for posts
-     * @param mixed $id Post ID
+     * @param int $id Post ID
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
@@ -78,12 +55,12 @@ class RestApi extends RestApiAbstract
      * @throws \Studio24\Frontend\Exception\PermissionException
      * @throws \Studio24\Frontend\Exception\NotFoundException
      */
-    public function getOne($apiEndpoint, $id) : array
+    public function getOne($apiEndpoint, int $id): array
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
 
-        $response = $this->get(sprintf('%s/%s', $apiEndpoint, $id));
+        $response = $this->get(sprintf('%s/%d', $apiEndpoint, $id));
         $data = $this->parseJsonResponse($response);
 
         return $data;

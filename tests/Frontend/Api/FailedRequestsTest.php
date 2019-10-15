@@ -8,9 +8,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Api\Providers\Wordpress;
-use Studio24\Frontend\Api\Providers\RestApi;
-use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Api\Provider\WordpressApiProvider;
+use Studio24\Frontend\Api\Provider\RestApiProvider;
 use Studio24\Frontend\Exception\NotFoundException;
 
 class FailedRequestsTest extends TestCase
@@ -30,7 +29,7 @@ class FailedRequestsTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new Wordpress('somewhere');
+        $api = new WordpressApiProvider('somewhere');
         $api->setClient($client);
 
         // Test it!
@@ -58,7 +57,7 @@ class FailedRequestsTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestApi('somewhere');
+        $api = new RestApiProvider('somewhere');
         $api->setClient($client);
 
         // 401 are ignored by default so shouldn't stop execution
@@ -82,7 +81,7 @@ class FailedRequestsTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestApi('somewhere');
+        $api = new RestApiProvider('somewhere');
         $api->setClient($client);
 
         $this->expectExceptionCode(500);
@@ -113,7 +112,7 @@ class FailedRequestsTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestApi('somewhere');
+        $api = new RestApiProvider('somewhere');
         $api->setClient($client);
 
         // Test it!
@@ -151,7 +150,7 @@ class FailedRequestsTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestApi('somewhere');
+        $api = new RestApiProvider('somewhere');
         $api->setClient($client);
 
         try {

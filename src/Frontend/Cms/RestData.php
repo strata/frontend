@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Studio24\Frontend\Cms;
 
 use GuzzleHttp\Client;
-use Studio24\Frontend\Api\Providers\RestApi;
+use Studio24\Frontend\Api\Provider\RestApiProvider;
 use Studio24\Frontend\Content\ContentInterface;
 use Studio24\Frontend\Content\Field\ArrayContent;
 use Studio24\Frontend\Content\Field\AssetField;
@@ -44,7 +44,7 @@ class RestData extends ContentRepository
     /**
      * API
      *
-     * @var RestApi
+     * @var RestApiProvider
      */
     protected $api;
 
@@ -56,7 +56,7 @@ class RestData extends ContentRepository
      */
     public function __construct(string $baseUrl = '', ContentModel $contentModel = null)
     {
-        $this->api = new RestApi($baseUrl);
+        $this->api = new RestApiProvider($baseUrl);
 
         if ($contentModel instanceof ContentModel) {
             $this->setContentModel($contentModel);
