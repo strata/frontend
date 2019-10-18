@@ -656,363 +656,395 @@ class Wordpress extends ContentRepository
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
     {
         try {
-            try {
-                return $this->contentFieldTranslator->resolveContentField($field, $value);
-            } catch (ContentFieldTranslationNotFoundException $e) {
+            $name = $field->getName();
+            switch ($field->getType()) {
+                case 'text':
+                    return new ShortText($name, (string) $value);
+                    break;
 
-            }
-            return $this->getCustomContentField($field, $value);
-        } catch (\Error $e) {
-            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s",
-              $field->getName(), $field->getType(), print_r($value, true));
-            throw new ContentFieldException($message, 0, $e);
-        } catch (\Exception $e) {
-            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s",
-              $field->getName(), $field->getType(), print_r($value, true));
-            throw new ContentFieldException($message, 0, $e);
-        }
+                case 'plaintext':
+                    return new PlainText($name, (string) $value);
+                    break;
 
-        return null;
-    }
+                case 'richtext':
+                    return new RichText($name, (string) $value);
+                    break;
 
-    /**
-     * Returns a custom content field (not one prebuilt for the FrontEnd)
-     *
-     * @param \Studio24\Frontend\ContentModel\FieldInterface $field
-     * @param $value
-     * @return \Studio24\Frontend\Content\Field\ContentFieldInterface|null
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
-     * @throws \Studio24\Frontend\Exception\ContentFieldNotSetException
-     * @throws \Studio24\Frontend\Exception\ContentTypeNotSetException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
-     */
-    protected function getCustomContentField(FieldInterface $field, $value): ?ContentFieldInterface {
-        $name = $field->getName();
-        switch ($field->getType()) {
+                case 'number':
+                    return new Number($name, $value);
+                    break;
 
-            case 'decimal':
+                case 'decimal':
                     $precision = $field->getOption('precision', $this->getContentModel());
                     $round = $field->getOption('round', $this->getContentModel());
                     return new Decimal($name, $value, $precision, $round);
                     break;
 
-            case 'image':
-                $sizesData = array();
-                if (is_int($value)) {
-                    //image ID passed on
-                    $field_data = $this->getMediaDataById($value);
+                case 'date':
+                    return new Date($name, $value);
+                    break;
 
-                    // Add sizes
-                    $availableSizes = $field->getOption('image_sizes',
-                      $this->getContentModel());
-                    if ($availableSizes !== null) {
-                        foreach ($availableSizes as $sizeName) {
-                            if (isset($field_data['media_details']['sizes'][$sizeName])) {
-                                array_push(
-                                  $sizesData,
-                                  array(
-                                    'url'    => $field_data['media_details']['sizes'][$sizeName]['source_url'],
-                                    'width'  => $field_data['media_details']['sizes'][$sizeName]['width'],
-                                    'height' => $field_data['media_details']['sizes'][$sizeName]['height'],
-                                    'name'   => $sizeName
-                                  )
-                                );
+                case 'datetime':
+                    return new DateTime($name, $value);
+                    break;
+
+                case 'boolean':
+                    return new Boolean($name, $value);
+                    break;
+
+                case 'plainarray':
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    return new PlainArray($name, $value);
+                    break;
+
+                case 'image':
+                    $sizesData = array();
+                    if (is_int($value)) {
+                        //image ID passed on
+                        $field_data = $this->getMediaDataById($value);
+
+                        // Add sizes
+                        $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
+                        if ($availableSizes !== null) {
+                            foreach ($availableSizes as $sizeName) {
+                                if (isset($field_data['media_details']['sizes'][$sizeName])) {
+                                    array_push(
+                                        $sizesData,
+                                        array(
+                                        'url' => $field_data['media_details']['sizes'][$sizeName]['source_url'],
+                                        'width' => $field_data['media_details']['sizes'][$sizeName]['width'],
+                                        'height' => $field_data['media_details']['sizes'][$sizeName]['height'],
+                                        'name' => $sizeName
+                                        )
+                                    );
+                                }
                             }
                         }
+
+                        $image = new Image(
+                            $name,
+                            $field_data['source_url'],
+                            $field_data['title']['rendered'],
+                            $field_data['caption']['rendered'],
+                            $field_data['alt_text'],
+                            $sizesData
+                        );
+
+                        return $image;
+                        break;
+                    } elseif (is_array($value)) {
+                        //image array passed on
+
+                        if (empty($value)) {
+                            return null;
+                        }
+
+                        // Add sizes
+                        $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
+                        if ($availableSizes !== null) {
+                            foreach ($availableSizes as $sizeName) {
+                                if (isset($value['sizes'][$sizeName])) {
+                                    array_push(
+                                        $sizesData,
+                                        array(
+                                        'url' => $value['sizes'][$sizeName],
+                                        'width' => $value['sizes'][$sizeName.'-width'],
+                                        'height' => $value['sizes'][$sizeName.'-height'],
+                                        'name' => $sizeName
+                                        )
+                                    );
+                                }
+                            }
+                        }
+
+                        $image = new Image(
+                            $name,
+                            $value['url'],
+                            $value['title'],
+                            $value['caption'],
+                            $value['alt'],
+                            $sizesData
+                        );
+
+                        return $image;
+                    }
+                    break;
+
+                case 'document':
+                    //given an attachment, request data and create field
+                    if (is_int($value)) {
+                        $field_data = $this->getMediaDataById($value);
+
+                        $filesize = $this->api->getMediaFileSize($field_data['source_url']);
+
+                        $document = new Document(
+                            $name,
+                            $field_data['source_url'],
+                            $filesize,
+                            $field_data['title']['rendered'],
+                            $field_data['alt_text']
+                        );
+
+                        return $document;
+                    } elseif (is_array($value)) {
+                        //given array of data, create field directy
+                        if (isset($value['filesize'])) {
+                            $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
+                        } else {
+                            $filesize = $this->api->getMediaFileSize($value['url']);
+                        }
+
+                        $document = new Document(
+                            $name,
+                            $value['url'],
+                            $filesize,
+                            $value['title'],
+                            $value['alt']
+                        );
+
+                        return $document;
+                    } else {
+                        return null;
                     }
 
-                    $image = new Image(
-                      $name,
-                      $field_data['source_url'],
-                      $field_data['title']['rendered'],
-                      $field_data['caption']['rendered'],
-                      $field_data['alt_text'],
-                      $sizesData
+                    break;
+                case 'video':
+                    $media_id = null;
+
+                    if (is_int($value)) {
+                        $media_id = $value;
+                    } elseif (is_array($value)) {
+                        $media_id = $value['id'];
+                    } else {
+                        return null;
+                    }
+
+                    $field_data = $this->getMediaDataById($media_id);
+
+                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                    $video = new Video(
+                        $name,
+                        $field_data['source_url'],
+                        $filesize,
+                        $field_data['media_details']['bitrate'],
+                        $field_data['media_details']['length_formatted'],
+                        $field_data['title']['rendered'],
+                        $field_data['alt_text']
                     );
 
-                    return $image;
+                    return $video;
                     break;
-                } elseif (is_array($value)) {
-                    //image array passed on
+
+                case 'audio':
+                    $media_id = null;
+
+                    if (is_int($value)) {
+                        $media_id = $value;
+                    } elseif (is_array($value)) {
+                        $media_id = $value['id'];
+                    } else {
+                        return null;
+                    }
+
+                    $field_data = $this->getMediaDataById($media_id);
+
+                    $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
+
+                    $audio = new Audio(
+                        $name,
+                        $field_data['source_url'],
+                        $filesize,
+                        $field_data['media_details']['bitrate'],
+                        $field_data['media_details']['length_formatted'],
+                        $field_data['media_details'],
+                        $field_data['title']['rendered'],
+                        $field_data['alt_text']
+                    );
+
+                    return $audio;
+                    break;
+
+                case 'array':
+                    $array = new ArrayContent($name);
+
+                    if (!is_array($value)) {
+                        break;
+                    }
 
                     if (empty($value)) {
-                        return null;
+                        break;
                     }
 
-                    // Add sizes
-                    $availableSizes = $field->getOption('image_sizes',
-                      $this->getContentModel());
-                    if ($availableSizes !== null) {
-                        foreach ($availableSizes as $sizeName) {
-                            if (isset($value['sizes'][$sizeName])) {
-                                array_push(
-                                  $sizesData,
-                                  array(
-                                    'url'    => $value['sizes'][$sizeName],
-                                    'width'  => $value['sizes'][$sizeName . '-width'],
-                                    'height' => $value['sizes'][$sizeName . '-height'],
-                                    'name'   => $sizeName
-                                  )
-                                );
+                    // Loop through data array
+                    foreach ($value as $row) {
+                        // For each row add a set of content fields
+                        $item = new ContentFieldCollection();
+                        foreach ($field as $childField) {
+                            if (!isset($row[$childField->getName()])) {
+                                continue;
+                            }
+                            $childValue = $row[$childField->getName()];
+                            $contentField = $this->getContentField($childField, $childValue);
+                            if ($contentField !== null) {
+                                $item->addItem($contentField);
                             }
                         }
+                        $array->addItem($item);
                     }
 
-                    $image = new Image(
-                      $name,
-                      $value['url'],
-                      $value['title'],
-                      $value['caption'],
-                      $value['alt'],
-                      $sizesData
-                    );
-
-                    return $image;
-                }
-                break;
-
-            case 'document':
-                //given an attachment, request data and create field
-                if (is_int($value)) {
-                    $field_data = $this->getMediaDataById($value);
-
-                    $filesize = $this->api->getMediaFileSize($field_data['source_url']);
-
-                    $document = new Document(
-                      $name,
-                      $field_data['source_url'],
-                      $filesize,
-                      $field_data['title']['rendered'],
-                      $field_data['alt_text']
-                    );
-
-                    return $document;
-                } elseif (is_array($value)) {
-                    //given array of data, create field directy
-                    if (isset($value['filesize'])) {
-                        $filesize = FileInfoFormatter::formatFileSize($value['filesize']);
-                    } else {
-                        $filesize = $this->api->getMediaFileSize($value['url']);
-                    }
-
-                    $document = new Document(
-                      $name,
-                      $value['url'],
-                      $filesize,
-                      $value['title'],
-                      $value['alt']
-                    );
-
-                    return $document;
-                } else {
-                    return null;
-                }
-
-                break;
-            case 'video':
-                $media_id = null;
-
-                if (is_int($value)) {
-                    $media_id = $value;
-                } elseif (is_array($value)) {
-                    $media_id = $value['id'];
-                } else {
-                    return null;
-                }
-
-                $field_data = $this->getMediaDataById($media_id);
-
-                $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
-
-                $video = new Video(
-                  $name,
-                  $field_data['source_url'],
-                  $filesize,
-                  $field_data['media_details']['bitrate'],
-                  $field_data['media_details']['length_formatted'],
-                  $field_data['title']['rendered'],
-                  $field_data['alt_text']
-                );
-
-                return $video;
-                break;
-
-            case 'audio':
-                $media_id = null;
-
-                if (is_int($value)) {
-                    $media_id = $value;
-                } elseif (is_array($value)) {
-                    $media_id = $value['id'];
-                } else {
-                    return null;
-                }
-
-                $field_data = $this->getMediaDataById($media_id);
-
-                $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
-
-                $audio = new Audio(
-                  $name,
-                  $field_data['source_url'],
-                  $filesize,
-                  $field_data['media_details']['bitrate'],
-                  $field_data['media_details']['length_formatted'],
-                  $field_data['media_details'],
-                  $field_data['title']['rendered'],
-                  $field_data['alt_text']
-                );
-
-                return $audio;
-                break;
-
-            case 'relation':
-                if (!is_array($value) || empty($value) || !$field->hasOption('content_type')) {
+                    return $array;
                     break;
-                }
 
-                // Swap to relation content type
-                $currentContentType = $this->getContentType()->getName();
-
-                $relation = new Relation($name);
-
-                $relationContentType = $field->getOption('content_type');
-                if (is_array($relationContentType)) {
-                    $contentType = $this->getContentModel()
-                      ->getBySourceContentType($value['post_type']);
-                    if (!($contentType instanceof ContentType)) {
-                        return null;
+                case 'relation':
+                    if (!is_array($value) || empty($value) ||!$field->hasOption('content_type')) {
+                        break;
                     }
-                    $relationContentType = $contentType->getName();
-                }
 
-                $this->setContentType($relationContentType);
-                $relation->setContentType($relationContentType);
-                $this->setContentFields($relation->getContent(), $value);
+                    // Swap to relation content type
+                    $currentContentType = $this->getContentType()->getName();
 
-                // Swap back to original content type
-                $this->setContentType($currentContentType);
+                    $relation = new Relation($name);
 
-                return $relation;
-                break;
-
-            case 'relation_array':
-                if (!is_array($value) || empty($value) || !$field->hasOption('content_type')) {
-                    break;
-                }
-
-                // Swap to relation content type
-                $currentContentType = $this->getContentType()->getName();
-
-                $relationArray = new RelationArray($name);
-                foreach ($value as $row) {
-                    // Detect content type of relation item
                     $relationContentType = $field->getOption('content_type');
                     if (is_array($relationContentType)) {
-                        $contentType = $this->getContentModel()
-                          ->getBySourceContentType($row['post_type']);
+                        $contentType = $this->getContentModel()->getBySourceContentType($value['post_type']);
                         if (!($contentType instanceof ContentType)) {
-                            if ($this->hasLogger()) {
-                                $this->getLogger()
-                                  ->info(sprintf("Invalid content type '%s' set in relation array",
-                                    $row['post_type']));
-                            }
                             return null;
                         }
                         $relationContentType = $contentType->getName();
                     }
 
-                    $item = new Relation($name, $relationContentType);
                     $this->setContentType($relationContentType);
-                    $this->setContentFields($item->getContent(), $row);
-                    $relationArray->addItem($item);
-                }
+                    $relation->setContentType($relationContentType);
+                    $this->setContentFields($relation->getContent(), $value);
 
-                // Swap back to original content type
-                $this->setContentType($currentContentType);
+                    // Swap back to original content type
+                    $this->setContentType($currentContentType);
 
-                return $relationArray;
-                break;
+                    return $relation;
+                    break;
 
-            case 'flexible':
-                if (!is_array($value)) {
-                    return null;
-                } elseif (empty($value)) {
-                    return null;
-                }
-
-                $flexible = new FlexibleContent($name);
-
-                foreach ($value as $componentValue) {
-                    if (!isset($field[$componentValue['acf_fc_layout']])) {
-                        continue;
+                case 'relation_array':
+                    if (!is_array($value) || empty($value) || !$field->hasOption('content_type')) {
+                        break;
                     }
 
-                    $componentName = $componentValue['acf_fc_layout'];
+                    // Swap to relation content type
+                    $currentContentType = $this->getContentType()->getName();
 
-                    if (empty($field[$componentName])) {
-                        continue;
+                    $relationArray = new RelationArray($name);
+                    foreach ($value as $row) {
+                        // Detect content type of relation item
+                        $relationContentType = $field->getOption('content_type');
+                        if (is_array($relationContentType)) {
+                            $contentType = $this->getContentModel()->getBySourceContentType($row['post_type']);
+                            if (!($contentType instanceof ContentType)) {
+                                if ($this->hasLogger()) {
+                                    $this->getLogger()->info(sprintf("Invalid content type '%s' set in relation array", $row['post_type']));
+                                }
+                                return null;
+                            }
+                            $relationContentType = $contentType->getName();
+                        }
+
+                        $item = new Relation($name, $relationContentType);
+                        $this->setContentType($relationContentType);
+                        $this->setContentFields($item->getContent(), $row);
+                        $relationArray->addItem($item);
                     }
 
-                    $component = new Component($componentName);
+                    // Swap back to original content type
+                    $this->setContentType($currentContentType);
 
-                    foreach ($field[$componentName] as $componentFieldItem) {
-                        if (!isset($componentValue[$componentFieldItem->getName()])) {
+                    return $relationArray;
+                    break;
+
+                case 'flexible':
+                    if (!is_array($value)) {
+                        return null;
+                    } elseif (empty($value)) {
+                        return null;
+                    }
+
+                    $flexible = new FlexibleContent($name);
+
+                    foreach ($value as $componentValue) {
+                        if (!isset($field[$componentValue['acf_fc_layout']])) {
                             continue;
                         }
-                        $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
-                        $componentFieldItemObject = $this->getContentField($componentFieldItem,
-                          $componentFieldItemValue);
 
-                        if ($componentFieldItemObject !== null) {
-                            $component->addContent($componentFieldItemObject);
+                        $componentName = $componentValue['acf_fc_layout'];
+
+                        if (empty($field[$componentName])) {
+                            continue;
                         }
+
+                        $component = new Component($componentName);
+
+                        foreach ($field[$componentName] as $componentFieldItem) {
+                            if (!isset($componentValue[$componentFieldItem->getName()])) {
+                                continue;
+                            }
+                            $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
+                            $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+
+                            if ($componentFieldItemObject !== null) {
+                                $component->addContent($componentFieldItemObject);
+                            }
+                        }
+
+                        $flexible->addComponent($component);
                     }
 
-                    $flexible->addComponent($component);
-                }
+                    return $flexible;
+                    break;
 
-                return $flexible;
-                break;
+                case 'taxonomyterms':
+                    //@todo cater for situation in which term ID is returned as opposed to term object
+                    //can receive single term or array of terms
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    if (empty($value)) {
+                        return null;
+                    }
 
-            case 'taxonomyterms':
-                //@todo cater for situation in which term ID is returned as opposed to term object
-                //can receive single term or array of terms
-                if (!is_array($value)) {
-                    return null;
-                }
-                if (empty($value)) {
-                    return null;
-                }
+                    $terms = new TermCollection();
+                    if (isset($value['term_id'])) {
+                        //we've got a single term, not an array of terms
+                        $termsData = array($value);
+                    } else {
+                        $termsData = $value;
+                    }
 
-                $terms = new TermCollection();
-                if (isset($value['term_id'])) {
-                    //we've got a single term, not an array of terms
-                    $termsData = array($value);
-                } else {
-                    $termsData = $value;
-                }
+                    foreach ($termsData as $singleTermData) {
+                        $link = $singleTermData['taxonomy'].'/'.$singleTermData['slug'];
+                        $currentTerm = new Term(
+                            $singleTermData['term_id'],
+                            $singleTermData['name'],
+                            $singleTermData['slug'],
+                            $link,
+                            $singleTermData['count'],
+                            $singleTermData['description']
+                        );
+                        $terms->addItem($currentTerm);
+                    }
 
-                foreach ($termsData as $singleTermData) {
-                    $link = $singleTermData['taxonomy'] . '/' . $singleTermData['slug'];
-                    $currentTerm = new Term(
-                      $singleTermData['term_id'],
-                      $singleTermData['name'],
-                      $singleTermData['slug'],
-                      $link,
-                      $singleTermData['count'],
-                      $singleTermData['description']
-                    );
-                    $terms->addItem($currentTerm);
-                }
+                    $taxonomyTermField = new TaxonomyTerms($name);
+                    $taxonomyTermField->setContent($terms);
 
-                $taxonomyTermField = new TaxonomyTerms($name);
-                $taxonomyTermField->setContent($terms);
-
-                return $taxonomyTermField;
-                break;
+                    return $taxonomyTermField;
+                    break;
+            }
+        } catch (\Error $e) {
+            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        } catch (\Exception $e) {
+            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
         }
 
         return null;
