@@ -655,48 +655,32 @@ class Wordpress extends ContentRepository
      */
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
     {
-        try {
-            $name = $field->getName();
+         try {
+             try {
+                 return $this->contentFieldTranslator->resolveContentField($field, $value);
+             } catch (ContentFieldTranslationNotFoundException $e) {
+                 return $this->getCustomContentField($field, $value);
+             }
+        } catch (\Error $e) {
+            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        } catch (\Exception $e) {
+            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        }
+
+        return null;
+    }
+
+    protected function getCustomContentField(FieldInterface $field, $value): ?ContentFieldInterface
+    {
+        $name = $field->getName();
             switch ($field->getType()) {
-                case 'text':
-                    return new ShortText($name, (string) $value);
-                    break;
-
-                case 'plaintext':
-                    return new PlainText($name, (string) $value);
-                    break;
-
-                case 'richtext':
-                    return new RichText($name, (string) $value);
-                    break;
-
-                case 'number':
-                    return new Number($name, $value);
-                    break;
 
                 case 'decimal':
                     $precision = $field->getOption('precision', $this->getContentModel());
                     $round = $field->getOption('round', $this->getContentModel());
                     return new Decimal($name, $value, $precision, $round);
-                    break;
-
-                case 'date':
-                    return new Date($name, $value);
-                    break;
-
-                case 'datetime':
-                    return new DateTime($name, $value);
-                    break;
-
-                case 'boolean':
-                    return new Boolean($name, $value);
-                    break;
-
-                case 'plainarray':
-                    if (!is_array($value)) {
-                        return null;
-                    }
-                    return new PlainArray($name, $value);
                     break;
 
                 case 'image':
@@ -1039,15 +1023,7 @@ class Wordpress extends ContentRepository
                     return $taxonomyTermField;
                     break;
             }
-        } catch (\Error $e) {
-            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
-            throw new ContentFieldException($message, 0, $e);
-        } catch (\Exception $e) {
-            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
-            throw new ContentFieldException($message, 0, $e);
-        }
-
-        return null;
+            return null;
     }
 
     public function setPageTaxonomies(array $validTaxonomies, BaseContent $page, array $data)
@@ -1078,6 +1054,8 @@ class Wordpress extends ContentRepository
 
         $page->setTaxonomies($taxonomies);
     }
+
+
 
     /**
      * Generate user object from API data
