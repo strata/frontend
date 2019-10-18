@@ -286,6 +286,7 @@ EOD;
 
         $this->assertEquals($expected, $page->getContent()->__toString());
         $this->assertEquals("Joe Bloggs", $page->getAuthor()->getName());
+        $this->assertEquals('page-template.php', $page->getTemplate());
     }
 
     public function testPageTaxonomy()

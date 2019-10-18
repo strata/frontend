@@ -467,6 +467,9 @@ class Wordpress extends ContentRepository
             $page->setExcerpt(FieldFinder::excerpt($data));
         }
 
+        if (!empty(FieldFinder::template($data))) {
+            $page->setTemplate(FieldFinder::template($data));
+        }
 
         if (!empty(FieldFinder::featuredImage($data))) {
             $this->setFeaturedImage($page, FieldFinder::featuredImage($data));

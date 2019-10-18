@@ -139,6 +139,15 @@ class WordpressFieldFinder
         return self::findFirstFieldFromSearch($searchFields, $data);
     }
 
+    public static function template(array $data, array $searchFields = null): ?string
+    {
+        if (empty($searchFields)) {
+            $searchFields = ['template', 'page_template'];
+        }
+
+        return self::findFirstFieldFromSearch($searchFields, $data);
+    }
+
 
     /**
      * Attempt to find the content field from an array of data

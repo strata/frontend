@@ -28,6 +28,12 @@ class Page extends BaseContent
     protected $head;
 
     /**
+     * Template template
+     * @var $template
+     */
+    protected $template;
+
+    /**
      * Page constructor.
      */
     public function __construct()
@@ -148,5 +154,22 @@ class Page extends BaseContent
     {
         $this->author = $author;
         return $this;
+    }
+
+    /**
+     * Set page template
+     *
+     * @param $template
+     * @return Page
+     */
+    public function setTemplate($template): Page
+    {
+        $this->template = $template;
+        return $this;
+    }
+
+    public function getTemplate(): ?string
+    {
+        return $this->template;
     }
 }
