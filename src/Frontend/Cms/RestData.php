@@ -71,7 +71,6 @@ class RestData extends ContentRepository
             $this->contentFieldTranslator->setContentModel($this->getContentModel());
         }
 
-
     }
 
     /**

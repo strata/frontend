@@ -5,6 +5,7 @@ namespace Studio24\Frontend\Content\Translation;
 use Studio24\Frontend\Content\Field\ShortText;
 use Studio24\Frontend\ContentModel\ContentModel;
 use Studio24\Frontend\ContentModel\FieldInterface;
+use Studio24\Frontend\Exception\ContentFieldTranslationNotFoundException;
 
 class ContentFieldTranslator
 {
@@ -36,6 +37,11 @@ class ContentFieldTranslator
      */
     public function resolveContentField(FieldInterface $contentModelField, $value) {
         $methodName = 'resolve' . ucfirst($contentModelField->getType()) . 'Field';
+
+        if (!method_exists($this, $methodName))
+        {
+            throw new ContentFieldTranslationNotFoundException('Content field translation' . ucfirst($contentModelField->getType()) . ' not found');
+        }
 
         return $this->$methodName($contentModelField, $value);
     }

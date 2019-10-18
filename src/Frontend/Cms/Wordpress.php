@@ -19,7 +19,9 @@ use Studio24\Frontend\Content\Menus\MenuItem;
 use Studio24\Frontend\Content\Menus\Menu;
 use Studio24\Frontend\Content\Taxonomies\Term;
 use Studio24\Frontend\Content\Taxonomies\TermCollection;
+use Studio24\Frontend\Content\Translation\ContentFieldTranslator;
 use Studio24\Frontend\Exception\ApiException;
+use Studio24\Frontend\Exception\ContentFieldTranslationNotFoundException;
 use Studio24\Frontend\Exception\NotFoundException;
 use Studio24\Frontend\Exception\ContentFieldException;
 use Studio24\Frontend\Exception\ContentFieldNotSetException;
@@ -69,6 +71,11 @@ class Wordpress extends ContentRepository
     protected $api;
 
     /**
+     * @var \Studio24\Frontend\Content\Translation\ContentFieldTranslator
+     */
+    protected $contentFieldTranslator;
+
+    /**
      * Constructor
      *
      * @param string $baseUrl API base URI
@@ -78,8 +85,11 @@ class Wordpress extends ContentRepository
     {
         $this->api = new WordpressApi($baseUrl);
 
+        $this->contentFieldTranslator = new ContentFieldTranslator();
+
         if ($contentModel instanceof ContentModel) {
             $this->setContentModel($contentModel);
+            $this->contentFieldTranslator->setContentModel($this->getContentModel());
         }
     }
 
@@ -646,7 +656,39 @@ class Wordpress extends ContentRepository
     public function getContentField(FieldInterface $field, $value): ?ContentFieldInterface
     {
         try {
-            $name = $field->getName();
+            try {
+                return $this->contentFieldTranslator->resolveContentField($field, $value);
+            } catch (ContentFieldTranslationNotFoundException $e) {
+                return $this->getCustomContentField($field, $value);
+            }
+        } catch (\Error $e) {
+            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s",
+              $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        } catch (\Exception $e) {
+            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s",
+              $field->getName(), $field->getType(), print_r($value, true));
+            throw new ContentFieldException($message, 0, $e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a custom content field (not one prebuilt for the FrontEnd)
+     *
+     * @param \Studio24\Frontend\ContentModel\FieldInterface $field
+     * @param $value
+     * @return \Studio24\Frontend\Content\Field\ContentFieldInterface|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Studio24\Frontend\Exception\ContentFieldNotSetException
+     * @throws \Studio24\Frontend\Exception\ContentTypeNotSetException
+     * @throws \Studio24\Frontend\Exception\FailedRequestException
+     * @throws \Studio24\Frontend\Exception\PermissionException
+     */
+    protected function getCustomContentField(FieldInterface $field, $value): ?ContentFieldInterface {
+        $name = $field->getName();
             switch ($field->getType()) {
 
                 case 'image':
@@ -656,30 +698,31 @@ class Wordpress extends ContentRepository
                         $field_data = $this->getMediaDataById($value);
 
                         // Add sizes
-                        $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
+                        $availableSizes = $field->getOption('image_sizes',
+                          $this->getContentModel());
                         if ($availableSizes !== null) {
                             foreach ($availableSizes as $sizeName) {
                                 if (isset($field_data['media_details']['sizes'][$sizeName])) {
                                     array_push(
-                                        $sizesData,
-                                        array(
-                                        'url' => $field_data['media_details']['sizes'][$sizeName]['source_url'],
-                                        'width' => $field_data['media_details']['sizes'][$sizeName]['width'],
+                                      $sizesData,
+                                      array(
+                                        'url'    => $field_data['media_details']['sizes'][$sizeName]['source_url'],
+                                        'width'  => $field_data['media_details']['sizes'][$sizeName]['width'],
                                         'height' => $field_data['media_details']['sizes'][$sizeName]['height'],
-                                        'name' => $sizeName
-                                        )
+                                        'name'   => $sizeName
+                                      )
                                     );
                                 }
                             }
                         }
 
                         $image = new Image(
-                            $name,
-                            $field_data['source_url'],
-                            $field_data['title']['rendered'],
-                            $field_data['caption']['rendered'],
-                            $field_data['alt_text'],
-                            $sizesData
+                          $name,
+                          $field_data['source_url'],
+                          $field_data['title']['rendered'],
+                          $field_data['caption']['rendered'],
+                          $field_data['alt_text'],
+                          $sizesData
                         );
 
                         return $image;
@@ -692,30 +735,31 @@ class Wordpress extends ContentRepository
                         }
 
                         // Add sizes
-                        $availableSizes = $field->getOption('image_sizes', $this->getContentModel());
+                        $availableSizes = $field->getOption('image_sizes',
+                          $this->getContentModel());
                         if ($availableSizes !== null) {
                             foreach ($availableSizes as $sizeName) {
                                 if (isset($value['sizes'][$sizeName])) {
                                     array_push(
-                                        $sizesData,
-                                        array(
-                                        'url' => $value['sizes'][$sizeName],
-                                        'width' => $value['sizes'][$sizeName.'-width'],
-                                        'height' => $value['sizes'][$sizeName.'-height'],
-                                        'name' => $sizeName
-                                        )
+                                      $sizesData,
+                                      array(
+                                        'url'    => $value['sizes'][$sizeName],
+                                        'width'  => $value['sizes'][$sizeName . '-width'],
+                                        'height' => $value['sizes'][$sizeName . '-height'],
+                                        'name'   => $sizeName
+                                      )
                                     );
                                 }
                             }
                         }
 
                         $image = new Image(
-                            $name,
-                            $value['url'],
-                            $value['title'],
-                            $value['caption'],
-                            $value['alt'],
-                            $sizesData
+                          $name,
+                          $value['url'],
+                          $value['title'],
+                          $value['caption'],
+                          $value['alt'],
+                          $sizesData
                         );
 
                         return $image;
@@ -730,11 +774,11 @@ class Wordpress extends ContentRepository
                         $filesize = $this->api->getMediaFileSize($field_data['source_url']);
 
                         $document = new Document(
-                            $name,
-                            $field_data['source_url'],
-                            $filesize,
-                            $field_data['title']['rendered'],
-                            $field_data['alt_text']
+                          $name,
+                          $field_data['source_url'],
+                          $filesize,
+                          $field_data['title']['rendered'],
+                          $field_data['alt_text']
                         );
 
                         return $document;
@@ -747,11 +791,11 @@ class Wordpress extends ContentRepository
                         }
 
                         $document = new Document(
-                            $name,
-                            $value['url'],
-                            $filesize,
-                            $value['title'],
-                            $value['alt']
+                          $name,
+                          $value['url'],
+                          $filesize,
+                          $value['title'],
+                          $value['alt']
                         );
 
                         return $document;
@@ -776,13 +820,13 @@ class Wordpress extends ContentRepository
                     $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
 
                     $video = new Video(
-                        $name,
-                        $field_data['source_url'],
-                        $filesize,
-                        $field_data['media_details']['bitrate'],
-                        $field_data['media_details']['length_formatted'],
-                        $field_data['title']['rendered'],
-                        $field_data['alt_text']
+                      $name,
+                      $field_data['source_url'],
+                      $filesize,
+                      $field_data['media_details']['bitrate'],
+                      $field_data['media_details']['length_formatted'],
+                      $field_data['title']['rendered'],
+                      $field_data['alt_text']
                     );
 
                     return $video;
@@ -804,21 +848,21 @@ class Wordpress extends ContentRepository
                     $filesize = FileInfoFormatter::formatFileSize($field_data['media_details']['filesize']);
 
                     $audio = new Audio(
-                        $name,
-                        $field_data['source_url'],
-                        $filesize,
-                        $field_data['media_details']['bitrate'],
-                        $field_data['media_details']['length_formatted'],
-                        $field_data['media_details'],
-                        $field_data['title']['rendered'],
-                        $field_data['alt_text']
+                      $name,
+                      $field_data['source_url'],
+                      $filesize,
+                      $field_data['media_details']['bitrate'],
+                      $field_data['media_details']['length_formatted'],
+                      $field_data['media_details'],
+                      $field_data['title']['rendered'],
+                      $field_data['alt_text']
                     );
 
                     return $audio;
                     break;
 
                 case 'relation':
-                    if (!is_array($value) || empty($value) ||!$field->hasOption('content_type')) {
+                    if (!is_array($value) || empty($value) || !$field->hasOption('content_type')) {
                         break;
                     }
 
@@ -829,7 +873,8 @@ class Wordpress extends ContentRepository
 
                     $relationContentType = $field->getOption('content_type');
                     if (is_array($relationContentType)) {
-                        $contentType = $this->getContentModel()->getBySourceContentType($value['post_type']);
+                        $contentType = $this->getContentModel()
+                          ->getBySourceContentType($value['post_type']);
                         if (!($contentType instanceof ContentType)) {
                             return null;
                         }
@@ -859,10 +904,13 @@ class Wordpress extends ContentRepository
                         // Detect content type of relation item
                         $relationContentType = $field->getOption('content_type');
                         if (is_array($relationContentType)) {
-                            $contentType = $this->getContentModel()->getBySourceContentType($row['post_type']);
+                            $contentType = $this->getContentModel()
+                              ->getBySourceContentType($row['post_type']);
                             if (!($contentType instanceof ContentType)) {
                                 if ($this->hasLogger()) {
-                                    $this->getLogger()->info(sprintf("Invalid content type '%s' set in relation array", $row['post_type']));
+                                    $this->getLogger()
+                                      ->info(sprintf("Invalid content type '%s' set in relation array",
+                                        $row['post_type']));
                                 }
                                 return null;
                             }
@@ -908,7 +956,8 @@ class Wordpress extends ContentRepository
                                 continue;
                             }
                             $componentFieldItemValue = $componentValue[$componentFieldItem->getName()];
-                            $componentFieldItemObject = $this->getContentField($componentFieldItem, $componentFieldItemValue);
+                            $componentFieldItemObject = $this->getContentField($componentFieldItem,
+                              $componentFieldItemValue);
 
                             if ($componentFieldItemObject !== null) {
                                 $component->addContent($componentFieldItemObject);
@@ -940,14 +989,14 @@ class Wordpress extends ContentRepository
                     }
 
                     foreach ($termsData as $singleTermData) {
-                        $link = $singleTermData['taxonomy'].'/'.$singleTermData['slug'];
+                        $link = $singleTermData['taxonomy'] . '/' . $singleTermData['slug'];
                         $currentTerm = new Term(
-                            $singleTermData['term_id'],
-                            $singleTermData['name'],
-                            $singleTermData['slug'],
-                            $link,
-                            $singleTermData['count'],
-                            $singleTermData['description']
+                          $singleTermData['term_id'],
+                          $singleTermData['name'],
+                          $singleTermData['slug'],
+                          $link,
+                          $singleTermData['count'],
+                          $singleTermData['description']
                         );
                         $terms->addItem($currentTerm);
                     }
@@ -958,15 +1007,8 @@ class Wordpress extends ContentRepository
                     return $taxonomyTermField;
                     break;
             }
-        } catch (\Error $e) {
-            $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
-            throw new ContentFieldException($message, 0, $e);
-        } catch (\Exception $e) {
-            $message = sprintf("Exception thrown when creating content field '%s' (type: %s) for value: %s", $field->getName(), $field->getType(), print_r($value, true));
-            throw new ContentFieldException($message, 0, $e);
-        }
 
-        return null;
+            return null;
     }
 
     public function setPageTaxonomies(array $validTaxonomies, BaseContent $page, array $data)
@@ -1042,7 +1084,7 @@ class Wordpress extends ContentRepository
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $menu, $this->getCacheLifetime());
         }
-        
+
         return $menu;
     }
 
