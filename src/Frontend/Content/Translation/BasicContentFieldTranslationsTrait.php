@@ -9,7 +9,9 @@ use Studio24\Frontend\Content\Field\Boolean;
 use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\Date;
 use Studio24\Frontend\Content\Field\DateTime;
+use Studio24\Frontend\Content\Field\Decimal;
 use Studio24\Frontend\Content\Field\Number;
+use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\PlainText;
 use Studio24\Frontend\Content\Field\RichText;
 use Studio24\Frontend\Content\Field\ShortText;
@@ -23,6 +25,12 @@ trait BasicContentFieldTranslationsTrait
 
     protected function resolveNumberField(FieldInterface $contentModelField, $value) {
         return new Number($contentModelField->getName(), $value);
+    }
+
+    protected function resolveDecimalField(FieldInterface $contentModelField, $value) {
+        $precision = $contentModelField->getOption('precision', $this->getContentModel());
+        $round = $contentModelField->getOption('round', $this->getContentModel());
+        return new Decimal($contentModelField->getName(), $value, $precision, $round);
     }
 
     protected function resolvePlaintextField(FieldInterface $contentModelField, $value) {
@@ -48,7 +56,7 @@ trait BasicContentFieldTranslationsTrait
     protected function resolveArrayField(FieldInterface $contentModelField, $value) {
         $array = new ArrayContent($contentModelField->getName());
 
-        if (!is_array($value)) {
+        if (!is_array($value) || empty($value)) {
             return;
         }
 
@@ -72,5 +80,12 @@ trait BasicContentFieldTranslationsTrait
             $array->addItem($item);
         }
         return $array;
+    }
+
+    protected function resolvePlainArrayField(FieldInterface $contentModelField, $value) {
+        if (!is_array($value)) {
+            return null;
+        }
+        return new PlainArray($contentModelField->getName(), $value);
     }
 }

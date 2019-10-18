@@ -648,46 +648,6 @@ class Wordpress extends ContentRepository
         try {
             $name = $field->getName();
             switch ($field->getType()) {
-                case 'text':
-                    return new ShortText($name, (string) $value);
-                    break;
-
-                case 'plaintext':
-                    return new PlainText($name, (string) $value);
-                    break;
-
-                case 'richtext':
-                    return new RichText($name, (string) $value);
-                    break;
-
-                case 'number':
-                    return new Number($name, $value);
-                    break;
-
-                case 'decimal':
-                    $precision = $field->getOption('precision', $this->getContentModel());
-                    $round = $field->getOption('round', $this->getContentModel());
-                    return new Decimal($name, $value, $precision, $round);
-                    break;
-
-                case 'date':
-                    return new Date($name, $value);
-                    break;
-
-                case 'datetime':
-                    return new DateTime($name, $value);
-                    break;
-
-                case 'boolean':
-                    return new Boolean($name, $value);
-                    break;
-
-                case 'plainarray':
-                    if (!is_array($value)) {
-                        return null;
-                    }
-                    return new PlainArray($name, $value);
-                    break;
 
                 case 'image':
                     $sizesData = array();
@@ -855,37 +815,6 @@ class Wordpress extends ContentRepository
                     );
 
                     return $audio;
-                    break;
-
-                case 'array':
-                    $array = new ArrayContent($name);
-
-                    if (!is_array($value)) {
-                        break;
-                    }
-
-                    if (empty($value)) {
-                        break;
-                    }
-
-                    // Loop through data array
-                    foreach ($value as $row) {
-                        // For each row add a set of content fields
-                        $item = new ContentFieldCollection();
-                        foreach ($field as $childField) {
-                            if (!isset($row[$childField->getName()])) {
-                                continue;
-                            }
-                            $childValue = $row[$childField->getName()];
-                            $contentField = $this->getContentField($childField, $childValue);
-                            if ($contentField !== null) {
-                                $item->addItem($contentField);
-                            }
-                        }
-                        $array->addItem($item);
-                    }
-
-                    return $array;
                     break;
 
                 case 'relation':

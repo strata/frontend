@@ -15,9 +15,20 @@ class ContentFieldTranslator
      */
     protected $contentModel;
 
+    /**
+     * @param \Studio24\Frontend\ContentModel\ContentModel $contentModel
+     */
     public function setContentModel(ContentModel $contentModel)
     {
         $this->contentModel = $contentModel;
+    }
+
+    /**
+     * @return \Studio24\Frontend\ContentModel\ContentModel
+     */
+    public function getContentModel(): ContentModel
+    {
+        return $this->contentModel;
     }
 
     /**
