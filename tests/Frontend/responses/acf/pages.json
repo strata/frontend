@@ -29,7 +29,7 @@
     "menu_order": 0,
     "comment_status": "closed",
     "ping_status": "closed",
-    "template": "",
+    "template": "page-template.php",
     "meta": [],
     "acf": [],
     "_links": {
