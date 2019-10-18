@@ -20,7 +20,7 @@ use Studio24\Frontend\ContentModel\FieldInterface;
 trait BasicContentFieldTranslationsTrait
 {
     protected function resolveTextField(FieldInterface $contentModelField, $value) {
-        return new ShortText($contentModelField->getName(), $value);
+        return new ShortText($contentModelField->getName(), (string) $value);
     }
 
     protected function resolveNumberField(FieldInterface $contentModelField, $value) {
@@ -34,11 +34,11 @@ trait BasicContentFieldTranslationsTrait
     }
 
     protected function resolvePlaintextField(FieldInterface $contentModelField, $value) {
-        return new PlainText($contentModelField->getName(), $value);
+        return new PlainText($contentModelField->getName(), (string) $value);
     }
 
     protected function resolveRichtextField(FieldInterface $contentModelField, $value) {
-        return new RichText($contentModelField->getName(), $value);
+        return new RichText($contentModelField->getName(), (string) $value);
     }
 
     protected function resolveDateField(FieldInterface $contentModelField, $value) {
