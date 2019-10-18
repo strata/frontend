@@ -27,12 +27,6 @@ trait BasicContentFieldTranslationsTrait
         return new Number($contentModelField->getName(), $value);
     }
 
-    protected function resolveDecimalField(FieldInterface $contentModelField, $value) {
-        $precision = $contentModelField->getOption('precision', $this->getContentModel());
-        $round = $contentModelField->getOption('round', $this->getContentModel());
-        return new Decimal($contentModelField->getName(), $value, $precision, $round);
-    }
-
     protected function resolvePlaintextField(FieldInterface $contentModelField, $value) {
         return new PlainText($contentModelField->getName(), (string) $value);
     }

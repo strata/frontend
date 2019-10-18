@@ -659,8 +659,9 @@ class Wordpress extends ContentRepository
             try {
                 return $this->contentFieldTranslator->resolveContentField($field, $value);
             } catch (ContentFieldTranslationNotFoundException $e) {
-                return $this->getCustomContentField($field, $value);
+
             }
+            return $this->getCustomContentField($field, $value);
         } catch (\Error $e) {
             $message = sprintf("Fatal error when creating content field '%s' (type: %s) for value: %s",
               $field->getName(), $field->getType(), print_r($value, true));
@@ -690,6 +691,12 @@ class Wordpress extends ContentRepository
     protected function getCustomContentField(FieldInterface $field, $value): ?ContentFieldInterface {
         $name = $field->getName();
         switch ($field->getType()) {
+
+            case 'decimal':
+                    $precision = $field->getOption('precision', $this->getContentModel());
+                    $round = $field->getOption('round', $this->getContentModel());
+                    return new Decimal($name, $value, $precision, $round);
+                    break;
 
             case 'image':
                 $sizesData = array();
