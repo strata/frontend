@@ -34,6 +34,10 @@ class ContentFieldTranslator
 
     /**
      * Takes a content model object and returns a content field
+     * @param \Studio24\Frontend\ContentModel\FieldInterface $contentModelField
+     * @param $value
+     * @return
+     * @throws \Studio24\Frontend\Exception\ContentFieldTranslationNotFoundException
      */
     public function resolveContentField(FieldInterface $contentModelField, $value) {
         $methodName = 'resolve' . ucfirst($contentModelField->getType()) . 'Field';
