@@ -14,6 +14,7 @@ use Studio24\Frontend\Content\Field\ContentFieldCollection;
 use Studio24\Frontend\Content\Field\ContentFieldInterface;
 use Studio24\Frontend\Content\Field\Number;
 use Studio24\Frontend\Content\Field\Document;
+use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Field\Video;
 use Studio24\Frontend\Content\Metadata;
 use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
@@ -282,6 +283,13 @@ class RestData extends ContentRepository
 
                 case 'boolean':
                     return new Boolean($name, $value);
+                    break;
+
+                case 'plainarray':
+                    if (!is_array($value)) {
+                        return null;
+                    }
+                    return new PlainArray($name, $value);
                     break;
 
                 case 'array':

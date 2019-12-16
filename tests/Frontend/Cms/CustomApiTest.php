@@ -10,6 +10,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Studio24\Frontend\Cms\RestData;
 use Studio24\Frontend\Cms\Wordpress;
+use Studio24\Frontend\Content\Field\PlainArray;
 use Studio24\Frontend\Content\Url;
 use Studio24\Frontend\ContentModel\ContentModel;
 
@@ -89,5 +90,31 @@ class CustomApiTest extends TestCase
         $project->getContent()->get('updates')->seek(1);
         $update = $project->getContent()->get('updates')->current();
         $this->assertEquals("An update 2A", $update->get('update_title')->__toString());
+    }
+
+    public function testPlainArray()
+    {
+        // Create a mock and queue responses
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
+                file_get_contents(__DIR__ . '/../responses/custom/project.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $api = new RestData('something', new ContentModel(__DIR__ . '/config/custom/content_model.yaml'));
+        $api->setClient($client);
+
+        // Test it!
+        $api->setContentType('projects');
+
+        $project = $api->getOne(1);
+        $this->assertTrue($project->getContent()->get('alt_name') instanceof PlainArray);
+        $this->assertEquals('BA', $project->getContent()->get('alt_name')->getValue()[0]);
+        $this->assertEquals('British Airways', $project->getContent()->get('alt_name')->getValue()[1]);
     }
 }

@@ -12,6 +12,8 @@ open_date:
   type: date
 close_date:
   type: date
+alt_name:
+  type: plainarray
 updates:
   type: array
   content_fields:

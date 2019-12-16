@@ -449,9 +449,26 @@ Return video URL:
 
 ## Array
 
+An array of other content fields.
+
 You can loop over array content and output this:
 
 TODO
+
+## Plain array
+
+A simple array just made up of values in an array.
+
+
+```
+{% if page.content.alternative_names is not empty %}
+    <ul>
+    {% for name in page.content.alternative_names.value %}
+      <li>{{ name }}<li>
+    {% endfor %}
+    </ul>
+{% endif %}
+```
 
 ## Relation
 
