@@ -117,5 +117,4 @@ class CustomApiTest extends TestCase
         $this->assertEquals('BA', $project->getContent()->get('alt_name')->getValue()[0]);
         $this->assertEquals('British Airways', $project->getContent()->get('alt_name')->getValue()[1]);
     }
-
 }

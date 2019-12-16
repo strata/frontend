@@ -124,5 +124,4 @@ EOD;
         $template = $twig->load('plainarray3.html.twig');
         $this->assertEquals('FULL' . PHP_EOL, $template->render(['page' => $project]));
     }
-
 }
