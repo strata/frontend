@@ -22,7 +22,7 @@ class TwigAccessTest extends TestCase
     /**
      * Clear Twig cache folder
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 
