@@ -2,10 +2,12 @@
 
 Framework to build an efficient front-end website with content from a Headless CMS or other data sources.
 
+**Important note:** As of release 0.7.0 this repo will move to [strata/frontend](https://github.com/strata/frontend) and the old package studio24/frontend will be marked as "Abandoned" in Composer, with a clear link to the new project. We will also be updating minimum requirements to PHP 7.2 and Symfony 5.
+
 [![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend) 
 [![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
 
-[version-badge]: https://img.shields.io/badge/version-0.5.0-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.6.5-blue.svg
 
 ## Status
 
