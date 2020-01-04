@@ -22,7 +22,7 @@ See the [roadmap](ROADMAP.md) for more details on future development plans.
 ## Installation
 
 ```
-composer require studio24/frontend:0.5.*
+composer require studio24/frontend:0.6.*
 ```
 
 ## Documentation
