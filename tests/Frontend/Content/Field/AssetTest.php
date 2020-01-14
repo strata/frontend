@@ -29,4 +29,17 @@ class AssetTest extends TestCase
         $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $asset);
         $this->assertEquals('my_audio', $asset->getName());
     }
+
+    public function testExtension()
+    {
+        $asset = AssetField::factory('application/pdf', 'my_document', 'my_document.pdf');
+        $this->assertEquals('pdf', $asset->getExtension());
+
+        $asset = AssetField::factory('application/pdf', 'my_document', 'my_document.xls');
+        $this->assertEquals('xls', $asset->getExtension());
+
+        $asset = AssetField::factory('application/pdf', 'my_document', 'my_document_name');
+        $this->assertEquals('', $asset->getExtension());
+    }
+
 }

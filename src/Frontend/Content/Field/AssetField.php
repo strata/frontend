@@ -149,6 +149,16 @@ class AssetField extends ContentField
     }
 
     /**
+     * Return file extension
+     *
+     * @return string
+     */
+    public function getExtension(): string
+    {
+        return pathinfo($this->getUrl(), PATHINFO_EXTENSION);
+    }
+
+    /**
      * @return string
      */
     public function getUrl(): string
