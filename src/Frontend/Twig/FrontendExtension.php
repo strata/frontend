@@ -3,6 +3,7 @@
 namespace Studio24\Frontend\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
@@ -27,11 +28,23 @@ class FrontendExtension extends AbstractExtension
         );
     }
 
+    public function getFilters()
+    {
+        return [
+            new TwigFunction('excerpt', [$this, 'excerpt']),
+            new TwigFilter('build_version', [$this, 'buildVersion']),
+        ];
+    }
+
+
     /**
-     * Convert a string into a URL safe slug
+     * Generate a URL safe slug from a string
      *
-     * E.g. convert: My name is Earl
-     * into: my-name-is-earl
+     * Usage:
+     * {{ slugify('My name is Earl') }}
+     *
+     * Returns:
+     * my-name-is-earl
      *
      * @param $string
      * @return string
@@ -58,6 +71,7 @@ class FrontendExtension extends AbstractExtension
      *
      * If a host is detected the scheme is auto-added if it does not exist (defaults to http)
      *
+     * @todo 0.7 Convert this into a Twig filter since it transforms content, it does not generate new content
      * @param string $url URL to fix
      * @param string $scheme The default scheme to use (defaults to http)
      * @return string
@@ -107,10 +121,71 @@ class FrontendExtension extends AbstractExtension
         return $url;
     }
 
-    public function buildRevisionFilter()
+    /**
+     * Cut a string to a set length, but cut on the nearest word (so words are not split)
+     *
+     * Usage:
+     * {{ 'Mary had a little lamb, Its fleece was white as snow' | excerpt(30) }}
+     *
+     * Returns:
+     * Mary had a little lamb, Its…
+     *
+     * @param string $string
+     * @param int $length
+     * @param string $more If string is cut, display horizontal ellipsis (or different passed string)
+     * @return string
+     */
+    public function excerpt(string $string, int $length = 50, string $more = '…'): string
     {
-        // @todo Add build revision to CSS, e.g. {{ 'css' | build_revision }}
-        // Outputs: css?r=512
-        return "TEST";
+        if ($length >= strlen($string)) {
+            return $string;
+        }
+        $lines = explode("\n", wordwrap($string, $length));
+        return (string) $lines[0] . $more;
+    }
+
+    /**
+     * Add build version to src file in HTML
+     *
+     * Usage:
+     * {{ '/assets/styles.css' | build_version }}
+     *
+     * Returns:
+     * /assets/styles.css?v=8b7973c7
+     *
+     * @param string $src
+     * @return string
+     */
+    public function buildVersion(string $src): string
+    {
+        // Choose a fast, short hashing algorithm
+        static $algorithm;
+        if (empty($algorithm)) {
+            if (in_array('adler32', hash_algos())) {
+                $algorithm = 'adler32';
+            } else {
+                $algorithm = 'crc32';
+            }
+        }
+
+        // If file src path is not relative, try to find it relative to website root
+        $hash = '';
+        if (file_exists($src)) {
+            $hash = hash($algorithm, file_get_contents($src));
+        } else {
+            if (isset($_SERVER['DOCUMENT_ROOT'])) {
+                $path = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/' . ltrim($src, '/');
+                if (file_exists($path)) {
+                    $hash = hash($algorithm, file_get_contents($path));
+                }
+            }
+        }
+
+        // Cannot generate hash
+        if (empty($hash)) {
+            return $src;
+        }
+
+        return $src . '?v=' . $hash;
     }
 }

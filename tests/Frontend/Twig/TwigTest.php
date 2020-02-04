@@ -47,4 +47,23 @@ class TwigTest extends TestCase
         $this->assertEquals('../contact', $twig->fixUrl('../contact'));
         $this->assertEquals('fake url', $twig->fixUrl('fake url'));
     }
+
+    public function testExcerpt()
+    {
+        $twig = new FrontendExtension();
+
+        $this->assertEquals('Mary had a little lamb, Its…', $twig->excerpt('Mary had a little lamb, Its fleece was white as snow', 30));
+        $this->assertEquals('Mary had a little lamb, [more]', $twig->excerpt('Mary had a little lamb, Its fleece was white as snow', 25, ' [more]'));
+    }
+
+    public function testBuildRevisionFilter()
+    {
+        $twig = new FrontendExtension();
+
+        $this->assertEquals(__DIR__ . '/assets/styles.css?v=2f59d2b6', $twig->buildVersion(__DIR__ . '/assets/styles.css'));
+
+        $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/';
+        $this->assertEquals('/assets/styles.css?v=2f59d2b6', $twig->buildVersion('/assets/styles.css'));
+    }
+
 }
