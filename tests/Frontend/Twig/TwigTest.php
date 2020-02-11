@@ -65,4 +65,12 @@ class TwigTest extends TestCase
         $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/';
         $this->assertEquals('/assets/styles.css?v=2f59d2b6', $twig->buildVersion('/assets/styles.css'));
     }
+
+    public function isOneDefined()
+    {
+        $twig = new FrontendExtension();
+
+        $this->assertEquals(true, $twig->isOneDefined(null, null, '', 'test'));
+        $this->assertEquals(false, $twig->isOneDefined(null, null, '', ''));
+    }
 }

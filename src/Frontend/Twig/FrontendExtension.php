@@ -188,4 +188,31 @@ class FrontendExtension extends AbstractExtension
 
         return $src . '?v=' . $hash;
     }
+
+
+    /**
+     * Check a list of variables, and if one of them isn't empty, then returns true
+     *
+     * If all variables passed are empty, then returns false
+     *
+     * Can be used to simplify a long list of
+     *
+     * `if ... is not empty or ... is not empty or ... is not empty` in twig
+     *
+     * @param mixed ...$variables
+     * @return bool
+     */
+    public function isOneDefined(... $variables)
+    {
+        $anyDefined = false;
+
+        foreach($variables as $variable) {
+            if(!empty($variable)) {
+                $anyDefined = true;
+                break;
+            }
+        }
+
+        return $anyDefined;
+    }
 }
