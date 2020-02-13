@@ -66,24 +66,56 @@ class TwigTest extends TestCase
         $this->assertEquals('/assets/styles.css?v=2f59d2b6', $twig->buildVersion('/assets/styles.css'));
     }
 
+    public function testIsProd()
+    {
+        $twig = new FrontendExtension();
+
+        $this->assertTrue($twig->isProd('prod'));
+        $this->assertFalse($twig->isProd('stage'));
+        $this->assertFalse($twig->isProd('production'));
+        $this->assertFalse($twig->isProd(true));
+        $this->assertTrue($twig->isProd('production', 'production'));
+    }
+
+    public function testStagingBanner()
+    {
+        $twig = new FrontendExtension();
+
+        $banner = $twig->stagingBanner('staging');
+        $this->assertStringContainsString('This is the <strong>staging</strong> environment', $banner);
+        $this->assertStringContainsString('class="staging-banner staging"', $banner);
+
+        $banner = $twig->stagingBanner('prod');
+        $this->assertEmpty($banner);
+
+        $banner = $twig->stagingBanner('live', 'You are on %s', 'live');
+        $this->assertEmpty($banner);
+
+        $banner = $twig->stagingBanner('staging', 'You are on %s');
+        $this->assertStringContainsString('You are on staging', $banner);
+
+        $banner = $twig->stagingBanner('Made up Env');
+        $this->assertStringContainsString('class="staging-banner made-up-env"', $banner);
+    }
+
     public function testNotEmpty()
     {
         $twig = new FrontendExtension();
 
-        $this->assertEquals(true, $twig->notEmpty(null, null, '', 'test'));
-        $this->assertEquals(false, $twig->notEmpty(null, null, '', ''));
-        $this->assertEquals(false, $twig->notEmpty(null, null, '', '0'));
-        $this->assertEquals(false, $twig->notEmpty(null, null, '', 0));
+        $this->assertTrue($twig->notEmpty(null, null, '', 'test'));
+        $this->assertFalse($twig->notEmpty(null, null, '', ''));
+        $this->assertFalse($twig->notEmpty(null, null, '', '0'));
+        $this->assertFalse($twig->notEmpty(null, null, '', 0));
     }
 
     public function testAllNotEmpty()
     {
         $twig = new FrontendExtension();
 
-        $this->assertEquals(false, $twig->allNotEmpty(null, false, '', 'test'));
-        $this->assertEquals(false, $twig->allNotEmpty(null, 'hello there', 'test', 20));
-        $this->assertEquals(true, $twig->allNotEmpty('hello', 'there', 'general', 'kenobi'));
-        $this->assertEquals(true, $twig->allNotEmpty('hello', 'there', 42));
-        $this->assertEquals(true, $twig->allNotEmpty('hello', 'there', 42, true));
+        $this->assertFalse($twig->allNotEmpty(null, false, '', 'test'));
+        $this->assertFalse($twig->allNotEmpty(null, 'hello there', 'test', 20));
+        $this->assertTrue($twig->allNotEmpty('hello', 'there', 'general', 'kenobi'));
+        $this->assertTrue($twig->allNotEmpty('hello', 'there', 42));
+        $this->assertTrue($twig->allNotEmpty('hello', 'there', 42, true));
     }
 }

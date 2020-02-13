@@ -25,8 +25,10 @@ class FrontendExtension extends AbstractExtension
         return array(
             new TwigFunction('slugify', [$this, 'slugify']),
             new TwigFunction('fix_url', [$this, 'fixUrl']),
-            new TwigFunction('not_empty', [$this, 'notEmpty']),
-            new TwigFunction('all_not_empty', [$this, 'allNotEmpty']),
+            new TwigFunction('not_empty', [$this, 'notEmpty'], ['is_variadic' => true]),
+            new TwigFunction('all_not_empty', [$this, 'allNotEmpty'], ['is_variadic' => true]),
+            new TwigFunction('is_prod', [$this, 'isProd']),
+            new TwigFunction('staging_banner', [$this, 'stagingBanner'], ['is_safe' => ['html']]),
         );
     }
 
@@ -189,6 +191,52 @@ class FrontendExtension extends AbstractExtension
         }
 
         return $src . '?v=' . $hash;
+    }
+
+    /**
+     * Are we on production?
+     *
+     * @param string $environment Current environment
+     * @param string $prod Production environment, defaults to 'prod'
+     * @return bool
+     */
+    public function isProd($environment, $prod = 'prod'): bool
+    {
+        return ($environment === $prod);
+    }
+
+    /**
+     * Return a simple full-width staging banner to indicate this is a test environment and not the live site
+     *
+     * @param TwigEnvironment $env Twig environment
+     * @param string $environment Current environment
+     * @param string $message Change message that is outputted
+     * @param string $prod Production environment, defaults to 'prod'
+     * @return string Staging banner, or null if on production
+     */
+    public function stagingBanner($environment, $message = 'This is the <strong>%s</strong> environment', $prod = 'prod'): ?string
+    {
+        if ($this->isProd($environment, $prod)) {
+            return null;
+        } else {
+            $className = filter_var($environment, FILTER_SANITIZE_STRING);
+            $className = $this->slugify($className);
+            $message = sprintf($message, $environment);
+            return <<<EOD
+<div class="staging-banner $className">$message</div>
+<style>
+    .staging-banner {
+        width: 100%;
+        padding: 0.6em 1em;
+        background-color: yellow;
+        border-bottom: 1px solid grey;
+        color: black;
+        font-family: sans-serif;
+    }
+</style>
+
+EOD;
+        }
     }
 
 
