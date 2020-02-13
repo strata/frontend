@@ -41,5 +41,4 @@ class AssetTest extends TestCase
         $asset = AssetField::factory('application/pdf', 'my_document', 'my_document_name');
         $this->assertEquals('', $asset->getExtension());
     }
-
 }
