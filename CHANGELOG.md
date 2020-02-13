@@ -4,10 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.6] - 2020-02-11
+## [0.6.6] - 2020-02-13
 ### Added
-- Add excerpt and build_version filters to Twig helper
-- Expand Twig function & filters documentation
+- Add excerpt and build_version Twig filters
+- Add not_empty, all_not_empty, is_prod, staging_banner Twig functions
+- Expand Twig documentation
 
 ### Fixed
 - Fix issue with relation not picking up post type in API response
