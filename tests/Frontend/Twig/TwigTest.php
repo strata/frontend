@@ -66,11 +66,24 @@ class TwigTest extends TestCase
         $this->assertEquals('/assets/styles.css?v=2f59d2b6', $twig->buildVersion('/assets/styles.css'));
     }
 
-    public function isOneDefined()
+    public function testNotEmpty()
     {
         $twig = new FrontendExtension();
 
-        $this->assertEquals(true, $twig->isOneDefined(null, null, '', 'test'));
-        $this->assertEquals(false, $twig->isOneDefined(null, null, '', ''));
+        $this->assertEquals(true, $twig->notEmpty(null, null, '', 'test'));
+        $this->assertEquals(false, $twig->notEmpty(null, null, '', ''));
+        $this->assertEquals(false, $twig->notEmpty(null, null, '', '0'));
+        $this->assertEquals(false, $twig->notEmpty(null, null, '', 0));
+    }
+
+    public function testAllNotEmpty()
+    {
+        $twig = new FrontendExtension();
+
+        $this->assertEquals(false, $twig->allNotEmpty(null, false, '', 'test'));
+        $this->assertEquals(false, $twig->allNotEmpty(null, 'hello there', 'test', 20));
+        $this->assertEquals(true, $twig->allNotEmpty('hello', 'there', 'general', 'kenobi'));
+        $this->assertEquals(true, $twig->allNotEmpty('hello', 'there', 42));
+        $this->assertEquals(true, $twig->allNotEmpty('hello', 'there', 42, true));
     }
 }

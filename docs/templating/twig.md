@@ -94,3 +94,43 @@ Example:
 ```
 
 Returns: `my-name-is-earl`
+
+## not_empty
+
+Will return true if 1 or more items passed to it is defined and has a non-empty value.
+
+Usage:
+
+```
+{{ not_empty('item1', 3, null, 'a test string', '') }}
+```
+
+Example that returns true:
+```
+{{ not_empty('item1', 3, null) }}
+```
+
+Example that returns false:
+```
+{{ not_empty(0, '', null) }}
+```
+
+## all_not_empty
+
+Will return true if all of the items passed to it are defined and have non-empty values.
+
+Usage:
+
+```
+{{ all_not_empty('item1', 3, null, 'a test string', '') }}
+```
+
+Example that returns true:
+```
+{{ not_empty('item1', 3, 'testing) }}
+```
+
+Example that returns false:
+```
+{{ not_empty('item1, '', 'testing') }}
+```

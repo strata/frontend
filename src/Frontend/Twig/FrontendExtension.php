@@ -25,6 +25,8 @@ class FrontendExtension extends AbstractExtension
         return array(
             new TwigFunction('slugify', [$this, 'slugify']),
             new TwigFunction('fix_url', [$this, 'fixUrl']),
+            new TwigFunction('not_empty', [$this, 'notEmpty']),
+            new TwigFunction('all_not_empty', [$this, 'allNotEmpty']),
         );
     }
 
@@ -195,24 +197,56 @@ class FrontendExtension extends AbstractExtension
      *
      * If all variables passed are empty, then returns false
      *
-     * Can be used to simplify a long list of
+     * Can be used to simplify a long list of checks, e.g.
      *
      * `if ... is not empty or ... is not empty or ... is not empty` in twig
      *
      * @param mixed ...$variables
      * @return bool
      */
-    public function isOneDefined(... $variables)
+    public function notEmpty(...$variables)
     {
         $anyDefined = false;
 
-        foreach($variables as $variable) {
-            if(!empty($variable)) {
+        foreach ($variables as $variable) {
+            if (!empty($variable)) {
                 $anyDefined = true;
                 break;
             }
         }
 
         return $anyDefined;
+    }
+
+
+    /**
+     * Check a list of variables, and if all of them aren't empty, then returns true
+     *
+     * If all variables passed are empty, then returns false
+     *
+     * Can be used to simplify a long list of checks, e.g.
+     *
+     * `if ... is not empty and ... is not empty and ... is not empty` in twig
+     *
+     * @param mixed ...$variables
+     * @return bool
+     */
+    public function allNotEmpty(...$variables)
+    {
+        $allNotEmpty = false;
+        $numVariables = count($variables);
+        $numVariablesDefined = 0;
+
+        foreach ($variables as $variable) {
+            if (!empty($variable)) {
+                $numVariablesDefined++;
+            }
+        }
+
+        if ($numVariables === $numVariablesDefined) {
+            $allNotEmpty = true;
+        }
+
+        return $allNotEmpty;
     }
 }
