@@ -229,7 +229,7 @@ class FrontendExtension extends AbstractExtension
         width: 100%;
         padding: 0.6em 1em;
         background-color: yellow;
-        border-bottom: 1px solid grey;
+        border-bottom: 1px solid #333;
         color: black;
         font-family: sans-serif;
     }
