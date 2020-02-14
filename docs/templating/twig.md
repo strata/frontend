@@ -122,6 +122,12 @@ name you can pass this as the second argument. E.g.
 {% if is_prod(app.environment, 'live') %}
 ```
 
+To output content when not on production:
+
+```
+{% if not is_prod(app.environment) %}
+```
+
 ### not_empty
 
 Will return true if one or more items passed to it are defined and have a non-empty value.
