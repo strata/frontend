@@ -908,7 +908,11 @@ class Wordpress extends ContentRepository
 
                     $relationContentType = $field->getOption('content_type');
                     if (is_array($relationContentType)) {
-                        $contentType = $this->getContentModel()->getBySourceContentType($value['post_type']);
+                        $postType = FieldFinder::type($value);
+                        if (null === $postType) {
+                            return null;
+                        }
+                        $contentType = $this->getContentModel()->getBySourceContentType($postType);
                         if (!($contentType instanceof ContentType)) {
                             return null;
                         }
@@ -938,7 +942,11 @@ class Wordpress extends ContentRepository
                         // Detect content type of relation item
                         $relationContentType = $field->getOption('content_type');
                         if (is_array($relationContentType)) {
-                            $contentType = $this->getContentModel()->getBySourceContentType($row['post_type']);
+                            $postType = FieldFinder::type($row);
+                            if (null === $postType) {
+                                continue;
+                            }
+                            $contentType = $this->getContentModel()->getBySourceContentType($postType);
                             if (!($contentType instanceof ContentType)) {
                                 if ($this->hasLogger()) {
                                     $this->getLogger()->info(sprintf("Invalid content type '%s' set in relation array", $row['post_type']));
@@ -1121,7 +1129,7 @@ class Wordpress extends ContentRepository
         if ($this->hasCache()) {
             $this->cache->set($cacheKey, $menu, $this->getCacheLifetime());
         }
-        
+
         return $menu;
     }
 
