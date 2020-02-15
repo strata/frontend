@@ -12,7 +12,7 @@ must accept these license and copyright conditions.
 All contributions must be made on a branch and must pass [unit tests](#tests) and [coding standards](#coding-standards). 
 
 Please create a Pull Request to merge changes into master, these will be automatically tested by 
-[Travis CI](https://travis-ci.org/studio24/frontend).
+[Travis CI](https://travis-ci.org/strata/frontend).
 
 All Pull Requests need at least one approval from the Studio 24 development team.
 
@@ -27,6 +27,7 @@ We follow [semantic versioning](https://semver.org/). This can be summarised as:
 To create a new release do the following:
 
 1. Update [CHANGELOG.md](https://github.com/strata/frontend/blob/master/CHANGELOG.md) with a summary of the changes.
+1. Update [Version.php](https://github.com/strata/frontend/blob/master/src/Version.php) with the current version.
 1. Create a [new release](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) 
 at GitHub. This will automatically create a new release at [Packagist](https://packagist.org/packages/strata/frontend) 
 so code can be loaded via Composer.  

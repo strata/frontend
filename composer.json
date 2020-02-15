@@ -1,6 +1,7 @@
 {
-    "name": "studio24/frontend",
-    "description": "Framework to build an efficient front-end website with content from a Headless CMS or other data sources",
+    "name": "strata/frontend",
+    "description": "Deliver fast, accessible user experiences on the modern web.",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -23,14 +24,14 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
-        "guzzlehttp/guzzle": "~6.0",
-        "symfony/http-foundation": "^5.0",
+        "php": "^7.2",
+        "guzzlehttp/guzzle": "~6.5",
         "symfony/yaml": "^5.0",
         "twig/twig": "^3.0",
-        "webmozart/assert": "^1.4",
+        "webmozart/assert": "^1.6",
         "psr/simple-cache": "^1.0",
-        "monolog/monolog": "^1.24"
+        "symfony/http-foundation": "^5.0",
+        "monolog/monolog": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +39,7 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^8",
-        "squizlabs/php_codesniffer": "^3.0"
+        "phpunit/phpunit": "^8.5",
+        "squizlabs/php_codesniffer": "^3.5"
     }
 }

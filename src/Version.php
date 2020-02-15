@@ -6,7 +6,7 @@ namespace Studio24\Frontend;
 
 class Version
 {
-    const VERSION = '0.5.0';
+    const VERSION = '0.7.0';
 
     /**
      * Return version string
@@ -25,6 +25,6 @@ class Version
      */
     public static function getUserAgent(): string
     {
-        return "S24_Frontend/" . self::VERSION . ' (https://github.com/studio24/frontend)';
+        return "Strata_Frontend/" . self::VERSION . ' (https://github.com/strata/frontend)';
     }
 }

@@ -2,13 +2,19 @@
 
 Deliver fast, accessible user experiences on the modern web.
 
-[![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend) 
+[![Build Status](https://travis-ci.org/strata/frontend.svg?branch=master)](https://travis-ci.org/strata/frontend) 
 [![license][license-badge]][LICENSE]
 
 ## Status
 
 Please note this is development software, usage and the project name may change before the 1.0 release. 
-See the [roadmap](ROADMAP.md) for more details on future development plans. 
+See the [roadmap](https://github.com/strata/frontend/projects/1) for more details on future development plans.
+
+Please note the repo recently moved to [strata/frontend](https://github.com/strata/frontend). Update your git origin via:
+
+```
+git remote set-url origin git@github.com:strata/frontend.git
+``` 
 
 ## Requirements
 
@@ -18,7 +24,7 @@ See the [roadmap](ROADMAP.md) for more details on future development plans.
 ## Installation
 
 ```
-composer require studio24/frontend:^0.7
+composer require strata/frontend:^0.7
 ```
 
 ## Contributing
