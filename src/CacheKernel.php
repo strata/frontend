@@ -1,6 +1,8 @@
 <?php
 
-namespace Studio24\Frontend;
+declare(strict_types=1);
+
+namespace Strata\Frontend;
 
 use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
 
@@ -8,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
  * HTTP CacheKernel
  *
  * @see https://symfony.com/doc/current/http_cache.html
- * @package Studio24\Frontend
+ * @package Strata\Frontend
  */
 class CacheKernel extends HttpCache
 {

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
-use Studio24\Frontend\Content\PageCollection;
-use Studio24\Frontend\Exception\ContentFieldException;
+use Strata\Frontend\Content\PageCollection;
+use Strata\Frontend\Exception\ContentFieldException;
 
 /**
  * Relation field
  *
  * Contains a collection of relation items
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class RelationArray extends ContentField implements \SeekableIterator, \Countable
 {

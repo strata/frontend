@@ -1,13 +1,8 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: bdeboevere
- * Date: 2019-03-07
- * Time: 13:24
- */
+declare(strict_types=1);
 
-namespace Studio24\Frontend\Content;
+namespace Strata\Frontend\Content;
 
 class Yoast
 {

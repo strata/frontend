@@ -4,7 +4,9 @@
  * @todo review this - can we remove this dependency? Not currently in composer.json
  */
 
-namespace Studio24\Frontend\Controller;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +16,7 @@ use Psr\SimpleCache\CacheInterface;
 /**
  * Controller for common website URLs
  *
- * @package Studio24\Frontend\Controller
+ * @package Strata\Frontend\Controller
  */
 class WebController extends AbstractController
 {

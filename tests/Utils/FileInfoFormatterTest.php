@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Frontend\Utils;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Utils\FileInfoFormatter;
+use Strata\Frontend\Utils\FileInfoFormatter;
 
 class FileInfoFormatterTest extends TestCase
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\Api;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Cms\RestData;
+use Strata\Frontend\Cms\RestData;
 
 class CacheKeyTest extends TestCase
 {
@@ -40,7 +40,7 @@ EOD;
     {
         $api = new RestData('something');
 
-        $this->expectException('Studio24\Frontend\Exception\ApiException');
+        $this->expectException('Strata\Frontend\Exception\ApiException');
         $api->buildCacheKey('list', '123', ['page' => 1, 'key' => [0, 1, 2]]);
     }
 
@@ -48,7 +48,7 @@ EOD;
     {
         $api = new RestData('something');
 
-        $this->expectException('Studio24\Frontend\Exception\ApiException');
+        $this->expectException('Strata\Frontend\Exception\ApiException');
         $api->buildCacheKey('thing1', 'thing2', $api);
     }
 }

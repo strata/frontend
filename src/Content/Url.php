@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content;
+namespace Strata\Frontend\Content;
 
-use Studio24\Frontend\Exception\UrlException;
-use Studio24\Frontend\Content\Field\DateTime;
+use Strata\Frontend\Exception\UrlException;
+use Strata\Frontend\Content\Field\DateTime;
 
 /**
  * Class to manage URL generation
  *
- * @package Studio24\Frontend\Content
+ * @package Strata\Frontend\Content
  */
 class Url
 {

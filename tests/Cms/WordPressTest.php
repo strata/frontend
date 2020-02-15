@@ -9,10 +9,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\Content\Url;
-use Studio24\Frontend\ContentModel\ContentModel;
-use Studio24\Frontend\Exception\NotFoundException;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\Content\Url;
+use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Exception\NotFoundException;
 
 class WordPressTest extends TestCase
 {
@@ -177,7 +177,7 @@ class WordPressTest extends TestCase
 
         // Test documents
         $docs = $page->getContent()->get('project_documents');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\ArrayContent', $docs);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\ArrayContent', $docs);
         $this->assertEquals(3, count($docs));
 
         foreach ($docs as $key => $item) {
@@ -204,7 +204,7 @@ class WordPressTest extends TestCase
 
         //Test video
         $video = $page->getContent()->get('project_video');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Video', $video);
 
         $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
         $this->assertEquals('6.42 MB', $video->getFileSize());
@@ -214,7 +214,7 @@ class WordPressTest extends TestCase
         $this->assertEmpty($video->getDescription());
 
         $video = $page->getContent()->get('project_video_array');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Video', $video);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Video', $video);
 
         $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Saint-Lucia-racer-moving-Jeremy-holden-FFI.mp4', $video->getValue());
         $this->assertEquals('6.42 MB', $video->getFileSize());
@@ -225,7 +225,7 @@ class WordPressTest extends TestCase
 
         //Test audio
         $audio = $page->getContent()->get('project_audio');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Audio', $audio);
 
         $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
         $this->assertEquals('32.24 KB', $audio->getFileSize());
@@ -235,7 +235,7 @@ class WordPressTest extends TestCase
         $this->assertEmpty($audio->getDescription());
 
         $audio = $page->getContent()->get('project_audio_array');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $audio);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Audio', $audio);
 
         $this->assertEquals('http://local.client.com/wp-content/uploads/2019/02/Kyoto-Bell.mp3', $audio->getValue());
         $this->assertEquals('32.24 KB', $audio->getFileSize());
@@ -245,7 +245,7 @@ class WordPressTest extends TestCase
         $this->assertEmpty($audio->getDescription());
 
         $image = $page->getContent()->get('image_by_id');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Image', $image);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Image', $image);
         $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48.png', $image->getValue());
         $this->assertEquals('http://local.wp-api.test/wp-content/uploads/2019/03/Screen-Shot-2019-03-05-at-14.24.48-1024x80.png', $image->byName('fp-medium'));
     }
@@ -327,8 +327,8 @@ EOD;
 
         $pageTaxonomies = $page->getTaxonomies();
 
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection', $pageTaxonomies['categories']);
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\Term', $pageTaxonomies['categories']->current());
+        $this->assertInstanceOf('Strata\Frontend\Content\Taxonomies\TermCollection', $pageTaxonomies['categories']);
+        $this->assertInstanceOf('Strata\Frontend\Content\Taxonomies\Term', $pageTaxonomies['categories']->current());
 
         foreach ($pageTaxonomies['categories'] as $key => $termObject) {
             switch ($key) {
@@ -371,14 +371,14 @@ EOD;
 
         $flexibleContent = $page->getContent()->get('page_content');
 
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\FlexibleContent', $flexibleContent);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\FlexibleContent', $flexibleContent);
         $this->assertEquals(3, count($flexibleContent));
         $this->assertEquals(1, count($flexibleContent->get('statement_block')));
         $this->assertEquals(2, count($flexibleContent->get('content')));
 
         $x = 0;
         foreach ($flexibleContent as $flexibleComponent) {
-            $this->assertInstanceOf('Studio24\Frontend\Content\Field\Component', $flexibleComponent);
+            $this->assertInstanceOf('Strata\Frontend\Content\Field\Component', $flexibleComponent);
 
             switch ($x) {
                 case 0:

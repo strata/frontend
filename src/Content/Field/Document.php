@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Document content field
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class Document extends AssetField
 {
@@ -51,7 +51,7 @@ class Document extends AssetField
      * @param string $filesize Size of file as formatted string
      * @param string|null $title Title
      * @param string|null $description Description
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $url, string $filesize = null, string $title = null, string $description = null)
     {

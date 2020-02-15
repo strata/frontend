@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\Content;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Content\Page;
+use Strata\Frontend\Content\Page;
 
 class TrimContentTest extends TestCase
 {

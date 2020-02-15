@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\ContentModel;
+namespace Strata\Frontend\ContentModel;
 
 /**
  * Class to track where we are in the content parsing process and return helpful error messages if anything goes wrong
  *
- * @package Studio24\Frontend\ContentModel
+ * @package Strata\Frontend\ContentModel
  */
 class ParseStatus
 {

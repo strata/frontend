@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\ContentModel;
+namespace Strata\Frontend\ContentModel;
 
-use Studio24\Frontend\Exception\ConfigParsingException;
-use Studio24\Frontend\Collection\ArrayAccessTrait;
+use Strata\Frontend\Exception\ConfigParsingException;
+use Strata\Frontend\Collection\ArrayAccessTrait;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -13,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * This contains a collection of content types
  *
- * @package Studio24\Frontend\ContentType
+ * @package Strata\Frontend\ContentType
  */
 class ContentModel extends \ArrayIterator
 {

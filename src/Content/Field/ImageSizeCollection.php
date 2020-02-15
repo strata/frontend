@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 class ImageSizeCollection implements \SeekableIterator, \Countable
 {

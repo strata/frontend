@@ -1,6 +1,8 @@
 <?php
 
-namespace Studio24\Frontend\Content\Taxonomies;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Content\Taxonomies;
 
 //@todo setBaseUrls function similar to that of the Menus class to swap API domain for app domain in term links
 class TermCollection implements \SeekableIterator, \Countable

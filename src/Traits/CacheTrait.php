@@ -1,6 +1,8 @@
 <?php
 
-namespace Studio24\Frontend\Traits;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Traits;
 
 use Psr\SimpleCache\CacheInterface;
 

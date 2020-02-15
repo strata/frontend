@@ -9,11 +9,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\RestData;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\Content\Field\PlainArray;
-use Studio24\Frontend\Content\Url;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Cms\RestData;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\Content\Field\PlainArray;
+use Strata\Frontend\Content\Url;
+use Strata\Frontend\ContentModel\ContentModel;
 
 class CustomApiTest extends TestCase
 {

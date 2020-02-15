@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Utils;
+namespace Strata\Frontend\Utils;
 
-use Studio24\Frontend\Exception\RedirectException;
+use Strata\Frontend\Exception\RedirectException;
 
 /**
  * Class to manage redirects
  *
- * @package Studio24\Frontend\Utils
+ * @package Strata\Frontend\Utils
  */
 class Redirects
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Common code for managing image thumbnail sizes for an asset
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 trait SizesTrait
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Class to represent different image sizes
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class ImageSize
 {

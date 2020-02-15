@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\Content;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Content\Page;
-use Studio24\Frontend\Content\Url;
+use Strata\Frontend\Content\Page;
+use Strata\Frontend\Content\Url;
 
 class UrlTest extends TestCase
 {
@@ -57,7 +57,7 @@ class UrlTest extends TestCase
         $this->assertEquals(null, $url->getOption('date_published', 'key'));
         $this->assertEquals(null, $url->getOption('slug', 'key5'));
 
-        $this->expectException('Studio24\Frontend\Exception\UrlException');
+        $this->expectException('Strata\Frontend\Exception\UrlException');
         $url->getOption('armadillo', 'key1');
     }
 

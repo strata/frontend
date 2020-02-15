@@ -1,11 +1,13 @@
 <?php
 
-namespace Studio24\Frontend\Content;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Content;
 
 /**
  * Simple class to manage metadata we want to expose to Frontend for list results
  *
- * @package Studio24\Frontend\Content
+ * @package Strata\Frontend\Content
  */
 class Metadata implements \ArrayAccess
 {

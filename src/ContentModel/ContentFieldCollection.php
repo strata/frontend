@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\ContentModel;
+namespace Strata\Frontend\ContentModel;
 
-use Studio24\Frontend\Exception\UnimplementedException;
+use Strata\Frontend\Exception\UnimplementedException;
 
 /**
  * Represents a collection of content fields
  *
  * To keep this simple, we extend ContentType
  *
- * @package Studio24\Frontend\Content
+ * @package Strata\Frontend\Content
  */
 class ContentFieldCollection extends ContentType implements ContentFieldCollectionInterface
 {

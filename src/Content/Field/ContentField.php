@@ -1,13 +1,15 @@
 <?php
 
-namespace Studio24\Frontend\Content\Field;
+declare(strict_types=1);
 
-use Studio24\Frontend\Exception\ContentFieldException;
+namespace Strata\Frontend\Content\Field;
+
+use Strata\Frontend\Exception\ContentFieldException;
 
 /**
  * Core content field functionality
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 abstract class ContentField implements ContentFieldInterface
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content;
+namespace Strata\Frontend\Content;
 
 /**
  * Class Page
- * @package Studio24\Frontend\Content
+ * @package Strata\Frontend\Content
  */
 class Page extends BaseContent
 {

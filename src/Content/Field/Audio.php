@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Document content field
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class Audio extends PlayableMediaAsset
 {
@@ -37,7 +37,7 @@ class Audio extends PlayableMediaAsset
      * @param array $media_parameters
      * @param string|null $title
      * @param string|null $description
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $url, string $filesize, $bitrate, string $length, array $mediaParameters, string $title = null, string $description = null)
     {

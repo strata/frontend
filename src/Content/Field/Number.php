@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Number content field
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class Number extends ContentField
 {
@@ -21,7 +21,7 @@ class Number extends ContentField
      * @param string $name
      * @param $number
      *
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, $number)
     {

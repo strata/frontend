@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Cms;
+namespace Strata\Frontend\Cms;
 
-use Studio24\Frontend\Content\BaseContent;
-use Studio24\Frontend\Content\Page;
-use Studio24\Frontend\Content\PageCollection;
-use Studio24\Frontend\ContentModel\ContentModel;
-use Studio24\Frontend\ContentModel\ContentType;
-use Studio24\Frontend\Traits\CacheTrait;
-use Studio24\Frontend\Exception\ApiException;
-use Studio24\Frontend\Exception\ContentTypeNotSetException;
+use Strata\Frontend\Content\BaseContent;
+use Strata\Frontend\Content\Page;
+use Strata\Frontend\Content\PageCollection;
+use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\ContentModel\ContentType;
+use Strata\Frontend\Traits\CacheTrait;
+use Strata\Frontend\Exception\ApiException;
+use Strata\Frontend\Exception\ContentTypeNotSetException;
 use Psr\SimpleCache\CacheInterface;
 
 /**
@@ -19,7 +19,7 @@ use Psr\SimpleCache\CacheInterface;
  *
  * Purpose is to read content from API and map to content objects
  *
- * @package Studio24\Frontend\Cms
+ * @package Strata\Frontend\Cms
  */
 abstract class ContentRepository
 {

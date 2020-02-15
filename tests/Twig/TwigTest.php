@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Twig\FrontendExtension;
+use Strata\Frontend\Twig\FrontendExtension;
 
 class TwigTest extends TestCase
 {

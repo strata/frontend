@@ -1,6 +1,8 @@
 <?php
 
-namespace Studio24\Frontend\Twig;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -12,10 +14,10 @@ use Twig\TwigFunction;
  * To use add this to your services.yaml:
 
     # Register Frontend Twig helpers
-    Studio24\Frontend\Twig\FrontendExtension:
+    Strata\Frontend\Twig\FrontendExtension:
       tags: ['twig.extension']
 
- * @package Studio24\Frontend\Twig
+ * @package Strata\Frontend\Twig
  */
 class FrontendExtension extends AbstractExtension
 {

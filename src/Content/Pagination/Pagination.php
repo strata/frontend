@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Pagination;
+namespace Strata\Frontend\Content\Pagination;
 
-use Studio24\Frontend\Exception\PaginationException;
+use Strata\Frontend\Exception\PaginationException;
 
 /**
  * Simple class to manage API pagination
  *
- * @package Studio24\Frontend\Api
+ * @package Strata\Frontend\Api
  */
 class Pagination implements PaginationInterface
 {

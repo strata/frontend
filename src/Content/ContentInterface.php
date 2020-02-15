@@ -1,8 +1,10 @@
 <?php
 
-namespace Studio24\Frontend\Content;
+declare(strict_types=1);
 
-use Studio24\Frontend\Content\Field\ContentFieldInterface;
+namespace Strata\Frontend\Content;
+
+use Strata\Frontend\Content\Field\ContentFieldInterface;
 
 interface ContentInterface
 {

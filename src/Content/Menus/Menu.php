@@ -1,13 +1,8 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Brian
- * Date: 21/02/2019
- * Time: 9:16
- */
+declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Menus;
+namespace Strata\Frontend\Content\Menus;
 
 class Menu
 {

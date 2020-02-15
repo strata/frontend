@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content;
+namespace Strata\Frontend\Content;
 
-use Studio24\Frontend\Content\Field\ContentFieldCollection;
-use Studio24\Frontend\Content\Field\ContentFieldInterface;
-use Studio24\Frontend\Content\Field\DateTime;
-use Studio24\Frontend\Content\Field\Image;
-use Studio24\Frontend\ContentModel\ContentType;
+use Strata\Frontend\Content\Field\ContentFieldCollection;
+use Strata\Frontend\Content\Field\ContentFieldInterface;
+use Strata\Frontend\Content\Field\DateTime;
+use Strata\Frontend\Content\Field\Image;
+use Strata\Frontend\ContentModel\ContentType;
 
 class BaseContent implements ContentInterface, AddressableInterface
 {
@@ -186,7 +186,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      * @param string $format Date format to create DateTime from, see https://secure.php.net/manual/en/datetime.createfromformat.php
      * @param mixed $timezone DateTimeZone or timezone string
      * @return BaseContent
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function setDatePublished($datePublished, $format = null, $timezone = null): BaseContent
     {
@@ -229,7 +229,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      * @param string $format Date format to create DateTime from, see https://secure.php.net/manual/en/datetime.createfromformat.php
      * @param mixed $timezone DateTimeZone or timezone string
      * @return BaseContent
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function setDateModified($dateModified, $format = null, $timezone = null): BaseContent
     {

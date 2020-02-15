@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\ContentModel;
+namespace Strata\Frontend\ContentModel;
 
-use Studio24\Frontend\Content\Field\ArrayContent;
-use Studio24\Frontend\Content\Field\Audio;
-use Studio24\Frontend\Content\Field\Boolean;
-use Studio24\Frontend\Content\Field\Date;
-use Studio24\Frontend\Content\Field\DateTime;
-use Studio24\Frontend\Content\Field\Decimal;
-use Studio24\Frontend\Content\Field\Document;
-use Studio24\Frontend\Content\Field\FlexibleContent;
-use Studio24\Frontend\Content\Field\Image;
-use Studio24\Frontend\Content\Field\Number;
-use Studio24\Frontend\Content\Field\PlainText;
-use Studio24\Frontend\Content\Field\PlainArray;
-use Studio24\Frontend\Content\Field\Relation;
-use Studio24\Frontend\Content\Field\RelationArray;
-use Studio24\Frontend\Content\Field\RichText;
-use Studio24\Frontend\Content\Field\ShortText;
-use Studio24\Frontend\Content\Field\TaxonomyTerms;
-use Studio24\Frontend\Content\Field\Video;
-use Studio24\Frontend\Exception\ConfigParsingException;
+use Strata\Frontend\Content\Field\ArrayContent;
+use Strata\Frontend\Content\Field\Audio;
+use Strata\Frontend\Content\Field\Boolean;
+use Strata\Frontend\Content\Field\Date;
+use Strata\Frontend\Content\Field\DateTime;
+use Strata\Frontend\Content\Field\Decimal;
+use Strata\Frontend\Content\Field\Document;
+use Strata\Frontend\Content\Field\FlexibleContent;
+use Strata\Frontend\Content\Field\Image;
+use Strata\Frontend\Content\Field\Number;
+use Strata\Frontend\Content\Field\PlainText;
+use Strata\Frontend\Content\Field\PlainArray;
+use Strata\Frontend\Content\Field\Relation;
+use Strata\Frontend\Content\Field\RelationArray;
+use Strata\Frontend\Content\Field\RichText;
+use Strata\Frontend\Content\Field\ShortText;
+use Strata\Frontend\Content\Field\TaxonomyTerms;
+use Strata\Frontend\Content\Field\Video;
+use Strata\Frontend\Exception\ConfigParsingException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -30,7 +30,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * This contains a collection of content fields
  *
- * @package Studio24\Frontend\Content
+ * @package Strata\Frontend\Content
  */
 class ContentType extends \ArrayIterator implements ContentFieldCollectionInterface
 {

@@ -1,13 +1,15 @@
 <?php
 
-namespace Studio24\Frontend\Traits;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Traits;
 
 use Psr\Log\LoggerInterface;
 
 /**
  * Supports logger dependency injection
  *
- * @package Studio24\Frontend\Traits
+ * @package Strata\Frontend\Traits
  */
 trait LoggerTrait
 {

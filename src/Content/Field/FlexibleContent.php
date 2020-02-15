@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Flexible content field
  *
  * Contains a collection of components, which contain content fields
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class FlexibleContent extends ContentField implements \SeekableIterator, \Countable
 {
@@ -27,7 +27,7 @@ class FlexibleContent extends ContentField implements \SeekableIterator, \Counta
      *
      * @param string $name
      *
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name)
     {

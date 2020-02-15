@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
-use Studio24\Frontend\Content\Taxonomies\TermCollection;
+use Strata\Frontend\Content\Taxonomies\TermCollection;
 
 /**
  * Relation field
  *
  * Contains a collection of components, which contain content fields
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class TaxonomyTerms extends ContentField
 {
@@ -24,7 +24,7 @@ class TaxonomyTerms extends ContentField
      *
      * @param string $name
      *
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name)
     {
@@ -35,8 +35,8 @@ class TaxonomyTerms extends ContentField
     /**
      * Set the TermCollection Object
      *
-     * @param \Studio24\Frontend\Content\Taxonomies\TermCollection $termCollection
-     * @return \Studio24\Frontend\Content\Field\TaxonomyTerms
+     * @param \Strata\Frontend\Content\Taxonomies\TermCollection $termCollection
+     * @return \Strata\Frontend\Content\Field\TaxonomyTerms
      */
     public function setContent(TermCollection $termCollection): TaxonomyTerms
     {

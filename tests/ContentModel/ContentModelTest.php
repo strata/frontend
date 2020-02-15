@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\ContentModel;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\ContentModel\ContentModel;
 
 class ContentModelTest extends TestCase
 {

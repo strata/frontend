@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Frontend;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\ContentModel\ContentType;
-use Studio24\Frontend\ContentModel\Field;
-use Studio24\Frontend\ContentModel\FieldInterface;
+use Strata\Frontend\ContentModel\ContentType;
+use Strata\Frontend\ContentModel\Field;
+use Strata\Frontend\ContentModel\FieldInterface;
 
 class CollectionTest extends TestCase
 {

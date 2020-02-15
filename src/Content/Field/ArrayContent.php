@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Array content field
@@ -17,7 +17,7 @@ namespace Studio24\Frontend\Content\Field;
  *     1 => ['name field', 'image field'],
  * ]
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class ArrayContent extends ContentField implements \SeekableIterator, \Countable
 {
@@ -31,7 +31,7 @@ class ArrayContent extends ContentField implements \SeekableIterator, \Countable
      *
      * @param string $name
      * @param array $value Array of child content fields
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, array $value = [])
     {

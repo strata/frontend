@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\ContentModel;
+namespace Strata\Frontend\ContentModel;
 
-use Studio24\Frontend\Content\Field\FlexibleContent;
-use Studio24\Frontend\Collection\ArrayAccessTrait;
+use Strata\Frontend\Content\Field\FlexibleContent;
+use Strata\Frontend\Collection\ArrayAccessTrait;
 
 /**
  * Represents a content field definition (e.g. title field)
  *
  * This contains a collection of content blocks, which contain a collection of content fields
  *
- * @package Studio24\Frontend\ContentModel
+ * @package Strata\Frontend\ContentModel
  */
 class FlexibleField extends \ArrayIterator implements FieldInterface
 {
@@ -94,7 +94,7 @@ class FlexibleField extends \ArrayIterator implements FieldInterface
      *
      * @param array $components
      * @return FlexibleField
-     * @throws \Studio24\Frontend\Exception\ConfigParsingException
+     * @throws \Strata\Frontend\Exception\ConfigParsingException
      */
     public function addComponents(array $components): FlexibleField
     {

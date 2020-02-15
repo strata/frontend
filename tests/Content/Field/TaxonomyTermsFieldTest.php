@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\ContentModel\ContentModel;
 
 class TaxonomyTermsFieldTest extends TestCase
 {
@@ -42,10 +42,10 @@ class TaxonomyTermsFieldTest extends TestCase
         $postObject = $api->getPage(17343);
 
         $typeTermsField = $postObject->getContent()->get('type');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\TaxonomyTerms', $typeTermsField);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\TaxonomyTerms', $typeTermsField);
 
         $typeTerms = $typeTermsField->getContent();
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection', $typeTerms);
+        $this->assertInstanceOf('Strata\Frontend\Content\Taxonomies\TermCollection', $typeTerms);
 
         $firstTerm = $typeTerms->current();
 
@@ -53,10 +53,10 @@ class TaxonomyTermsFieldTest extends TestCase
         $this->assertEquals('views', $firstTerm->getSlug());
 
         $newsThemeTermsField = $postObject->getContent()->get('news_theme');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\TaxonomyTerms', $newsThemeTermsField);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\TaxonomyTerms', $newsThemeTermsField);
 
         $newsThemeTerms = $newsThemeTermsField->getContent();
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection', $newsThemeTerms);
+        $this->assertInstanceOf('Strata\Frontend\Content\Taxonomies\TermCollection', $newsThemeTerms);
 
         $firstThemeTerm = $newsThemeTerms->current();
         $this->assertEquals(244, $firstThemeTerm->getID());

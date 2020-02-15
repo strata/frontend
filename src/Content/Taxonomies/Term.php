@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Taxonomies;
+namespace Strata\Frontend\Content\Taxonomies;
 
 /**
  * Taxonomy term class
  *
- * @package Studio24\Frontend\Content\Taxonomies
+ * @package Strata\Frontend\Content\Taxonomies
  */
 class Term
 {

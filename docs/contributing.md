@@ -24,6 +24,13 @@ We follow [semantic versioning](https://semver.org/). This can be summarised as:
 * MINOR version when you add functionality in a backwards compatible manner, and
 * PATCH version when you make backwards compatible bug fixes.
  
+During pre-1.0 release a MINOR version can include backwards incompatible API changes. Please ensure these are 
+documented in `UPGRADE-PRE-1.0.md`.
+
+Once version 1.0 is reached any upgrade notes should be added to `UPGRADE.md`.
+ 
+### Creating a release
+ 
 To create a new release do the following:
 
 1. Update [CHANGELOG.md](https://github.com/strata/frontend/blob/master/CHANGELOG.md) with a summary of the changes.
@@ -56,6 +63,11 @@ Where possible you can auto-fix code via:
 vendor/bin/phpcbf
 ```
 
+Please ensure you declare strict types at the top of each PHP file:
+
+```php
+declare(strict_types=1);
+```
 ## Documentation
 
 See [docs](docs/index.md) or via the GitHub pages site at: [https://studio24.github.io/frontend/](https://studio24.github.io/frontend/)

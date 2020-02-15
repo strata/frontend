@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\ContentModel\ContentModel;
 
 class DecimalTest extends TestCase
 {

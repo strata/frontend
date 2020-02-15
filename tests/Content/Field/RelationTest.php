@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\ContentModel\ContentModel;
 
 class RelationTest extends TestCase
 {
@@ -47,7 +47,7 @@ class RelationTest extends TestCase
 
         $related_post = $page->getContent()->get('related_post');
 
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Relation', $related_post);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Relation', $related_post);
 
         $this->assertEquals('careers', $related_post->getContentType());
         $this->assertEquals('Joe Bloggs', $related_post->getContent()->getAuthor()->getName());

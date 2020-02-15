@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Content field interface
  *
- * @package Studio24\Frontend\Content
+ * @package Strata\Frontend\Content
  */
 interface ContentFieldInterface
 {

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
-use Studio24\Frontend\Content\BaseContent;
-use Studio24\Frontend\Content\Page;
+use Strata\Frontend\Content\BaseContent;
+use Strata\Frontend\Content\Page;
 
 /**
  * Relation field
  *
  * Contains a collection of components, which contain content fields
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class Relation extends ContentField
 {
@@ -33,7 +33,7 @@ class Relation extends ContentField
      * @param string $name
      * @param string $contentType
      *
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, $contentType = null)
     {
@@ -70,8 +70,8 @@ class Relation extends ContentField
     /**
      * Set the Page Object
      *
-     * @param \Studio24\Frontend\Content\BaseContent $baseContentObject
-     * @return \Studio24\Frontend\Content\Field\Relation
+     * @param \Strata\Frontend\Content\BaseContent $baseContentObject
+     * @return \Strata\Frontend\Content\Field\Relation
      */
     public function setContent(BaseContent $baseContentObject): Relation
     {

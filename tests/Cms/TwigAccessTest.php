@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\RestData;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Cms\RestData;
+use Strata\Frontend\ContentModel\ContentModel;
 
 /**
  * Test Twig rendering of content

@@ -9,10 +9,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\Content\Menus\Menu;
-use Studio24\Frontend\Content\Menus\MenuItem;
-use Studio24\Frontend\Content\Menus\MenuItemCollection;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\Content\Menus\Menu;
+use Strata\Frontend\Content\Menus\MenuItem;
+use Strata\Frontend\Content\Menus\MenuItemCollection;
 
 class MenuTest extends TestCase
 {

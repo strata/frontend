@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api;
+namespace Strata\Frontend\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Studio24\Frontend\Exception\NotFoundException;
-use Studio24\Frontend\Exception\PermissionException;
-use Studio24\Frontend\Exception\FailedRequestException;
-use Studio24\Frontend\Exception\ApiException;
-use Studio24\Frontend\Traits\LoggerTrait;
-use Studio24\Frontend\Version;
+use Strata\Frontend\Exception\NotFoundException;
+use Strata\Frontend\Exception\PermissionException;
+use Strata\Frontend\Exception\FailedRequestException;
+use Strata\Frontend\Exception\ApiException;
+use Strata\Frontend\Traits\LoggerTrait;
+use Strata\Frontend\Version;
 
 /**
  * Simple abstract class for communicating with a RESTful API
  *
- * @package Studio24\Frontend
+ * @package Strata\Frontend
  */
 abstract class RestApiAbstract
 {

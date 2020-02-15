@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Frontend\Api;
 
 use GuzzleHttp\Client;
@@ -7,8 +9,8 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Api\Providers\RestApi;
-use Studio24\Frontend\Exception\FailedRequestException;
+use Strata\Frontend\Api\Providers\RestApi;
+use Strata\Frontend\Exception\FailedRequestException;
 
 class InvalidJsonTest extends TestCase
 {

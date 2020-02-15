@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
-use Studio24\Frontend\Exception\ContentFieldException;
+use Strata\Frontend\Exception\ContentFieldException;
 
 /**
  * Decimal content field
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class Decimal extends ContentField
 {
@@ -54,7 +54,7 @@ class Decimal extends ContentField
      * @param int $precision
      * @param $round Rounding rules for decimal places
      *
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, $number, $precision = null, $round = null)
     {

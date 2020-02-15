@@ -1,10 +1,12 @@
 <?php
 
-namespace Studio24\Frontend\Utils;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Utils;
 
 /**
  * Class FileInfoFormatter
- * @package Studio24\Frontend\Utils
+ * @package Strata\Frontend\Utils
  */
 class FileInfoFormatter
 {

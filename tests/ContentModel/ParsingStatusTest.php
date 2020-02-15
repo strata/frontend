@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\ContentModel;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\ContentModel\ParseStatus;
+use Strata\Frontend\ContentModel\ParseStatus;
 
 class ParsingStatusTest extends TestCase
 {

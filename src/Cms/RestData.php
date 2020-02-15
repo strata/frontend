@@ -2,44 +2,44 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Cms;
+namespace Strata\Frontend\Cms;
 
 use GuzzleHttp\Client;
-use Studio24\Frontend\Api\Providers\RestApi;
-use Studio24\Frontend\Content\ContentInterface;
-use Studio24\Frontend\Content\Field\ArrayContent;
-use Studio24\Frontend\Content\Field\AssetField;
-use Studio24\Frontend\Content\Field\Audio;
-use Studio24\Frontend\Content\Field\ContentField;
-use Studio24\Frontend\Content\Field\ContentFieldCollection;
-use Studio24\Frontend\Content\Field\ContentFieldInterface;
-use Studio24\Frontend\Content\Field\Number;
-use Studio24\Frontend\Content\Field\Document;
-use Studio24\Frontend\Content\Field\PlainArray;
-use Studio24\Frontend\Content\Field\Video;
-use Studio24\Frontend\Content\Metadata;
-use Studio24\Frontend\ContentModel\ContentFieldCollectionInterface;
-use Studio24\Frontend\ContentModel\Field;
-use Studio24\Frontend\Exception\ApiException;
-use Studio24\Frontend\Exception\ContentFieldNotSetException;
-use Studio24\Frontend\Exception\ContentTypeNotSetException;
-use Studio24\Frontend\Content\BaseContent;
-use Studio24\Frontend\Content\Field\Boolean;
-use Studio24\Frontend\Content\Field\Component;
-use Studio24\Frontend\Content\Field\Date;
-use Studio24\Frontend\Content\Field\DateTime;
-use Studio24\Frontend\Content\Field\FlexibleContent;
-use Studio24\Frontend\Content\Field\Image;
-use Studio24\Frontend\Content\Field\PlainText;
-use Studio24\Frontend\Content\Field\Relation;
-use Studio24\Frontend\Content\Field\RichText;
-use Studio24\Frontend\Content\Field\ShortText;
-use Studio24\Frontend\Content\Page;
-use Studio24\Frontend\Content\PageCollection;
-use Studio24\Frontend\ContentModel\ContentModel;
-use Studio24\Frontend\ContentModel\ContentType;
-use Studio24\Frontend\ContentModel\FieldInterface;
-use Studio24\Frontend\Exception\ContentFieldException;
+use Strata\Frontend\Api\Providers\RestApi;
+use Strata\Frontend\Content\ContentInterface;
+use Strata\Frontend\Content\Field\ArrayContent;
+use Strata\Frontend\Content\Field\AssetField;
+use Strata\Frontend\Content\Field\Audio;
+use Strata\Frontend\Content\Field\ContentField;
+use Strata\Frontend\Content\Field\ContentFieldCollection;
+use Strata\Frontend\Content\Field\ContentFieldInterface;
+use Strata\Frontend\Content\Field\Number;
+use Strata\Frontend\Content\Field\Document;
+use Strata\Frontend\Content\Field\PlainArray;
+use Strata\Frontend\Content\Field\Video;
+use Strata\Frontend\Content\Metadata;
+use Strata\Frontend\ContentModel\ContentFieldCollectionInterface;
+use Strata\Frontend\ContentModel\Field;
+use Strata\Frontend\Exception\ApiException;
+use Strata\Frontend\Exception\ContentFieldNotSetException;
+use Strata\Frontend\Exception\ContentTypeNotSetException;
+use Strata\Frontend\Content\BaseContent;
+use Strata\Frontend\Content\Field\Boolean;
+use Strata\Frontend\Content\Field\Component;
+use Strata\Frontend\Content\Field\Date;
+use Strata\Frontend\Content\Field\DateTime;
+use Strata\Frontend\Content\Field\FlexibleContent;
+use Strata\Frontend\Content\Field\Image;
+use Strata\Frontend\Content\Field\PlainText;
+use Strata\Frontend\Content\Field\Relation;
+use Strata\Frontend\Content\Field\RichText;
+use Strata\Frontend\Content\Field\ShortText;
+use Strata\Frontend\Content\Page;
+use Strata\Frontend\Content\PageCollection;
+use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\ContentModel\ContentType;
+use Strata\Frontend\ContentModel\FieldInterface;
+use Strata\Frontend\Exception\ContentFieldException;
 
 class RestData extends ContentRepository
 {
@@ -103,10 +103,10 @@ class RestData extends ContentRepository
      * @return PageCollection;
      * @throws ContentTypeNotSetException
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
-     * @throws \Studio24\Frontend\Exception\PaginationException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\PaginationException
      */
     public function list(int $page = 1, array $options = []): PageCollection
     {
@@ -155,9 +155,9 @@ class RestData extends ContentRepository
      * @throws ContentFieldNotSetException
      * @throws ContentTypeNotSetException
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getOne($id): Page
     {
@@ -189,7 +189,7 @@ class RestData extends ContentRepository
      * @return Page
      * @throws ContentFieldNotSetException
      * @throws ContentTypeNotSetException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function createPage(array $data): Page
     {
@@ -223,7 +223,7 @@ class RestData extends ContentRepository
      * @return BaseContent
      * @throws ContentFieldNotSetException
      * @throws ContentTypeNotSetException
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function setCustomContentFields(ContentType $contentType, ContentInterface $content, array $data): ContentInterface
     {

@@ -1,12 +1,14 @@
 <?php
 
-namespace Studio24\Frontend\Utils;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Utils;
 
 use Webmozart\Assert\Assert;
 
 /**
  * Class FieldFinder
- * @package Studio24\Frontend\Utils
+ * @package Strata\Frontend\Utils
  */
 class WordpressFieldFinder
 {
@@ -16,9 +18,9 @@ class WordpressFieldFinder
      *
      * @param array $data
      * @param array $searchFields
-     * @return null|string
+     * @return null|mixed
      */
-    public static function id(array $data, array $searchFields = null): ?string
+    public static function id(array $data, array $searchFields = null)
     {
         if (empty($searchFields)) {
             $searchFields = ['id'];

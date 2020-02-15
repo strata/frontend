@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
 /**
  * Array field, keys can be integers or strings, values can only be numeric of strings (no arrays or objects)
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class PlainArray extends ContentField
 {
@@ -21,7 +21,7 @@ class PlainArray extends ContentField
      * @param string $name
      * @param array $content
      *
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, array $content)
     {

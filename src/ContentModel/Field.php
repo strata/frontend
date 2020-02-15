@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\ContentModel;
+namespace Strata\Frontend\ContentModel;
 
 /**
  * Represents a content field definition (e.g. title field)
  *
- * @package Studio24\Frontend\ContentModel
+ * @package Strata\Frontend\ContentModel
  */
 class Field implements FieldInterface
 {

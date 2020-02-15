@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Api\Providers\Wordpress;
+use Strata\Frontend\Api\Providers\Wordpress;
 
 class WordPressApiTest extends TestCase
 {

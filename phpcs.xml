@@ -17,5 +17,6 @@
 
     <!-- Test for PSR2 -->
     <rule ref="PSR12" />
+    <rule ref="Generic.PHP.RequireStrictTypes" />
 
 </ruleset>

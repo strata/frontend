@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api;
+namespace Strata\Frontend\Api;
 
 /**
  * Class to manage allowed actions on an API and to protect against misuse

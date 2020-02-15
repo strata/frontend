@@ -1,6 +1,8 @@
 <?php
 
-namespace Studio24\Frontend\Content\Field;
+declare(strict_types=1);
+
+namespace Strata\Frontend\Content\Field;
 
 class ComponentCollection implements \SeekableIterator, \Countable
 {

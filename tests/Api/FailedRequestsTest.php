@@ -9,10 +9,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Api\Providers\Wordpress;
-use Studio24\Frontend\Api\Providers\RestApi;
-use Studio24\Frontend\Exception\ApiException;
-use Studio24\Frontend\Exception\NotFoundException;
+use Strata\Frontend\Api\Providers\Wordpress;
+use Strata\Frontend\Api\Providers\RestApi;
+use Strata\Frontend\Exception\ApiException;
+use Strata\Frontend\Exception\NotFoundException;
 
 class FailedRequestsTest extends TestCase
 {
@@ -118,13 +118,13 @@ class FailedRequestsTest extends TestCase
         $api->setClient($client);
 
         // Test it!
-        $this->expectException(\Studio24\Frontend\Exception\NotFoundException::class);
+        $this->expectException(\Strata\Frontend\Exception\NotFoundException::class);
         $results = $api->getOne('endpoint', 1);
 
-        $this->expectException(\Studio24\Frontend\Exception\FailedRequestException::class);
+        $this->expectException(\Strata\Frontend\Exception\FailedRequestException::class);
         $results = $api->getOne('endpoint', 1);
 
-        $this->expectException(\Studio24\Frontend\Exception\FailedRequestException::class);
+        $this->expectException(\Strata\Frontend\Exception\FailedRequestException::class);
         $results = $api->getOne('endpoint', 1);
     }
 

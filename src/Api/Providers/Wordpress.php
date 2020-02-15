@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api\Providers;
+namespace Strata\Frontend\Api\Providers;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use Studio24\Frontend\Api\ListResponse;
-use Studio24\Frontend\Content\Pagination\Pagination;
-use Studio24\Frontend\Api\RestApiAbstract;
-use Studio24\Frontend\Exception\ApiException;
-use Studio24\Frontend\Utils\FileInfoFormatter;
+use Strata\Frontend\Api\ListResponse;
+use Strata\Frontend\Content\Pagination\Pagination;
+use Strata\Frontend\Api\RestApiAbstract;
+use Strata\Frontend\Exception\ApiException;
+use Strata\Frontend\Utils\FileInfoFormatter;
 
 class Wordpress extends RestApiAbstract
 {
@@ -41,9 +41,9 @@ class Wordpress extends RestApiAbstract
      * @param array $options Options to use when querying data from WordPress
      * @return ListResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
-     * @throws \Studio24\Frontend\Exception\PaginationException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\PaginationException
      */
     public function listPosts($apiEndpoint, $page = 1, array $options = []): ListResponse
     {
@@ -75,7 +75,7 @@ class Wordpress extends RestApiAbstract
      * @param int $limit Number of results per page
      * @param ResponseInterface $response
      * @return Pagination
-     * @throws \Studio24\Frontend\Exception\PaginationException
+     * @throws \Strata\Frontend\Exception\PaginationException
      */
     public function getPagination(int $page, int $limit, ResponseInterface $response): Pagination
     {
@@ -100,8 +100,8 @@ class Wordpress extends RestApiAbstract
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getPost($apiEndpoint, int $id): array
     {
@@ -120,8 +120,8 @@ class Wordpress extends RestApiAbstract
      * @param int $id User ID
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getAuthor(int $id): array
     {
@@ -143,8 +143,8 @@ class Wordpress extends RestApiAbstract
      * @param int $id Menu ID
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getMenu(int $id): array
     {
@@ -164,8 +164,8 @@ class Wordpress extends RestApiAbstract
      * @param int $id
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getMedia(int $id): array
     {
@@ -184,8 +184,8 @@ class Wordpress extends RestApiAbstract
      * @param string $url
      * @return string
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getMediaFileSize(string $url): string
     {
@@ -215,8 +215,8 @@ class Wordpress extends RestApiAbstract
      * @param string $taxonomy
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getTaxonomyTerms(string $taxonomy): array
     {
@@ -236,8 +236,8 @@ class Wordpress extends RestApiAbstract
      * @param int $termID
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
      */
     public function getTerm(string $taxonomy, int $termID): array
     {

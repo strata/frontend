@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api\Providers;
+namespace Strata\Frontend\Api\Providers;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use Studio24\Frontend\Api\RestApiAbstract;
-use Studio24\Frontend\Api\ListResponse;
-use Studio24\Frontend\Content\Pagination\Pagination;
+use Strata\Frontend\Api\RestApiAbstract;
+use Strata\Frontend\Api\ListResponse;
+use Strata\Frontend\Content\Pagination\Pagination;
 
 class RestApi extends RestApiAbstract
 {
@@ -16,7 +16,7 @@ class RestApi extends RestApiAbstract
      * Setup HTTP client
      *
      * @return Client
-     * @throws \Studio24\Frontend\Exception\ApiException
+     * @throws \Strata\Frontend\Exception\ApiException
      */
     public function setupHttpClient(): Client
     {
@@ -36,9 +36,9 @@ class RestApi extends RestApiAbstract
      * @param array $options Options to use when querying data from WordPress
      * @return ListResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
-     * @throws \Studio24\Frontend\Exception\PaginationException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\PaginationException
      */
     public function list(string $apiEndpoint, $page = 1, array $options = []): ListResponse
     {
@@ -75,9 +75,9 @@ class RestApi extends RestApiAbstract
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PermissionException
-     * @throws \Studio24\Frontend\Exception\NotFoundException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PermissionException
+     * @throws \Strata\Frontend\Exception\NotFoundException
      */
     public function getOne($apiEndpoint, $id): array
     {
@@ -107,8 +107,8 @@ class RestApi extends RestApiAbstract
      * @param int $limit Number of results per page
      * @param ResponseInterface $response
      * @return Pagination
-     * @throws \Studio24\Frontend\Exception\FailedRequestException
-     * @throws \Studio24\Frontend\Exception\PaginationException
+     * @throws \Strata\Frontend\Exception\FailedRequestException
+     * @throws \Strata\Frontend\Exception\PaginationException
      */
     public function getPagination(int $page, int $limit, ResponseInterface $response): Pagination
     {

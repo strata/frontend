@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Frontend\Content;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Content\Pagination\Pagination;
+use Strata\Frontend\Content\Pagination\Pagination;
 
 class PaginationTest extends TestCase
 {
@@ -50,7 +52,7 @@ class PaginationTest extends TestCase
         $pages = new Pagination();
 
         $pages->setTotalResults(1039);
-        $this->expectException('Studio24\Frontend\Exception\PaginationException');
+        $this->expectException('Strata\Frontend\Exception\PaginationException');
         $pages->setPage(100);
     }
 
@@ -110,7 +112,7 @@ class PaginationTest extends TestCase
         $pages = new Pagination();
         $pages->setTotalResults(37);
 
-        $this->expectException('Studio24\Frontend\Exception\PaginationException');
+        $this->expectException('Strata\Frontend\Exception\PaginationException');
         $pages->setPage(9);
 
         $pages->setResultsPerPage(4);

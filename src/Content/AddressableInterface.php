@@ -1,8 +1,10 @@
 <?php
 
-namespace Studio24\Frontend\Content;
+declare(strict_types=1);
 
-use Studio24\Frontend\Content\Field\DateTime;
+namespace Strata\Frontend\Content;
+
+use Strata\Frontend\Content\Field\DateTime;
 
 interface AddressableInterface
 {

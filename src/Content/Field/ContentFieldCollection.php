@@ -1,8 +1,10 @@
 <?php
 
-namespace Studio24\Frontend\Content\Field;
+declare(strict_types=1);
 
-use Studio24\Frontend\Collection\ArrayAccessTrait;
+namespace Strata\Frontend\Content\Field;
+
+use Strata\Frontend\Collection\ArrayAccessTrait;
 
 class ContentFieldCollection extends \ArrayIterator
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
-use Studio24\Frontend\Exception\ContentFieldException;
+use Strata\Frontend\Exception\ContentFieldException;
 
 /**
  * Image content field
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class Image extends AssetField
 {
@@ -37,7 +37,7 @@ class Image extends AssetField
      * @param string|null $description Image description
      * @param string|null $alt Alt text
      * @param array $sizes Array of alternative image sizes
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $url, string $title = null, string $description = null, string $alt = null, array $sizes = [])
     {

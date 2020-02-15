@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Api;
+namespace Strata\Frontend\Api;
 
-use Studio24\Frontend\Content\Pagination\PaginationInterface;
+use Strata\Frontend\Content\Pagination\PaginationInterface;
 
 /**
  * Simple class to model the response data for lists of data
  *
- * @package Studio24\Frontend\Api
+ * @package Strata\Frontend\Api
  */
 class ListResponse
 {

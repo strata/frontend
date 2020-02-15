@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Frontend\Content;
 
 use PHPUnit\Framework\TestCase;
@@ -7,9 +9,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\Content\Yoast;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\Content\Yoast;
+use Strata\Frontend\ContentModel\ContentModel;
 
 class YoastTest extends TestCase
 {

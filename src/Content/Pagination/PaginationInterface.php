@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Pagination;
+namespace Strata\Frontend\Content\Pagination;
 
 interface PaginationInterface extends \Countable
 {

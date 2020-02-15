@@ -9,9 +9,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\Content\Taxonomies\Term;
-use Studio24\Frontend\Content\Taxonomies\TermCollection;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\Content\Taxonomies\Term;
+use Strata\Frontend\Content\Taxonomies\TermCollection;
 
 class TaxonomyTest extends TestCase
 {
@@ -35,7 +35,7 @@ class TaxonomyTest extends TestCase
 
         $taxonomyTerm = $wordpress->createTerm('framework_type', 25);
 
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\Term', $taxonomyTerm);
+        $this->assertInstanceOf('Strata\Frontend\Content\Taxonomies\Term', $taxonomyTerm);
 
         $this->assertEquals(25, $taxonomyTerm->getID());
         $this->assertEquals('Standard', $taxonomyTerm->getName());
@@ -64,7 +64,7 @@ class TaxonomyTest extends TestCase
 
         $taxonomyTerms = $wordpress->getAllTerms('news-themes');
 
-        $this->assertInstanceOf('Studio24\Frontend\Content\Taxonomies\TermCollection', $taxonomyTerms);
+        $this->assertInstanceOf('Strata\Frontend\Content\Taxonomies\TermCollection', $taxonomyTerms);
 
         $firstTerm = $taxonomyTerms->current();
 

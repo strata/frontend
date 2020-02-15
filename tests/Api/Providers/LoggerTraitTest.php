@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\Api\Providers;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Api\Providers\Wordpress;
+use Strata\Frontend\Api\Providers\Wordpress;
 
 class LoggerTraitTest extends TestCase
 {

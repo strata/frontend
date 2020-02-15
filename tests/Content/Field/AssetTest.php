@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Frontend\Content\Field;
 
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Content\Field\AssetField;
+use Strata\Frontend\Content\Field\AssetField;
 
 class AssetTest extends TestCase
 {
@@ -23,11 +23,11 @@ class AssetTest extends TestCase
         $this->assertNull(AssetField::guesser('fake'));
 
         $asset = AssetField::factory('application/pdf', 'my_document', 'url');
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Document', $asset);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Document', $asset);
         $this->assertEquals('my_document', $asset->getName());
 
         $asset = AssetField::factory('audio/wav', 'my_audio', 'url', '219874', '129', '0:30', []);
-        $this->assertInstanceOf('Studio24\Frontend\Content\Field\Audio', $asset);
+        $this->assertInstanceOf('Strata\Frontend\Content\Field\Audio', $asset);
         $this->assertEquals('my_audio', $asset->getName());
     }
 

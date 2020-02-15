@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: bdeboevere
- * Date: 2019-03-11
- * Time: 14:54
- */
+declare(strict_types=1);
 
 namespace App\Tests\Frontend\Content;
 
@@ -14,10 +9,10 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\Content\Head;
-use Studio24\Frontend\ContentModel\ContentModel;
-use Studio24\Frontend\Exception\MetaTagNotAllowedException;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\Content\Head;
+use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Exception\MetaTagNotAllowedException;
 
 class HeadTest extends TestCase
 {

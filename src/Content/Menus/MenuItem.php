@@ -1,13 +1,8 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: BenDB
- * Date: 21/02/2019
- * Time: 09:19
- */
+declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Menus;
+namespace Strata\Frontend\Content\Menus;
 
 class MenuItem
 {

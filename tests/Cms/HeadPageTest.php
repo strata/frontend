@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: bdeboevere
- * Date: 2019-03-11
- * Time: 16:22
- */
+declare(strict_types=1);
 
 namespace App\Tests\Frontend\Cms;
 
@@ -14,9 +9,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Studio24\Frontend\Cms\Wordpress;
-use Studio24\Frontend\Content\Page;
-use Studio24\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Cms\Wordpress;
+use Strata\Frontend\Content\Page;
+use Strata\Frontend\ContentModel\ContentModel;
 
 class HeadPageTest extends TestCase
 {

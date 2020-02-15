@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content;
+namespace Strata\Frontend\Content;
 
-use Studio24\Frontend\Content\Pagination\PaginationInterface;
+use Strata\Frontend\Content\Pagination\PaginationInterface;
 
 class PageCollection implements \SeekableIterator, \Countable
 {

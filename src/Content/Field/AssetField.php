@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Content\Field;
+namespace Strata\Frontend\Content\Field;
 
-use Studio24\Frontend\Exception\InvalidMimeTypeException;
+use Strata\Frontend\Exception\InvalidMimeTypeException;
 
 /**
  * Asset content field
  *
- * @package Studio24\Frontend\Content\Field
+ * @package Strata\Frontend\Content\Field
  */
 class AssetField extends ContentField
 {
@@ -46,7 +46,7 @@ class AssetField extends ContentField
      * @param string $url Asset URL
      * @param string|null $title Asset title
      * @param string|null $description Asset description
-     * @throws \Studio24\Frontend\Exception\ContentFieldException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $url, string $title = null, string $description = null)
     {
