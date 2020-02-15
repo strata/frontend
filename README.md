@@ -1,11 +1,9 @@
-# Frontend
+# Strata Frontend
 
-Framework to build an efficient front-end website with content from a Headless CMS or other data sources.
+Deliver fast, accessible user experiences on the modern web.
 
 [![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend) 
-[![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
-
-[version-badge]: https://img.shields.io/badge/version-0.7.0-blue.svg
+[![license][license-badge]][LICENSE]
 
 ## Status
 
@@ -20,66 +18,22 @@ See the [roadmap](ROADMAP.md) for more details on future development plans.
 ## Installation
 
 ```
-composer require studio24/frontend:0.7.*
+composer require studio24/frontend:^0.7
 ```
 
-## Documentation
+## Contributing
 
-See [docs](docs/index.md) or via the GitHub pages site at: [https://studio24.github.io/frontend/](https://studio24.github.io/frontend/)
+Strata is an Open Source project. Find out more about [how to contribute](docs/contributing.md) and our 
+[Code of Conduct](CODE_OF_CONDUCT.md).
 
-Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses [Kramdown](https://kramdown.gettalong.org/parser/html.html) 
-to parse markdown to HTML and the [Liquid templating](https://jekyllrb.com/docs/liquid/) 
-language. Liquid uses a similar syntax to Twig, so if you need to include Twig tags in your docs files ensure you wrap your 
-page content in `raw` Liquid tags to avoid errors. For example:  
+## Security Issues
 
-```
-{% raw %}
+If you discover a security vulnerability within Strata, please follow our [disclosure procedure](SECURITY.md).
 
-Your Markdown here
+## About Us
 
-{% if page.content.field is not empty %}
-    Do something
-{% endif %}
-
-{% endraw %}
-```
-
-## Tests
-
-Run [PHPUnit](https://phpunit.readthedocs.io/en/8.0/) tests via: 
-
-```
-vendor/bin/phpunit
-```
-
-### PHP CodeSniffer
-
-You can test coding standards (PSR2) via:
-
-```
-# Summary report
-vendor/bin/phpcs --report=summary
-
-# Full details
-vendor/bin/phpcs
-```
-
-Where possible you can auto-fix code via:
-
-```
-vendor/bin/phpcbf
-```
-
-## Contributions
-
-Please do contribute! Issues and pull requests are welcome.
-
-Please note [Travis CI](https://travis-ci.org/studio24/frontend) is setup to run PHP linting, PHPUnit and PHP CodeSniffer 
-on all merges into master.
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE) for more information.
+Strata development is sponsored by [Studio 24](https://www.studio24.net/), led by 
+[Simon R Jones](https://github.com/simonrjones/).
 
 [CHANGELOG]: ./CHANGELOG.md
 [LICENSE]: ./LICENSE

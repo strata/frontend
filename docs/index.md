@@ -1,15 +1,17 @@
-# Headless CMS Frontend documentation
+# Strata Frontend
 
-Framework to build an efficient front-end website with content from a Headless CMS or other data sources.
+Deliver fast, accessible user experiences on the modern web.
 
-Outline documentation appears below. 
+## Documentation 
 
+* [How to contribute](contributing.md)
+* [Design principles](design-principles.md)
 * [Content model](content-model.md)
 * [Templating](templating/index.md)
     * [Debugging](templating/debugging.md)
     * [Content fields](templating/content-fields.md) 
     * [Pagination](templating/pagination.md)
 * [Development](development/index.md)
-    * [Setting up content types](setting-up-content-types.md)
+    * [Setting up content types](development/setting-up-content-types.md)
     * [URLs](development/urls.md) 
     
