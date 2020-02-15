@@ -24,10 +24,10 @@ class FileInfoFormatter
 
         switch ($sizeInByte) {
             case $sizeInByte < 1024:
-                $size = $sizeInByte .' B';
+                $size = $sizeInByte . ' B';
                 break;
             case $sizeInByte < 1048576:
-                $size = round($sizeInByte / 1024, 2) .' KB';
+                $size = round($sizeInByte / 1024, 2) . ' KB';
                 break;
             case $sizeInByte < 1073741824:
                 $size = round($sizeInByte / 1048576, 2) . ' MB';

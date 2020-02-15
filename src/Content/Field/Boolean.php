@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -36,7 +37,7 @@ class Boolean extends ContentField
      * @param mixed $value Boolean or string to represent true (y, yes, 1) or false (n ,no, 0)
      * @return Boolean
      */
-    public function setValue($value) : Boolean
+    public function setValue($value): Boolean
     {
         if (is_bool($value)) {
             $this->value = $value;
@@ -64,7 +65,7 @@ class Boolean extends ContentField
      *
      * @return bool
      */
-    public function true() : bool
+    public function true(): bool
     {
         return ($this->value === true);
     }
@@ -74,7 +75,7 @@ class Boolean extends ContentField
      *
      * @return bool
      */
-    public function false() : bool
+    public function false(): bool
     {
         return ($this->value === false);
     }
@@ -94,7 +95,7 @@ class Boolean extends ContentField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return ($this->value) ? 'true' : 'false';
     }

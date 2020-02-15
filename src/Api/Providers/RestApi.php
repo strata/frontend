@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Api\Providers;
@@ -17,7 +18,7 @@ class RestApi extends RestApiAbstract
      * @return Client
      * @throws \Studio24\Frontend\Exception\ApiException
      */
-    public function setupHttpClient() : Client
+    public function setupHttpClient(): Client
     {
         return new Client([
             'base_uri' => $this->getBaseUri(),
@@ -39,7 +40,7 @@ class RestApi extends RestApiAbstract
      * @throws \Studio24\Frontend\Exception\PermissionException
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
-    public function list(string $apiEndpoint, $page = 1, array $options = []) : ListResponse
+    public function list(string $apiEndpoint, $page = 1, array $options = []): ListResponse
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
@@ -78,7 +79,7 @@ class RestApi extends RestApiAbstract
      * @throws \Studio24\Frontend\Exception\PermissionException
      * @throws \Studio24\Frontend\Exception\NotFoundException
      */
-    public function getOne($apiEndpoint, $id) : array
+    public function getOne($apiEndpoint, $id): array
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
@@ -109,7 +110,7 @@ class RestApi extends RestApiAbstract
      * @throws \Studio24\Frontend\Exception\FailedRequestException
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
-    public function getPagination(int $page, int $limit, ResponseInterface $response) : Pagination
+    public function getPagination(int $page, int $limit, ResponseInterface $response): Pagination
     {
         $pages = new Pagination();
 

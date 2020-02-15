@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\Frontend\Api;
 
 use GuzzleHttp\Client;

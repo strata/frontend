@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -19,7 +20,7 @@ class RichText extends ContentField
      *
      * @return bool
      */
-    public function hasHtml() : bool
+    public function hasHtml(): bool
     {
         return true;
     }
@@ -43,7 +44,7 @@ class RichText extends ContentField
      * @param string $content
      * @return PlainText
      */
-    public function setContent(string $content) : RichText
+    public function setContent(string $content): RichText
     {
         $this->content = $content;
         return $this;
@@ -64,7 +65,7 @@ class RichText extends ContentField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->content;
     }

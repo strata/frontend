@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\ContentModel;
@@ -155,7 +156,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     public function parseContentFieldArray(string $name, array $data, string $configDir = ''): FieldInterface
     {
         if (isset($data['config'])) {
-            $data = YAML::parseFile($configDir.'/'.$data['config']);
+            $data = YAML::parseFile($configDir . '/' . $data['config']);
         }
         if (!isset($data['type'])) {
             throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");

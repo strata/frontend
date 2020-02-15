@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Api;
@@ -120,7 +121,7 @@ abstract class RestApiAbstract
      *
      * @return Client
      */
-    abstract public function setupHttpClient() : Client;
+    abstract public function setupHttpClient(): Client;
 
     /**
      * Return the user agent string to use with HTTP requests
@@ -295,7 +296,7 @@ abstract class RestApiAbstract
      * @throws NotFoundException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function get($uri, array $options = []) : ResponseInterface
+    public function get($uri, array $options = []): ResponseInterface
     {
         return $this->request('GET', $uri, $options);
     }
@@ -309,7 +310,7 @@ abstract class RestApiAbstract
      * @throws FailedRequestException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function post($uri, array $options) : ResponseInterface
+    public function post($uri, array $options): ResponseInterface
     {
         return $this->request('POST', $uri, $options);
     }
@@ -323,7 +324,7 @@ abstract class RestApiAbstract
      * @throws FailedRequestException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function head($uri, array $options) : ResponseInterface
+    public function head($uri, array $options): ResponseInterface
     {
         return $this->request('HEAD', $uri, $options);
     }

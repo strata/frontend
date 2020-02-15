@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -70,7 +71,7 @@ class TaxonomyTerms extends ContentField
     public function getValue(): ?string
     {
         if ($this->hasContent()) {
-            return $this->getContent()->count().' terms';
+            return $this->getContent()->count() . ' terms';
         }
 
         return '';

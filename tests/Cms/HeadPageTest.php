@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: bdeboevere
@@ -24,7 +25,7 @@ class HeadPageTest extends TestCase
      */
     private $wordpress;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         // Create a mock and queue responses
         $mock = new MockHandler([

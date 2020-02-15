@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -34,7 +35,7 @@ class PlainText extends ContentField
      * @param string $content
      * @return PlainText
      */
-    public function setContent(string $content) : PlainText
+    public function setContent(string $content): PlainText
     {
         $this->content = $content;
         return $this;
@@ -55,7 +56,7 @@ class PlainText extends ContentField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->content;
     }

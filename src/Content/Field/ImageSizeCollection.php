@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -14,7 +15,7 @@ class ImageSizeCollection implements \SeekableIterator, \Countable
      * @param ImageSize $item
      * @return ImageSizeCollection Fluent interface
      */
-    public function addItem(ImageSize $item) : ImageSizeCollection
+    public function addItem(ImageSize $item): ImageSizeCollection
     {
         $this->collection[] = $item;
         return $this;
@@ -23,7 +24,7 @@ class ImageSizeCollection implements \SeekableIterator, \Countable
     /**
      * @return ImageSize
      */
-    public function current() : ImageSize
+    public function current(): ImageSize
     {
         return $this->collection[$this->position];
     }
@@ -48,7 +49,7 @@ class ImageSizeCollection implements \SeekableIterator, \Countable
         $this->position = 0;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }

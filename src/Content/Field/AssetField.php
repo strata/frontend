@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -33,7 +34,7 @@ class AssetField extends ContentField
      *
      * @return bool
      */
-    public function hasHtml() : bool
+    public function hasHtml(): bool
     {
         return false;
     }
@@ -222,7 +223,7 @@ class AssetField extends ContentField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getUrl();
     }

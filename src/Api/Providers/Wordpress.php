@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Api\Providers;
@@ -20,7 +21,7 @@ class Wordpress extends RestApiAbstract
      * @return Client
      * @throws ApiException
      */
-    public function setupHttpClient() : Client
+    public function setupHttpClient(): Client
     {
         return new Client([
             'base_uri' => $this->getBaseUri(),
@@ -44,7 +45,7 @@ class Wordpress extends RestApiAbstract
      * @throws \Studio24\Frontend\Exception\PermissionException
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
-    public function listPosts($apiEndpoint, $page = 1, array $options = []) : ListResponse
+    public function listPosts($apiEndpoint, $page = 1, array $options = []): ListResponse
     {
         $this->permissionRead();
         $this->expectedResponseCode(200);
@@ -76,7 +77,7 @@ class Wordpress extends RestApiAbstract
      * @return Pagination
      * @throws \Studio24\Frontend\Exception\PaginationException
      */
-    public function getPagination(int $page, int $limit, ResponseInterface $response) : Pagination
+    public function getPagination(int $page, int $limit, ResponseInterface $response): Pagination
     {
         $pages = new Pagination();
 

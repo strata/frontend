@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -34,7 +35,7 @@ class PlainArray extends ContentField
      * @param array $content
      * @return PlainArray
      */
-    public function setContent(array $content) : PlainArray
+    public function setContent(array $content): PlainArray
     {
         if (!is_array($content)) {
             return $this;
@@ -53,8 +54,8 @@ class PlainArray extends ContentField
                 continue;
             }
 
-            $new_key = (is_numeric($key))? (int) $key: (string) $key;
-            $new_value = (is_bool($value))? (int) $value: $value;
+            $new_key = (is_numeric($key)) ? (int) $key : (string) $key;
+            $new_value = (is_bool($value)) ? (int) $value : $value;
 
             $this->content[$new_key] = $new_value;
         }
@@ -77,7 +78,7 @@ class PlainArray extends ContentField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         $contentString = '';
         if (empty($this->content)) {
@@ -85,7 +86,7 @@ class PlainArray extends ContentField
         }
 
         foreach ($this->content as $item) {
-            $contentString .= (string) $item.'. ';
+            $contentString .= (string) $item . '. ';
         }
 
         $contentString = substr($contentString, 0, -1);

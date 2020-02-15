@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content;
@@ -34,7 +35,7 @@ class PageCollection implements \SeekableIterator, \Countable
      * @param Page $item
      * @return PageCollection Fluent interface
      */
-    public function addItem(Page $item) : PageCollection
+    public function addItem(Page $item): PageCollection
     {
         $this->collection[] = $item;
         return $this;
@@ -53,7 +54,7 @@ class PageCollection implements \SeekableIterator, \Countable
     /**
      * @return Page
      */
-    public function current() : Page
+    public function current(): Page
     {
         return $this->collection[$this->position];
     }
@@ -78,7 +79,7 @@ class PageCollection implements \SeekableIterator, \Countable
         $this->position = 0;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }

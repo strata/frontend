@@ -13,7 +13,7 @@ class ComponentCollection implements \SeekableIterator, \Countable
      * @param Component $item Component
      * @return ComponentCollection Fluent interface
      */
-    public function addItem(Component $item) : ComponentCollection
+    public function addItem(Component $item): ComponentCollection
     {
         $this->collection[] = $item;
         return $this;
@@ -22,7 +22,7 @@ class ComponentCollection implements \SeekableIterator, \Countable
     /**
      * @return Component
      */
-    public function current() : Component
+    public function current(): Component
     {
         return $this->collection[$this->position];
     }
@@ -47,7 +47,7 @@ class ComponentCollection implements \SeekableIterator, \Countable
         $this->position = 0;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -56,7 +57,7 @@ class ArrayContent extends ContentField implements \SeekableIterator, \Countable
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         $content = '';
         foreach ($this->collection as $contentFields) {
@@ -122,7 +123,7 @@ class ArrayContent extends ContentField implements \SeekableIterator, \Countable
         $this->position = 0;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }

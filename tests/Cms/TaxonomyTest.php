@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Frontend\Cms;
@@ -15,7 +16,7 @@ use Studio24\Frontend\Content\Taxonomies\TermCollection;
 class TaxonomyTest extends TestCase
 {
 
-    public function testTermSetup() : void
+    public function testTermSetup(): void
     {
         // Create a mock and queue responses
         $mock = new MockHandler([

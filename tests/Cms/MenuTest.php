@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Frontend\Cms;
@@ -26,7 +27,7 @@ class MenuTest extends TestCase
     /** @var Menu $menu10 */
     private $menu3;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         // Create a mock and queue responses
         $mock = new MockHandler([

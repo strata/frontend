@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -27,7 +28,7 @@ trait SizesTrait
      * @param string|null $name Name used to identify image size
      * @return Image
      */
-    public function addSize(string $url, int $width = null, int $height = null, string $name = null) : Image
+    public function addSize(string $url, int $width = null, int $height = null, string $name = null): Image
     {
         $this->getSizes()->addItem(new ImageSize($url, $width, $height, $name));
         return $this;
@@ -66,7 +67,7 @@ trait SizesTrait
      *
      * @return ImageSizeCollection
      */
-    public function getSizes() : ImageSizeCollection
+    public function getSizes(): ImageSizeCollection
     {
         if (!($this->sizes instanceof ImageSizeCollection)) {
             $this->sizes = new ImageSizeCollection();
@@ -119,8 +120,10 @@ trait SizesTrait
     public function byWidthHeight(int $width, int $height)
     {
         foreach ($this->getSizes() as $size) {
-            if (($size->getWidth() == $width) &&
-                ($size->getHeight() == $height)) {
+            if (
+                ($size->getWidth() == $width) &&
+                ($size->getHeight() == $height)
+            ) {
                 return $size->getUrl();
             }
         }

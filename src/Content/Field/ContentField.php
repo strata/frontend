@@ -22,7 +22,7 @@ abstract class ContentField implements ContentFieldInterface
      *
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return self::TYPE;
     }
@@ -32,7 +32,7 @@ abstract class ContentField implements ContentFieldInterface
      *
      * @return bool
      */
-    public function hasHtml() : bool
+    public function hasHtml(): bool
     {
         return false;
     }

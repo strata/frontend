@@ -12,7 +12,7 @@ class ContentFieldCollection extends \ArrayIterator
      * @param ContentFieldInterface $item
      * @return ContentFieldCollection Fluent interface
      */
-    public function addItem(ContentFieldInterface $item) : ContentFieldCollection
+    public function addItem(ContentFieldInterface $item): ContentFieldCollection
     {
         $this->offsetSet($item->getName(), $item);
         return $this;

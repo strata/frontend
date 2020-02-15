@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -36,7 +37,7 @@ class ShortText extends ContentField
      * @param string $content
      * @return PlainText
      */
-    public function setContent(string $content) : ShortText
+    public function setContent(string $content): ShortText
     {
         $content = preg_replace('/\R/', '', $content);
         $this->content = $content;
@@ -58,7 +59,7 @@ class ShortText extends ContentField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getValue();
     }

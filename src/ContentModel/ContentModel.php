@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\ContentModel;
@@ -146,7 +147,7 @@ class ContentModel extends \ArrayIterator
      * @param ContentType $item
      * @return ContentModel Fluent interface
      */
-    public function addItem(ContentType $item) : ContentModel
+    public function addItem(ContentType $item): ContentModel
     {
         $this->offsetSet($item->getName(), $item);
         return $this;

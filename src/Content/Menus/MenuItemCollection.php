@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: BenDB
@@ -19,7 +20,7 @@ class MenuItemCollection implements \SeekableIterator, \Countable
      * @param MenuItem $item MenuItem
      * @return MenuItemCollection Fluent interface
      */
-    public function addItem(MenuItem $item) : MenuItemCollection
+    public function addItem(MenuItem $item): MenuItemCollection
     {
         $this->collection[] = $item;
         return $this;
@@ -28,7 +29,7 @@ class MenuItemCollection implements \SeekableIterator, \Countable
     /**
      * @return MenuItem
      */
-    public function current() : MenuItem
+    public function current(): MenuItem
     {
         return $this->collection[$this->position];
     }
@@ -53,7 +54,7 @@ class MenuItemCollection implements \SeekableIterator, \Countable
         $this->position = 0;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }

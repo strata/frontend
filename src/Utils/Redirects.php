@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Utils;
@@ -125,8 +126,8 @@ class Redirects
 
         // Try to remove/add trailing slash from URL
         if ($result === false) {
-            if (substr($url, strlen($url)-1, 1) === '/') {
-                $result = $matchOne(substr($url, 0, strlen($url)-1));
+            if (substr($url, strlen($url) - 1, 1) === '/') {
+                $result = $matchOne(substr($url, 0, strlen($url) - 1));
             } else {
                 $result = $matchOne($url . '/');
             }

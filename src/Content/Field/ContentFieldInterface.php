@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -10,10 +11,10 @@ namespace Studio24\Frontend\Content\Field;
  */
 interface ContentFieldInterface
 {
-    public function getType() : string;
-    public function hasHtml() : bool;
-    public function setName(string $name) : ContentFieldInterface;
-    public function getName() : string;
+    public function getType(): string;
+    public function hasHtml(): bool;
+    public function setName(string $name): ContentFieldInterface;
+    public function getName(): string;
     public function getValue();
-    public function __toString() : ?string;
+    public function __toString(): ?string;
 }

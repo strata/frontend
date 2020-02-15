@@ -14,7 +14,7 @@ class TermCollection implements \SeekableIterator, \Countable
      * @param Term $item Term
      * @return TermCollection
      */
-    public function addItem(Term $item) : TermCollection
+    public function addItem(Term $item): TermCollection
     {
         $this->collection[] = $item;
         return $this;
@@ -23,7 +23,7 @@ class TermCollection implements \SeekableIterator, \Countable
     /**
      * @return Term
      */
-    public function current() : Term
+    public function current(): Term
     {
         return $this->collection[$this->position];
     }
@@ -48,7 +48,7 @@ class TermCollection implements \SeekableIterator, \Countable
         $this->position = 0;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }

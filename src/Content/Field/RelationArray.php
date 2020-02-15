@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -74,7 +75,7 @@ class RelationArray extends ContentField implements \SeekableIterator, \Countabl
         $this->position = 0;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }
@@ -102,7 +103,7 @@ class RelationArray extends ContentField implements \SeekableIterator, \Countabl
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         $content = '';
 

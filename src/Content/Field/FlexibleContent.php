@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -40,7 +41,7 @@ class FlexibleContent extends ContentField implements \SeekableIterator, \Counta
      * @param Component $item
      * @return FlexibleContent
      */
-    public function addComponent(Component $item) : FlexibleContent
+    public function addComponent(Component $item): FlexibleContent
     {
         $this->components->addItem($item);
         return $this;
@@ -49,7 +50,7 @@ class FlexibleContent extends ContentField implements \SeekableIterator, \Counta
     /**
      * @return Component
      */
-    public function current() : Component
+    public function current(): Component
     {
         return $this->components->current();
     }
@@ -74,7 +75,7 @@ class FlexibleContent extends ContentField implements \SeekableIterator, \Counta
         $this->components->rewind();
     }
 
-    public function count() : int
+    public function count(): int
     {
         return $this->components->count();
     }
@@ -118,7 +119,7 @@ class FlexibleContent extends ContentField implements \SeekableIterator, \Counta
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         $content = '';
 

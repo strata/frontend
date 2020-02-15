@@ -1,10 +1,11 @@
 <?php
 
-namespace Studio24\Frontend\Controller;
-
 /**
  * @todo review this - can we remove this dependency? Not currently in composer.json
  */
+
+namespace Studio24\Frontend\Controller;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

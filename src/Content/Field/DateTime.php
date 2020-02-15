@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -31,7 +32,7 @@ class DateTime extends Date
      *
      * @return string
      */
-    public function getHour() : string
+    public function getHour(): string
     {
         return $this->format('G');
     }
@@ -41,7 +42,7 @@ class DateTime extends Date
      *
      * @return string
      */
-    public function getMinutes() : string
+    public function getMinutes(): string
     {
         return $this->format('i');
     }
@@ -51,7 +52,7 @@ class DateTime extends Date
      *
      * @return string
      */
-    public function getSeconds() : string
+    public function getSeconds(): string
     {
         return $this->format('s');
     }

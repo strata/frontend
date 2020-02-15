@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Pagination;
@@ -201,7 +202,7 @@ class Pagination implements PaginationInterface
      *
      * @return int
      */
-    public function getNext():int
+    public function getNext(): int
     {
         if (!$this->isLastPage()) {
             return $this->getPage() + 1;

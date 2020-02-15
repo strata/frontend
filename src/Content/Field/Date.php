@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -48,7 +49,7 @@ class Date extends ContentField
      * @param \DateTime $date
      * @return Date
      */
-    public function setDate(\DateTime $date) : Date
+    public function setDate(\DateTime $date): Date
     {
         $this->date = $date;
         return $this;
@@ -59,7 +60,7 @@ class Date extends ContentField
      *
      * @return DateTime
      */
-    public function getDateTime() : \DateTime
+    public function getDateTime(): \DateTime
     {
         return $this->date;
     }
@@ -70,7 +71,7 @@ class Date extends ContentField
      * @param string $format
      * @return string
      */
-    public function format(string $format) : string
+    public function format(string $format): string
     {
         return $this->date->format($format);
     }
@@ -80,7 +81,7 @@ class Date extends ContentField
      *
      * @return string
      */
-    public function getDate() : string
+    public function getDate(): string
     {
         return $this->format('Y-m-d');
     }
@@ -90,7 +91,7 @@ class Date extends ContentField
      *
      * @return string
      */
-    public function getMonth() : string
+    public function getMonth(): string
     {
         return $this->format('n');
     }
@@ -100,7 +101,7 @@ class Date extends ContentField
      *
      * @return string
      */
-    public function getDay() : string
+    public function getDay(): string
     {
         return $this->format('j');
     }
@@ -110,7 +111,7 @@ class Date extends ContentField
      *
      * @return string
      */
-    public function getWeekday() : string
+    public function getWeekday(): string
     {
         return $this->format('N');
     }
@@ -120,7 +121,7 @@ class Date extends ContentField
      *
      * @return \DateTime
      */
-    public function getValue() : \DateTime
+    public function getValue(): \DateTime
     {
         return $this->date;
     }

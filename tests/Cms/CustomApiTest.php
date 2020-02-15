@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Frontend\Cms\Content;
@@ -60,7 +61,7 @@ class CustomApiTest extends TestCase
                     $this->assertNull($item->getContent()->get('summary'));
 
                     $updates =  $item->getContent()->get('updates');
-                    $y=0;
+                    $y = 0;
                     foreach ($updates as $update) {
                         switch ($y) {
                             case 0:

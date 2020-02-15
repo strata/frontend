@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Cms;
@@ -352,7 +353,7 @@ class Wordpress extends ContentRepository
         $title = $page->getTitle();
 
         if (!empty($this->getContentModel()->getGlobal('site_name'))) {
-            $title .= ' | '.$this->getContentModel()->getGlobal('site_name');
+            $title .= ' | ' . $this->getContentModel()->getGlobal('site_name');
         }
 
         $description = strip_tags($page->getExcerpt());
@@ -391,7 +392,7 @@ class Wordpress extends ContentRepository
             $nofollow = $data['yoast']['meta-robots-nofollow'];
             $glue = "";
             if (!empty($noindex) && !empty($nofollow)) {
-                $glue=", ";
+                $glue = ", ";
             }
             $page->getHead()->addMeta("robots", $noindex . $glue . $nofollow);
         }
@@ -748,8 +749,8 @@ class Wordpress extends ContentRepository
                                         $sizesData,
                                         array(
                                         'url' => $value['sizes'][$sizeName],
-                                        'width' => $value['sizes'][$sizeName.'-width'],
-                                        'height' => $value['sizes'][$sizeName.'-height'],
+                                        'width' => $value['sizes'][$sizeName . '-width'],
+                                        'height' => $value['sizes'][$sizeName . '-height'],
                                         'name' => $sizeName
                                         )
                                     );
@@ -897,7 +898,7 @@ class Wordpress extends ContentRepository
                     break;
 
                 case 'relation':
-                    if (!is_array($value) || empty($value) ||!$field->hasOption('content_type')) {
+                    if (!is_array($value) || empty($value) || !$field->hasOption('content_type')) {
                         break;
                     }
 
@@ -1027,7 +1028,7 @@ class Wordpress extends ContentRepository
                     }
 
                     foreach ($termsData as $singleTermData) {
-                        $link = $singleTermData['taxonomy'].'/'.$singleTermData['slug'];
+                        $link = $singleTermData['taxonomy'] . '/' . $singleTermData['slug'];
                         $currentTerm = new Term(
                             $singleTermData['term_id'],
                             $singleTermData['name'],

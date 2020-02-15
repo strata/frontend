@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Field;
@@ -105,7 +106,7 @@ class Document extends AssetField
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getUrl();
     }

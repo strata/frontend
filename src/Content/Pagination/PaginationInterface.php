@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content\Pagination;
@@ -17,14 +18,14 @@ interface PaginationInterface extends \Countable
      *
      * @return int
      */
-    public function getFrom() : int;
+    public function getFrom(): int;
 
     /**
      * Get current page range ending result
      *
      * @return int
      */
-    public function getTo() : int;
+    public function getTo(): int;
 
     /**
      * Return number of result pages

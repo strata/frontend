@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Content;
@@ -115,7 +116,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      * @param mixed $slug
      * @return Page
      */
-    public function setUrlSlug(? string $slug): BaseContent
+    public function setUrlSlug(?string $slug): BaseContent
     {
         $this->urlSlug = $slug;
         return $this;
@@ -171,7 +172,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      *
      * @return DateTime
      */
-    public function getDatePublished() : DateTime
+    public function getDatePublished(): DateTime
     {
         return $this->datePublished;
     }
@@ -187,7 +188,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      * @return BaseContent
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function setDatePublished($datePublished, $format = null, $timezone = null) : BaseContent
+    public function setDatePublished($datePublished, $format = null, $timezone = null): BaseContent
     {
         if (empty($datePublished)) {
             return $this;
@@ -214,7 +215,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      *
      * @return DateTime
      */
-    public function getDateModified() : DateTime
+    public function getDateModified(): DateTime
     {
         return $this->dateModified;
     }
@@ -230,7 +231,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      * @return BaseContent
      * @throws \Studio24\Frontend\Exception\ContentFieldException
      */
-    public function setDateModified($dateModified, $format = null, $timezone = null) : BaseContent
+    public function setDateModified($dateModified, $format = null, $timezone = null): BaseContent
     {
         if (empty($dateModified)) {
             return $this;
@@ -301,7 +302,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      *
      * @return ContentFieldCollection
      */
-    public function getContent() : ContentFieldCollection
+    public function getContent(): ContentFieldCollection
     {
         return $this->content;
     }
@@ -311,7 +312,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      *
      * @return Image
      */
-    public function getFeaturedImage() : ?Image
+    public function getFeaturedImage(): ?Image
     {
         return $this->featuredImage;
     }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Studio24\Frontend\Api;
@@ -25,7 +26,7 @@ class Permissions
         $this->allowed = $actions;
     }
 
-    public function isAllowed(int $action) : bool
+    public function isAllowed(int $action): bool
     {
         return (($this->allowed & $action) !== 0);
     }
@@ -35,7 +36,7 @@ class Permissions
      *
      * @return bool
      */
-    public function read() : bool
+    public function read(): bool
     {
         return $this->isAllowed(self::READ);
     }
@@ -45,7 +46,7 @@ class Permissions
      *
      * @return bool
      */
-    public function write() : bool
+    public function write(): bool
     {
         return $this->isAllowed(self::WRITE);
     }
@@ -55,7 +56,7 @@ class Permissions
      *
      * @return bool
      */
-    public function delete() : bool
+    public function delete(): bool
     {
         return $this->isAllowed(self::DELETE);
     }
@@ -66,7 +67,7 @@ class Permissions
      * @param int $action
      * @return string
      */
-    public function getName(int $action) : string
+    public function getName(int $action): string
     {
         switch ($action) {
             case self::READ:
