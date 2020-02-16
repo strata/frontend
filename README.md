@@ -27,6 +27,10 @@ git remote set-url origin git@github.com:strata/frontend.git
 composer require strata/frontend:^0.7
 ```
 
+## Documentation
+
+Please see the [documentation](docs/README.md). 
+
 ## Contributing
 
 Strata is an Open Source project. Find out more about [how to contribute](docs/contributing.md) and our 
