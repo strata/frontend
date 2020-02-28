@@ -265,16 +265,25 @@ class Wordpress extends ContentRepository
 
         // Get content
         $results = $this->api->listPosts($this->getContentApiEndpoint(), 1, ['slug' => $slug]);
-        if ($results->getPagination()->getTotalResults() != 1) {
+        if (empty($results->getPagination()->getTotalResults())) {
             throw new NotFoundException(sprintf('Page not found for requested URL: %s, slug: %s', $url, $slug), 404);
         }
+        $data = null;
 
-        // Get single result
-        $data = $results->getResponseData()[0];
+        if ($results->getPagination()->getTotalResults() === 1) {
+            $data = $results->getResponseData()[0];
 
-        // Check this page matches requested URL, if not return 404
-        $pageUrlParts = parse_url($data['link']);
-        if (rtrim($pageUrlParts['path'], '/') != rtrim($parts['path'], '/')) {
+        } else {
+            // WP may return multiple results since does a LIKE search on slug on API request
+            foreach ($results->getResponseData() as $item) {
+                $pageUrlParts = parse_url($item['link']);
+                if (rtrim($pageUrlParts['path'], '/') === rtrim($parts['path'], '/')) {
+                    $data = $item;
+                }
+            }
+        }
+
+        if ($data === null) {
             throw new NotFoundException(sprintf('Page URL %s does not match for requested URL: %s, slug: %s', $pageUrlParts['path'], $url, $slug), 400);
         }
 
