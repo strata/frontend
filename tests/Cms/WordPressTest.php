@@ -633,4 +633,35 @@ EOD;
             $x++;
         }
     }
+
+    public function testDuplicatePageSlugInWordPress()
+    {
+        // Create a mock and queue responses
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['X-WP-Total' => 2, 'X-WP-TotalPages' => 2],
+                file_get_contents(__DIR__ . '/../responses/acf/pages.2.json')
+            ),
+            new Response(
+                200,
+                [],
+                file_get_contents(__DIR__ . '/../responses/acf/users.1.json')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $contentModel = new ContentModel(__DIR__ . '/config/acf/content_model.yaml');
+        $wordpress = new Wordpress('something', $contentModel);
+        $wordpress->setContentType('page');
+        $wordpress->setClient($client);
+
+        // Test it!
+        $page = $wordpress->getPageByUrl('/health/');
+
+        $this->assertEquals(85, $page->getId());
+        $this->assertEquals('Lorem ipsum page test 2', $page->getTitle());
+    }
 }
