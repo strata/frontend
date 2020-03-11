@@ -432,8 +432,7 @@ EOD;
         }
     }
 
-
-    public function testInvalidPageUrl()
+    protected function initPageUrlTest(): Wordpress
     {
         // Create a mock and queue two responses
         $mock = new MockHandler([
@@ -463,12 +462,28 @@ EOD;
         $api->setContentModel($contentModel);
         $api->setContentType('news');
 
-        // Test it!
-        $this->expectExceptionCode(400);
-        $page = $api->getPageByUrl('/made/up/hello-world/');
+        return $api;
+    }
 
-        $this->expectExceptionCode(404);
+    public function testInvalidPageUrl1()
+    {
+        $api = $this->initPageUrlTest();
+
+        // Test it!
+        $page = $api->getPageByUrl('/2017/05/23/hello-world/');
+        $this->assertEquals("Hello world!", $page->getTitle());
+
+        $this->expectException(NotFoundException::class);
         $page = $api->getPageByUrl('/made/up/url/');
+    }
+
+    public function testSimilarPageUrl()
+    {
+        $api = $this->initPageUrlTest();
+
+        // Test it!
+        $this->expectException(NotFoundException::class);
+        $page = $api->getPageByUrl('/made-up/folders/hello-world/');
     }
 
     public function testMissingPageImageAuthorTaxonomy()
