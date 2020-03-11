@@ -7,7 +7,7 @@ Framework to build an efficient front-end website with content from a Headless C
 [![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend) 
 [![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
 
-[version-badge]: https://img.shields.io/badge/version-0.6.5-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.6.8-blue.svg
 
 ## Status
 
