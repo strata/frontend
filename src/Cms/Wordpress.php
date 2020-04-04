@@ -272,8 +272,12 @@ class Wordpress extends ContentRepository
         $data = null;
 
         if ($results->getPagination()->getTotalResults() === 1) {
-            $data = $results->getResponseData()[0];
+            $item = $results->getResponseData()[0];
 
+            $pageUrlParts = parse_url($item['link']);
+            if (rtrim($pageUrlParts['path'], '/') === rtrim($parts['path'], '/')) {
+                $data = $item;
+            }
         } else {
             // WP may return multiple results since does a LIKE search on slug on API request
             foreach ($results->getResponseData() as $item) {
