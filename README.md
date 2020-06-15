@@ -1,8 +1,8 @@
 # Frontend
 
-Framework to build an efficient front-end website with content from a Headless CMS or other data sources.
+Framework to build an efficient front-end website with content from a Headless CMS or other data sources based on Symfony web framework.
 
-**Important note:** As of release 0.7.0 this repo will move to [strata/frontend](https://github.com/strata/frontend) and the old package studio24/frontend will be marked as "Abandoned" in Composer, with a clear link to the new project. We will also be updating minimum requirements to PHP 7.2 and Symfony 5.
+**Important note:** This package is currently known as studio24/frontend in Packagist. On the release of 0.7.0 this repo will move to strata/frontend and the old package will be marked as "Abandoned" in Packagist, with a clear link to the new project. We will also be updating minimum requirements to PHP 7.3 and Symfony 5.
 
 [![Build Status](https://travis-ci.org/studio24/frontend.svg?branch=master)](https://travis-ci.org/studio24/frontend) 
 [![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
@@ -11,7 +11,8 @@ Framework to build an efficient front-end website with content from a Headless C
 
 ## Status
 
-Please note this is development software, usage and the project name may change before the 1.0 release. 
+Please note this is development software, usage may change before the 1.0 release. 
+
 See the [roadmap](ROADMAP.md) for more details on future development plans. 
 
 ## Requirements
@@ -27,7 +28,7 @@ composer require studio24/frontend:0.6.*
 
 ## Documentation
 
-See [docs](docs/index.md) or via the GitHub pages site at: [https://studio24.github.io/frontend/](https://studio24.github.io/frontend/)
+See [docs](docs/index.md) or the docs site at: [https://strata.github.io/frontend/](https://strata.github.io/frontend/)
 
 Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses [Kramdown](https://kramdown.gettalong.org/parser/html.html) 
 to parse markdown to HTML and the [Liquid templating](https://jekyllrb.com/docs/liquid/) 
