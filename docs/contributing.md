@@ -20,9 +20,9 @@ All Pull Requests need at least one approval from the Studio 24 development team
 
 We follow [semantic versioning](https://semver.org/). This can be summarised as:
 
-* MAJOR version when you make incompatible API changes,
-* MINOR version when you add functionality in a backwards compatible manner, and
-* PATCH version when you make backwards compatible bug fixes.
+* MAJOR version when you make incompatible API changes (e.g. 2.0.0)
+* MINOR version when you add functionality in a backwards compatible manner (e.g. 2.1.0)
+* PATCH version when you make backwards compatible bug fixes (e.g. 2.1.1)
  
 During pre-1.0 release a MINOR version can include backwards incompatible API changes. Please ensure these are 
 documented in `UPGRADE-PRE-1.0.md`.
@@ -68,9 +68,10 @@ Please ensure you declare strict types at the top of each PHP file:
 ```php
 declare(strict_types=1);
 ```
+
 ## Documentation
 
-See [docs](docs/index.md) or via the GitHub pages site at: [https://studio24.github.io/frontend/](https://studio24.github.io/frontend/)
+See [docs](docs/index.md) or via the GitHub pages site at: [https://strata.github.io/frontend/](https://strata.github.io/frontend/)
 
 Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses [Kramdown](https://kramdown.gettalong.org/parser/html.html) 
 to parse markdown to HTML and the [Liquid templating](https://jekyllrb.com/docs/liquid/) 

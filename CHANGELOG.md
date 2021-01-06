@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2021-01-06
+
+### Added
+- Expand documentation
+
+### Changed
+- Upgrade to Symfony 5
+- Clean up project folders 
+- Update coding standard to PSR12
+- Moved composer package to strata namespace
+
 ## [0.6.8] - 2020-03-11
 ### Fixed
 - Fix issue #84 where WordPress only uses the last part of a URL slug to match pages in WordPress. Frontend now validates 

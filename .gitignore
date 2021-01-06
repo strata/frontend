@@ -2,6 +2,7 @@ composer.phar
 composer.lock
 /vendor/
 .phpunit*
+.phplint-cache
 
 # Application gitignore
 /tests/Cms/twig/cache/*

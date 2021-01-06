@@ -2,11 +2,11 @@
 
 Deliver fast, accessible user experiences on the modern web.
 
-[![Build Status](https://travis-ci.org/strata/frontend.svg?branch=master)](https://travis-ci.org/strata/frontend) 
+![Build Status](https://github.com/strata/frontend/workflows/PHP/badge.svg) 
 [![license][license-badge]][LICENSE]
 
 ## Status
-Please note this is development software, usage may change before the 1.0 release.
+Please note this software is in development, usage may change before the 1.0 release.
 
 See the [roadmap](ROADMAP.md) for more details on future development plans. 
 
