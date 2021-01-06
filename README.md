@@ -2,7 +2,7 @@
 
 Deliver fast, accessible user experiences on the modern web.
 
-![Build Status](https://github.com/strata/frontend/workflows/PHP/badge.svg) 
+![Build Status](https://github.com/strata/frontend/workflows/PHP%20tests/badge.svg) 
 [![license][license-badge]][LICENSE]
 
 ## Status
