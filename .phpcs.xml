@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!-- see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset -->
+<ruleset name="Strata coding standard">
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="75"/>
+    <arg value="p"/>
+
+    <!-- Ignore warnings -->
+    <arg value="n"/>
+
+    <!-- Files to scan -->
+    <file>./src</file>
+    <file>./tests</file>
+    <exclude-pattern>./tests/Cms/twig/cache/*</exclude-pattern>
+
+    <!-- Coding standards -->
+    <rule ref="PSR12" />
+    <rule ref="Generic.PHP.RequireStrictTypes" />
+
+    <!-- Don't hide tokenizer exceptions -->
+    <rule ref="Internal.Tokenizer.Exception">
+        <type>error</type>
+    </rule>
+
+</ruleset>

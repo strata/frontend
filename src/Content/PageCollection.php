@@ -50,7 +50,7 @@ class PageCollection implements \SeekableIterator, \Countable
     {
         return $this->metadata;
     }
-    
+
     /**
      * @return Page
      */

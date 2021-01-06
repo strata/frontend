@@ -284,7 +284,7 @@ abstract class RestApiAbstract
             }
         }
     }
-    
+
 
     /**
      * Make a GET request to the API

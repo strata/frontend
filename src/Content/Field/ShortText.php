@@ -14,7 +14,7 @@ class ShortText extends ContentField
     const TYPE = 'text';
 
     protected $content = '';
-    
+
     /**
      * Create text content field
      *
