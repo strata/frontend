@@ -149,7 +149,9 @@ name you can pass this as the second argument. E.g.
 To output content when not on production:
 
 ```
+{% raw %}
 {% if not is_prod(app.environment) %}
+{% endraw %}
 ```
 
 ### not_empty
