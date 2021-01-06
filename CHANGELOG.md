@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clean up project folders 
 - Update coding standard to PSR12
 - Moved composer package to strata namespace
+- Switched default branch to main
 
 ## [0.6.8] - 2020-03-11
 ### Fixed
