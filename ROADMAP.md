@@ -2,6 +2,7 @@
 
 ## 0.8
 
+- Add support for PHP 8
 - Switch from Guzzle to Symfony HTTP Client ✔
 - Refactoring of data layer into Data repo 
 - Refactoring of content layer to more easily support other CMSs
