@@ -1,6 +1,6 @@
 {
-    "name": "studio24/frontend",
-    "description": "Framework to build an efficient front-end website with content from a Headless CMS or other data sources",
+    "name": "strata/frontend",
+    "description": "Deliver fast, accessible user experiences on the modern web.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -8,7 +8,7 @@
             "name": "Simon Jones",
             "email": "simon@studio24.net",
             "homepage": "https://studio24.net/",
-            "role": "Developer"
+            "role": "Lead Developer"
         },
         {
             "name": "Matt Buckland",
@@ -24,22 +24,28 @@
         }
     ],
     "require": {
-        "php": "^7.1.3",
-        "guzzlehttp/guzzle": "~6.0",
-        "symfony/yaml": "^4.2.",
-        "twig/twig": "^2.6",
-        "webmozart/assert": "^1.4",
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "~6.5",
+        "symfony/yaml": "^5.0",
+        "twig/twig": "^3.0",
+        "webmozart/assert": "^1.6",
         "psr/simple-cache": "^1.0",
-        "symfony/http-foundation": "5.0.7",
-        "monolog/monolog": "^1.24"
+        "symfony/http-foundation": "^5.0",
+        "monolog/monolog": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "Studio24\\Frontend\\": "src/Frontend/"
+            "Strata\\Frontend\\": "src/"
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^7",
-        "squizlabs/php_codesniffer": "3.*"
+        "phpunit/phpunit": "^8.5",
+        "squizlabs/php_codesniffer": "^3.5",
+        "overtrue/phplint": "^2.3"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "phplint ./",
+        "standards": "phpcs"
     }
 }

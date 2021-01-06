@@ -9,7 +9,7 @@ The basic principle of the Frontend project is to read in content from external 
 website out of this.
 
 The common pattern is to read in content from an API (e.g. the WordPress REST API). This raw data 
-is converted this into a more useful content object that is passed to the template (Twig).
+is then converted into a more useful content object that is passed to the template (Twig).
 
 You can find out how to output content fields on the [Templating content fields](templating/content-fields.md) page.
 
