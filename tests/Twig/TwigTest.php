@@ -61,10 +61,16 @@ class TwigTest extends TestCase
     {
         $twig = new FrontendExtension();
 
-        $this->assertEquals(__DIR__ . '/assets/styles.css?v=2f59d2b6', $twig->buildVersion(__DIR__ . '/assets/styles.css'));
+        $expectedHash = '2f59d2b6';
+        $this->assertEquals(__DIR__ . '/assets/styles.css?v=' . $expectedHash, $twig->buildVersion(__DIR__ . '/assets/styles.css'));
+
+        // styles2 = same content
+        // styles3 = one change
+        $this->assertEquals(__DIR__ . '/assets/styles2.css?v=' . $expectedHash, $twig->buildVersion(__DIR__ . '/assets/styles2.css'));
+        $this->assertNotEquals(__DIR__ . '/assets/styles3.css?v=' . $expectedHash, $twig->buildVersion(__DIR__ . '/assets/style3.css'));
 
         $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/';
-        $this->assertEquals('/assets/styles.css?v=2f59d2b6', $twig->buildVersion('/assets/styles.css'));
+        $this->assertEquals('/assets/styles.css?v=' . $expectedHash, $twig->buildVersion('/assets/styles.css'));
     }
 
     public function testIsProd()
