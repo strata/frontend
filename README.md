@@ -23,11 +23,11 @@ composer require strata/frontend:^0.7
 
 ## Documentation
 
-See [docs](docs/index.md) or the docs site at: [https://strata.github.io/frontend/](https://strata.github.io/frontend/)
+See [docs](docs/README.md) or the docs site at: [https://docs.strata.dev/](https://docs.strata.dev/)
 
 ## Contributing
 
-Strata is an Open Source project. Find out more about [how to contribute](docs/contributing.md) and our 
+Strata is an Open Source project. Find out more about [how to contribute](CONTRIBUTING.md) and our 
 [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Security Issues
