@@ -23,7 +23,7 @@ composer require strata/frontend:^0.7
 
 ## Documentation
 
-See [docs](docs/README.md) or the docs site at: [https://strata.github.io/frontend/](https://strata.github.io/frontend/)
+See [docs](docs/README.md) or the docs site at: [https://docs.strata.dev/](https://docs.strata.dev/)
 
 ## Contributing
 
