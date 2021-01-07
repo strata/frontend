@@ -2,7 +2,7 @@
 
 We welcome contributions to Strata. 
 
-All contributors must agree to our [Code of Conduct](../CODE_OF_CONDUCT.md). 
+All contributors must agree to our [Code of Conduct](CODE_OF_CONDUCT.md). 
 
 Strata is released under the MIT license and is copyright [Studio 24 Ltd](https://www.studio24.net/). All contributors 
 must accept these license and copyright conditions.
@@ -71,7 +71,7 @@ declare(strict_types=1);
 
 ## Documentation
 
-See [docs](docs/index.md) or via the GitHub pages site at: [https://strata.github.io/frontend/](https://strata.github.io/frontend/)
+See [docs](docs/README.md) or via the GitHub pages site at: [https://docs.strata.dev/](https://docs.strata.dev/)
 
 Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses [Kramdown](https://kramdown.gettalong.org/parser/html.html) 
 to parse markdown to HTML and the [Liquid templating](https://jekyllrb.com/docs/liquid/) 

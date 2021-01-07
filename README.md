@@ -27,7 +27,7 @@ See [docs](docs/index.md) or the docs site at: [https://strata.github.io/fronten
 
 ## Contributing
 
-Strata is an Open Source project. Find out more about [how to contribute](docs/contributing.md) and our 
+Strata is an Open Source project. Find out more about [how to contribute](CONTRIBUTING.md) and our 
 [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Security Issues
