@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Strata\Data\Metadata;
@@ -56,6 +57,5 @@ class MetadataStatus
         }
 
         return self::STATUS_NOT_CHANGED;
-
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Strata\Data\Tests;
@@ -75,5 +76,4 @@ class SqliteMetadataTest extends TestCase
 
         $this->assertTrue($this->metaDataRepository->exists($id));
     }
-
 }

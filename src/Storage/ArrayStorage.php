@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Strata\Data\Storage;
@@ -160,7 +161,8 @@ class ArrayStorage implements StorageInterface
      *
      * @param \Strata\Data\Metadata\RepositoryInterface $repository
      */
-    public function createTableIfItDoesntExist(RepositoryInterface $repository): void {
+    public function createTableIfItDoesntExist(RepositoryInterface $repository): void
+    {
         // Nothing is required to be set up for the Array Storage system
         return;
     }

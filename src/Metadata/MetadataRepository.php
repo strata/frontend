@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Strata\Data\Metadata;
@@ -36,8 +37,7 @@ class MetadataRepository implements RepositoryInterface
     public function all(): array
     {
         $items = [];
-        foreach ($this->storage->all() as $item)
-        {
+        foreach ($this->storage->all() as $item) {
             $items[] = $this->createObjectFromArray($item);
         }
 
@@ -106,7 +106,8 @@ class MetadataRepository implements RepositoryInterface
      * @return \Strata\Data\Metadata\Metadata
      * @throws \Strata\Data\Exception\InvalidMetadataId
      */
-    protected function createObjectFromArray(array $data) {
+    protected function createObjectFromArray(array $data)
+    {
         $metaData = new Metadata();
 
         if (isset($data['id'])) {
@@ -143,7 +144,6 @@ class MetadataRepository implements RepositoryInterface
         }
 
         return $metaData;
-
     }
 
     /**
@@ -166,7 +166,8 @@ class MetadataRepository implements RepositoryInterface
      *
      * @return string
      */
-    protected function getSqliteTableCreationSql() {
+    protected function getSqliteTableCreationSql()
+    {
         $sql = 'CREATE TABLE IF NOT EXISTS ' . $this->identifier . ' (id TEXT PRIMARY KEY, createdAt TEXT, updatedAt TEXT, url TEXT, contentHash TEXT, attributes BLOB)';
 
         return $sql;

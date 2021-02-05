@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Strata\Data\Tests;
@@ -181,5 +182,4 @@ class MetadataTest extends TestCase
 
         return $metaData;
     }
-
 }

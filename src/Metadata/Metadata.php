@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Strata\Data\Metadata;
 
-use \DateTime;
+use DateTime;
 use Strata\Data\Exception\InvalidMetadataId;
 
 /**

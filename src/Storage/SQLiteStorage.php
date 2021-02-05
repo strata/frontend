@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Strata\Data\Storage;
@@ -167,7 +168,7 @@ class SQLiteStorage implements StorageInterface
         $dataKeysSql = "";
         foreach ($dataKeys as $index => $dataKey) {
             $dataKeysSql .= $dataKey;
-            if ($index+1 !== count($dataKeys)) {
+            if ($index + 1 !== count($dataKeys)) {
                 $dataKeysSql .= ", ";
             }
         }
@@ -178,10 +179,10 @@ class SQLiteStorage implements StorageInterface
             if (empty($dataValue)) {
                 $dataValuesSql .= "NULL";
             } else {
-                $dataValuesSql .= "'".$dataValue."'";
+                $dataValuesSql .= "'" . $dataValue . "'";
             }
 
-            if ($index+1 !== count($dataValues)) {
+            if ($index + 1 !== count($dataValues)) {
                 $dataValuesSql .= ", ";
             }
         }
@@ -191,7 +192,7 @@ class SQLiteStorage implements StorageInterface
 
         $statement = $this->db->prepare($sql);
         $statement->execute();
-        
+
         return $data['id'];
     }
 
@@ -205,7 +206,7 @@ class SQLiteStorage implements StorageInterface
         $insertSql = "";
         foreach ($dataKeys as $index => $dataKey) {
             $insertSql .= $dataKeys[$index] . " = '" . $dataValues[$index] . "'";
-            if ($index+1 !== count($dataKeys)) {
+            if ($index + 1 !== count($dataKeys)) {
                 $insertSql .= ", ";
             }
         }
