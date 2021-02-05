@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Metadata;
+namespace Strata\Frontend\Metadata;
 
 use DateTime;
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Storage;
+namespace Strata\Frontend\Storage;
 
-use Strata\Data\Exception\MissingOptionException;
-use Strata\Data\Exception\StorageException;
-use Strata\Data\Metadata\Metadata;
+use Strata\Frontend\Exception\MissingOptionException;
+use Strata\Frontend\Exception\StorageException;
+use Strata\Frontend\Metadata\Metadata;
 use SQLite3;
-use Strata\Data\Metadata\RepositoryInterface;
+use Strata\Frontend\Metadata\RepositoryInterface;
 
 class SQLiteStorage implements StorageInterface
 {

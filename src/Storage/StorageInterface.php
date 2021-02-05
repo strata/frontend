@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Storage;
+namespace Strata\Frontend\Storage;
 
-use Strata\Data\Metadata\Metadata;
-use Strata\Data\Metadata\RepositoryInterface;
+use Strata\Frontend\Metadata\Metadata;
+use Strata\Frontend\Metadata\RepositoryInterface;
 
 interface StorageInterface
 {

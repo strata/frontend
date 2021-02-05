@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Metadata;
+namespace Strata\Frontend\Metadata;
 
 use DateTime;
-use Strata\Data\Exception\InvalidMetadataId;
+use Strata\Frontend\Exception\InvalidMetadataIdException;
 
 /**
  * Class to store metadata about an item of data
@@ -47,7 +47,7 @@ class Metadata
      *
      * @param int|string $id
      * @return Metadata Fluent interface
-     * @throws InvalidMetadataId
+     * @throws InvalidMetadataIdException
      */
     public function setId($id): Metadata
     {
@@ -62,12 +62,12 @@ class Metadata
      * Validate whether the identifier argument is OK
      *
      * @param $id
-     * @throws InvalidMetadataId
+     * @throws InvalidMetadataIdException
      */
     protected function validateIdentifier($id)
     {
         if (!is_string($id) && !is_int($id)) {
-            throw new InvalidMetadataId(sprintf('$id argument must be string or integer, %s passed', gettype($id)));
+            throw new InvalidMetadataIdException(sprintf('$id argument must be string or integer, %s passed', gettype($id)));
         }
     }
 
@@ -245,7 +245,7 @@ class Metadata
           'id'          => $this->getId(),
           'contentHash' => $this->getContentHash(),
           'url'         => $this->getUrl(),
-          'attributes'  => implode($this->getAttributes(), ", "),
+          'attributes'  => implode(", ", $this->getAttributes()),
           'createdAt'   => $this->getCreatedAt()->format("Y-m-d H:i:s"),
           'updatedAt'   => $this->getUpdatedAt()->format("Y-m-d H:i:s"),
         ];

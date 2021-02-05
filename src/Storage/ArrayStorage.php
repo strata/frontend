@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Storage;
+namespace Strata\Frontend\Storage;
 
-use Strata\Data\Metadata\RepositoryInterface;
+use Strata\Frontend\Metadata\RepositoryInterface;
 
 class ArrayStorage implements StorageInterface
 {

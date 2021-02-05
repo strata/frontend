@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Tests;
+namespace Strata\Frontend\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Strata\Data\Helper\ContentHasher;
-use Strata\Data\Metadata\Metadata;
-use Strata\Data\Metadata\MetadataFactory;
-use Strata\Data\Metadata\MetadataRepository;
-use Strata\Data\Metadata\MetadataStatus;
-use Strata\Data\Storage\ArrayStorage;
+use Strata\Frontend\Helper\ContentHasher;
+use Strata\Frontend\Metadata\Metadata;
+use Strata\Frontend\Metadata\MetadataFactory;
+use Strata\Frontend\Metadata\MetadataRepository;
+use Strata\Frontend\Metadata\MetadataStatus;
+use Strata\Frontend\Storage\ArrayStorage;
 
 class MetadataTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Metadata;
+namespace Strata\Frontend\Metadata;
 
-use Strata\Data\Storage\StorageInterface;
+use Strata\Frontend\Storage\StorageInterface;
 
 class MetadataRepository implements RepositoryInterface
 {

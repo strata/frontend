@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Strata\Data\Tests;
+namespace Strata\Frontend\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Strata\Data\Metadata\MetadataFactory;
-use Strata\Data\Metadata\MetadataRepository;
-use Strata\Data\Storage\SQLiteStorage;
+use Strata\Frontend\Metadata\MetadataFactory;
+use Strata\Frontend\Metadata\MetadataRepository;
+use Strata\Frontend\Storage\SQLiteStorage;
 
 class SqliteMetadataTest extends TestCase
 {
