@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Strata\Frontend\Command\GenerateMockResponseCommand;
+
+$application = new Application('Strata console tool');
+$application->add(new GenerateMockResponseCommand());
+$application->run();

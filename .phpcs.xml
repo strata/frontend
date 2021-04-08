@@ -14,7 +14,12 @@
     <!-- Files to scan -->
     <file>./src</file>
     <file>./tests</file>
+
+    <!-- Ignore Twig cache files -->
     <exclude-pattern>./tests/Cms/twig/cache/*</exclude-pattern>
+
+    <!-- Ignore mock response info files -->
+    <exclude-pattern>./tests/*.info.php</exclude-pattern>
 
     <!-- Coding standards -->
     <rule ref="PSR12" />

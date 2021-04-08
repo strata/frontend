@@ -12,18 +12,18 @@ See the [roadmap](ROADMAP.md) for more details on future development plans.
 
 ## Requirements
 
-* PHP 7.2.5+
+* PHP 7.3+
 * [Composer](https://getcomposer.org/)
 
 ## Installation
 
 ```
-composer require strata/frontend:^0.7
+composer require strata/frontend:^0.8
 ```
 
 ## Documentation
 
-See [docs](docs/README.md) or the docs site at: [https://docs.strata.dev/](https://docs.strata.dev/)
+See [docs](docs/README.md) or the documentation site at: [https://docs.strata.dev/frontend/](https://docs.strata.dev/frontend/)
 
 ## Contributing
 
