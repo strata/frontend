@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\ContentModel;
+namespace Strata\Frontend\Schema;
 
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Content\Field\Audio;
 use Strata\Frontend\Content\Field\Boolean;
+use Strata\Frontend\Content\Field\Component;
+use Strata\Frontend\Content\Field\ContentFieldCollection;
+use Strata\Frontend\Content\Field\ContentFieldInterface;
 use Strata\Frontend\Content\Field\Date;
 use Strata\Frontend\Content\Field\DateTime;
 use Strata\Frontend\Content\Field\Decimal;
@@ -23,6 +26,11 @@ use Strata\Frontend\Content\Field\ShortText;
 use Strata\Frontend\Content\Field\TaxonomyTerms;
 use Strata\Frontend\Content\Field\Video;
 use Strata\Frontend\Exception\ConfigParsingException;
+use Strata\Frontend\Schema\Field\ArraySchemaField;
+use Strata\Frontend\Schema\Field\FlexibleSchemaField;
+use Strata\Frontend\Schema\Field\SchemaField;
+use Strata\Frontend\Schema\Field\SchemaFieldInterface;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -70,9 +78,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     protected $taxonomies;
 
     /**
-     * Content type from source CMS
-     *
-     * @todo Consider creating source_ options for other content model options
+     * Content type name from source CMS
      *
      * @var string
      */
@@ -114,89 +120,6 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     {
         $this->sourceContentType = $sourceContentType;
         return $this;
-    }
-
-    /**
-     * Parse the content fields YAML config file for this content type
-     *
-     * @todo Add more info on where the error is in the YAML file
-     *
-     * @param string $file
-     * @return ContentType
-     * @throws ConfigParsingException
-     */
-    public function parseConfig(string $file): ContentType
-    {
-        $configDir = dirname($file);
-        $data = Yaml::parseFile($file);
-
-        if (!is_array($data)) {
-            throw new ConfigParsingException("Content types YAML config file must contain an array of content fields");
-        }
-
-        foreach ($data as $name => $values) {
-            if (!is_array($values)) {
-                throw new ConfigParsingException(sprintf("Content field definition must contain an array of values, including the 'type' property, %s found", gettype($values)));
-            }
-            $this->addItem($this->parseContentFieldArray($name, $values, $configDir));
-        }
-
-        return $this;
-    }
-
-    /**
-     * Parse an array into a Content Field object
-     *
-     * @param string $name
-     * @param array $data
-     * @param string $configDir
-     * @return FieldInterface
-     * @throws ConfigParsingException
-     */
-    public function parseContentFieldArray(string $name, array $data, string $configDir = ''): FieldInterface
-    {
-        if (isset($data['config'])) {
-            $data = YAML::parseFile($configDir . '/' . $data['config']);
-        }
-        if (!isset($data['type'])) {
-            throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");
-        }
-        if (!$this->validContentFields($data['type'])) {
-            throw new ConfigParsingException(sprintf("Invalid content field type '%s'", $data['type']));
-        }
-
-        switch ($data['type']) {
-            case FlexibleContent::TYPE:
-                if (!isset($data['components'])) {
-                    throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
-                }
-                $contentField = new FlexibleField($name, $data['components']);
-                break;
-
-            case ArrayContent::TYPE:
-                if (!isset($data['content_fields'])) {
-                    throw new ConfigParsingException("You must set a 'content_fields' array for an array content field");
-                }
-                $contentField = new ArrayField($name, $data['content_fields']);
-                break;
-
-            default:
-                // Validation
-                if ($data['type'] === RelationArray::TYPE && !isset($data['content_type'])) {
-                    throw new ConfigParsingException("You must set a 'content_type' array for a relation array content field");
-                }
-
-                $contentField = new Field($name, $data['type']);
-
-                unset($data['type']);
-                if (is_array($data)) {
-                    foreach ($data as $name => $value) {
-                        $contentField->addOption($name, $value);
-                    }
-                }
-        }
-
-        return $contentField;
     }
 
     /**
@@ -270,7 +193,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      * @param ContentModelFieldInterface $item
      * @return ContentType Fluent interface
      */
-    public function addItem(FieldInterface $item): ContentType
+    public function addItem(SchemaFieldInterface $item): ContentType
     {
         $this->offsetSet($item->getName(), $item);
         return $this;
@@ -279,9 +202,9 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     /**
      * Return current item
      *
-     * @return FieldInterface
+     * @return SchemaFieldInterface
      */
-    public function current(): FieldInterface
+    public function current(): SchemaFieldInterface
     {
         return parent::current();
     }
@@ -289,11 +212,66 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
     /**
      * Return item by key
      *
-     * @param string $index
-     * @return FieldInterface
+     * @param string $key
+     * @return SchemaFieldInterface
      */
-    public function offsetGet($index): FieldInterface
+    public function offsetGet($key): SchemaFieldInterface
     {
-        return parent::offsetGet($index);
+        return parent::offsetGet($key);
+    }
+
+    /**
+     * Parse an array into a Content SchemaField object
+     *
+     * @param string $name Content type name
+     * @param array $data Content type field data
+     * @param string $configDir
+     * @return SchemaFieldInterface
+     * @throws ConfigParsingException
+     */
+    public function parseContentFieldArray(string $name, array $data, string $configDir = ''): SchemaFieldInterface
+    {
+        if (isset($data['config'])) {
+            $data = YAML::parseFile($configDir . '/' . $data['config']);
+        }
+        if (!isset($data['type'])) {
+            throw new ConfigParsingException("You must set a 'type' for a content type, e.g. type: plaintext");
+        }
+        if (!$this->validContentFields($data['type'])) {
+            throw new ConfigParsingException(sprintf("Invalid content field type '%s'", $data['type']));
+        }
+
+        switch ($data['type']) {
+            case FlexibleContent::TYPE:
+                if (!isset($data['components'])) {
+                    throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
+                }
+                $contentField = new FlexibleSchemaField($name, $data['components']);
+                break;
+
+            case ArrayContent::TYPE:
+                if (!isset($data['content_fields'])) {
+                    throw new ConfigParsingException("You must set a 'content_fields' array for an array content field");
+                }
+                $contentField = new ArraySchemaField($name, $data['content_fields']);
+                break;
+
+            default:
+                // Validation
+                if ($data['type'] === RelationArray::TYPE && !isset($data['content_type'])) {
+                    throw new ConfigParsingException("You must set a 'content_type' array for a relation array content field");
+                }
+
+                $contentField = new SchemaField($name, $data['type']);
+
+                unset($data['type']);
+                if (is_array($data)) {
+                    foreach ($data as $name => $value) {
+                        $contentField->addOption($name, $value);
+                    }
+                }
+        }
+
+        return $contentField;
     }
 }

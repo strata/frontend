@@ -9,14 +9,14 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Strata\Frontend\Twig\FrontendExtension;
+use Strata\Frontend\View\ViewHelpers;
 
 class TwigTest extends TestCase
 {
 
     public function testSlugify()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $this->assertEquals('my-name-is-earl', $twig->slugify('My name is Earl'));
         $this->assertEquals('changing-spaces-here-and-here-and-123456-789', $twig->slugify('Changing spaces here "and here" and 123=456-789'));
@@ -28,7 +28,7 @@ class TwigTest extends TestCase
 
     public function testFixUrl()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $this->assertEquals('http://www.domain.com', $twig->fixUrl('//www.domain.com'));
         $this->assertEquals('https://www.domain.com', $twig->fixUrl('//www.domain.com', 'https'));
@@ -51,7 +51,7 @@ class TwigTest extends TestCase
 
     public function testExcerpt()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $this->assertEquals('Mary had a little lamb, Its…', $twig->excerpt('Mary had a little lamb, Its fleece was white as snow', 30));
         $this->assertEquals('Mary had a little lamb, [more]', $twig->excerpt('Mary had a little lamb, Its fleece was white as snow', 25, ' [more]'));
@@ -59,7 +59,7 @@ class TwigTest extends TestCase
 
     public function testBuildRevisionFilter()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $expectedHash = '2f59d2b6';
         $this->assertEquals(__DIR__ . '/assets/styles.css?v=' . $expectedHash, $twig->buildVersion(__DIR__ . '/assets/styles.css'));
@@ -75,7 +75,7 @@ class TwigTest extends TestCase
 
     public function testIsProd()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $this->assertTrue($twig->isProd('prod'));
         $this->assertFalse($twig->isProd('stage'));
@@ -86,7 +86,7 @@ class TwigTest extends TestCase
 
     public function testStagingBanner()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $banner = $twig->stagingBanner('staging');
         $this->assertStringContainsString('This is the <strong>staging</strong> environment', $banner);
@@ -107,7 +107,7 @@ class TwigTest extends TestCase
 
     public function testNotEmpty()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $this->assertTrue($twig->notEmpty(null, null, '', 'test'));
         $this->assertFalse($twig->notEmpty(null, null, '', ''));
@@ -117,7 +117,7 @@ class TwigTest extends TestCase
 
     public function testAllNotEmpty()
     {
-        $twig = new FrontendExtension();
+        $twig = new ViewHelpers();
 
         $this->assertFalse($twig->allNotEmpty(null, false, '', 'test'));
         $this->assertFalse($twig->allNotEmpty(null, 'hello there', 'test', 20));

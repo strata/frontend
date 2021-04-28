@@ -7,3 +7,4 @@ composer.lock
 # Application gitignore
 /tests/Cms/twig/cache/*
 !/tests/Cms/twig/cache/.gitkeep
+/config/content

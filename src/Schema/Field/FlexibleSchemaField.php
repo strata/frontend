@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\ContentModel;
+namespace Strata\Frontend\Schema\Field;
 
 use Strata\Frontend\Content\Field\FlexibleContent;
 use Strata\Frontend\Collection\ArrayAccessTrait;
+use Strata\Frontend\Schema\ContentFieldCollection;
 
 /**
  * Represents a content field definition (e.g. title field)
  *
  * This contains a collection of content blocks, which contain a collection of content fields
  *
- * @package Strata\Frontend\ContentModel
+ * @package Strata\Frontend\WordPressSchema
  */
-class FlexibleField extends \ArrayIterator implements FieldInterface
+class FlexibleSchemaField extends \ArrayIterator implements SchemaFieldInterface
 {
     /**
      * Content field name
@@ -55,9 +56,9 @@ class FlexibleField extends \ArrayIterator implements FieldInterface
 
     /**
      * @param string $name
-     * @return FlexibleField Fluent interface
+     * @return FlexibleSchemaField Fluent interface
      */
-    public function setName(string $name): FlexibleField
+    public function setName(string $name): FlexibleSchemaField
     {
         $this->name = $name;
         return $this;
@@ -81,6 +82,11 @@ class FlexibleField extends \ArrayIterator implements FieldInterface
         return false;
     }
 
+    public function getOptions(): array
+    {
+        return [];
+    }
+
     /**
      * @return string
      */
@@ -93,10 +99,10 @@ class FlexibleField extends \ArrayIterator implements FieldInterface
      * Add components from an array of data (normally loaded from config file)
      *
      * @param array $components
-     * @return FlexibleField
+     * @return FlexibleSchemaField
      * @throws \Strata\Frontend\Exception\ConfigParsingException
      */
-    public function addComponents(array $components): FlexibleField
+    public function addComponents(array $components): FlexibleSchemaField
     {
         foreach ($components as $name => $contentFields) {
             $block = new ContentFieldCollection($name);
@@ -115,9 +121,9 @@ class FlexibleField extends \ArrayIterator implements FieldInterface
      * Add an item to the collection
      *
      * @param ContentFieldCollection $item
-     * @return FlexibleField Fluent interface
+     * @return FlexibleSchemaField Fluent interface
      */
-    public function addItem(ContentFieldCollection $item): FlexibleField
+    public function addItem(ContentFieldCollection $item): FlexibleSchemaField
     {
         $this->offsetSet($item->getName(), $item);
         return $this;
@@ -136,11 +142,11 @@ class FlexibleField extends \ArrayIterator implements FieldInterface
     /**
      * Return item by key
      *
-     * @param string $index
+     * @param string $key
      * @return ContentFieldCollection
      */
-    public function offsetGet($index): ContentFieldCollection
+    public function offsetGet($key): ContentFieldCollection
     {
-        return parent::offsetGet($index);
+        return parent::offsetGet($key);
     }
 }

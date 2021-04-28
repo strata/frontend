@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class GenerateMockResponseCommand extends Command
+class MockResponseCommand extends Command
 {
     protected static $defaultName = 'generate:mock-response';
 

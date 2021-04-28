@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\ContentModel;
+namespace Strata\Frontend\Schema;
 
 /**
  * Class to track where we are in the content parsing process and return helpful error messages if anything goes wrong
- *
- * @package Strata\Frontend\ContentModel
  */
 class ParseStatus
 {
@@ -64,8 +62,8 @@ class ParseStatus
     /**
      * We are currently parsing this field
      *
-     * @param string $fieldName Field name we are parsing
-     * @param string $fieldType Field type we are parsing
+     * @param string $fieldName SchemaField name we are parsing
+     * @param string $fieldType SchemaField type we are parsing
      * @param mixed $content Actual content we are parsing
      */
     public function parsing(string $fieldName, string $fieldType, $content)
@@ -146,7 +144,7 @@ class ParseStatus
         }
 
         return $parents . sprintf(
-            'Type: %s' . PHP_EOL . 'Field: %s (%s)' . PHP_EOL . 'Content: %s',
+            'Type: %s' . PHP_EOL . 'SchemaField: %s (%s)' . PHP_EOL . 'Content: %s',
             $this->getContentType(),
             $this->getFieldName(),
             $this->getFieldType(),

@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\ContentModel;
+namespace Strata\Frontend\Schema\Field;
 
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Collection\ArrayAccessTrait;
+use Strata\Frontend\Schema\ContentFieldCollection;
+use Strata\Frontend\Schema\ContentFieldCollectionInterface;
+use Strata\Frontend\Schema\ContentType;
 
 /**
  * Represents a content field definition (e.g. title field)
  *
  * This contains a collection of content fields
  *
- * @package Strata\Frontend\ContentModel
+ * @package Strata\Frontend\WordPressSchema
  */
-class ArrayField extends ContentFieldCollection implements FieldInterface, ContentFieldCollectionInterface
+class ArraySchemaField extends ContentFieldCollection implements SchemaFieldInterface, ContentFieldCollectionInterface
 {
 
     /**
@@ -58,6 +61,11 @@ class ArrayField extends ContentFieldCollection implements FieldInterface, Conte
         return false;
     }
 
+    public function getOptions(): array
+    {
+        return [];
+    }
+
     /**
      * Is the passed content field name a valid content field type?
      *
@@ -81,10 +89,10 @@ class ArrayField extends ContentFieldCollection implements FieldInterface, Conte
      * Add content fields from an array of data (normally loaded from config file)
      *
      * @param array $contentFields
-     * @return ArrayField
+     * @return ArraySchemaField
      * @throws \Strata\Frontend\Exception\ConfigParsingException
      */
-    public function addContentFields(array $contentFields): ArrayField
+    public function addContentFields(array $contentFields): ArraySchemaField
     {
         foreach ($contentFields as $name => $values) {
             $this->addItem($this->parseContentFieldArray($name, $values));

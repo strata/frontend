@@ -2,46 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Twig;
+namespace Strata\Frontend\View;
 
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
-
-/**
- * Twig custom functions and filters
- *
- * To use add this to your services.yaml:
-
-    # Register Frontend Twig helpers
-    Strata\Frontend\Twig\FrontendExtension:
-      tags: ['twig.extension']
-
- * @package Strata\Frontend\Twig
- */
-class FrontendExtension extends AbstractExtension
+class ViewHelpers
 {
-
-    public function getFunctions()
-    {
-        return array(
-            new TwigFunction('slugify', [$this, 'slugify']),
-            new TwigFunction('fix_url', [$this, 'fixUrl']),
-            new TwigFunction('not_empty', [$this, 'notEmpty'], ['is_variadic' => true]),
-            new TwigFunction('all_not_empty', [$this, 'allNotEmpty'], ['is_variadic' => true]),
-            new TwigFunction('is_prod', [$this, 'isProd']),
-            new TwigFunction('staging_banner', [$this, 'stagingBanner'], ['is_safe' => ['html']]),
-        );
-    }
-
-    public function getFilters()
-    {
-        return [
-            new TwigFunction('excerpt', [$this, 'excerpt']),
-            new TwigFilter('build_version', [$this, 'buildVersion']),
-        ];
-    }
-
 
     /**
      * Generate a URL safe slug from a string
@@ -55,7 +19,7 @@ class FrontendExtension extends AbstractExtension
      * @param $string
      * @return string
      */
-    public function slugify($string): string
+    public static function slugify($string): string
     {
         // Filter
         $string = mb_strtolower($string, 'UTF-8');
@@ -82,7 +46,7 @@ class FrontendExtension extends AbstractExtension
      * @param string $scheme The default scheme to use (defaults to http)
      * @return string
      */
-    public function fixUrl(string $url, $scheme = 'http'): string
+    public static function fixUrl(string $url, $scheme = 'http'): string
     {
         $parts = parse_url($url);
         $url = '';
@@ -141,7 +105,7 @@ class FrontendExtension extends AbstractExtension
      * @param string $more If string is cut, display horizontal ellipsis (or different passed string)
      * @return string
      */
-    public function excerpt(string $string, int $length = 50, string $more = '…'): string
+    public static function excerpt(string $string, int $length = 50, string $more = '…'): string
     {
         if ($length >= strlen($string)) {
             return $string;
@@ -162,7 +126,7 @@ class FrontendExtension extends AbstractExtension
      * @param string $src
      * @return string
      */
-    public function buildVersion(string $src): string
+    public static function buildVersion(string $src): string
     {
         // Choose a fast, short hashing algorithm
         static $algorithm;
@@ -202,7 +166,7 @@ class FrontendExtension extends AbstractExtension
      * @param string $prod Production environment, defaults to 'prod'
      * @return bool
      */
-    public function isProd($environment, $prod = 'prod'): bool
+    public static function isProd($environment, $prod = 'prod'): bool
     {
         return ($environment === $prod);
     }
@@ -254,7 +218,7 @@ EOD;
      * @param mixed ...$variables
      * @return bool
      */
-    public function notEmpty(...$variables)
+    public static function notEmpty(...$variables)
     {
         $anyDefined = false;
 
@@ -281,7 +245,7 @@ EOD;
      * @param mixed ...$variables
      * @return bool
      */
-    public function allNotEmpty(...$variables)
+    public static function allNotEmpty(...$variables)
     {
         $allNotEmpty = false;
         $numVariables = count($variables);

@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\ContentModel;
+namespace Strata\Frontend\Schema\Field;
 
 /**
  * Represents a content field definition (e.g. title field)
  *
- * @package Strata\Frontend\ContentModel
  */
-class Field implements FieldInterface
+class SchemaField implements SchemaFieldInterface
 {
     /**
      * Content field name
@@ -54,9 +53,9 @@ class Field implements FieldInterface
 
     /**
      * @param string $name
-     * @return Field Fluent interface
+     * @return SchemaField Fluent interface
      */
-    public function setName(string $name): Field
+    public function setName(string $name): SchemaField
     {
         $this->name = $name;
         return $this;
@@ -72,9 +71,9 @@ class Field implements FieldInterface
 
     /**
      * @param string $type
-     * @return Field Fluent interface
+     * @return SchemaField Fluent interface
      */
-    public function setType(string $type): Field
+    public function setType(string $type): SchemaField
     {
         $this->type = $type;
         return $this;
@@ -86,7 +85,7 @@ class Field implements FieldInterface
      * @param string $name
      * @return mixed|null
      */
-    public function getOption(string $name, ContentModel $contentModel = null)
+    public function getOption(string $name, Schema $contentModel = null)
     {
         if (isset($this->options[$name])) {
             return $this->options[$name];
@@ -119,9 +118,9 @@ class Field implements FieldInterface
     /**
      * @param string $name
      * @param mixed $value
-     * @return Field Fluent interface
+     * @return SchemaField Fluent interface
      */
-    public function addOption(string $name, $value): Field
+    public function addOption(string $name, $value): SchemaField
     {
         $this->options[$name] = $value;
         return $this;
@@ -129,13 +128,18 @@ class Field implements FieldInterface
 
     /**
      * @param array $options
-     * @return Field Fluent interface
+     * @return SchemaField Fluent interface
      */
-    public function setOptions(array $options): Field
+    public function setOptions(array $options): SchemaField
     {
         foreach ($options as $name => $value) {
             $this->addOption($name, $value);
         }
         return $this;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }

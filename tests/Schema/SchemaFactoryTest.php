@@ -2,17 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Frontend\ContentModel;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\ContentTypeFactory;
+use Strata\Frontend\Schema\Schema;
+use Strata\Frontend\Schema\SchemaFactory;
+use Symfony\Component\Serializer\Encoder\YamlEncoder;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
-class ContentModelTest extends TestCase
+class SchemaFactoryTest extends TestCase
 {
 
     public function testConfig()
     {
-        $contentModel = new ContentModel(__DIR__ . '/config/content_model.yaml');
+        $contentModel = SchemaFactory::createFromYaml(__DIR__ . '/config/content_model.yaml');
 
         $this->assertEquals('myValue', $contentModel->getGlobal('test'));
 
@@ -152,7 +158,7 @@ class ContentModelTest extends TestCase
 
     public function testYamlConfigKey()
     {
-        $contentModel = new ContentModel(__DIR__ . '/config/content_model_flexible_components.yaml');
+        $contentModel = SchemaFactory::createFromYaml(__DIR__ . '/config/content_model_flexible_components.yaml');
 
         $d = 1;
         foreach ($contentModel as $contentType) {
@@ -224,5 +230,34 @@ class ContentModelTest extends TestCase
             }
             $d++;
         }
+    }
+
+    public function testGlobals()
+    {
+        $contentModel = SchemaFactory::createFromYaml(__DIR__ . '/config/content_model.yaml');
+
+        $this->assertSame('myValue', $contentModel->getGlobal('test'));
+        $this->assertIsArray($contentModel->getGlobal('image_sizes'));
+        $this->assertSame('thumbnail', $contentModel->getGlobal('image_sizes')[0]);
+        $this->assertSame('issue-post-image', $contentModel->getGlobal('image_sizes')[6]);
+    }
+
+    public function testToYaml()
+    {
+        $contentModel = SchemaFactory::createFromYaml(__DIR__ . '/config/content_model.yaml');
+        $yaml = SchemaFactory::toYaml($contentModel);
+        $parsedYaml = Yaml::parse($yaml);
+
+        $this->assertSame(2, count($parsedYaml));
+        $this->assertSame('projects', $parsedYaml['content_types']['projects']['api_endpoint']);
+        $this->assertSame('projects.yaml', $parsedYaml['content_types']['projects']['content_fields']);
+        $this->assertSame('myValue', $parsedYaml['global']['test']);
+
+        $news = $contentModel->getContentType('news');
+        $yaml = ContentTypeFactory::toYaml($news);
+        $parsedYaml = Yaml::parse($yaml);
+
+        $this->assertSame('boolean', $parsedYaml['exclude_from_search']['type']);
+        $this->assertSame('boolean', $parsedYaml['exclude_from_search']['type']);
     }
 }

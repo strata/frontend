@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Frontend\ContentModel;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Strata\Frontend\ContentModel\ParseStatus;
+use Strata\Frontend\Schema\ParseStatus;
 
 class ParsingStatusTest extends TestCase
 {
@@ -17,7 +17,7 @@ class ParsingStatusTest extends TestCase
 
         $expected = <<<EOL
 Type: news
-Field: id (number)
+SchemaField: id (number)
 Content: 5
 
 EOL;
@@ -40,7 +40,7 @@ EOL;
 
         $expected = <<<EOL
 Type: news
-Field: team (array)
+SchemaField: team (array)
 Content: array (
   0 => 
   array (
@@ -63,7 +63,7 @@ EOL;
         $expected = <<<EOL
 Parents: news > team (array)
 Type: author
-Field: job_title (text)
+SchemaField: job_title (text)
 Content: 'Developer'
 
 EOL;
@@ -84,7 +84,7 @@ EOL;
         $expected = <<<EOL
 Parents: news > team (array) > author > department (relation)
 Type: department
-Field: dept_name (text)
+SchemaField: dept_name (text)
 Content: 'Design'
 
 EOL;

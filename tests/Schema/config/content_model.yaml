@@ -8,7 +8,7 @@ content_types:
 
 global:
   test: myValue
-  image_thumbnails:
+  image_sizes:
     - thumbnail
     - medium
     - medium_large
