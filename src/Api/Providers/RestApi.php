@@ -10,6 +10,9 @@ use Strata\Frontend\Api\RestApiAbstract;
 use Strata\Frontend\Api\ListResponse;
 use Strata\Frontend\Content\Pagination\Pagination;
 
+/**
+ * @deprecated Kept for reference while integrating Strata Data
+ */
 class RestApi extends RestApiAbstract
 {
     /**

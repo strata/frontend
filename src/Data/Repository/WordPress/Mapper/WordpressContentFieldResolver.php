@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\WordPress\Mapper;
+namespace Strata\Frontend\Data\Repository\WordPress\Mapper;
 
 use Strata\Frontend\Data\Resolver\ContentFieldResolver;
 

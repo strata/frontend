@@ -2,26 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\CraftCms;
+namespace Strata\Frontend\Data\Repository\CraftCms;
 
 use Strata\Data\Collection;
 use Strata\Data\Http\GraphQL;
 use Strata\Data\Http\Response\CacheableResponse;
-use Strata\Data\Mapper\MapCollection;
-use Strata\Data\Mapper\MapItem;
-use Strata\Data\Traits\EventDispatcherTrait;
-use Strata\Data\Transform\Data\CallableData;
-use Strata\Data\Transform\Value\DateTimeValue;
-use Strata\Data\Transform\Value\IntegerValue;
-use Strata\Frontend\Content\BaseContent;
 use Strata\Frontend\Content\Page;
 use Strata\Frontend\Data\ContentRepository;
-use Strata\Frontend\Data\CraftCms\Mapper\MapPage;
-use Strata\Frontend\Data\CraftCms\Mapper\MapPageCollection;
-use Strata\Frontend\Data\CraftCms\Mapper\PageRepositoryMapper;
+use Strata\Frontend\Data\Repository\CraftCms\Mapper\MapPage;
+use Strata\Frontend\Data\Repository\CraftCms\Mapper\MapPageCollection;
 use Strata\Frontend\Data\RepositoryCommonTrait;
 use Strata\Frontend\Data\RepositoryInterface;
-use Strata\Frontend\Data\RepositoryMapperInterface;
 use Strata\Frontend\Schema\Schema;
 
 /**
@@ -29,7 +20,6 @@ use Strata\Frontend\Schema\Schema;
  */
 class CraftCms extends ContentRepository implements RepositoryInterface
 {
-    use EventDispatcherTrait;
 
     /**
      * Constructor
@@ -40,7 +30,6 @@ class CraftCms extends ContentRepository implements RepositoryInterface
     public function __construct(string $baseUrl, $contentSchema = null)
     {
         $this->provider = new GraphQL($baseUrl);
-        //$this->respositorySchema = new PageRepositoryMapper();
 
         if (null !== $contentSchema) {
             $this->setContentSchema($contentSchema);

@@ -2,30 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\WordPress;
+namespace Strata\Frontend\Data\Repository\WordPress\Mapper;
 
-use Strata\Data\Mapper\MapCollection;
+use Strata\Data\Exception\MapperException;
 use Strata\Data\Mapper\MapItem;
-use Strata\Data\Mapper\MapperAbstract;
+use Strata\Data\Mapper\MapperInterface;
 use Strata\Data\Transform\Data\CallableData;
-use Strata\Data\Transform\Value\BaseValue;
 use Strata\Data\Transform\Value\DateTimeValue;
+use Strata\Data\Transform\Value\IntegerValue;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\MapCollectionTrait;
 use Strata\Frontend\Data\MapItemTrait;
 use Strata\Frontend\Data\RepositoryMapperInterface;
+use Strata\Frontend\Schema\Schema;
 
-class PageRepositoryMapTrait extends MapCollectionTrait implements RepositoryMapperInterface
+class MapPage implements RepositoryMapperInterface
 {
-    /**
-     * Max number of results per page limited by API
-     * @var int|null
-     */
-    protected ?int $maxPerPage = 100;
+    use MapItemTrait;
 
+    public function __construct()
+    {
+        $this->mapper = new MapItem($this->getDefaultMapping());
+        $this->mapper->toObject(Page::class);
+    }
+
+    /**
+     * Return default mapping to use with mapper
+     *
+     * @return array
+     */
     public function getDefaultMapping(): array
     {
-        // @todo
         return [
             'id'            => new IntegerValue('[id]'),
             'title'         => ['[title][rendered]', '[post_title]', '[post_name]'],
@@ -35,7 +41,11 @@ class PageRepositoryMapTrait extends MapCollectionTrait implements RepositoryMap
             'urlSlug'       => ['[slug]', '[post_name]'],
             'excerpt'       => ['[excerpt][rendered]', '[post_excerpt]'],
             'template'      => ['[template]', '[page_template]'],
-            'content'       => new CallableData([$this, 'populateContent'])
+            'content'       => new CallableData([$this, 'mapCustomContentFields']),
+            'head.title'    => '[title]',
+            'head.meta'     => new CallableData([$this, 'mapHeadMeta']),
+
+//            'content'       => new CallableData([$this, 'populateContent']),
 
             //'dateModified'  => new DateTimeValue(['[modified]', '[post_modified]']),
             //'excerpt'       => ['[excerpt][rendered]', '[post_excerpt]'],
@@ -46,22 +56,27 @@ class PageRepositoryMapTrait extends MapCollectionTrait implements RepositoryMap
     }
 
     /**
-     * @param array $paginationData Array of response headers
-     * @param int $resultsPerPage
-     * @param int $currentPage
-     * @return MapCollection
-     * @throws \Strata\Data\Exception\MapperException
+     * Return array of head meta fields from source data
+     *
+     * @param array $data Source data
+     * @return array Array of meta key => values
      */
-    public function getMapper(): MapCollection
+    public function mapHeadMeta(array $data): array
     {
-        $mapper = new MapCollection($this->getMapping());
-        $mapper->toObject(Page::class)
-               ->fromPaginationData($this->getPaginationData())
-               ->totalResults('[x-wp-total][0]')
-               ->resultsPerPage($this->getResultsPerPage())
-               ->currentPage($this->getCurrentPage());
+        $headFields = [];
 
-        return $mapper;
+        $headFields['og:title'] = $data['title'];
+
+        return $headFields;
+    }
+
+    public function map(array $data, ?string $rootProperty = null): Page
+    {
+        $page = $this->mapper->map($data, $rootProperty);
+        //$page = $this->mapHead($page, $data);
+        //$page = $this->mapContentFields($page);
+
+        return $page;
     }
 
 }

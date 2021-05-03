@@ -45,6 +45,9 @@ use Strata\Frontend\Exception\ContentFieldException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * @deprecated Kept for reference while refactoring data providers
+ */
 class RestData extends ContentRepository
 {
     /**

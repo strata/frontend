@@ -12,6 +12,9 @@ use Strata\Frontend\Api\RestApiAbstract;
 use Strata\Frontend\Exception\ApiException;
 use Strata\Frontend\Utils\FileInfoFormatter;
 
+/**
+ * @deprecated Kept for reference while integrating Strata Data
+ */
 class Wordpress extends RestApiAbstract
 {
 

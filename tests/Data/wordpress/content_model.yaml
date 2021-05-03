@@ -1,0 +1,30 @@
+content_types:
+  page:
+    api_endpoint: pages
+  project:
+    api_endpoint: wp-json/v2/projects
+    content_fields: projects.yaml
+    source_content_type: projects
+  page2:
+    api_endpoint: wp-json/v2/pages
+    content_fields: pages.yaml
+    source_content_type: pages
+  career:
+    api_endpoint: wp-json/v2/careers
+    content_fields: career.yaml
+    source_content_type: careers
+
+global:
+  image_sizes:
+    - thumbnail
+    - medium
+    - medium_large
+    - large
+    - featured-small
+    - featured-medium
+    - featured-large
+    - featured-xlarge
+    - fp-small
+    - fp-medium
+    - fp-large
+    - fp-xlarge

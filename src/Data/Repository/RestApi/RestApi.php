@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\CraftCms;
+namespace Strata\Frontend\Data\Repository\RestApi;
 
 use Strata\Data\Collection;
 use Strata\Data\Http\GraphQL;
@@ -16,9 +16,8 @@ use Strata\Data\Transform\Value\IntegerValue;
 use Strata\Frontend\Content\BaseContent;
 use Strata\Frontend\Content\Page;
 use Strata\Frontend\Data\ContentRepository;
-use Strata\Frontend\Data\CraftCms\Mapper\MapPage;
-use Strata\Frontend\Data\CraftCms\Mapper\MapPageCollection;
-use Strata\Frontend\Data\CraftCms\Mapper\PageRepositoryMapper;
+use Strata\Frontend\Data\Repository\RestApi\Mapper\MapPage;
+use Strata\Frontend\Data\Repository\RestApi\Mapper\MapPageCollection;
 use Strata\Frontend\Data\RepositoryCommonTrait;
 use Strata\Frontend\Data\RepositoryInterface;
 use Strata\Frontend\Data\RepositoryMapperInterface;

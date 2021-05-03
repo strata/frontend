@@ -59,13 +59,7 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * Class to manage access to Wordpress API and returns well-formed content objects
- *
- * This class is also responsible for caching results
- *
- * @todo This class needs a review to extract different purposes into different classes. Do this when integrate 2nd CMS data source
- *
- * @package Strata\Frontend\Cms
+ * @deprecated Kept for reference while refactoring data providers
  */
 class Wordpress extends ContentRepository
 {

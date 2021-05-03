@@ -7,6 +7,7 @@ namespace Strata\Frontend\Api;
 /**
  * Class to manage allowed actions on an API and to protect against misuse
  *
+ * @deprecated Kept for reference since not currently used, may delete
  */
 class Permissions
 {

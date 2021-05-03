@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\CraftCms\Mapper;
+namespace Strata\Frontend\Data\Repository\CraftCms\Mapper;
 
 use Strata\Data\Collection;
 use Strata\Data\Mapper\MapCollection;
@@ -23,7 +23,8 @@ class MapPageCollection extends MapPage
     public function __construct($totalResults = null, $resultsPerPage = null, $currentPage = 1, ?array $paginationData = null)
     {
         $mapper = new MapCollection($this->getDefaultMapping());
-        $mapper->toObject(Page::class);
+        $mapper->toObject(Page::class)
+               ->setCollectionClass('Strata\Frontend\Content\PageCollection');
         $this->setMapper($mapper);
 
         $this->setContentFieldResolver(new CraftCmsContentFieldResolver());

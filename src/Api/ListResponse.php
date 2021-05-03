@@ -9,7 +9,7 @@ use Strata\Frontend\Content\Pagination\PaginationInterface;
 /**
  * Simple class to model the response data for lists of data
  *
- * @package Strata\Frontend\Api
+ * @deprecated Kept for reference while integrating Strata Data
  */
 class ListResponse
 {

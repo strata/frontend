@@ -18,6 +18,7 @@ use Strata\Frontend\Version;
  * Simple abstract class for communicating with a RESTful API
  *
  * @package Strata\Frontend
+ * @deprecated Kept for reference while integrating Strata Data
  */
 abstract class RestApiAbstract
 {

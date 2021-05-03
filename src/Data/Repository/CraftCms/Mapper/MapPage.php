@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\CraftCms\Mapper;
+namespace Strata\Frontend\Data\Repository\CraftCms\Mapper;
 
 use Strata\Data\Mapper\MapItem;
 use Strata\Data\Transform\Data\CallableData;

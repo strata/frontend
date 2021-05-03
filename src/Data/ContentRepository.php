@@ -9,6 +9,7 @@ use Strata\Data\Cache\DataCache;
 use Strata\Data\DataProviderInterface;
 use Strata\Data\Exception\CacheException;
 use Strata\Data\Helper\UnionTypes;
+use Strata\Data\Traits\EventDispatcherTrait;
 use Strata\Frontend\Content\BaseContent;
 use Strata\Frontend\Content\Page;
 use Strata\Frontend\Exception\RepositoryException;
@@ -29,6 +30,7 @@ use Strata\Frontend\Exception\ContentTypeNotSetException;
 abstract class ContentRepository
 {
     //use CacheTrait;
+    use EventDispatcherTrait;
 
     protected DataProviderInterface $provider;
     protected ?Schema $contentSchema = null;

@@ -5,7 +5,8 @@ namespace Data;
 use PHPUnit\Framework\TestCase;
 use Strata\Data\Http\Response\MockResponseFromFile;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\CraftCms\CraftCms;
+use Strata\Frontend\Content\PageCollection;
+use Strata\Frontend\Data\Repository\CraftCms\CraftCms;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 class CraftCmsTest extends TestCase
@@ -77,6 +78,7 @@ EOD;
         // @todo get GraphQL query to map to PageCollection
         $api->setContentType('page');
         $collection = $api->mapCollection($data, '[entries]', '[entryCount]');
+        $this->assertTrue($collection instanceof PageCollection);
         $this->assertSame(2, count($collection));
 
         /** @var Page $page */
