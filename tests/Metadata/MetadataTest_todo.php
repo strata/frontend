@@ -12,7 +12,7 @@ use Strata\Frontend\Metadata\MetadataRepository;
 use Strata\Frontend\Metadata\MetadataStatus;
 use Strata\Frontend\Storage\ArrayStorage;
 
-class MetadataTest extends TestCase
+class MetadataTestTodo extends TestCase
 {
 
     /**

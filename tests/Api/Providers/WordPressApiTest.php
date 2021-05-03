@@ -9,35 +9,25 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use Strata\Data\Http\Response\MockResponseFromFile;
 use Strata\Frontend\Api\Providers\Wordpress;
+use Symfony\Component\HttpClient\MockHttpClient;
 
 class WordPressApiTest extends TestCase
 {
     public function testPosts()
     {
-        // Create a mock and queue two responses
-        $mock = new MockHandler([
-            new Response(
-                200,
-                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
-                file_get_contents(__DIR__ . '/../../responses/demo/posts_1.json')
-            ),
-            new Response(
-                200,
-                ['X-WP-Total' => 12, 'X-WP-TotalPages' => 2],
-                file_get_contents(__DIR__ . '/../../responses/demo/posts_2.json')
-            ),
-            new Response(
-                200,
-                ['X-WP-Total' => 3, 'X-WP-TotalPages' => 1],
-                file_get_contents(__DIR__ . '/../../responses/taxonomy/taxonomy.framework_type.json')
-            ),
-            new Response(
-                200,
-                [],
-                file_get_contents(__DIR__ . '/../../responses/taxonomy/taxonomy.framework_type.25.json')
-            ),
-        ]);
+        // Create mock HTTP responses
+        $responses = [
+            new MockResponseFromFile(__DIR__ . '/wordpress/posts_1.json'),
+            new MockResponseFromFile(__DIR__ . '/wordpress/posts_2.json'),
+            new MockResponseFromFile(__DIR__ . '/wordpress/taxonomy.framework_type.json'),
+            new MockResponseFromFile(__DIR__ . '/wordpress/taxonomy.framework_type.25.json'),
+        ];
+        $client = new MockHttpClient($responses);
+
+        // @todo switch WordPress to use Strata Data
+
 
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);

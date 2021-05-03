@@ -13,7 +13,7 @@ use Strata\Frontend\Schema\ContentFieldCollection;
  *
  * This contains a collection of content blocks, which contain a collection of content fields
  *
- * @package Strata\Frontend\WordPressSchema
+ * @package Strata\Frontend\PageRepositoryMapper
  */
 class FlexibleSchemaField extends \ArrayIterator implements SchemaFieldInterface
 {

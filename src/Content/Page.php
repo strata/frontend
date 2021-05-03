@@ -26,7 +26,7 @@ class Page extends BaseContent
      * Head head
      * @var $head
      */
-    protected $head;
+    protected Head $head;
 
     /**
      * Template template

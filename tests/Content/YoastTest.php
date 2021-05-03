@@ -11,7 +11,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Strata\Frontend\Cms\Wordpress;
 use Strata\Frontend\Content\Yoast;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\Schema;
 
 class YoastTest extends TestCase
 {
@@ -91,7 +91,7 @@ class YoastTest extends TestCase
         $wordpress = new Wordpress('something');
         $wordpress->setClient($client);
         $dir = __DIR__;
-        $contentModel = new ContentModel(__DIR__ . '/config/content-model.yaml');
+        $contentModel = new Schema();
         $wordpress->setContentModel($contentModel);
         $wordpress->setContentType('page');
 

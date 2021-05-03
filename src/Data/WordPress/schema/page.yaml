@@ -1,0 +1,33 @@
+id:
+  mapping: [id]
+title:
+  mapping:
+    - [title][rendered]
+    - [post_title]
+    - [post_name]
+datePublished:
+  mapping:
+    - [date]
+    - [post_date]
+dateModified:
+  mapping:
+    - [modified]
+    - [post_modified]
+status:
+  mapping:
+    - [status]
+    - [post_status]
+urlSlug:
+  mapping:
+    - [slug]
+    - [post_name]
+excerpt:
+  mapping:
+    - [excerpt][rendered]
+    - [post_excerpt]
+template:
+  mapping:
+    - [template]
+    - [page_template]
+content:
+  mapping: [content]

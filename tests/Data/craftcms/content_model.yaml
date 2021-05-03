@@ -1,0 +1,6 @@
+content_types:
+  page:
+    content_fields: page.yaml
+
+global:
+  foo: bar

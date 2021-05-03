@@ -91,9 +91,9 @@ class AssetField extends ContentField
      *
      * @param string $mimeType Mime type
      * @param mixed ...$args Arguments to pass to new class constructor
-     * @return AssetField
+     * @return ?AssetField
      */
-    public static function factory($mimeType, ...$args): AssetField
+    public static function factory($mimeType, ...$args): ?AssetField
     {
         $class = self::guesser($mimeType);
         if ($class === null) {

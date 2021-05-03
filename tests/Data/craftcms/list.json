@@ -1,0 +1,21 @@
+{
+  "data": {
+    "entryCount": 2,
+    "entries": [
+      {
+        "id": "169",
+        "postDate": "2021-04-26T13:36:00+00:00",
+        "status": "live",
+        "title": "Blog post lorem ipsum dolor sit amet",
+        "slug": "blog-post-lorem-ipsum-dolor-sit-amet"
+      },
+      {
+        "id": "170",
+        "postDate": "2021-04-27T13:36:00+00:00",
+        "status": "live",
+        "title": "Test title 2",
+        "slug": "test-title-2"
+      }
+    ]
+  }
+}

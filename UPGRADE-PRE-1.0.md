@@ -2,7 +2,7 @@
 
 Any upgrade notes for pre v1.0 releases that include backward-incompatible API changes.
 
-## Upgrading from v0.6/0.7 to v0.8
+## Upgrading from v0.6 and 0.7 to v0.8
 
 ### PHP 7.4
 Strata currently requires a minimum of PHP 7.4, the current actively [supported version of PHP](https://www.php.net/supported-versions.php).
@@ -53,34 +53,7 @@ Run `composer update`
 ### Update content model config files
 
 In 0.8.0 the `ContentModel` classes, which define what content types you have available to query in the API, have been 
-changed to `Schema` classes. Update the naming conventions in your YAML content config files as follows:
-
-v0.6 / 0.7:
-
-```yaml
-content_types:
-  news:
-    api_endpoint: posts
-    source_content_type: posts
-    content_fields: news.yaml
-  projects:
-    api_endpoint: projects
-    content_fields: projects.yaml
-```
-
-0.8+
-
-```yaml
-content_types:
-  news:
-    endpoint: posts
-    source_name: posts
-    content_fields: news.yaml
-  projects:
-    endpoint: projects
-    content_fields: projects.yaml
-```
-
+changed to `Schema` classes. 
 
 ### Update controller code TODO
 

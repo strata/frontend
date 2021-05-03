@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Studio24\Frontend\Exception;
+namespace Strata\Frontend\Exception;
 
 class ContentFieldTranslationNotFoundException extends \Exception
 {

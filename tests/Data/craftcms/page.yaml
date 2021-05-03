@@ -1,0 +1,18 @@
+authors:
+  type: array
+  content_fields:
+    authorName:
+      type: text
+    authorEmailAddress:
+      type: text
+defaultFlexibleComponents:
+  type: flexible
+  components:
+    textComponent:
+      contentField:
+        type: richtext
+    blockquoteComponent:
+      quoteText:
+        type: richtext
+      citation:
+        type: richtext

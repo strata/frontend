@@ -10,7 +10,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Strata\Frontend\Cms\Wordpress;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\Schema;
 
 class RelationTest extends TestCase
 {
@@ -38,7 +38,7 @@ class RelationTest extends TestCase
         $client = new Client(['handler' => $handler]);
         $api = new Wordpress('something');
         $api->setClient($client);
-        $contentModel = new ContentModel(__DIR__ . '/../config/content-model.yaml');
+        $contentModel = new Schema();
         $api->setContentModel($contentModel);
         $api->setContentType('page2');
 

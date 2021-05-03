@@ -11,7 +11,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Strata\Frontend\Cms\Wordpress;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\Schema;
 
 class HeadPageTest extends TestCase
 {
@@ -39,7 +39,7 @@ class HeadPageTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $this->wordpress = new Wordpress('something', new ContentModel(__DIR__ . '/config/flexible-content/content_model.yaml'));
+        $this->wordpress = new Wordpress('something', new Schema());
         $this->wordpress->setContentType('news');
         $this->wordpress->setClient($client);
     }

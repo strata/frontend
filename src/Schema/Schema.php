@@ -93,7 +93,7 @@ class Schema extends \ArrayIterator
      * Return a content type matched by the source content type
      *
      * E.g. For a content model that has News articles which are stored in WordPress as "posts",
-     * BaseField::getBySourceContentType('posts') will return the News content type
+     * getBySourceContentType('posts') will return the News content type
      *
      * @param string $sourceContentType
      * @return ContentType|null

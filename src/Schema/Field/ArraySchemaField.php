@@ -15,7 +15,7 @@ use Strata\Frontend\Schema\ContentType;
  *
  * This contains a collection of content fields
  *
- * @package Strata\Frontend\WordPressSchema
+ * @package Strata\Frontend\PageRepositoryMapper
  */
 class ArraySchemaField extends ContentFieldCollection implements SchemaFieldInterface, ContentFieldCollectionInterface
 {

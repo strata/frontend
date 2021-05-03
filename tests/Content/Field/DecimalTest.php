@@ -10,7 +10,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Strata\Frontend\Cms\Wordpress;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\Schema;
 
 class DecimalTest extends TestCase
 {
@@ -35,7 +35,7 @@ class DecimalTest extends TestCase
 
         $api = new Wordpress('http://demo.wp-api.org/wp-json/wp/v2/');
         $api->setClient($client);
-        $contentModel = new ContentModel(__DIR__ . '/../config/content-model.yaml');
+        $contentModel = new Schema();
         $api->setContentModel($contentModel);
         $api->setContentType('project');
 

@@ -2,66 +2,100 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Cms;
+namespace Strata\Frontend\Data;
 
+use Psr\Cache\CacheItemPoolInterface;
+use Strata\Data\Cache\DataCache;
+use Strata\Data\DataProviderInterface;
+use Strata\Data\Exception\CacheException;
+use Strata\Data\Helper\UnionTypes;
 use Strata\Frontend\Content\BaseContent;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Content\PageCollection;
-use Strata\Frontend\ContentModel\ContentModel;
-use Strata\Frontend\ContentModel\ContentType;
+use Strata\Frontend\Exception\RepositoryException;
+use Strata\Frontend\Schema\ContentType;
+use Strata\Frontend\Schema\Schema;
+use Strata\Frontend\Schema\SchemaFactory;
 use Strata\Frontend\Traits\CacheTrait;
 use Strata\Frontend\Exception\ApiException;
 use Strata\Frontend\Exception\ContentTypeNotSetException;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Base class for CMS functionality
  *
  * Purpose is to read content from API and map to content objects
  *
- * @package Strata\Frontend\Cms
+ * @package Strata\Frontend\Data
  */
 abstract class ContentRepository
 {
-    use CacheTrait;
+    //use CacheTrait;
 
-    /**
-     * Content model
-     *
-     * @var ContentModel
-     */
-    protected $contentModel;
-
-    /**
-     * Current content type
-     *
-     * @var ContentType
-     */
-    protected $contentType;
-
+    protected DataProviderInterface $provider;
+    protected ?Schema $contentSchema = null;
+    protected ?ContentType $contentType = null;
     protected $cacheKey;
+
+    /**
+     * Set data provider
+     *
+     * @param DataProviderInterface $provider
+     * @return ContentRepository Fluent interface
+     */
+    public function setProvider(DataProviderInterface $provider): ContentRepository
+    {
+        $this->provider = $provider;
+        return $this;
+    }
+
+    /**
+     * Return data provider to use to retrieve data
+     *
+     * @return DataProviderInterface`
+     */
+    public function getProvider(): DataProviderInterface
+    {
+        return $this->provider;
+    }
+
+    /**
+     * Decode data
+     *
+     * @return mixed
+     */
+    public function decode($data)
+    {
+        return $this->getProvider()->decode($data);
+    }
 
     /**
      * Set the content model
      *
-     * @param ContentModel $contentModel
+     * @param Schema|string $contentSchema
      * @return ContentRepository Fluent interface
      */
-    public function setContentModel(ContentModel $contentModel): ContentRepository
+    public function setContentSchema($contentSchema): ContentRepository
     {
-        $this->contentModel = $contentModel;
+        UnionTypes::assert('$contentSchema', $contentSchema, 'string', 'Strata\Frontend\Schema\Schema');
 
+        if ($contentSchema instanceof Schema) {
+            $this->contentSchema = $contentSchema;
+            return $this;
+        }
+        $this->contentSchema = SchemaFactory::createFromYaml($contentSchema);
         return $this;
     }
 
     /**
      * Return the content model
      *
-     * @return ContentModel
+     * @return Schema
      */
-    public function getContentModel(): ContentModel
+    public function getContentSchema(): Schema
     {
-        return $this->contentModel;
+        if (!($this->contentSchema instanceof Schema)) {
+            throw new RepositoryException('Content schema not set, you must set this via setContentSchema()');
+        }
+        return $this->contentSchema;
     }
 
     /**
@@ -72,9 +106,10 @@ abstract class ContentRepository
      */
     public function setContentType(string $type): ContentRepository
     {
-        if ($this->contentTypeExists($type)) {
-            $this->contentType = $this->getContentModel()->getContentType($type);
+        if (!$this->contentTypeExists($type)) {
+            throw new ContentTypeNotSetException(sprintf('Content type %s does not exist', $type));
         }
+        $this->contentType = $this->getContentSchema()->getContentType($type);
 
         return $this;
     }
@@ -92,6 +127,92 @@ abstract class ContentRepository
         }
         return $this->contentType;
     }
+
+    /**
+     * Return the content type API endpoint
+     *
+     * Uses sprintf to parse parameters into the API endpoint
+     *
+     * @see https://www.php.net/manual/en/function.sprintf.php
+     * @param ...$params Parameters to parse into the API endpoint
+     * @return string
+     * @throws ContentTypeNotSetException
+     */
+    public function getContentApiEndpoint(...$params): string
+    {
+        if (!$this->hasContentType()) {
+            throw new ContentTypeNotSetException('Content type is not set!');
+        }
+
+        return sprintf($this->getContentType()->getApiEndpoint(), ...$params);
+    }
+
+    /**
+     * Set and enable cache
+     *
+     * @param CacheItemPoolInterface $cacheItemPool
+     * @return ContentRepository Fluent interface
+     */
+    public function setCache(CacheItemPoolInterface $cacheItemPool): ContentRepository
+    {
+        $this->getProvider()->setCache($cacheItemPool);
+        return $this;
+    }
+
+    /**
+     * Is the cache enabled?
+     *
+     * @return bool
+     */
+    public function isCacheEnabled(): bool
+    {
+        return $this->getProvider()->isCacheEnabled();
+    }
+
+    /**
+     * Return the cache
+     *
+     * @return DataCache
+     */
+    public function getCache(): DataCache
+    {
+        return $this->getProvider()->getCache();
+    }
+
+    /**
+     * Enable cache for subsequent data requests
+     *
+     * @param ?int $lifetime
+     * @throws CacheException If cache not set
+     */
+    public function enableCache(?int $lifetime = null)
+    {
+        return $this->getProvider()->enableCache($lifetime);
+    }
+
+    /**
+     * Disable cache for subsequent data requests
+     *
+     */
+    public function disableCache()
+    {
+        return $this->getProvider()->disableCache();
+    }
+
+    /**
+     * Set cache tags to apply to all future saved cache items
+     *
+     * To remove tags do not pass any arguments and tags will be reset to an empty array
+     *
+     * @param array $tags
+     * @throws CacheException
+     */
+    public function setCacheTags(array $tags = [])
+    {
+        return $this->getProvider()->setCacheTags($tags);
+    }
+
+    // @todo old cache methods below
 
     /**
      * Set cache key for current content request
@@ -117,9 +238,8 @@ abstract class ContentRepository
         if (empty($this->cacheKey)) {
             return $this->buildCacheKey($params);
         }
-        return $this->cacheKey ;
+        return $this->cacheKey;
     }
-
 
     /**
      * Does the content type exist?
@@ -129,7 +249,7 @@ abstract class ContentRepository
      */
     public function contentTypeExists(string $type): bool
     {
-        return $this->contentModel->hasContentType($type);
+        return $this->getContentSchema()->hasContentType($type);
     }
 
     /**
@@ -139,7 +259,7 @@ abstract class ContentRepository
      */
     public function hasContentType(): bool
     {
-        if ($this->contentModel instanceof ContentModel && $this->contentType instanceof ContentType) {
+        if ($this->contentSchema instanceof Schema && $this->contentType instanceof ContentType) {
             return true;
         }
         return false;
@@ -221,12 +341,4 @@ abstract class ContentRepository
         return implode('.', $elements);
     }
 
-    /**
-     * Sets content from data array into the content object
-     *
-     * @param BaseContent $page Content object to add fields to
-     * @param array $data Array of data to set
-     * @return null
-     */
-    abstract public function setContentFields(BaseContent $page, array $data);
 }

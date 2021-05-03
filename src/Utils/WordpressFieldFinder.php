@@ -9,6 +9,7 @@ use Webmozart\Assert\Assert;
 /**
  * Class FieldFinder
  * @package Strata\Frontend\Utils
+ * @deprecated Replaced by data mapping
  */
 class WordpressFieldFinder
 {

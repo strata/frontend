@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Cms;
+namespace Strata\Frontend\Data;
 
-use GuzzleHttp\Client;
+use Strata\Data\DataProviderInterface;
+use Strata\Data\Http\Http;
+use Strata\Data\Http\Rest;
 use Strata\Frontend\Api\Providers\RestApi;
 use Strata\Frontend\Content\ContentInterface;
 use Strata\Frontend\Content\Field\ArrayContent;
@@ -18,8 +20,8 @@ use Strata\Frontend\Content\Field\Document;
 use Strata\Frontend\Content\Field\PlainArray;
 use Strata\Frontend\Content\Field\Video;
 use Strata\Frontend\Content\Metadata;
-use Strata\Frontend\ContentModel\ContentFieldCollectionInterface;
-use Strata\Frontend\ContentModel\Field;
+use Strata\Frontend\Schema\ContentFieldCollectionInterface;
+use Strata\Frontend\Schema\Field;
 use Strata\Frontend\Exception\ApiException;
 use Strata\Frontend\Exception\ContentFieldNotSetException;
 use Strata\Frontend\Exception\ContentTypeNotSetException;
@@ -36,33 +38,38 @@ use Strata\Frontend\Content\Field\RichText;
 use Strata\Frontend\Content\Field\ShortText;
 use Strata\Frontend\Content\Page;
 use Strata\Frontend\Content\PageCollection;
-use Strata\Frontend\ContentModel\ContentModel;
-use Strata\Frontend\ContentModel\ContentType;
-use Strata\Frontend\ContentModel\FieldInterface;
+use Strata\Frontend\Schema\Schema;
+use Strata\Frontend\Schema\Field;
+use Strata\Frontend\Schema\FieldInterface;
 use Strata\Frontend\Exception\ContentFieldException;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RestData extends ContentRepository
 {
     /**
-     * API
-     *
-     * @var RestApi
-     */
-    protected $api;
-
-    /**
      * Constructor
      *
      * @param string $baseUrl API base URI
-     * @param ContentModel $contentModel Content model
+     * @param ?string|Schema $contentSchema Content schema
      */
-    public function __construct(string $baseUrl = '', ContentModel $contentModel = null)
+    public function __construct(string $baseUrl = '', $contentSchema = null)
     {
-        $this->api = new RestApi($baseUrl);
+        $this->setProvider(new Rest($baseUrl));
 
-        if ($contentModel instanceof ContentModel) {
-            $this->setContentModel($contentModel);
+        if (null !== $contentSchema) {
+            $this->setContentModel($contentSchema);
         }
+    }
+
+    /**
+     * Return data provider to use to retrieve data
+     *
+     * @return Rest
+     */
+    public function getProvider(): Rest
+    {
+        return $this->provider;
     }
 
     /**
@@ -73,9 +80,9 @@ class RestData extends ContentRepository
      * @param Client $client
      * @return RestData Fluent interface
      */
-    public function setClient(Client $client): RestData
+    public function setClient(HttpClientInterface $client): RestData
     {
-        $this->api->setClient($client);
+        $this->getProvider()->setHttpClient($client);
 
         return $this;
     }

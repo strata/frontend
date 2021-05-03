@@ -7,7 +7,7 @@ content_types:
     source_content_type: projects
   page2:
     api_endpoint: wp-json/v2/pages2
-    content_fields: pages2.yaml
+    content_fields: page.yaml
     source_content_type: pages2
   career:
     api_endpoint: wp-json/v2/careers

@@ -83,6 +83,8 @@ class Head
 
 
     /**
+     * Add meta value
+     *
      * @param string $name
      * @param string $content
      * @throws MetaTagNotAllowedException
@@ -93,6 +95,18 @@ class Head
             throw new MetaTagNotAllowedException();
         }
         $this->meta[$name] = $content;
+    }
+
+    /**
+     * Remove meta value
+     *
+     * @param string $name
+     */
+    public function removeMeta(string $name)
+    {
+        if (isset($this->meta[$name])) {
+            unset($this->meta[$name]);
+        }
     }
 
     private function createMetaOutput(string $name, string $content, bool $linebreak = true): string

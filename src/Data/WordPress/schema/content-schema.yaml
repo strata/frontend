@@ -1,0 +1,15 @@
+content_types:
+  page:
+    api_endpoint: wp/v2/pages
+    content_fields: page.yaml
+  blog:
+    api_endpoint: wp/v2/posts
+    content_fields: blog.yaml
+    source_content_type: posts
+
+global:
+  image_sizes:
+    - thumbnail
+    - medium
+    - medium_large
+    - large

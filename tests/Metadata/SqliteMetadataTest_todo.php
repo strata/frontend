@@ -9,7 +9,7 @@ use Strata\Frontend\Metadata\MetadataFactory;
 use Strata\Frontend\Metadata\MetadataRepository;
 use Strata\Frontend\Storage\SQLiteStorage;
 
-class SqliteMetadataTest extends TestCase
+class SqliteMetadataTestTodo extends TestCase
 {
 
     /**

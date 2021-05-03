@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Cms;
+namespace Strata\Frontend\Data;
 
-use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
+use Strata\Data\Http\Http;
+use Strata\Data\Http\Rest;
 use Strata\Frontend\Content\ContentInterface;
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Content\Field\AssetField;
@@ -50,9 +51,12 @@ use Strata\Frontend\ContentModel\ContentModel;
 use Strata\Frontend\ContentModel\ContentType;
 use Strata\Frontend\ContentModel\FieldInterface;
 use Strata\Frontend\Api\Providers\Wordpress as WordpressApi;
+use Strata\Frontend\Schema\Schema;
 use Strata\Frontend\Traits\LoggerTrait;
 use Strata\Frontend\Utils\FileInfoFormatter;
 use Strata\Frontend\Utils\WordpressFieldFinder as FieldFinder;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Class to manage access to Wordpress API and returns well-formed content objects
@@ -68,35 +72,28 @@ class Wordpress extends ContentRepository
     use LoggerTrait;
 
     /**
-     * API
-     *
-     * @var WordpressApi
-     */
-    protected $api;
-
-    /**
      * Constructor
      *
      * @param string $baseUrl API base URI
-     * @param ContentModel $contentModel Content model
+     * @param ?string|Schema $contentSchema Content schema
      */
-    public function __construct(string $baseUrl = '', ContentModel $contentModel = null)
+    public function __construct(string $baseUrl = '', $contentSchema = null)
     {
-        $this->api = new WordpressApi($baseUrl);
+        $this->setProvider(new Rest($baseUrl));
 
-        if ($contentModel instanceof ContentModel) {
-            $this->setContentModel($contentModel);
+        if (null !== $contentSchema) {
+            $this->setContentModel($contentSchema);
         }
     }
 
     /**
-     * Return API
+     * Return data provider to use to retrieve data
      *
-     * @return WordpressApi
+     * @return Rest
      */
-    public function getApi(): WordpressApi
+    public function getProvider(): Rest
     {
-        return $this->api;
+        return $this->provider;
     }
 
     /**
@@ -118,28 +115,13 @@ class Wordpress extends ContentRepository
      * Useful for testing
      *
      * @param Client $client
-     * @return Wordpress Fluent interface
+     * @return RestData Fluent interface
      */
-    public function setClient(Client $client): Wordpress
+    public function setClient(HttpClientInterface $client): Wordpress
     {
-        $this->api->setClient($client);
+        $this->getProvider()->setHttpClient($client);
 
         return $this;
-    }
-
-    /**
-     * Return the content type API endpoint
-     *
-     * @return string
-     * @throws ContentTypeNotSetException
-     */
-    public function getContentApiEndpoint(): string
-    {
-        if (!$this->hasContentType()) {
-            throw new ContentTypeNotSetException('Content type is not set!');
-        }
-
-        return $this->getContentType()->getApiEndpoint();
     }
 
     /**
@@ -162,6 +144,12 @@ class Wordpress extends ContentRepository
         array $options = []
     ): PageCollection {
 
+        // new code
+        $params = ['page' => $page];
+        $response = $this->getProvider()->get($this->getContentApiEndpoint(), $params, $options);
+
+
+        // old code
         $cacheKey = $this->buildCacheKey($this->getContentType()->getName(), 'list', $options, $page);
 
         if ($this->hasCache()) {
@@ -171,7 +159,7 @@ class Wordpress extends ContentRepository
             }
         }
 
-        $list = $this->api->listPosts(
+        $list = $this->getProvider()->listPosts(
             $this->getContentApiEndpoint(),
             $page,
             $options
@@ -203,6 +191,14 @@ class Wordpress extends ContentRepository
      */
     public function getPage(int $id): Page
     {
+        // new code
+        $params = ['page' => $page];
+        $response = $this->getProvider()->get($this->getContentApiEndpoint(), $params, $options);
+
+        // URL:
+        // $response = $this->get(sprintf('%s/%d', $apiEndpoint, $id));
+
+        // old code
         $cacheKey = $this->getCacheKey($this->getContentType()->getName(), $id);
 
         if ($this->hasCache()) {

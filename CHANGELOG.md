@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2021-TBC
+
+### Added
+- Added support for GraphQL and CraftCMS
+- Added CLI command for code generation
+
+### Changed
+- Requires PHP 7.4+
+- Replaced Api providers with new flexible data layer powered by [Strata Data](https://github.com/strata/data/). E.g. 
+  `Strata\Frontend\Api\Providers\RestApi` is now replaced with `Strata\Data\Http\Rest`
+- Moved [documentation](https://docs.strata.dev/frontend/) to GitBook
+- Moved continuous integration to use GitHub Actions
+- See [upgrade guide from 0.6 and 0.7](UPGRADE-PRE-1.0.md#upgrading-from-v0.6-and-0.7-to-v0.8)
+
 ## [0.7.0] - 2021-01-06
 
 ### Added

@@ -8,7 +8,7 @@ use Strata\Frontend\Content\Field\ContentFieldCollection;
 use Strata\Frontend\Content\Field\ContentFieldInterface;
 use Strata\Frontend\Content\Field\DateTime;
 use Strata\Frontend\Content\Field\Image;
-use Strata\Frontend\ContentModel\ContentType;
+use Strata\Frontend\Schema\ContentType;
 
 class BaseContent implements ContentInterface, AddressableInterface
 {
@@ -305,6 +305,16 @@ class BaseContent implements ContentInterface, AddressableInterface
     public function getContent(): ContentFieldCollection
     {
         return $this->content;
+    }
+
+    /**
+     * Remove a content field
+     *
+     * @param ContentFieldInterface $contentField
+     */
+    public function removeContent(ContentFieldInterface $contentField)
+    {
+        $this->content->removeItem($contentField);
     }
 
     /**

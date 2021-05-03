@@ -13,7 +13,7 @@ use Strata\Frontend\Cms\RestData;
 use Strata\Frontend\Cms\Wordpress;
 use Strata\Frontend\Content\Field\PlainArray;
 use Strata\Frontend\Content\Url;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\Schema;
 
 class CustomApiTest extends TestCase
 {
@@ -36,7 +36,7 @@ class CustomApiTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestData('something', new ContentModel(__DIR__ . '/config/custom/content_model.yaml'));
+        $api = new RestData('something', new Schema());
         $api->setClient($client);
 
         // Test it!
@@ -107,7 +107,7 @@ class CustomApiTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestData('something', new ContentModel(__DIR__ . '/config/custom/content_model.yaml'));
+        $api = new RestData('something', new Schema());
         $api->setClient($client);
 
         // Test it!

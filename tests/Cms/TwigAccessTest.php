@@ -10,7 +10,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Strata\Frontend\Cms\RestData;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\Schema;
 
 /**
  * Test Twig rendering of content
@@ -49,7 +49,7 @@ class TwigAccessTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestData('something', new ContentModel(__DIR__ . '/config/custom/content_model.yaml'));
+        $api = new RestData('something', new Schema());
         $api->setClient($client);
 
         // Twig
@@ -91,7 +91,7 @@ EOD;
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
-        $api = new RestData('something', new ContentModel(__DIR__ . '/config/custom/content_model.yaml'));
+        $api = new RestData('something', new Schema());
         $api->setClient($client);
 
         // Twig
