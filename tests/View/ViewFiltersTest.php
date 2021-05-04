@@ -66,4 +66,11 @@ class ViewFiltersTest extends TestCase
         $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/';
         $this->assertEquals('/assets/styles.css?v=' . $expectedHash, $helper->buildVersion('/assets/styles.css'));
     }
+
+    public function testTableContent()
+    {
+        $helper = new ViewFilters();
+
+        $helper->tableOfContent(file_get_contents(__DIR__ . '/html/example.html'));
+    }
 }

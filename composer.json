@@ -30,7 +30,8 @@
         "symfony/http-foundation": "^5.0",
         "monolog/monolog": "^2.0",
         "toflar/psr6-symfony-http-cache-store": "^3.0",
-        "strata/data": "dev-release/0.8.0 as 0.8.0"
+        "strata/data": "dev-release/0.8.0 as 0.8.0",
+        "masterminds/html5": "^2.7"
     },
     "autoload": {
         "psr-4": {

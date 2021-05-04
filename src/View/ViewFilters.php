@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\View;
 
+use Masterminds\HTML5;
+
 /**
  * View template filters for value transformation
  *
@@ -163,4 +165,40 @@ class ViewFilters
 
         return $src . '?v=' . $hash;
     }
+
+    public function tableOfContent(string $html): string
+    {
+        $html5 = new HTML5();
+        $dom = $html5->loadHTML($html);
+        $headings = [];
+        $filter = new ViewFilters();
+
+        $nodes = $dom->getElementsByTagName('h2');
+        /** @var \DOMNode $node */
+        foreach ($nodes as $node) {
+            $id = $filter->slugify($node->nodeValue);
+            $headings[$id] = $node->nodeValue;
+            $node->setAttribute('id', $id);
+        }
+
+        // Add ToC
+        $content = $dom->createElement('ul');
+        foreach ($headings as $id => $heading) {
+            $link =  $dom->createElement('a');
+            $link->setAttribute('href', sprintf('#%s', $id));
+            $link->nodeValue = $heading;
+
+            $item =  $dom->createElement('li');
+            $item->appendChild($link);
+            $content->appendChild($item);
+        }
+
+        $dom->insertBefore($content, $dom->firstChild);
+        $dom->formatOutput = true;
+        $html = $dom->saveHTML();
+
+        echo $html;
+        return $html;
+    }
+
 }
