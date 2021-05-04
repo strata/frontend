@@ -2,7 +2,10 @@
 
 namespace View;
 
-class ViewFunctionsTest
+use PHPUnit\Framework\TestCase;
+use Strata\Frontend\View\ViewFunctions;
+
+class ViewFunctionsTest extends TestCase
 {
 
     public function testStagingBanner()
@@ -29,7 +32,7 @@ class ViewFunctionsTest
 
     public function testNotEmpty()
     {
-        $helper = new ViewFilters();
+        $helper = new ViewFunctions();
 
         $this->assertTrue($helper->notEmpty(null, null, '', 'test'));
         $this->assertFalse($helper->notEmpty(null, null, '', ''));
@@ -39,7 +42,7 @@ class ViewFunctionsTest
 
     public function testAllNotEmpty()
     {
-        $helper = new ViewFilters();
+        $helper = new ViewFunctions();
 
         $this->assertFalse($helper->allNotEmpty(null, false, '', 'test'));
         $this->assertFalse($helper->allNotEmpty(null, 'hello there', 'test', 20));

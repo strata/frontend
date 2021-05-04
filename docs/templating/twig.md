@@ -186,21 +186,23 @@ name you can pass this as the third argument. E.g.
 
 ### is_prod
 
+_Note: this may be replaced by a global view strata object_
+
 Returns where this is the production (live) environment.
 
 ```
-{% if app.environment is_prod %}
+{% if app.environment is is_prod %}
 ```
 
 Please note this defaults to expect `prod`  for the production environment. If you use a different production environment
 name you can pass this as the second argument. E.g.
 
 ```
-{% if app.environment is_prod('live') %}
+{% if app.environment is is_prod('live') %}
 ```
 
 To output content when not on production:
 
 ```
-{% if not app.environment is_prod %}
+{% if not app.environment is is_prod %}
 ```

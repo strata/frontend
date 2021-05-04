@@ -15,20 +15,7 @@ Please note this software is in development, usage may change before the 1.0 rel
 
 ## Installation
 
-```
-composer require strata/frontend:^0.8
-```
-
-During development of 0.8 branch:
-
-```
-# During dev add this to your composer.json:
-"minimum-stability": "dev",
-"prefer-stable": true
-
-# Then run this composer command:
-composer require "strata/frontend:dev-release/0.8.0 as 0.8.0"
-```
+See [installation](docs/installation.md).
 
 ## Documentation
 

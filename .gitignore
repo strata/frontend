@@ -3,6 +3,7 @@ composer.lock
 /vendor/
 .phpunit*
 .phplint-cache
+.phpunit.result.cache
 
 # Application gitignore
 /tests/Cms/twig/cache/*

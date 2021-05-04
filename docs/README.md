@@ -2,4 +2,9 @@
 
 Deliver fast, accessible user experiences on the modern web.
 
-See [documentation index](SUMMARY.md)
+{% hint style="info" %}
+Hello world
+{% endhint %}
+
+[Installation instructions](installation.md)
+

@@ -1,5 +1,6 @@
 # Overview
 
+* [Installation](installation.md)
 * [Design principles](design-principles.md)
 * [Content model](content-model.md)
 

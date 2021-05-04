@@ -14,6 +14,8 @@ class ViewTests
     /**
      * Are we on production?
      *
+     * @todo Is this useful, should we just use {% if app.environment is 'prod' %} The staging banner currently uses this to determine when on prod
+     *
      * @param string $environment Current environment
      * @param string $prod Production environment, defaults to 'prod'
      * @return bool
