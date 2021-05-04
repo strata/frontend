@@ -130,6 +130,17 @@ class FlexibleSchemaField extends \ArrayIterator implements SchemaFieldInterface
     }
 
     /**
+     * Does a flexible content field exist?
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function has(string $name)
+    {
+        return $this->offsetExists($name);
+    }
+
+    /**
      * Return current item
      *
      * @return ContentFieldCollection

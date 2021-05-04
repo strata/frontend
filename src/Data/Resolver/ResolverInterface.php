@@ -19,6 +19,9 @@ use Strata\Frontend\Content\Field\Relation;
 use Strata\Frontend\Content\Field\RelationArray;
 use Strata\Frontend\Content\Field\RichText;
 use Strata\Frontend\Content\Field\ShortText;
+use Strata\Frontend\Schema\ContentType;
+use Strata\Frontend\Schema\Field\ArraySchemaField;
+use Strata\Frontend\Schema\Field\FlexibleSchemaField;
 use Strata\Frontend\Schema\Field\SchemaFieldInterface;
 
 /**
@@ -26,33 +29,33 @@ use Strata\Frontend\Schema\Field\SchemaFieldInterface;
  */
 interface ResolverInterface
 {
-    public function resolveContentField(SchemaFieldInterface $contentModelField, $value): ?ContentFieldInterface;
+    public function resolveContentField(SchemaFieldInterface $contentField, $value): ?ContentFieldInterface;
 
-    public function resolveTextField(SchemaFieldInterface $contentModelField, $value): ?ShortText;
+    public function resolveTextField(SchemaFieldInterface $contentField, $value): ?ShortText;
 
-    public function resolvePlaintextField(SchemaFieldInterface $contentModelField, $value): ?PlainText;
+    public function resolvePlaintextField(SchemaFieldInterface $contentField, $value): ?PlainText;
 
-    public function resolveRichtextField(SchemaFieldInterface $contentModelField, $value): ?RichText;
+    public function resolveRichtextField(SchemaFieldInterface $contentField, $value): ?RichText;
 
-    public function resolveDateField(SchemaFieldInterface $contentModelField, $value): ?Date;
+    public function resolveDateField(SchemaFieldInterface $contentField, $value): ?Date;
 
-    public function resolveDatetimeField(SchemaFieldInterface $contentModelField, $value): ?DateTime;
+    public function resolveDatetimeField(SchemaFieldInterface $contentField, $value): ?DateTime;
 
-    public function resolveBooleanField(SchemaFieldInterface $contentModelField, $value): ?Boolean;
+    public function resolveBooleanField(SchemaFieldInterface $contentField, $value): ?Boolean;
 
-    public function resolveNumberField(SchemaFieldInterface $contentModelField, $value): ?Number;
+    public function resolveNumberField(SchemaFieldInterface $contentField, $value): ?Number;
 
-    public function resolveDecimalField(SchemaFieldInterface $contentModelField, $value): ?Decimal;
+    public function resolveDecimalField(SchemaFieldInterface $contentField, $value): ?Decimal;
 
-    public function resolvePlainArrayField(SchemaFieldInterface $contentModelField, $value): ?PlainArray;
+    public function resolvePlainArrayField(SchemaFieldInterface $contentField, $value): ?PlainArray;
 
-    public function resolveArrayField(SchemaFieldInterface $contentModelField, $value): ?ArrayContent;
+    public function resolveArrayField(ArraySchemaField $contentField, $value): ?ArrayContent;
 
-    public function resolveImageField(SchemaFieldInterface $contentModelField, $value): ?Image;
+    public function resolveImageField(SchemaFieldInterface $contentField, $value): ?Image;
 
-    public function resolveRelationField(SchemaFieldInterface $contentModelField, $value): ?Relation;
+    public function resolveRelationField(SchemaFieldInterface $contentField, $value): ?Relation;
 
-    public function resolveRelationArrayField(SchemaFieldInterface $contentModelField, $value): ?RelationArray;
+    public function resolveRelationArrayField(SchemaFieldInterface $contentField, $value): ?RelationArray;
 
-    public function resolveFlexibleField(SchemaFieldInterface $contentModelField, $value): ?FlexibleContent;
+    public function resolveFlexibleField(FlexibleSchemaField $contentField, $value): ?FlexibleContent;
 }

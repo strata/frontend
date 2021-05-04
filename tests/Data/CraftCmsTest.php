@@ -4,6 +4,8 @@ namespace Data;
 
 use PHPUnit\Framework\TestCase;
 use Strata\Data\Http\Response\MockResponseFromFile;
+use Strata\Frontend\Content\Field\Component;
+use Strata\Frontend\Content\Field\FlexibleContent;
 use Strata\Frontend\Content\Page;
 use Strata\Frontend\Content\PageCollection;
 use Strata\Frontend\Data\Repository\CraftCms\CraftCms;
@@ -170,5 +172,21 @@ EOD;
         $authors = $page->getContent()->get('authors');
         $author = $authors->current();
         $this->assertEquals('Joe Bloggs', $author->get('authorName'));
+
+        $component = $page->getContent()->get('defaultFlexibleComponents');
+        $this->assertTrue($component instanceof FlexibleContent);
+
+        /** @var Component $field */
+        $field = $component->current();
+        $this->assertSame('textComponent', $field->getName());
+        $this->assertStringContainsString('<p>Test text component.', $field->getContent()->get('contentField'));
+
+        $component->next();
+
+        /** @var Component $field */
+        $field = $component->current();
+        $this->assertSame('blockquoteComponent', $field->getName());
+        $this->assertStringContainsString("If you look at what you have in life, you'll always have more.", $field->getContent()->get('quoteText'));
+        $this->assertSame("Oprah Winfrey", (string) $field->getContent()->get('citation'));
     }
 }

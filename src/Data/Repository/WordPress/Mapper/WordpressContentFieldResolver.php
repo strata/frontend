@@ -8,5 +8,9 @@ use Strata\Frontend\Data\Resolver\ContentFieldResolver;
 
 class WordpressContentFieldResolver extends ContentFieldResolver
 {
-    // @todo add WP specific content field resolvers
+    /**
+     * Fieldname to identify flexible component fields
+     * @var string
+     */
+    protected string $flexibleComponentNameField = 'acf_fc_layout';
 }

@@ -8,5 +8,10 @@ use Strata\Frontend\Data\Resolver\ContentFieldResolver;
 
 class CraftCmsContentFieldResolver extends ContentFieldResolver
 {
-    // @todo add CraftCMS specific content field resolvers
+    /**
+     * Fieldname to identify flexible component fields
+     * @var string
+     */
+    protected string $flexibleComponentNameField = 'typeHandle';
+
 }

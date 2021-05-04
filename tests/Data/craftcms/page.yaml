@@ -15,4 +15,4 @@ defaultFlexibleComponents:
       quoteText:
         type: richtext
       citation:
-        type: richtext
+        type: text

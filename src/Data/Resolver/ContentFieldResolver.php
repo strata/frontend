@@ -6,6 +6,7 @@ namespace Strata\Frontend\Data\Resolver;
 
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Content\Field\Boolean;
+use Strata\Frontend\Content\Field\Component;
 use Strata\Frontend\Content\Field\ContentFieldCollection;
 use Strata\Frontend\Content\Field\ContentFieldInterface;
 use Strata\Frontend\Content\Field\Date;
@@ -21,82 +22,153 @@ use Strata\Frontend\Content\Field\RelationArray;
 use Strata\Frontend\Content\Field\RichText;
 use Strata\Frontend\Content\Field\ShortText;
 use Strata\Frontend\Exception\ContentFieldTranslationNotFoundException;
+use Strata\Frontend\Schema\ContentType;
+use Strata\Frontend\Schema\Field\ArraySchemaField;
+use Strata\Frontend\Schema\Field\FlexibleSchemaField;
 use Strata\Frontend\Schema\Field\SchemaFieldInterface;
 
 /**
  * Common functionality to resolve custom content fields to content objects
  *
- * Can be customised for different CMSs to reflect different API data structures
+ * Extend this class for specific APIs/CMSs to reflect different API data structures
  *
  * @package Strata\Frontend\Data\Translation
  */
 class ContentFieldResolver implements ResolverInterface
 {
     /**
-     * Takes a content schema field object and returns a content field from source value
+     * Fieldname to identify flexible component fields
+     * @see resolveFlexibleField
+     * @var string
+     */
+    protected string $flexibleComponentNameField = 'component';
+
+    /**
+     * Takes a content schema field object and returns a content field from source data value
      *
-     * @param SchemaFieldInterface $contentModelField
+     * @param SchemaFieldInterface $contentField
      * @param $value
      * @return ContentFieldInterface Content field object, or null on failure to resolve content field
      * @throws ContentFieldTranslationNotFoundException
      */
-    public function resolveContentField(SchemaFieldInterface $contentModelField, $value): ?ContentFieldInterface
+    public function resolveContentField(SchemaFieldInterface $contentField, $value): ?ContentFieldInterface
     {
-        $methodName = 'resolve' . ucfirst($contentModelField->getType()) . 'Field';
+        $methodName = 'resolve' . ucfirst($contentField->getType()) . 'Field';
 
         if (!method_exists($this, $methodName)) {
             // @todo logger
-            throw new ContentFieldTranslationNotFoundException(sprinf('Content field resolver for content type %s not found, ensure you have a resolver method called %s', $contentModelField->getType(), $methodName));
+            throw new ContentFieldTranslationNotFoundException(sprinf('Content field resolver for content type %s not found, ensure you have a resolver method called %s', $contentField->getType(), $methodName));
             return null;
         }
 
-        return $this->$methodName($contentModelField, $value);
+        return $this->$methodName($contentField, $value);
     }
 
     /**
-     * @param SchemaFieldInterface $contentModelField
+     * Resolve a short text content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
      * @param $value
      * @return ShortText|null
      * @throws \Strata\Frontend\Exception\ContentFieldException
      */
-    public function resolveTextField(SchemaFieldInterface $contentModelField, $value): ?ShortText
+    public function resolveTextField(SchemaFieldInterface $contentField, $value): ?ShortText
     {
-        return new ShortText($contentModelField->getName(), (string) $value);
+        return new ShortText($contentField->getName(), (string) $value);
     }
 
-    public function resolveNumberField(SchemaFieldInterface $contentModelField, $value): ?Number
+    /**
+     * Resolve a number content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return Number|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveNumberField(SchemaFieldInterface $contentField, $value): ?Number
     {
-        return new Number($contentModelField->getName(), $value);
+        return new Number($contentField->getName(), $value);
     }
 
-    public function resolvePlaintextField(SchemaFieldInterface $contentModelField, $value): ?PlainText
+    /**
+     * Resolve a plain text content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return PlainText|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolvePlaintextField(SchemaFieldInterface $contentField, $value): ?PlainText
     {
-        return new PlainText($contentModelField->getName(), (string) $value);
+        return new PlainText($contentField->getName(), (string) $value);
     }
 
-    public function resolveRichtextField(SchemaFieldInterface $contentModelField, $value): ?RichText
+    /**
+     * Resolve a rich text content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return RichText|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveRichtextField(SchemaFieldInterface $contentField, $value): ?RichText
     {
-        return new RichText($contentModelField->getName(), (string) $value);
+        return new RichText($contentField->getName(), (string) $value);
     }
 
-    public function resolveDateField(SchemaFieldInterface $contentModelField, $value): ?Date
+    /**
+     * Resolve a date content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return Date|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveDateField(SchemaFieldInterface $contentField, $value): ?Date
     {
-        return new Date($contentModelField->getName(), $value);
+        return new Date($contentField->getName(), $value);
     }
 
-    public function resolveDatetimeField(SchemaFieldInterface $contentModelField, $value): ?DateTime
+    /**
+     * Resolve a datetime content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return DateTime|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveDatetimeField(SchemaFieldInterface $contentField, $value): ?DateTime
     {
-        return new DateTime($contentModelField->getName(), $value);
+        return new DateTime($contentField->getName(), $value);
     }
 
-    public function resolveBooleanField(SchemaFieldInterface $contentModelField, $value): ?Boolean
+    /**
+     * Resolve a boolean content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return bool|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveBooleanField(SchemaFieldInterface $contentField, $value): ?Boolean
     {
-        return new Boolean($contentModelField->getName(), $value);
+        return new Boolean($contentField->getName(), $value);
     }
 
-    public function resolveArrayField(SchemaFieldInterface $contentModelField, $value): ?ArrayContent
+    /**
+     * Resolve an array content field from source data value
+     *
+     * This represents an array of repeated content fields
+     *
+     * @param ArraySchemaField $contentField
+     * @param $value
+     * @return ArrayContent|null
+     * @throws ContentFieldTranslationNotFoundException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveArrayField(ArraySchemaField $contentField, $value): ?ArrayContent
     {
-        $array = new ArrayContent($contentModelField->getName());
+        $array = new ArrayContent($contentField->getName());
 
         if (!is_array($value) || empty($value)) {
             return null;
@@ -106,7 +178,7 @@ class ContentFieldResolver implements ResolverInterface
             // For each row add a set of content fields
             $item = new ContentFieldCollection();
 
-            foreach ($contentModelField as $childField) {
+            foreach ($contentField as $childField) {
                 if (!isset($row[$childField->getName()])) {
                     continue;
                 }
@@ -123,41 +195,101 @@ class ContentFieldResolver implements ResolverInterface
         return $array;
     }
 
-    public function resolvePlainArrayField(SchemaFieldInterface $contentModelField, $value): ?PlainArray
+    /**
+     * Resolve a plain array content field from source data value
+     *
+     * This represents a simple array of multiple values
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return PlainArray|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolvePlainArrayField(SchemaFieldInterface $contentField, $value): ?PlainArray
     {
         if (!is_array($value)) {
             return null;
         }
-        return new PlainArray($contentModelField->getName(), $value);
+        return new PlainArray($contentField->getName(), $value);
     }
 
-    public function resolveDecimalField(SchemaFieldInterface $contentModelField, $value): ?Decimal
+    /**
+     * Resolve a decimal content field from source data value
+     *
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return Decimal|null
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveDecimalField(SchemaFieldInterface $contentField, $value): ?Decimal
     {
-        // TODO: Implement resolveDecimalField() method.
-        return null;
+        $precision = $contentField->getOption('precision');
+        $round = $contentField->getOption('round');
+        return new Decimal($contentField->getName(), $value, $precision, $round);
     }
 
-    public function resolveImageField(SchemaFieldInterface $contentModelField, $value): ?Image
+    public function resolveImageField(SchemaFieldInterface $contentField, $value): ?Image
     {
         // TODO: Implement resolveImageField() method.
         return null;
     }
 
-    public function resolveRelationField(SchemaFieldInterface $contentModelField, $value): ?Relation
+    public function resolveRelationField(SchemaFieldInterface $contentField, $value): ?Relation
     {
         // TODO: Implement resolveRelationField() method.
         return null;
     }
 
-    public function resolveRelationArrayField(SchemaFieldInterface $contentModelField, $value): ?RelationArray
+    public function resolveRelationArrayField(SchemaFieldInterface $contentField, $value): ?RelationArray
     {
         // TODO: Implement resolveRelationArrayField() method.
         return null;
     }
 
-    public function resolveFlexibleField(SchemaFieldInterface $contentModelField, $value): ?FlexibleContent
+    /**
+     * Resolve a flexible content field from source data value
+     * @param SchemaFieldInterface $contentField
+     * @param $value
+     * @return FlexibleContent|null
+     * @throws ContentFieldTranslationNotFoundException
+     * @throws \Strata\Frontend\Exception\ContentFieldException
+     */
+    public function resolveFlexibleField(FlexibleSchemaField $contentField, $value): ?FlexibleContent
     {
-        // TODO: Implement resolveFlexibleField() method.
-        return null;
+        $flexible = new FlexibleContent($contentField->getName());
+
+        foreach ($value as $valueComponent) {
+            // get component name
+            if (!isset($valueComponent[$this->flexibleComponentNameField])) {
+                continue;
+            }
+            $componentName = $valueComponent[$this->flexibleComponentNameField];
+
+            // if component not in content schema, skip
+            if (!$contentField->has($componentName)) {
+                continue;
+            }
+
+            // build component content fields
+            $component = new Component($componentName);
+            foreach ($contentField->offsetGet($componentName) as $componentField) {
+                if (!isset($valueComponent[$componentField->getName()])) {
+                    continue;
+                }
+                $componentFieldValue = $valueComponent[$componentField->getName()];
+                $componentFieldObject = $this->resolveContentField($componentField, $componentFieldValue);
+                if ($componentFieldObject === null) {
+                    continue;
+                }
+                $component->addContent($componentFieldObject);
+            }
+
+            $flexible->addComponent($component);
+        }
+
+        if (empty($flexible)) {
+            return null;
+        }
+        return $flexible;
     }
 }
