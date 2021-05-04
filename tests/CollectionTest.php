@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Frontend;
-
 use PHPUnit\Framework\TestCase;
-use Strata\Frontend\Schema\Field;
 use Strata\Frontend\Schema\Field;
 use Strata\Frontend\Schema\FieldInterface;
 

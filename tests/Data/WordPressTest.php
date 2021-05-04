@@ -12,6 +12,8 @@ class WordPressTest extends TestCase
 {
     public function testPing()
     {
+        $this->markTestIncomplete();
+
         $responses = [
             new MockResponseFromFile(__DIR__ . '/wordpress/ping.json')
         ];
@@ -25,6 +27,8 @@ class WordPressTest extends TestCase
 
     public function testEmptyList()
     {
+        $this->markTestIncomplete();
+
         $responses = [
             new MockResponseFromFile(__DIR__ . '/craftcms/empty.json')
         ];
@@ -53,6 +57,8 @@ EOD;
 
     public function testList()
     {
+        $this->markTestIncomplete();
+
         $responses = [
             new MockResponseFromFile(__DIR__ . '/craftcms/list.json')
         ];
@@ -91,6 +97,8 @@ EOD;
 
     public function testPage()
     {
+        $this->markTestIncomplete();
+
         $responses = [
             new MockResponseFromFile(__DIR__ . '/wordpress/page.json')
         ];
@@ -112,5 +120,4 @@ EOD;
         $this->assertEquals("Joe Bloggs", $page->getAuthor()->getName());
         $this->assertEquals('page-template.php', $page->getTemplate());
     }
-
 }

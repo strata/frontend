@@ -78,5 +78,4 @@ class MapPage implements RepositoryMapperInterface
 
         return $page;
     }
-
 }

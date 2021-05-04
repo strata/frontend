@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Strata\Frontend\Api\Providers\RestApi` is now replaced with `Strata\Data\Http\Rest`
 - Moved [documentation](https://docs.strata.dev/frontend/) to GitBook
 - Moved continuous integration to use GitHub Actions
+- [Twig helpers](docs/templating/twig.md) changed from functions to filters: slugify, fix_url (now defaults to https)
+- [Twig helpers](docs/templating/twig.md) changed from functions to tests: is_prod
 - See [upgrade guide from 0.6 and 0.7](UPGRADE-PRE-1.0.md#upgrading-from-v0.6-and-0.7-to-v0.8)
 
 ## [0.7.0] - 2021-01-06

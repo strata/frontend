@@ -136,5 +136,4 @@ class WordPress extends ContentRepository implements RepositoryInterface
         $mapper->totalResults($totalPropertyPath);
         return $mapper->map($data, $contentPropertyPath);
     }
-
 }

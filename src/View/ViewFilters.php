@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\View;
 
-class ViewHelpers
+/**
+ * View template filters for value transformation
+ *
+ * Methods should return the input argument
+ */
+class ViewFilters
 {
 
     /**
      * Generate a URL safe slug from a string
      *
      * Usage:
-     * {{ slugify('My name is Earl') }}
+     * {{ 'My name is Earl' | slugify }}
      *
      * Returns:
      * my-name-is-earl
@@ -19,7 +24,7 @@ class ViewHelpers
      * @param $string
      * @return string
      */
-    public static function slugify($string): string
+    public function slugify($string): string
     {
         // Filter
         $string = mb_strtolower($string, 'UTF-8');
@@ -43,10 +48,10 @@ class ViewHelpers
      *
      * @todo 0.7 Convert this into a Twig filter since it transforms content, it does not generate new content
      * @param string $url URL to fix
-     * @param string $scheme The default scheme to use (defaults to http)
+     * @param string $scheme The default scheme to use (defaults to https)
      * @return string
      */
-    public static function fixUrl(string $url, $scheme = 'http'): string
+    public function fixUrl(string $url, $scheme = 'https'): string
     {
         $parts = parse_url($url);
         $url = '';
@@ -105,7 +110,7 @@ class ViewHelpers
      * @param string $more If string is cut, display horizontal ellipsis (or different passed string)
      * @return string
      */
-    public static function excerpt(string $string, int $length = 50, string $more = '…'): string
+    public function excerpt(string $string, int $length = 50, string $more = '…'): string
     {
         if ($length >= strlen($string)) {
             return $string;
@@ -126,7 +131,7 @@ class ViewHelpers
      * @param string $src
      * @return string
      */
-    public static function buildVersion(string $src): string
+    public function buildVersion(string $src): string
     {
         // Choose a fast, short hashing algorithm
         static $algorithm;
@@ -157,110 +162,5 @@ class ViewHelpers
         }
 
         return $src . '?v=' . $hash;
-    }
-
-    /**
-     * Are we on production?
-     *
-     * @param string $environment Current environment
-     * @param string $prod Production environment, defaults to 'prod'
-     * @return bool
-     */
-    public static function isProd($environment, $prod = 'prod'): bool
-    {
-        return ($environment === $prod);
-    }
-
-    /**
-     * Return a simple full-width staging banner to indicate this is a test environment and not the live site
-     *
-     * @param TwigEnvironment $env Twig environment
-     * @param string $environment Current environment
-     * @param string $message Change message that is outputted
-     * @param string $prod Production environment, defaults to 'prod'
-     * @return string Staging banner, or null if on production
-     */
-    public function stagingBanner($environment, $message = 'This is the <strong>%s</strong> environment', $prod = 'prod'): ?string
-    {
-        if ($this->isProd($environment, $prod)) {
-            return null;
-        } else {
-            $className = filter_var($environment, FILTER_SANITIZE_STRING);
-            $className = $this->slugify($className);
-            $message = sprintf($message, $environment);
-            return <<<EOD
-<div class="staging-banner $className">$message</div>
-<style>
-    .staging-banner {
-        width: 100%;
-        padding: 0.6em 1em;
-        background-color: yellow;
-        border-bottom: 1px solid #333;
-        color: black;
-        font-family: sans-serif;
-    }
-</style>
-
-EOD;
-        }
-    }
-
-
-    /**
-     * Check a list of variables, and if one of them isn't empty, then returns true
-     *
-     * If all variables passed are empty, then returns false
-     *
-     * Can be used to simplify a long list of checks, e.g.
-     *
-     * `if ... is not empty or ... is not empty or ... is not empty` in twig
-     *
-     * @param mixed ...$variables
-     * @return bool
-     */
-    public static function notEmpty(...$variables)
-    {
-        $anyDefined = false;
-
-        foreach ($variables as $variable) {
-            if (!empty($variable)) {
-                $anyDefined = true;
-                break;
-            }
-        }
-
-        return $anyDefined;
-    }
-
-
-    /**
-     * Check a list of variables, and if all of them aren't empty, then returns true
-     *
-     * If all variables passed are empty, then returns false
-     *
-     * Can be used to simplify a long list of checks, e.g.
-     *
-     * `if ... is not empty and ... is not empty and ... is not empty` in twig
-     *
-     * @param mixed ...$variables
-     * @return bool
-     */
-    public static function allNotEmpty(...$variables)
-    {
-        $allNotEmpty = false;
-        $numVariables = count($variables);
-        $numVariablesDefined = 0;
-
-        foreach ($variables as $variable) {
-            if (!empty($variable)) {
-                $numVariablesDefined++;
-            }
-        }
-
-        if ($numVariables === $numVariablesDefined) {
-            $allNotEmpty = true;
-        }
-
-        return $allNotEmpty;
     }
 }

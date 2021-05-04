@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Strata\Frontend\Schema;
 
 use Strata\Frontend\Exception\ConfigParsingException;
-use Strata\Frontend\View\ViewHelpers;
+use Strata\Frontend\View\ViewFilters;
+use Strata\Frontend\View\ViewFunctions;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -74,7 +75,8 @@ class SchemaFactory
         ];
 
         foreach ($schema as $contentType) {
-            $contentTypeYamlFile = ViewHelpers::slugify($contentType->getName()) . '.yaml';
+            $helpers = new ViewFilters();
+            $contentTypeYamlFile = $helpers->slugify($contentType->getName()) . '.yaml';
             $values = [
                 'api_endpoint' => $contentType->getApiEndpoint(),
                 'content_fields' => $contentTypeYamlFile

@@ -39,5 +39,4 @@ class PageCollection extends Collection
     {
         return parent::current();
     }
-
 }

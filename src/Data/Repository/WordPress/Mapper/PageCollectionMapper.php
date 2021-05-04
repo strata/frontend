@@ -63,5 +63,4 @@ class PageRepositoryMapTrait extends MapCollectionTrait implements RepositoryMap
 
         return $mapper;
     }
-
 }

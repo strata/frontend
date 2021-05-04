@@ -342,5 +342,4 @@ abstract class ContentRepository
         }
         return implode('.', $elements);
     }
-
 }

@@ -103,7 +103,6 @@ class ContentFieldResolver implements ResolverInterface
         }
 
         foreach ($value as $row) {
-
             // For each row add a set of content fields
             $item = new ContentFieldCollection();
 
@@ -161,5 +160,4 @@ class ContentFieldResolver implements ResolverInterface
         // TODO: Implement resolveFlexibleField() method.
         return null;
     }
-
 }

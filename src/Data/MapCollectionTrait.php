@@ -87,5 +87,4 @@ trait MapCollectionTrait
     {
         $this->currentPage = $currentPage;
     }
-
 }

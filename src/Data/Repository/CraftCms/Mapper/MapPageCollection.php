@@ -55,5 +55,4 @@ class MapPageCollection extends MapPage
         $collection = $this->getMapper()->map($data, $rootProperty);
         return $collection;
     }
-
 }

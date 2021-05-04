@@ -11,8 +11,8 @@ must accept these license and copyright conditions.
 
 All contributions must be made on a branch and must pass [unit tests](#tests) and [coding standards](#coding-standards). 
 
-Please create a Pull Request to merge changes into master, these will be automatically tested by 
-[Travis CI](https://travis-ci.org/strata/frontend).
+Please create a Pull Request to merge changes into the `main` branch, these will be automatically tested by 
+GitHub Actions. 
 
 All Pull Requests need at least one approval from the Studio 24 development team.
 
@@ -34,7 +34,6 @@ Once version 1.0 is reached any upgrade notes should be added to `UPGRADE.md`.
 To create a new release do the following:
 
 1. Update [CHANGELOG.md](https://github.com/strata/frontend/blob/master/CHANGELOG.md) with a summary of the changes.
-1. Update [Version.php](https://github.com/strata/frontend/blob/master/src/Version.php) with the current version.
 1. Create a [new release](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) 
 at GitHub. This will automatically create a new release at [Packagist](https://packagist.org/packages/strata/frontend) 
 so code can be loaded via Composer.  
@@ -71,21 +70,6 @@ declare(strict_types=1);
 
 ## Documentation
 
-See [docs](docs/README.md) or via the GitHub pages site at: [https://docs.strata.dev/](https://docs.strata.dev/)
+See [docs](docs/README.md) or via the GitHub pages site at: [https://docs.strata.dev/frontend](https://docs.strata.dev/)
 
-Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses [Kramdown](https://kramdown.gettalong.org/parser/html.html) 
-to parse markdown to HTML and the [Liquid templating](https://jekyllrb.com/docs/liquid/) 
-language. Liquid uses a similar syntax to Twig, so if you need to include Twig tags in your docs files ensure you wrap your 
-page content in `raw` Liquid tags to avoid errors. For example:  
-
-```
-{% raw %}
-
-Your Markdown here
-
-{% if page.content.field is not empty %}
-    Do something
-{% endif %}
-
-{% endraw %}
-```
+Docs are published to GitBook using [markdown](https://docs.gitbook.com/editing-content/markdown).  

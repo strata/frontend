@@ -80,5 +80,4 @@ class MapPage implements RepositoryMapperInterface
 
         return $headFields;
     }
-
 }

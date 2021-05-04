@@ -127,5 +127,4 @@ class CraftCms extends ContentRepository implements RepositoryInterface
         $data = $this->getProvider()->decode($response);
         return $mapper->map($data, $contentPropertyPath);
     }
-
 }

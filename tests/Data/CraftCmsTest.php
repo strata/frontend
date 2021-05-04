@@ -171,5 +171,4 @@ EOD;
         $author = $authors->current();
         $this->assertEquals('Joe Bloggs', $author->get('authorName'));
     }
-
 }

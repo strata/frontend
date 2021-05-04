@@ -124,3 +124,36 @@ public function page(string $slug, Request $request)
 ```
 
 * Data caching is now automated based on URI and options (you may still want to add cache tags)
+
+### Twig helpers
+
+#### slugify
+
+Now a filter. Old format:
+
+```
+{{ slugify(content) }}
+```
+
+New format:
+```
+{{ content | slugify }}
+```
+#### fix_url
+
+Now a filter, defaults to https instead of http. Old format:
+
+```
+{{ fix_url(url) }}
+```
+
+New format:
+```
+{{ url | fix_url }}
+```
+
+To return http:// URLs:
+```
+{{ url | fix_url('http' }}
+```
+

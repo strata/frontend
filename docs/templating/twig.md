@@ -5,14 +5,16 @@ The following filters and functions are available in Twig via the Frontend appli
 **Filters**
 * [build_version](#build_version)
 * [excerpt](#excerpt)
+* [fix_url](#fix_url)
+* [slugify](#slugify)
 
 **Functions**
 * [all_not_empty](#all_not_empty)
-* [fix_url](#fix_url)
-* [is_prod](#is_prod)
 * [not_empty](#not_empty)
-* [slugify](#slugify)
 * [staging_banner](#staging_banner)
+
+**Tests**
+* [is_prod](#is_prod)
 
 ## Filters
 
@@ -23,17 +25,13 @@ Add a build version to src file in HTML, helping you bust the cache when making 
 Usage:
 
 ```
-{% raw %}
 {{ '/path/to/file' | build_version }}
-{% endraw %}
 ```
 
 For example:
 
 ```
-{% raw %}
 {{ '/assets/styles.css' | build_version }}
-{% endraw %}
 ```
 
 Returns: `/assets/styles.css?v=8b7973c7`
@@ -48,19 +46,62 @@ Cut a string to a maximum length, but cut on the nearest word (so words are not 
 
 Usage:
 ``` 
-{% raw %}
 {{ 'string' | excerpt(length, more_text) }}
-{% endraw %}
 ``` 
 
 Example:
 ``` 
-{% raw %}
 {{ 'Mary had a little lamb, Its fleece was white as snow' | excerpt(30) }}
-{% endraw %}
 ``` 
 
 Returns: `Mary had a little lamb, Its…`
+
+
+### fix_url
+
+Fixes a URL by prepending with http:// or https:// so you can safely use it in a hyperlink.
+
+This function only adds the http scheme if required and otherwise will leave the URL untouched.
+
+Usage:
+
+```
+{{ website_url | fix_url(scheme) }}
+```
+
+Example:
+```
+{{ 'example.com' | fix_url }}
+```
+
+Returns: `https://example.com`
+
+By default the https scheme is added if missing. You can also choose the http scheme by adding a second argument:
+
+```
+{{ 'example.com' | fix_url('http') }}
+```
+
+Returns: `http://example.com`
+
+### slugify
+
+Generate a URL friendly slug from a string. This replaces space with dashes and lower-cases the string. It also filters
+the string and removes any character that is not a unicode letter, number or dash -
+
+Usage:
+
+```
+{{ title | slugify }}
+```
+
+Example:
+
+```
+{{ 'My name is Earl' | slugify }}
+```
+
+Returns: `my-name-is-earl`
 
 ## Functions
 
@@ -71,87 +112,19 @@ Will return true if all of the items passed to it are defined and have non-empty
 Usage:
 
 ```
-{% raw %}
 {% if all_not_empty('item1', 3, null, 'a test string', '') %}
     <!-- do something -->
 {% endif %}
-{% endraw %}
 ```
 
 Example that returns true:
 ```
-{% raw %}
 {% if not_empty('item1', 3, 'testing) %}
-{% endraw %}
 ```
 
 Example that returns false:
 ```
-{% raw %}
 {% if not_empty('item1, '', 'testing') %}
-{% endraw %}
-```
-     
-### fix_url
-
-_Note: to be changed to a filter in 0.7_
-
-Fixes a URL by prepending with http:// or https:// so you can safely use it in a hyperlink. 
-
-This function only adds the http scheme if required and otherwise will leave the URL untouched.
-
-Usage:
-
-```
-{% raw %}
-{{ fix_url(website_url, scheme) }}
-{% endraw %}
-```
-
-Example:
-```
-{% raw %}
-{{ fix_url('example.com') }}
-{% endraw %}
-```
-
-Returns: `http://example.com`
-
-By default the http scheme is added if missing. You can also choose the https scheme by adding a second argument:
-
-```
-{% raw %}
-{{ fix_url('example.com', 'https') }}
-{% endraw %}
-```
-
-Returns: `https://example.com`
-
-### is_prod
-
-Returns where this is the production (live) environment. 
- 
-```
-{% raw %}
-{% if is_prod(app.environment) %}
-{% endraw %}
-```
-
-Please note this defaults to expect `prod`  for the production environment. If you use a different production environment 
-name you can pass this as the second argument. E.g. 
-
-```
-{% raw %}
-{% if is_prod(app.environment, 'live') %}
-{% endraw %}
-```
-
-To output content when not on production:
-
-```
-{% raw %}
-{% if not is_prod(app.environment) %}
-{% endraw %}
 ```
 
 ### not_empty
@@ -161,60 +134,27 @@ Will return true if one or more items passed to it are defined and have a non-em
 Usage:
 
 ```
-{% raw %}
 {{ not_empty('item1', 3, null, 'a test string', '') }}
-{% endraw %}
 ```
 
 Example that returns true:
 
 ```
-{% raw %}
 {{ not_empty('item1', 3, null) }}
-{% endraw %}
 ```
 
 Example that returns false:
 
 ```
-{% raw %}
 {{ not_empty(0, '', null) }}
-{% endraw %}
 ```
-
-### slugify
-
-_Note: to be changed to a filter in 0.7_
-
-Generate a URL friendly slug from a string. This replaces space with dashes and lower-cases the string. It also filters 
-the string and removes any character that is not a unicode letter, number or dash -
-
-Usage:
-
-```
-{% raw %}
-{{ slugify(title) }}
-{% endraw %}
-```
-
-Example:
-
-```
-{% raw %}
-{{ slugify('My name is Earl') }}
-{% endraw %}
-```
-
-Returns: `my-name-is-earl`
 
 ### staging_banner
 
 Outputs a staging banner detailing the current environment. 
 
 ```
-{% raw %}
 {{ staging_banner(app.environment) }}
-{% endraw %}
 ```
 
 This has default styling using the CSS selector `.staging-banner`. You can easily 
@@ -232,16 +172,35 @@ You can alter the message outputted by passing a second argument. The string '%s
 name. E.g.
 
 ```
-{% raw %}
 {{ staging_banner(app.environment, 'Environment: %s') }}
-{% endraw %}
 ```
 
 Please note this defaults to expect `prod`  for the production environment. If you use a different production environment 
 name you can pass this as the third argument. E.g. 
 
 ```
-{% raw %}
 {{ staging_banner(app.environment, 'You are on %s', live') }}
-{% endraw %}
+```
+
+## Tests
+
+### is_prod
+
+Returns where this is the production (live) environment.
+
+```
+{% if app.environment is_prod %}
+```
+
+Please note this defaults to expect `prod`  for the production environment. If you use a different production environment
+name you can pass this as the second argument. E.g.
+
+```
+{% if app.environment is_prod('live') %}
+```
+
+To output content when not on production:
+
+```
+{% if not app.environment is_prod %}
 ```

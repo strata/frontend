@@ -25,15 +25,11 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "guzzlehttp/guzzle": "~6.5",
         "symfony/yaml": "^5.0",
-        "twig/twig": "^3.0",
-        "webmozart/assert": "^1.6",
         "psr/simple-cache": "^1.0",
         "symfony/http-foundation": "^5.0",
         "monolog/monolog": "^2.0",
         "toflar/psr6-symfony-http-cache-store": "^3.0",
-        "symfony/http-kernel": "^5.2",
         "strata/data": "dev-release/0.8.0 as 0.8.0"
     },
     "autoload": {

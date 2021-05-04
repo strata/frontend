@@ -47,5 +47,4 @@ interface RepositoryMapperInterface
      * @return array Array of meta key => values
      */
     public function mapHeadMeta(array $data): array;
-
 }
