@@ -1,12 +1,15 @@
 # Overview
 
-* [Installation](installation.md)
 * [Design principles](design-principles.md)
+* [Architecture](architecture.md)
 * [Content model](content-model.md)
+
+## Getting started
+* [Installation](installation.md)
 
 ## Templating
 
-* [Intro](templating/index.md)
+* [Templating](templating/index.md)
 * [Debugging](templating/debugging.md)
 * [Content fields](templating/content-fields.md)
 * [Twig filters & functions](templating/twig.md)
@@ -14,6 +17,7 @@
 
 ## Development
 
-* [Intro](development/index.md)
+* [Developing with Frontend](development/index.md)
 * [Setting up content types](development/setting-up-content-types.md)
+* [Caching](development/caching.md)
 * [URLs](development/urls.md) 

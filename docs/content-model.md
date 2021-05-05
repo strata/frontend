@@ -1,8 +1,5 @@
 # Content model
 
-* TOC
-{:toc}
-
 ## How content works
 
 The basic principle of the Frontend project is to read in content from external sources and make it simple to build a 
@@ -23,11 +20,11 @@ The content model can be described as so:
 
 * Your website is made up of multiple **content types**
 * Each content content type is made up of multiple **content fields**      
-    * Content fields can point to another content type via a **relation**
-    * Content fields can point to a **taxonomy**  
-    * A content field can be **flexible content** which means it contains:
-        * Multiple **components**
-            * Each component contains multiple **content fields**
+  * Content fields can point to another content type via a **relation**
+  * Content fields can point to a **taxonomy**  
+  * A content field can be **flexible content** which means it contains:
+    * Multiple **components**
+      * Each component contains multiple **content fields**
 
 ### Content types 
 

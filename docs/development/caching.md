@@ -1,10 +1,5 @@
 # Caching
 
-* TOC
-{:toc}
-
-{% raw %}
-
 ## Data caching
 
 Strata Data supports caching HTTP responses via [Symfony's HTTPCache](https://symfony.com/doc/current/http_cache.html).
@@ -213,5 +208,3 @@ application cache.
 ```bash
 php bin/console cache:clear
 ```
-
-{% endraw %}

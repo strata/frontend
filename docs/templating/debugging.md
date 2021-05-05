@@ -1,10 +1,5 @@
 # Debugging
 
-* TOC
-{:toc}
-
-{% raw %}
-
 ## Symfony debugger
 
 On your local development environment you will see the Symfony debug bar which displays:
@@ -20,7 +15,7 @@ On your local development environment you will see the Symfony debug bar which d
 
 The controller defines the variables to pass onto the view. Example controller code:
 
-```PHP
+```php
 return $this->render('news/article.html.twig', [
     'url' => sprintf('/news/%s', $slug),
     'page' => $page
@@ -55,5 +50,3 @@ Select the inspector icon ![Inspector icon](../assets/symfony-debugger-inspect-i
 
 The example above also shows the debug bar with an error, additional information such as the error details can be accessed 
 from here.
-
-{% endraw %}

@@ -1,10 +1,5 @@
 # Setting up content types
 
-* TOC
-{:toc}
-
-{% raw %}
-
 ## How content works
 
 The basic principle of the Frontend project is to read in content from external sources and make it simple to build a 
@@ -22,7 +17,7 @@ Also see:
 
 ## Setting up the content model
 
-This can be done in PHP (via the `ContentModel` class), but it's more convenients to use YAML files for this. 
+This can be done in PHP (via the `ContentModel` class), but it's more convenient to use YAML files for this. 
 
 ### content-model.yaml
 
@@ -236,5 +231,3 @@ page_content:
         type: relation
         content_type: user
 ```
-
-{% endraw %}

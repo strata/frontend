@@ -1,10 +1,5 @@
 # Content fields
-
-* TOC
-{:toc}
-
-{% raw %}
-  
+ 
 We build a standardised content object to collect standard fields and custom content fields from the CMS. These are detailed 
 below.
 
@@ -513,7 +508,6 @@ You can loop over flexible content and output it.
 
 E.g. Looping over a flexible content field called `page_content`:
 
-
 ```
 {% for component in page.content.page_content %}
 
@@ -527,5 +521,3 @@ E.g. Looping over a flexible content field called `page_content`:
     
 {% endfor %}
 ```
-
-{% endraw %}

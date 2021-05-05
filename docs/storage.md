@@ -1,5 +1,7 @@
 # Storage
 
+_Note: work in progress_
+
 ## Current limitations
 
 ### Storing attributes
