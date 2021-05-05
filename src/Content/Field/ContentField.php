@@ -26,7 +26,7 @@ abstract class ContentField implements ContentFieldInterface
      */
     public function getType(): string
     {
-        return self::TYPE;
+        return $this::TYPE;
     }
 
     /**
