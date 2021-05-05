@@ -73,6 +73,16 @@ class WordPress extends ContentRepository implements RepositoryInterface
     }
 
     /**
+     * Remove API authorization token
+     *
+     * @param string $token
+     */
+    public function removeAuthorization(string $token)
+    {
+        $this->getProvider()->removeDefaultOption('auth_basic');
+    }
+
+    /**
      * Check the WordPress API is available
      *
      * @return bool

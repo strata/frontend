@@ -18,8 +18,9 @@ HTML. We believe core content should be delivered over HTML with JavaScript used
 [progressive enhancement](https://www.gov.uk/service-manual/technology/using-progressive-enhancement) to add
 interactivity or personalisation to pages.
 
-Strata is a Symfony-based application to support efficient delivery of content from multiple data sources. While there is
-a heavy focus on delivering cached HTML pages to users, it's simple to add dynamic content when you need it.
+Strata is a [Symfony-based](https://symfony.com/) application to support efficient delivery of content from multiple data sources. While there is
+a heavy focus on delivering cached HTML pages to users, it's simple to add dynamic content when you need it. It can also 
+be used standalone or with other frameworks, such as Laravel.
 
 Headless also comes with its flaws, such as content preview. We're building tools to help overcome some of the
 difficulties of headless.

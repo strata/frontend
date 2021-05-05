@@ -37,6 +37,12 @@ schema you will need to pass your authentication token (generated from the CMS).
 $api->setAuthorization($token);
 ```
 
+If you need to, you can remove the authentication token from subsequent requests:
+
+```php
+$api->removeAuthorization();
+```
+
 ## Usage
 
 ### query

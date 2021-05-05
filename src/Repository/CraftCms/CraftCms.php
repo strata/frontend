@@ -58,6 +58,16 @@ class CraftCms extends ContentRepository implements RepositoryInterface
     }
 
     /**
+     * Remove API authorization token
+     *
+     * @param string $token
+     */
+    public function removeAuthorization(string $token)
+    {
+        $this->getProvider()->removeDefaultOption('auth_bearer');
+    }
+
+    /**
      * Run a ping request on the GraphQL API to check it is responding OK
      *
      * @return bool

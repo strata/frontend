@@ -15,8 +15,7 @@ to content objects.
 
 Repositories use data providers to access data. You can use them directly too.
 
-The basic principle is make a request to an API, return a HTTP response, decode it, and either make use of the decoded array
-or map this to an object. 
+The basic principle is make a request to an API, then either decode the response to an array or map it to an object.  
 
 * [HTTP data provider](https://docs.strata.dev/data/data-providers/http)
 * [Transforming and mapping data](https://docs.strata.dev/data/changing-data/changing-data)

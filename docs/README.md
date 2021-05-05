@@ -1,20 +1,12 @@
 # Strata Frontend
 
-Strata is based on the concept of reading in content from different sources (e.g. APIs) and delivering these to users on 
-the frontend. The majority of websites are content-based, which is well suited to Strata. 
+Strata is based on the idea of delivering robust, efficient HTML pages on the frontend reading content from a variety of 
+data sources. Basically the "front" of a headless CMS. 
 
-Content is transformed into content objects to standardise how you access content. For example, a standard pagination object 
-is available. 
-
-Delivery is via HTML, since this is the foundation of the web. Caching is built-in to enable high performance. We have 
-Strata-powered websites running via WordPress API with sub 50ms response times (with PHP-based caching).
-
-You should consider content cacheable, and therefore the same for everyone. Personalised content can be accessed via 
-JavaScript, which can avoid caching. 
+Delivery is via HTML, since this is the foundation of the web. You should consider your core page content cacheable, and 
+therefore the same for everyone. Personalised content can be accessed via JavaScript, which can avoid caching. 
 
 The aim is to deliver fast, accessible user experiences on the modern web.
-
-{% page-ref page="installation.md" %}
 
 ## Layers
 
@@ -39,7 +31,7 @@ Data is returned from a repository in a raw format, for HTTP-based APIs this is 
 Once you have retrieved data you can map it to a content object (or collection of content objects) via **mappers**.
 These parse the response data into typed objects that you can pass to your templates to output to the frontend.
 
-{% page-ref page="development/accessing-data.md" %}
+{% page-ref page="data/README.md" %}
 
 ### Content schema
 
@@ -65,11 +57,12 @@ _Note: a CLI tool is being added to help automate the generation of content sche
 Content is outputted to the template layer, in Symfony this is Twig. Content models are designed to output content easily 
 and a range of template helpers (filters, functions) exist to automate content generation.
 
-{% page-ref page="templating/index.md" %}
+{% page-ref page="templating/README.md" %}
 
 ### Caching
 
-Caching is at the data layer and full-page caching.  
+Caching is built-in to enable high performance. We have Strata-powered websites running via WordPress API with sub 50ms 
+response times (with PHP-based caching).
 
 At the data layer Strata can automatically cache the raw API response data, removing external API requests for page generation. 
 
