@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data;
+namespace Strata\Frontend\Repository;
 
 use Psr\Cache\CacheItemPoolInterface;
 use Strata\Data\Cache\DataCache;

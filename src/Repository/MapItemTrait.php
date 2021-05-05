@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data;
+namespace Strata\Frontend\Repository;
 
 use Strata\Data\Exception\MapperException;
 use Strata\Data\Mapper\MapperAbstract;
@@ -11,7 +11,7 @@ use Strata\Frontend\Content\BaseContent;
 use Strata\Frontend\Content\ContentInterface;
 use Strata\Frontend\Content\Field\ContentFieldInterface;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\Resolver\ResolverInterface;
+use Strata\Frontend\Repository\Resolver\ResolverInterface;
 use Strata\Frontend\Exception\ContentFieldException;
 use Strata\Frontend\Exception\ContentFieldNotSetException;
 use Strata\Frontend\Exception\ContentFieldTranslationNotFoundException;

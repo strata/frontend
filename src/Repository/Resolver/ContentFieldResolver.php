@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Resolver;
+namespace Strata\Frontend\Repository\Resolver;
 
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Content\Field\Boolean;
@@ -32,7 +32,7 @@ use Strata\Frontend\Schema\Field\SchemaFieldInterface;
  *
  * Extend this class for specific APIs/CMSs to reflect different API data structures
  *
- * @package Strata\Frontend\Data\Translation
+ * @package Strata\Frontend\Repository\Translation
  */
 class ContentFieldResolver implements ResolverInterface
 {

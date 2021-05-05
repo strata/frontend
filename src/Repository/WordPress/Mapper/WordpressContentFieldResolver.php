@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\WordPress\Mapper;
+namespace Strata\Frontend\Repository\WordPress\Mapper;
 
-use Strata\Frontend\Data\Resolver\ContentFieldResolver;
+use Strata\Frontend\Repository\Resolver\ContentFieldResolver;
 
 class WordpressContentFieldResolver extends ContentFieldResolver
 {

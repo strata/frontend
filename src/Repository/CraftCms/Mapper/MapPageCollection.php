@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\CraftCms\Mapper;
+namespace Strata\Frontend\Repository\CraftCms\Mapper;
 
 use Strata\Data\Collection;
 use Strata\Data\Mapper\MapCollection;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\MapCollectionTrait;
+use Strata\Frontend\Repository\MapCollectionTrait;
 
 class MapPageCollection extends MapPage
 {

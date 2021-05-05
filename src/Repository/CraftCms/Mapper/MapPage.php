@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\CraftCms\Mapper;
+namespace Strata\Frontend\Repository\CraftCms\Mapper;
 
 use Strata\Data\Mapper\MapItem;
 use Strata\Data\Transform\Data\CallableData;
 use Strata\Data\Transform\Value\DateTimeValue;
 use Strata\Data\Transform\Value\IntegerValue;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\MapItemTrait;
-use Strata\Frontend\Data\RepositoryMapperInterface;
+use Strata\Frontend\Repository\MapItemTrait;
+use Strata\Frontend\Repository\RepositoryMapperInterface;
 
 class MapPage implements RepositoryMapperInterface
 {

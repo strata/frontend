@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Resolver;
+namespace Strata\Frontend\Repository\Resolver;
 
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Content\Field\Boolean;

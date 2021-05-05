@@ -1,14 +1,12 @@
 <?php
 
-namespace Data;
-
 use PHPUnit\Framework\TestCase;
 use Strata\Data\Http\Response\MockResponseFromFile;
 use Strata\Frontend\Content\Field\Component;
 use Strata\Frontend\Content\Field\FlexibleContent;
 use Strata\Frontend\Content\Page;
 use Strata\Frontend\Content\PageCollection;
-use Strata\Frontend\Data\Repository\CraftCms\CraftCms;
+use Strata\Frontend\Repository\CraftCms\CraftCms;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 class CraftCmsTest extends TestCase

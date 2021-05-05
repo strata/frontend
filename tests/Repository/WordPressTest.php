@@ -1,6 +1,6 @@
 <?php
 
-namespace Data;
+namespace Repository;
 
 use PHPUnit\Framework\TestCase;
 use Strata\Data\Http\Response\MockResponseFromFile;

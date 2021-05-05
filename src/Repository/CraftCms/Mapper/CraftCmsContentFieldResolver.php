@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\CraftCms\Mapper;
+namespace Strata\Frontend\Repository\CraftCms\Mapper;
 
-use Strata\Frontend\Data\Resolver\ContentFieldResolver;
+use Strata\Frontend\Repository\Resolver\ContentFieldResolver;
 
 class CraftCmsContentFieldResolver extends ContentFieldResolver
 {

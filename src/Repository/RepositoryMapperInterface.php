@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data;
+namespace Strata\Frontend\Repository;
 
 use Strata\Data\Mapper\MapperInterface;
 use Strata\Frontend\Content\Field\ContentFieldInterface;
-use Strata\Frontend\Data\Resolver\ResolverInterface;
+use Strata\Frontend\Repository\Resolver\ResolverInterface;
 use Strata\Frontend\Schema\ContentType;
 
 interface RepositoryMapperInterface

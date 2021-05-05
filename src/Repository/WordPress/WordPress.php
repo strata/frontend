@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\WordPress;
+namespace Strata\Frontend\Repository\WordPress;
 
 use Strata\Data\Collection;
 use Strata\Data\Http\Http;
@@ -16,12 +16,11 @@ use Strata\Data\Transform\Value\DateTimeValue;
 use Strata\Data\Transform\Value\IntegerValue;
 use Strata\Frontend\Api\Providers\RestApi;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\ContentRepository;
-use Strata\Frontend\Data\Repository\WordPress\Mapper\MapPage;
-use Strata\Frontend\Data\RepositoryCommonTrait;
-use Strata\Frontend\Data\RepositoryInterface;
-use Strata\Frontend\Data\RepositoryMapperInterface;
-use Strata\Frontend\Data\Repository\WordPress\PageRepositoryMapTrait;
+use Strata\Frontend\Repository\ContentRepository;
+use Strata\Frontend\Repository\WordPress\Mapper\MapPage;
+use Strata\Frontend\Repository\RepositoryInterface;
+use Strata\Frontend\Repository\RepositoryMapperInterface;
+use Strata\Frontend\Repository\PageRepositoryMapTrait;
 use Strata\Frontend\Schema\Schema;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 

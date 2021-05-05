@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\WordPress\Mapper;
+namespace Strata\Frontend\Repository\WordPress\Mapper;
 
 use Strata\Data\Exception\MapperException;
 use Strata\Data\Mapper\MapItem;
@@ -11,8 +11,8 @@ use Strata\Data\Transform\Data\CallableData;
 use Strata\Data\Transform\Value\DateTimeValue;
 use Strata\Data\Transform\Value\IntegerValue;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\MapItemTrait;
-use Strata\Frontend\Data\RepositoryMapperInterface;
+use Strata\Frontend\Repository\MapItemTrait;
+use Strata\Frontend\Repository\RepositoryMapperInterface;
 use Strata\Frontend\Schema\Schema;
 
 class MapPage implements RepositoryMapperInterface

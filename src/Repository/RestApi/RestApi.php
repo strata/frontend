@@ -2,24 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\CraftCms;
+namespace Strata\Frontend\Repository\RestApi;
 
 use Strata\Data\Collection;
 use Strata\Data\Http\GraphQL;
 use Strata\Data\Http\Response\CacheableResponse;
+use Strata\Data\Mapper\MapCollection;
+use Strata\Data\Mapper\MapItem;
+use Strata\Data\Traits\EventDispatcherTrait;
+use Strata\Data\Transform\Data\CallableData;
+use Strata\Data\Transform\Value\DateTimeValue;
+use Strata\Data\Transform\Value\IntegerValue;
+use Strata\Frontend\Content\BaseContent;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\ContentRepository;
-use Strata\Frontend\Data\Repository\CraftCms\Mapper\MapPage;
-use Strata\Frontend\Data\Repository\CraftCms\Mapper\MapPageCollection;
-use Strata\Frontend\Data\RepositoryCommonTrait;
-use Strata\Frontend\Data\RepositoryInterface;
+use Strata\Frontend\Repository\ContentRepository;
+use Strata\Frontend\Repository\RestApi\Mapper\MapPage;
+use Strata\Frontend\Repository\RestApi\Mapper\MapPageCollection;
+use Strata\Frontend\Repository\RepositoryInterface;
+use Strata\Frontend\Repository\RepositoryMapperInterface;
 use Strata\Frontend\Schema\Schema;
 
 /**
  * Class to help access content from CraftCMS API
  */
-class CraftCms extends ContentRepository implements RepositoryInterface
+class RestApi extends ContentRepository  //implements RepositoryInterface
 {
+    //use RepositoryCommonTrait, EventDispatcherTrait;
 
     /**
      * Constructor
@@ -30,6 +38,7 @@ class CraftCms extends ContentRepository implements RepositoryInterface
     public function __construct(string $baseUrl, $contentSchema = null)
     {
         $this->provider = new GraphQL($baseUrl);
+        //$this->respositorySchema = new PageRepositoryMapper();
 
         if (null !== $contentSchema) {
             $this->setContentSchema($contentSchema);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\WordPress\Mapper;
+namespace Strata\Frontend\Repository\WordPress\Mapper;
 
 use Strata\Data\Mapper\MapCollection;
 use Strata\Data\Mapper\MapItem;
@@ -11,9 +11,9 @@ use Strata\Data\Transform\Data\CallableData;
 use Strata\Data\Transform\Value\BaseValue;
 use Strata\Data\Transform\Value\DateTimeValue;
 use Strata\Frontend\Content\Page;
-use Strata\Frontend\Data\MapCollectionTrait;
-use Strata\Frontend\Data\MapItemTrait;
-use Strata\Frontend\Data\RepositoryMapperInterface;
+use Strata\Frontend\Repository\MapCollectionTrait;
+use Strata\Frontend\Repository\MapItemTrait;
+use Strata\Frontend\Repository\RepositoryMapperInterface;
 
 class PageRepositoryMapTrait extends MapCollectionTrait implements RepositoryMapperInterface
 {
