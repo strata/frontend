@@ -1,6 +1,6 @@
 # Developing with Strata Frontend
 
-* [Setting up content types](setting-up-content-types.md)
+* [Setting up content types](content-schema.md)
 * [URLs](urls.md) 
 
 ## Routes

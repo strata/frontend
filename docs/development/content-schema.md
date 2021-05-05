@@ -1,4 +1,4 @@
-# Setting up content types
+# Setting up your content schema
 
 ## How content works
 
@@ -15,11 +15,11 @@ Also see:
 * For more information on the content model see [Content model](../content-model.md)
 * You can find out how to output content fields on the [Templating content fields](../templating/content-fields.md) page 
 
-## Setting up the content model
+## Setting up the content schema
 
-This can be done in PHP (via the `ContentModel` class), but it's more convenient to use YAML files for this. 
+This can be done in PHP (via the `Schema` class), but it's more convenient to use YAML files for this. 
 
-### content-model.yaml
+### content-schema.yaml
 
 You start with one YAML file with two root elements:
 
