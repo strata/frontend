@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Data\Repository\WordPress;
+namespace Strata\Frontend\Data\Repository\WordPress\Mapper;
 
 use Strata\Data\Mapper\MapCollection;
 use Strata\Data\Mapper\MapItem;
