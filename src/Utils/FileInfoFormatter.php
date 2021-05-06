@@ -19,6 +19,8 @@ class FileInfoFormatter
      */
     public static function formatFileSize($sizeInByte = 0): string
     {
+        $size = '';
+
         if (empty($sizeInByte)) {
             $size = '0 B';
             return $size;

@@ -57,7 +57,7 @@ class ContentFieldResolver implements ResolverInterface
 
         if (!method_exists($this, $methodName)) {
             // @todo logger
-            throw new ContentFieldTranslationNotFoundException(sprinf('Content field resolver for content type %s not found, ensure you have a resolver method called %s', $contentField->getType(), $methodName));
+            throw new ContentFieldTranslationNotFoundException(sprintf('Content field resolver for content type %s not found, ensure you have a resolver method called %s', $contentField->getType(), $methodName));
             return null;
         }
 

@@ -8,7 +8,7 @@ use Strata\Frontend\Content\Page;
 use Strata\Frontend\Data\Repository\WordPress\WordPress;
 use Symfony\Component\HttpClient\MockHttpClient;
 
-class WordPressTest extends TestCase
+class WordPressTestTodo extends TestCase
 {
     public function testPing()
     {

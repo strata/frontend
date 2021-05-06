@@ -268,23 +268,6 @@ abstract class ContentRepository
     }
 
     /**
-     * Create a new page object
-     *
-     * This represents a content object (e.g. news article, page, case study, etc)
-     *
-     * @param array $data
-     * @return Page
-     */
-    public function createPage(array $data): Page
-    {
-        $page = new Page();
-        $page->setContentType($this->getContentType());
-        $this->setContentFields($page, $data);
-
-        return $page;
-    }
-
-    /**
      * Filter cache key to ensure it is safe to use
      *
      * @param $string

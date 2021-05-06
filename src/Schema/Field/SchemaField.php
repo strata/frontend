@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Schema\Field;
 
+use Strata\Frontend\Schema\Schema;
+
 /**
  * Represents a content field definition (e.g. title field)
  *

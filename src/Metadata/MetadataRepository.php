@@ -147,7 +147,7 @@ class MetadataRepository implements RepositoryInterface
     }
 
     /**
-     * Gets the script rquired for the table set up.
+     * Gets the script required for the table set up.
      * This method can be extended to support multiple storage types
      *
      * @param string $storageType
@@ -157,6 +157,7 @@ class MetadataRepository implements RepositoryInterface
     {
         switch ($storageType) {
             case 'sqlite':
+            default:
                 return $this->getSqliteTableCreationSql();
         }
     }

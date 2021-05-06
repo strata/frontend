@@ -138,7 +138,7 @@ class ParseStatus
     {
         $parents = $this->getParents();
         if (count($parents) > 0) {
-            $parents = sprintf('Parents: %s', implode(' > ', $parents), $this->contentType, $this->fieldName) . PHP_EOL;
+            $parents = sprintf('Parents: %s', implode(' > ', $parents)) . PHP_EOL;
         } else {
             $parents = '';
         }

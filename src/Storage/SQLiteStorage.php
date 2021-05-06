@@ -228,6 +228,7 @@ class SQLiteStorage implements StorageInterface
     public function search($attribute, $keyword): array
     {
         // TODO: Implement search() method.
+        return [];
     }
 
     public function createTableIfItDoesntExist(RepositoryInterface $repository): void

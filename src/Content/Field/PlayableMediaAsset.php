@@ -94,7 +94,7 @@ class PlayableMediaAsset extends AssetField
     protected function setBitRate($bitrate)
     {
         if (!is_numeric($bitrate)) {
-            throw new Exception(sprintf('Invalid bit rate "%s", must be numeric.', $bitrate));
+            throw new \Exception(sprintf('Invalid bit rate "%s", must be numeric.', $bitrate));
         }
 
         $this->bitrate = intval(round($bitrate));

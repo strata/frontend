@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content\Field;
 
+use Strata\Frontend\Exception\ContentFieldException;
+
 /**
  * Array field, keys can be integers or strings, values can only be numeric of strings (no arrays or objects)
  *

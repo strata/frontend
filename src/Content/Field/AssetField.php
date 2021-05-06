@@ -46,7 +46,6 @@ class AssetField extends ContentField
      * @param string $url Asset URL
      * @param string|null $title Asset title
      * @param string|null $description Asset description
-     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $url, string $title = null, string $description = null)
     {
@@ -142,8 +141,8 @@ class AssetField extends ContentField
      */
     public function setMimeType(string $type)
     {
-        if (!in_array($type, self::getAllowedMimeTypes())) {
-            throw new InvalidMimeTypeException(sprintf('Invalid mime type "%s", allowed mime-types: %s', $type, implode(', ', $this->getAllowedMimeTypes())));
+        if ($this->mimeTypeAllowed($type)) {
+            throw new InvalidMimeTypeException(sprintf('Invalid mime type "%s", allowed mime-types: %s', $type, implode(', ', self::$allowedMimeTypes)));
         }
 
         $this->mimeType = $type;

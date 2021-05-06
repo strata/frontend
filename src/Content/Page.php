@@ -34,6 +34,8 @@ class Page extends BaseContent
      */
     protected $template;
 
+    protected Url $urlPattern;
+
     /**
      * Page constructor.
      */

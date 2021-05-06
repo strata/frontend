@@ -6,6 +6,7 @@ namespace Strata\Frontend\Schema\Field;
 
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Collection\ArrayAccessTrait;
+use Strata\Frontend\Exception\UnimplementedException;
 use Strata\Frontend\Schema\ContentFieldCollection;
 use Strata\Frontend\Schema\ContentFieldCollectionInterface;
 use Strata\Frontend\Schema\ContentType;
@@ -103,11 +104,11 @@ class ArraySchemaField extends ContentFieldCollection implements SchemaFieldInte
 
     public function getApiEndpoint(): string
     {
-        throw new UnimplementedException(sprintf('% is not implemented in %s\%s', __METHOD__, __NAMESPACE__, __CLASS__));
+        throw new UnimplementedException(sprintf('%s is not implemented in %s\%s', __METHOD__, __NAMESPACE__, __CLASS__));
     }
 
     public function setApiEndpoint(string $apiEndpoint): ContentType
     {
-        throw new UnimplementedException(sprintf('% is not implemented in %s\%s', __METHOD__, __NAMESPACE__, __CLASS__));
+        throw new UnimplementedException(sprintf('%s is not implemented in %s\%s', __METHOD__, __NAMESPACE__, __CLASS__));
     }
 }

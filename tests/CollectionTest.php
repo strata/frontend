@@ -3,24 +3,25 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Strata\Frontend\Schema\Field;
-use Strata\Frontend\Schema\FieldInterface;
+use Strata\Frontend\Schema\ContentType;
+use Strata\Frontend\Schema\Field\SchemaField;
+use Strata\Frontend\Schema\Field\SchemaFieldInterface;
 
 class CollectionTest extends TestCase
 {
     public function testArrayAccess()
     {
         $collection = new ContentType('test');
-        $collection->addItem(new Field('test1', 'plaintext'));
-        $collection->addItem(new Field('test2', 'plaintext'));
-        $collection->addItem(new Field('test3', 'richtext'));
+        $collection->addItem(new SchemaField('test1', 'plaintext'));
+        $collection->addItem(new SchemaField('test2', 'plaintext'));
+        $collection->addItem(new SchemaField('test3', 'richtext'));
 
         $this->assertEquals(3, count($collection));
         $this->assertFalse($collection->offsetExists('fake'));
 
         $x = 1;
         foreach ($collection as $key => $value) {
-            $this->assertTrue($value instanceof FieldInterface);
+            $this->assertTrue($value instanceof SchemaFieldInterface);
 
             switch ($x) {
                 case 1:

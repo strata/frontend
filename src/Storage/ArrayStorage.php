@@ -142,6 +142,7 @@ class ArrayStorage implements StorageInterface
     public function all(): array
     {
         // TODO: Implement all() method.
+        return [];
     }
 
     /**
@@ -154,6 +155,7 @@ class ArrayStorage implements StorageInterface
     public function search($attribute, $keyword): array
     {
         // TODO: Implement search() method.
+        return [];
     }
 
     /**

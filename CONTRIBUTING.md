@@ -48,6 +48,14 @@ Run [PHPUnit](https://phpunit.readthedocs.io/en/8.0/) tests via:
 vendor/bin/phpunit
 ```
 
+## PHPStan
+
+You can use [PHPStan](https://phpstan.org/) to help test code quality, this can help catch simple errors:
+
+```
+vendor/bin/phpstan analyse
+```
+
 ## Coding standards
 
 Strata follows the [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standard. You can check this with:
