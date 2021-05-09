@@ -34,7 +34,6 @@ use Strata\Frontend\View\TableOfContents\HeadingCollection;
  */
 class TableOfContents
 {
-    private string $html;
     private \DOMDocumentFragment $content;
     private HTML5 $html5;
     private ViewFilters $filters;
@@ -42,6 +41,7 @@ class TableOfContents
     private array $uniqueIds = [];
     private array $parsedHeadings;
     private ?HeadingCollection $headings = null;
+    private bool $debug = false;
 
     /**
      * Constructor
@@ -58,6 +58,24 @@ class TableOfContents
         $this->content =  $this->html5->loadHTMLFragment($html);
         $this->setLevels($levels);
         $this->parsedHeadings = $this->parseHeadingsFromHtml();
+    }
+
+    public function isDebug(): bool
+    {
+        return $this->debug;
+    }
+
+    /**
+     * Enable debug mode (outputs levels parsed in html)
+     */
+    public function enableDebug()
+    {
+        $this->debug = true;
+    }
+
+    public function disableDebug()
+    {
+        $this->debug = false;
     }
 
     /**
@@ -212,6 +230,12 @@ class TableOfContents
      */
     public function html()
     {
-        return $this->html5->saveHTML($this->content);
+        $html = '';
+        if ($this->isDebug()) {
+            $levels = implode(', ', $this->levels);
+            $html .= sprintf('<!-- Table of Contents generated for levels %s -->', $levels) . PHP_EOL;
+        }
+        $html .= $this->html5->saveHTML($this->content);
+        return $html;
     }
 }

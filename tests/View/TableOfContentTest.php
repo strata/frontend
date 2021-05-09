@@ -199,4 +199,21 @@ class TableOfContentTest extends TestCase
         $this->assertStringContainsString('<ul class="toc" role="list">', $html);
         $this->assertStringContainsString('<li><a href="#ship">Ship</a><ul><li><a href="#topmast">Topmast</a></li>', $html);
     }
+
+    public function testDebug()
+    {
+        $helper = new TableOfContents(file_get_contents(__DIR__ . '/html/example.html'));
+        $html = $helper->html();
+        $this->assertStringNotContainsString('<!-- Table of Contents generated for levels h2, h3 -->', $html);
+
+        $helper = new TableOfContents(file_get_contents(__DIR__ . '/html/example.html'));
+        $helper->enableDebug();
+        $html = $helper->html();
+        $this->assertStringContainsString('<!-- Table of Contents generated for levels h2, h3 -->', $html);
+
+        $helper = new TableOfContents(file_get_contents(__DIR__ . '/html/example.html'), ['h2']);
+        $helper->enableDebug();
+        $html = $helper->html();
+        $this->assertStringContainsString('<!-- Table of Contents generated for levels h2 -->', $html);
+    }
 }
