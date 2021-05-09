@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\View;
 
+use Masterminds\HTML5;
+
 /**
  * View template filters for value transformation
  *

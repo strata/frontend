@@ -2,6 +2,8 @@
 
 The following filters and functions are available in Twig via the Frontend application.
 
+The Twig helpers can be registered via the Twig extension that is available as part of the [symfony-frontend](https://github.com/strata/symfony-frontend) package.
+
 **Filters**
 * [build_version](#build_version)
 * [excerpt](#excerpt)
@@ -12,6 +14,7 @@ The following filters and functions are available in Twig via the Frontend appli
 * [all_not_empty](#all_not_empty)
 * [not_empty](#not_empty)
 * [staging_banner](#staging_banner)
+* [table-of-contents](table-of-contents.md)
 
 **Tests**
 * [is_prod](#is_prod)
