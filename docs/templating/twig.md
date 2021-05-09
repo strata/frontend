@@ -14,7 +14,7 @@ The Twig helpers can be registered via the Twig extension that is available as p
 * [all_not_empty](#all_not_empty)
 * [not_empty](#not_empty)
 * [staging_banner](#staging_banner)
-* [table-of-contents](table-of-contents.md)
+* [table_of_contents](table-of-contents.md)
 
 **Tests**
 * [is_prod](#is_prod)

@@ -1,7 +1,11 @@
 # Table of contents
 
-The table of contents helper parses a block of HTML for heading tags, can output a `<ul>` list of table of content links, 
-and parses ID attributes into headings in the main content (to enable anchor links). 
+The table of contents helper can be used to generate a `<ul>` list of table of content links, linking to all the headings 
+in your web page. This is useful if your web page is long and you want to provide quick links at the top of the page
+for users.
+
+The `tableOfContents` function parses a block of HTML for heading tags, outputs a `<ul>` list of table of anchor 
+links to the headings in your page, and parses ID attributes into headings in the main content (to enable anchor links). 
 
 ## Usage
 
