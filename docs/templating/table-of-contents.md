@@ -81,4 +81,4 @@ If your HTML content has incorrectly nested headings you may find inconsistent r
 
 For example, if your HTML has a H2 with no H3s and an H4 then this H4 would be excluded from the table of
 contents (if you asked to include H4s). If your HTML has any H3s then an incorrectly 
-nested H4 would be attached as the last H3 in your HTML.
+nested H4 would be attached to the last H3 in your HTML.

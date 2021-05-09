@@ -19,6 +19,7 @@
 * [Debugging](templating/debugging.md)
 * [Content fields](templating/content-fields.md)
 * [Twig filters & functions](templating/twig.md)
+  * [Table of Contents](templating/table-of-contents.md)
 * [Pagination](templating/pagination.md)
 
 ## Development
