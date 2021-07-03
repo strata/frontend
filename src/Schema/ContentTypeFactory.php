@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Strata\Frontend\Schema;
 
 use Strata\Frontend\Content\Field\ArrayContent;
+use Strata\Frontend\Content\Field\FieldType;
 use Strata\Frontend\Schema\ContentFieldCollection;
 use Strata\Frontend\Content\Field\ContentFieldInterface;
 use Strata\Frontend\Content\Field\FlexibleContent;
@@ -71,14 +72,14 @@ class ContentTypeFactory
         }
 
         switch ($data['type']) {
-            case FlexibleContent::TYPE:
+            case FieldType::FLEXIBLE_CONTENT:
                 if (!isset($data['components'])) {
                     throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
                 }
                 $contentField = new FlexibleSchemaField($name, $data['components']);
                 break;
 
-            case ArrayContent::TYPE:
+            case FieldType::ARRAY:
                 if (!isset($data['content_fields'])) {
                     throw new ConfigParsingException("You must set a 'content_fields' array for an array content field");
                 }
@@ -87,7 +88,7 @@ class ContentTypeFactory
 
             default:
                 // Validation
-                if ($data['type'] === RelationArray::TYPE && !isset($data['content_type'])) {
+                if ($data['type'] === FieldType::RELATION_ARRAY && !isset($data['content_type'])) {
                     throw new ConfigParsingException("You must set a 'content_type' array for a relation array content field");
                 }
 

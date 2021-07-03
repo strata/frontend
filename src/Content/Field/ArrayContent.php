@@ -23,8 +23,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class ArrayContent extends ContentField implements \SeekableIterator, \Countable
 {
-    const TYPE = 'array';
-
     protected $collection = [];
     protected $position = 0;
 

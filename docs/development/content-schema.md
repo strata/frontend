@@ -83,20 +83,24 @@ as options.
 
 #### Supported content field types
 
-* `text` - short text, cannot contain any line returns
-* `plaintext` - plain text
-* `richtext` - rich text, this is expected to contain HTML
-* `date` - date 
+* `array` - an array (list) of multiple records of one type
+* `audio` - 
+* `boolean` - true or false  
+* `date` - date
 * `datetime` - date and time
-* `boolean` - true or false
-* `number` - integer number
 * `decimal` - decimal number
-* `plainarray` - array with simple values (strings, numbers, boolean values), keys can be integers or strings
+* `document` - 
+* `flexible` - flexible content
 * `image` - image, supports multiple image sizes and content such as alt text and captions
+* `number` - integer number
+* `plainarray` - array with simple values (strings, numbers, boolean values), keys can be integers or strings
+* `plaintext` - plain text  
 * `relation` - a relation to another content type
 * `relation_array` - an array of relations
-* `array` - an array (list) of multiple records of one type
-* `flexible` - flexible content
+* `richtext` - rich text, this is expected to contain HTML
+* `taxonomyterms` -  
+* `text` - short text, cannot contain any line returns
+* `video` - 
 
 #### Decimal options
 

@@ -13,8 +13,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class Boolean extends ContentField
 {
-    const TYPE = 'boolean';
-
     protected $value;
 
     /**

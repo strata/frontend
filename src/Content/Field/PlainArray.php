@@ -13,8 +13,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class PlainArray extends ContentField
 {
-    const TYPE = 'plainarray';
-
     protected $content = array();
 
     /**

@@ -6,6 +6,17 @@ namespace Strata\Frontend\Content;
 
 use Strata\Data\Traits\IterableTrait;
 
+/**
+ * Iterator functionality
+ *
+ * Can be used with classes that implement \SeekableIterator, \Countable, \ArrayAccess
+ * Colection data is stored in the $this->collection array
+ *
+ * @see https://www.php.net/seekableiterator
+ * @see https://www.php.net/countable
+ * @see https://www.php.net/arrayaccess
+ * @package Strata\Data\Traits
+ */
 trait IterableContentTrait
 {
     use IterableTrait;

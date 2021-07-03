@@ -14,6 +14,7 @@ use Strata\Frontend\Content\Field\Date;
 use Strata\Frontend\Content\Field\DateTime;
 use Strata\Frontend\Content\Field\Decimal;
 use Strata\Frontend\Content\Field\Document;
+use Strata\Frontend\Content\Field\FieldType;
 use Strata\Frontend\Content\Field\FlexibleContent;
 use Strata\Frontend\Content\Field\Image;
 use Strata\Frontend\Content\Field\Number;
@@ -26,6 +27,7 @@ use Strata\Frontend\Content\Field\ShortText;
 use Strata\Frontend\Content\Field\TaxonomyTerms;
 use Strata\Frontend\Content\Field\Video;
 use Strata\Frontend\Exception\ConfigParsingException;
+use Strata\Frontend\Schema\Api\Field;
 use Strata\Frontend\Schema\Field\ArraySchemaField;
 use Strata\Frontend\Schema\Field\FlexibleSchemaField;
 use Strata\Frontend\Schema\Field\SchemaField;
@@ -50,26 +52,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      *
      * @var array
      */
-    protected static $validContentFields = [
-        ArrayContent::TYPE,
-        Audio::TYPE,
-        Boolean::TYPE,
-        Date::TYPE,
-        DateTime::TYPE,
-        Document::TYPE,
-        FlexibleContent::TYPE,
-        Image::TYPE,
-        Number::TYPE,
-        Decimal::TYPE,
-        PlainArray::TYPE,
-        PlainText::TYPE,
-        Relation::TYPE,
-        RelationArray::TYPE,
-        RichText::TYPE,
-        ShortText::TYPE,
-        TaxonomyTerms::TYPE,
-        Video::TYPE
-    ];
+    protected static $validContentFields = [];
 
     protected $name;
 
@@ -90,6 +73,9 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
 
         $this->setName($name);
         $this->taxonomies = array();
+
+        // @todo do we need to populate valid content field types?
+        self::$validContentFields = FieldType::getFieldTypes();
     }
 
     /**
@@ -97,6 +83,7 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      *
      * If you create a new content type, make sure you register it to ensure the Content Model system recognises it
      *
+     * @todo may need replacing, see FieldTypes::class
      * @param string $name
      */
     public static function registerContentType(string $name)
@@ -128,9 +115,9 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
      * @param string $field Content field type
      * @return bool
      */
-    public function validContentFields(string $field)
+    public function validContentFields(string $field): bool
     {
-        return in_array($field, self::$validContentFields);
+        return FieldType::exists($field);
     }
 
     /**
@@ -242,14 +229,14 @@ class ContentType extends \ArrayIterator implements ContentFieldCollectionInterf
         }
 
         switch ($data['type']) {
-            case FlexibleContent::TYPE:
+            case FieldType::FLEXIBLE_CONTENT:
                 if (!isset($data['components'])) {
                     throw new ConfigParsingException("You must set a 'components' array for a flexible content field");
                 }
                 $contentField = new FlexibleSchemaField($name, $data['components']);
                 break;
 
-            case ArrayContent::TYPE:
+            case FieldType::ARRAY:
                 if (!isset($data['content_fields'])) {
                     throw new ConfigParsingException("You must set a 'content_fields' array for an array content field");
                 }

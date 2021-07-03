@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Schema\Field;
 
+use Strata\Frontend\Content\Field\FieldType;
 use Strata\Frontend\Content\Field\FlexibleContent;
 use Strata\Frontend\Collection\ArrayAccessTrait;
 use Strata\Frontend\Schema\ContentFieldCollection;
@@ -29,7 +30,7 @@ class FlexibleSchemaField extends \ArrayIterator implements SchemaFieldInterface
      *
      * @var string
      */
-    protected $type = FlexibleContent::TYPE;
+    protected $type = FieldType::FLEXIBLE_CONTENT;
 
     /**
      * Constructor

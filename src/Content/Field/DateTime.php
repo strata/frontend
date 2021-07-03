@@ -13,8 +13,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class DateTime extends Date
 {
-    const TYPE = 'datetime';
-
     /**
      * Create date time content field
      *

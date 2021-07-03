@@ -15,8 +15,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class FlexibleContent extends ContentField implements \SeekableIterator, \Countable
 {
-    const TYPE = 'flexible';
-
     /**
      * Collection of components
      *

@@ -16,8 +16,6 @@ use Strata\Frontend\Content\Page;
  */
 class Relation extends ContentField
 {
-    const TYPE = 'relation';
-
     protected $content;
 
     /**

@@ -13,8 +13,6 @@ class Document extends AssetField
 {
     use SizesTrait;
 
-    const TYPE = 'document';
-
     public static $allowedMimeTypes = [
         'application/pdf',
         'application/msword',

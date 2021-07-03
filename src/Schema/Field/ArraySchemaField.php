@@ -6,6 +6,7 @@ namespace Strata\Frontend\Schema\Field;
 
 use Strata\Frontend\Content\Field\ArrayContent;
 use Strata\Frontend\Collection\ArrayAccessTrait;
+use Strata\Frontend\Content\Field\FieldType;
 use Strata\Frontend\Exception\UnimplementedException;
 use Strata\Frontend\Schema\ContentFieldCollection;
 use Strata\Frontend\Schema\ContentFieldCollectionInterface;
@@ -26,7 +27,7 @@ class ArraySchemaField extends ContentFieldCollection implements SchemaFieldInte
      *
      * @var string
      */
-    protected $type = ArrayContent::TYPE;
+    protected $type = FieldType::ARRAY;
 
     /**
      * Constructor

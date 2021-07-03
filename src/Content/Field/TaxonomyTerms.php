@@ -16,8 +16,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class TaxonomyTerms extends ContentField
 {
-    const TYPE = 'taxonomyterms';
-
     protected $content;
 
     /**

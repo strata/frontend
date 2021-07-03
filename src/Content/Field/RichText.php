@@ -11,8 +11,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class RichText extends ContentField
 {
-    const TYPE = 'richtext';
-
     protected $content;
 
     /**

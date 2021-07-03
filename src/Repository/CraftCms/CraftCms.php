@@ -96,6 +96,11 @@ class CraftCms extends ContentRepository implements RepositoryInterface
         return $this->getProvider()->query($query, $variables, $operationName);
     }
 
+    public function entries()
+    {
+
+    }
+
     /**
      * Map API response to an item
      *

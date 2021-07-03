@@ -13,8 +13,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class Audio extends PlayableMediaAsset
 {
-    const TYPE = 'audio';
-
     protected $mediaParameters;
 
     public static $allowedMimeTypes = [

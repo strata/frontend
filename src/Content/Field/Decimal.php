@@ -13,8 +13,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class Decimal extends ContentField
 {
-    const TYPE = 'decimal';
-
     /**
      * Short versions of rounding mode
      */

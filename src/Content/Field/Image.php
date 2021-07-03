@@ -15,8 +15,6 @@ class Image extends AssetField
 {
     use SizesTrait;
 
-    const TYPE = 'image';
-
     public static $allowedMimeTypes = [
         'image/jpeg',
         'image/gif',
