@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Strata\Frontend\Trait;
+namespace Strata\Frontend\Traits;
 
 use Strata\Data\Mapper\MapCollection;
 use Strata\Data\Mapper\MapperInterface;
