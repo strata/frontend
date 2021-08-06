@@ -136,11 +136,11 @@ class TableOfContents
                 ];
                 // Add id attribute to content node
                 $node->setAttribute('id', $id);
+            }
 
-                // Parse child elements
-                if (!empty($node->childNodes)) {
-                    $headings = $this->parseHeadingsFromHtml($node->childNodes, $headings);
-                }
+            // Parse child elements
+            if (!empty($node->childNodes)) {
+                $headings = $this->parseHeadingsFromHtml($node->childNodes, $headings);
             }
         }
 
