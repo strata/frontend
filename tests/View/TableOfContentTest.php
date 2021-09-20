@@ -216,4 +216,30 @@ class TableOfContentTest extends TestCase
         $html = $helper->html();
         $this->assertStringContainsString('<!-- Table of Contents generated for levels h2 -->', $html);
     }
+
+    public function testNestedHeadings()
+    {
+        $helper = new TableOfContents(file_get_contents(__DIR__ . '/html/example-nested-div.html'));
+        $html = $helper->html();
+        $headings = $helper->getHeadings();
+        $this->assertStringContainsString('<a href="#ship">Ship</a', $headings);
+        $this->assertStringContainsString('<a href="#topmast">Topmast</a', $headings);
+        $this->assertStringContainsString('<h2 id="ship">Ship</h2>', $html);
+        $this->assertStringContainsString('<h3 id="topmast">Topmast</h3>', $html);
+    }
+
+    public function testExistingIds()
+    {
+        $helper = new TableOfContents(file_get_contents(__DIR__ . '/html/example-existing-ids.html'));
+        $html = $helper->html();
+        $headings = $helper->getHeadings();
+        $this->assertStringContainsString('<a href="#my-ship">Ship</a', $headings);
+        $this->assertStringContainsString('<a href="#custom-link">Topmast</a', $headings);
+        $this->assertStringContainsString('<a href="#spain">Spain</a', $headings);
+        $this->assertStringContainsString('<h2 id="my-ship">Ship</h2>', $html);
+        $this->assertStringContainsString('<h3 id="custom-link">Topmast</h3>', $html);
+        $this->assertStringContainsString('<h2 id="spain">Spain</h2>', $html);
+    }
+
+
 }

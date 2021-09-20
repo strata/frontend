@@ -4,8 +4,9 @@ The table of contents helper can be used to generate a `<ul>` list of table of c
 in your web page. This is useful if your web page is long and you want to provide quick links at the top of the page
 for users.
 
-The `tableOfContents` function parses a block of HTML for heading tags, outputs a `<ul>` list of table of anchor 
-links to the headings in your page, and parses ID attributes into headings in the main content (to enable anchor links). 
+The `tableOfContents` function parses a block of HTML for heading tags and outputs a `<ul>` list of anchor 
+links to the headings in your page. It either uses existing `id` attributes in your headings or automatically generates 
+`id` attributes based on the heading text. These are parsed back into the HTML content to make the ToC anchor links work.
 
 ## Usage
 
@@ -68,7 +69,7 @@ You can output the original HTML content you passed to `tableOfContents()` with 
 heading tags, which enables anchor navigation:
 
 ```twig
-{{ toc.html }}
+{{ toc.html|raw }}
 ```
 
 The helper can deal with duplicate headings and inserts an incrementing integer number to help fix these (anchor links on a

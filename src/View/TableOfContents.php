@@ -120,19 +120,27 @@ class TableOfContents
             $top = true;
         }
 
+        /** @var \DOMElement $node */
         foreach ($childNodes as $node) {
             if (!($node instanceof \DOMElement)) {
                 continue;
             }
             // Match a heading
             if (in_array($node->tagName, $this->levels)) {
-                $id = $this->filters->slugify($node->nodeValue);
+
+                // Use id if exists, or generate from heading text
+                if (!empty($node->getAttribute('id'))) {
+                    $id = $node->getAttribute('id');
+                } else {
+                    $id = $this->filters->slugify($node->nodeValue);
+                }
                 $id = $this->getUniqueId($id);
+
                 $headings[] = [
                     'level' => (int) ltrim($node->tagName, 'h'),
                     'name' => $node->nodeValue,
                     'link' => '#' . $id,
-                    'children' => []
+                    'children' => [],
                 ];
                 // Add id attribute to content node
                 $node->setAttribute('id', $id);
