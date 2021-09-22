@@ -2,13 +2,10 @@
 
 namespace Strata\Frontend;
 
-use Symfony\Component\Intl\Locales;
 use Strata\Frontend\Exception\InvalidLocaleException;
 
 /**
  * Class to manage site-wide settings including locale
- *
- * @see https://symfony.com/doc/current/components/intl.html
  */
 class Site
 {
@@ -26,9 +23,6 @@ class Site
      */
     public function addLocale(string $locale, array $attributes = [], string $direction = self::DIRECTION_LTR)
     {
-        if (!Locales::exists($locale)) {
-            throw new InvalidLocaleException(sprintf('Locale %s is not recognised', $locale));
-        }
         if (!in_array($direction, [self::DIRECTION_LTR, self::DIRECTION_RTL])) {
             throw new \InvalidArgumentException(sprintf('Text direction %s is invalid', $direction));
         }

@@ -5,8 +5,6 @@ namespace tests;
 use PHPUnit\Framework\TestCase;
 use Strata\Frontend\Exception\InvalidLocaleException;
 use Strata\Frontend\Site;
-use Symfony\Component\Intl\Currencies;
-use Symfony\Component\Intl\Languages;
 
 class SiteTest extends TestCase
 {
@@ -16,14 +14,6 @@ class SiteTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $site->addLocale('ja', [], 'atb');
-    }
-
-    public function testInvalidLocale()
-    {
-        $site = new Site();
-
-        $this->expectException(InvalidLocaleException::class);
-        $site->addLocale('fake locale string');
     }
 
     public function testInvalidSiteLocale()
