@@ -32,7 +32,7 @@ class SiteTest extends TestCase
         $site->addLocale('fr');
         $site->addLocale('ja');
         $site->addLocale('ar', [], Site::DIRECTION_RTL);
-        $site->addRtfLocale('he');
+        $site->addLocaleRtl('he');
 
         $site->setLocale('fr');
         $this->assertSame('ltr', $site->getTextDirection());
@@ -55,7 +55,7 @@ class SiteTest extends TestCase
         $site = new Site();
         $site->addLocale('fr', ['siteId' => 1]);
         $site->addLocale('ja', ['siteId' => 2]);
-        $site->addRtfLocale('ar', ['siteId' => 3]);
+        $site->addLocaleRtl('ar', ['siteId' => 3]);
 
         $site->setLocale('fr');
         $this->assertSame(1, $site->getLocaleData('siteId'));

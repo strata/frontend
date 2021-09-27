@@ -15,7 +15,7 @@ class Site
     private array $locales = [];
 
     /**
-     * Add a LTR locale for this site
+     * Add a locale for this site (defaults to LTR)
      * @param string $locale
      * @param array $attributes Array of key => value attributes for this locale (e.g. site_id)
      * @param string $direction
@@ -38,7 +38,7 @@ class Site
      * @param array $attributes
      * @throws InvalidLocaleException
      */
-    public function addRtfLocale(string $locale, array $attributes = [])
+    public function addLocaleRtl(string $locale, array $attributes = [])
     {
         $this->addLocale($locale, $attributes, self::DIRECTION_RTL);
     }
