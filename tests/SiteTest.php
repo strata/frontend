@@ -136,5 +136,4 @@ class SiteTest extends TestCase
         $site->setLocale('zh-hans');
         $this->assertSame($expected, $site->getData('baseUrl', true));
     }
-
 }

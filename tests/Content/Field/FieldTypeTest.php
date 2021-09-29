@@ -77,5 +77,4 @@ class FieldTypeTest extends TestCase
     {
         $this->assertSame($className, FieldType::getClass($type));
     }
-
 }

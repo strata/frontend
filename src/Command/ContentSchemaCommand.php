@@ -65,6 +65,4 @@ class ContentSchemaCommand extends Command
 
         return Command::SUCCESS;
     }
-
-
 }

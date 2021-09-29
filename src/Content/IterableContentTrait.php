@@ -42,5 +42,4 @@ trait IterableContentTrait
             unset($this->collection[$offset]);
         }
     }
-
 }

@@ -39,7 +39,7 @@ class FieldType
      * @return string Class name that represents the field type
      * @throws ContentFieldException
      */
-    static public function getClass(string $type): string
+    public static function getClass(string $type): string
     {
         switch ($type) {
             case self::ARRAY:
@@ -99,7 +99,7 @@ class FieldType
      * @param string $type
      * @return bool
      */
-    static public function exists(string $type): bool
+    public static function exists(string $type): bool
     {
         try {
             self::getClass($type);
@@ -119,5 +119,4 @@ class FieldType
         $reflection = new \ReflectionClass(__CLASS__);
         return $reflection->getConstants();
     }
-
 }

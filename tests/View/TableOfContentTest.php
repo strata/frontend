@@ -240,6 +240,4 @@ class TableOfContentTest extends TestCase
         $this->assertStringContainsString('<h3 id="custom-link">Topmast</h3>', $html);
         $this->assertStringContainsString('<h2 id="spain">Spain</h2>', $html);
     }
-
-
 }
