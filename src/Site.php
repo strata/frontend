@@ -11,36 +11,39 @@ class Site
 {
     const DIRECTION_LTR = 'ltr';
     const DIRECTION_RTL = 'rtl';
+    const TEXT_DIRECTION = 'textDirection';
+    const DATA = 'data';
+
     private ?string $locale = null;
     private array $locales = [];
 
     /**
      * Add a locale for this site (defaults to LTR)
      * @param string $locale
-     * @param array $attributes Array of key => value attributes for this locale (e.g. site_id)
+     * @param array $data Array of key => value data for this locale (e.g. site_id)
      * @param string $direction
      * @throws InvalidLocaleException
      */
-    public function addLocale(string $locale, array $attributes = [], string $direction = self::DIRECTION_LTR)
+    public function addLocale(string $locale, array $data = [], string $direction = self::DIRECTION_LTR)
     {
         if (!in_array($direction, [self::DIRECTION_LTR, self::DIRECTION_RTL])) {
             throw new \InvalidArgumentException(sprintf('Text direction %s is invalid', $direction));
         }
         $this->locales[$locale] = [
-            'textDirection' => $direction,
-            'attributes' => $attributes,
+            self::TEXT_DIRECTION => $direction,
+            self::DATA => $data,
         ];
     }
 
     /**
      * Add RTF locale for this site
      * @param string $locale
-     * @param array $attributes
+     * @param array $data
      * @throws InvalidLocaleException
      */
-    public function addLocaleRtl(string $locale, array $attributes = [])
+    public function addLocaleRtl(string $locale, array $data = [])
     {
-        $this->addLocale($locale, $attributes, self::DIRECTION_RTL);
+        $this->addLocale($locale, $data, self::DIRECTION_RTL);
     }
 
     /**
@@ -63,7 +66,6 @@ class Site
             throw new InvalidLocaleException(sprintf('Locale %s is not setup for this site, please add via Site::addLocale()', $locale));
         }
         $this->locale = $locale;
-        \Locale::setDefault($locale);
     }
 
     /**
@@ -80,26 +82,74 @@ class Site
     }
 
     /**
-     * Return locale data
-     * @param string|null $attribute
-     * @return mixed|null Array of locale data, or requested locale attribute, or null if not set
+     * Set key => value data for this locale
+     *
+     * You must add the locale first before using this method
+     *
+     * @param string $locale
+     * @param string $name
+     * @param $value
      * @throws InvalidLocaleException
      */
-    public function getLocaleData(?string $attribute = null)
+    public function setLocaleData(string $locale, string $name, $value)
+    {
+        if (!isset($this->locales[$locale])) {
+            throw new InvalidLocaleException(sprintf('You must first add locale "%s" via Site::addLocale()', $locale));
+        }
+        $this->locales[$locale][self::DATA][$name] = $value;
+    }
+
+    /**
+     * Return current locale data
+     * @param string|null $name Named data value, or all data values if null
+     * @return mixed|null Array of all locale data, requested locale attribute, or null if not set
+     * @throws InvalidLocaleException
+     */
+    public function getLocaleData(?string $name = null)
     {
         $locale = $this->getLocale();
-        if ($attribute === null) {
-            return $this->locales[$locale];
+        if ($name === null) {
+            return $this->locales[$locale][self::DATA];
         }
-        $attributes = $this->locales[$locale]['attributes'];
-        if (array_key_exists($attribute, $attributes)) {
-            return $attributes[$attribute];
+        $data = $this->locales[$locale][self::DATA];
+        if (array_key_exists($name, $data)) {
+            return $data[$name];
         }
         return null;
     }
 
     /**
-     * Magic method to allow property access on locale attributes
+     * Return data values for all locales, optionally excluding data for the current locale
+     *
+     * Returns data in an array format locale => data value, e.g.
+     * [
+     *   'en' => 'value',
+     *   'fr' => 'value'
+     * ]
+     *
+     * @param string $name
+     * @param bool $excludeCurrentLocale
+     * @return array
+     * @throws InvalidLocaleException
+     */
+    public function getData(string $name, bool $excludeCurrentLocale = false): array
+    {
+        $data = [];
+        foreach ($this->locales as $locale => $item) {
+            if ($excludeCurrentLocale && $locale === $this->getLocale()) {
+                continue;
+            }
+            if (isset($item[self::DATA][$name])) {
+                $data[$locale] = $item[self::DATA][$name];
+            } else {
+                $data[$locale] = null;
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Magic method to allow property access for current locale data
      * @param string $name
      * @return mixed|null
      * @throws InvalidLocaleException
@@ -116,8 +166,8 @@ class Site
      */
     public function getTextDirection(): string
     {
-        $data = $this->getLocaleData();
-        return $data['textDirection'];
+        $locale = $this->getLocale();
+        return $this->locales[$locale][self::TEXT_DIRECTION];
     }
 
     /**

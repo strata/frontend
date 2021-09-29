@@ -69,4 +69,72 @@ class SiteTest extends TestCase
         $this->assertSame(3, $site->siteId);
     }
 
+    public function testGetData()
+    {
+        $site = new Site();
+        $site->addLocale('en', [
+            'siteId' => 1,
+            'baseUrl' =>  [
+                'label' => 'English homepage',
+                'url' => 'https://www.example.com/',
+            ]
+        ]);
+        $site->addLocale('ja', [
+            'siteId' => 2,
+            'baseUrl' =>  [
+                'label' => '日本語ホームページ',
+                'url' => 'https://ja.example.com/',
+            ]
+        ]);
+        $site->addLocale('zh-hans', [
+            'siteId' => 3,
+            'baseUrl' =>  [
+                'label' => '简体中文首页',
+                'url' => 'https://zh.example.com/',
+            ]
+        ]);
+        $site->setLocale('en');
+
+        $expected = [
+            'en' => [
+                'label' => 'English homepage',
+                'url' => 'https://www.example.com/',
+            ],
+            'ja' => [
+                'label' => '日本語ホームページ',
+                'url' => 'https://ja.example.com/',
+            ],
+            'zh-hans' => [
+                'label' => '简体中文首页',
+                'url' => 'https://zh.example.com/',
+            ],
+        ];
+        $this->assertSame($expected, $site->getData('baseUrl'));
+
+        $expected = [
+            'ja' => [
+                'label' => '日本語ホームページ',
+                'url' => 'https://ja.example.com/',
+            ],
+            'zh-hans' => [
+                'label' => '简体中文首页',
+                'url' => 'https://zh.example.com/',
+            ],
+        ];
+        $this->assertSame($expected, $site->getData('baseUrl', true));
+
+        $expected = [
+            'en' => [
+                'label' => 'English homepage',
+                'url' => 'https://www.example.com/',
+            ],
+            'ja' => [
+                'label' => '日本語ホームページ',
+                'url' => 'https://ja.example.com/',
+            ],
+        ];
+        $site->setLocale('zh-hans');
+        $this->assertSame($expected, $site->getData('baseUrl', true));
+    }
+
 }
