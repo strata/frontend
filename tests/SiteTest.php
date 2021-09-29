@@ -93,6 +93,9 @@ class SiteTest extends TestCase
                 'url' => 'https://zh.example.com/',
             ]
         ]);
+        $site->addLocale('de', [
+            'siteId' => 4
+        ]);
         $site->setLocale('en');
 
         $expected = [
@@ -109,6 +112,7 @@ class SiteTest extends TestCase
                 'url' => 'https://zh.example.com/',
             ],
         ];
+        $this->assertFalse(array_key_exists('de', $site->getData('baseUrl')));
         $this->assertSame($expected, $site->getData('baseUrl'));
 
         $expected = [

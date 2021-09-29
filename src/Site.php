@@ -141,8 +141,6 @@ class Site
             }
             if (isset($item[self::DATA][$name])) {
                 $data[$locale] = $item[self::DATA][$name];
-            } else {
-                $data[$locale] = null;
             }
         }
         return $data;
