@@ -83,7 +83,7 @@ class Site
     }
 
     /**
-     * Return site locale
+     * Return current site locale
      * @return string
      * @throw InvalidLocaleException
      */
@@ -179,26 +179,33 @@ class Site
 
     /**
      * Return text direction for current locale
+     * @param ?string $locale Optionally pass the locale you want to return text direction for, or uses current locale
      * @return string
      * @throws InvalidLocaleException
      */
-    public function getTextDirection(): string
+    public function getTextDirection(?string $locale = null): string
     {
-        $currentLocale = $this->getLocale();
-        if ($currentLocale === null) {
+        if ($locale === null) {
+            $locale = $this->getLocale();
+        }
+        if ($locale === null) {
             throw new InvalidLocaleException('Current locale not set, please ensure you set this via Site::setLocale()');
         }
-        return $this->locales[$currentLocale][self::TEXT_DIRECTION];
+        if (!$this->isValidLocale($locale)) {
+            throw new InvalidLocaleException(sprintf('Locale "%s" not set, please ensure you add this via Site::addLocale() or Site::addLocaleRtl()', $locale));
+        }
+        return $this->locales[$locale][self::TEXT_DIRECTION];
     }
 
     /**
      * Return text direction HTML attribute for current locale
+     * @param ?string $locale Optionally pass the locale you want to return text direction for, or uses current locale
      * @return string|null
      * @throws InvalidLocaleException
      */
-    public function getTextDirectionHtml(): ?string
+    public function getTextDirectionHtml(?string $locale = null): ?string
     {
-        $direction = $this->getTextDirection();
+        $direction = $this->getTextDirection($locale);
         if ($direction === self::DIRECTION_LTR) {
             return '';
         }

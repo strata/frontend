@@ -23,7 +23,7 @@ class SiteTest extends TestCase
         $site->addLocale('ja');
 
         $this->expectException(InvalidLocaleException::class);
-        $site->getTextDirection('de');
+        $site->setLocale('de');
     }
 
     public function testTextDirection()
@@ -140,4 +140,22 @@ class SiteTest extends TestCase
         $site->setLocale('zh-hans');
         $this->assertSame($expected, $site->getData('baseUrl', true));
     }
+
+    public function testGetTextDirection()
+    {
+        $site = new Site();
+        $site->addLocale('en');
+        $site->addLocale('ja');
+        $site->addLocaleRtl('ar');
+        $site->setLocale('en');
+
+        $this->assertSame('ltr', $site->getTextDirection());
+        $this->assertSame('rtl', $site->getTextDirection('ar'));
+        $this->assertSame('ltr', $site->getTextDirection('ja'));
+        $this->assertSame('ltr', $site->getTextDirection('en'));
+
+        $this->expectException(InvalidLocaleException::class);
+        $site->getTextDirection('de');
+    }
+
 }
