@@ -16,6 +16,7 @@ class Site
 
     private ?string $locale = null;
     private array $locales = [];
+    private ?string $defaultLocale = null;
 
     /**
      * Add a locale for this site (defaults to LTR)
@@ -33,6 +34,19 @@ class Site
             self::TEXT_DIRECTION => $direction,
             self::DATA => $data,
         ];
+    }
+
+    /**
+     * Add locale and set it as the default locale for this site
+     * @param string $locale
+     * @param array $data
+     * @param string $direction
+     * @throws InvalidLocaleException
+     */
+    public function addDefaultLocale(string $locale, array $data = [], string $direction = self::DIRECTION_LTR)
+    {
+        $this->addLocale($locale, $data, $direction);
+        $this->defaultLocale = 'en';
     }
 
     /**
@@ -71,12 +85,15 @@ class Site
     /**
      * Return site locale
      * @return string
-     * @throws InvalidLocaleException
+     * @throw InvalidLocaleException
      */
     public function getLocale(): string
     {
+        if ($this->locale === null && $this->defaultLocale !== null) {
+            $this->setLocale($this->defaultLocale);
+        }
         if ($this->locale === null) {
-            throw new InvalidLocaleException('Locale not set for this site');
+            throw new InvalidLocaleException('Cannot return current locale, set via Site::setLocale() or add a default locale via Site::addDefaultLocale()');
         }
         return $this->locale;
     }
@@ -107,11 +124,14 @@ class Site
      */
     public function getLocaleData(?string $name = null)
     {
-        $locale = $this->getLocale();
-        if ($name === null) {
-            return $this->locales[$locale][self::DATA];
+        $currentLocale = $this->getLocale();
+        if ($currentLocale === null) {
+            throw new InvalidLocaleException('Current locale not set, please ensure you set this via Site::setLocale()');
         }
-        $data = $this->locales[$locale][self::DATA];
+        if ($name === null) {
+            return $this->locales[$currentLocale][self::DATA];
+        }
+        $data = $this->locales[$currentLocale][self::DATA];
         if (array_key_exists($name, $data)) {
             return $data[$name];
         }
@@ -130,13 +150,13 @@ class Site
      * @param string $name
      * @param bool $excludeCurrentLocale
      * @return array
-     * @throws InvalidLocaleException
      */
     public function getData(string $name, bool $excludeCurrentLocale = false): array
     {
+        $currentLocale = $this->getLocale();
         $data = [];
         foreach ($this->locales as $locale => $item) {
-            if ($excludeCurrentLocale && $locale === $this->getLocale()) {
+            if ($excludeCurrentLocale && $locale === $currentLocale) {
                 continue;
             }
             if (isset($item[self::DATA][$name])) {
@@ -164,8 +184,11 @@ class Site
      */
     public function getTextDirection(): string
     {
-        $locale = $this->getLocale();
-        return $this->locales[$locale][self::TEXT_DIRECTION];
+        $currentLocale = $this->getLocale();
+        if ($currentLocale === null) {
+            throw new InvalidLocaleException('Current locale not set, please ensure you set this via Site::setLocale()');
+        }
+        return $this->locales[$currentLocale][self::TEXT_DIRECTION];
     }
 
     /**
@@ -181,4 +204,5 @@ class Site
         }
         return sprintf('dir="%s"', $direction);
     }
+
 }
