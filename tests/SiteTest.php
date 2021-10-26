@@ -74,21 +74,21 @@ class SiteTest extends TestCase
         $site = new Site();
         $site->addLocale('en', [
             'siteId' => 1,
-            'baseUrl' =>  [
+            'baseUrl' => [
                 'label' => 'English homepage',
                 'url' => 'https://www.example.com/',
             ]
         ]);
         $site->addLocale('ja', [
             'siteId' => 2,
-            'baseUrl' =>  [
+            'baseUrl' => [
                 'label' => '日本語ホームページ',
                 'url' => 'https://ja.example.com/',
             ]
         ]);
         $site->addLocale('zh-hans', [
             'siteId' => 3,
-            'baseUrl' =>  [
+            'baseUrl' => [
                 'label' => '简体中文首页',
                 'url' => 'https://zh.example.com/',
             ]
@@ -139,6 +139,20 @@ class SiteTest extends TestCase
         ];
         $site->setLocale('zh-hans');
         $this->assertSame($expected, $site->getData('baseUrl', true));
+    }
+
+    public function testDefaultLocale()
+    {
+        $site = new Site();
+        $site->addLocale('en');
+        $site->addDefaultLocale('fr');
+
+        $this->assertSame('fr', $site->getLocale());
+
+        // Still fr since once getLocale run sets to default locale
+        $site->addLocale('ja');
+        $site->addDefaultLocale('de');
+        $this->assertSame('fr', $site->getLocale());
     }
 
     public function testGetTextDirection()

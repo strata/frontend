@@ -46,7 +46,7 @@ class Site
     public function addDefaultLocale(string $locale, array $data = [], string $direction = self::DIRECTION_LTR)
     {
         $this->addLocale($locale, $data, $direction);
-        $this->defaultLocale = 'en';
+        $this->defaultLocale = $locale;
     }
 
     /**
