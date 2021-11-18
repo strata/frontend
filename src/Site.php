@@ -50,6 +50,24 @@ class Site
     }
 
     /**
+     * Whether a default locale is set
+     * @return bool
+     */
+    public function hasDefaultLocale(): bool
+    {
+        return (null !== $this->defaultLocale);
+    }
+
+    /**
+     * Return default locale, or null if not set
+     * @return string|null
+     */
+    public function getDefaultLocale(): ?string
+    {
+        return $this->defaultLocale;
+    }
+
+    /**
      * Add RTF locale for this site
      * @param string $locale
      * @param array $data
@@ -136,6 +154,17 @@ class Site
             return $data[$name];
         }
         return null;
+    }
+
+    /**
+     * Whether a locale as the named data set
+     * @param string $name
+     * @return bool
+     * @throws InvalidLocaleException
+     */
+    public function hasLocaleData(string $name): bool
+    {
+        return (null !== $this->getLocaleData($name));
     }
 
     /**

@@ -53,20 +53,25 @@ class SiteTest extends TestCase
     public function testGetLocaleData()
     {
         $site = new Site();
-        $site->addLocale('fr', ['siteId' => 1]);
-        $site->addLocale('ja', ['siteId' => 2]);
+        $site->addLocale('fr', ['siteId' => 1, 'test' => 'one']);
+        $site->addLocale('ja', ['siteId' => 2, 'test' => 'two']);
         $site->addLocaleRtl('ar', ['siteId' => 3]);
 
         $site->setLocale('fr');
         $this->assertSame(1, $site->getLocaleData('siteId'));
         $this->assertSame(1, $site->siteId);
-        $this->assertNull($site->getLocaleData('test'));
+        $this->assertTrue($site->hasLocaleData('test'));
+        $this->assertSame('one', $site->getLocaleData('test'));
 
         $site->setLocale('ja');
         $this->assertSame(2, $site->siteId);
+        $this->assertTrue($site->hasLocaleData('test'));
+        $this->assertSame('two', $site->getLocaleData('test'));
 
         $site->setLocale('ar');
         $this->assertSame(3, $site->siteId);
+        $this->assertFalse($site->hasLocaleData('test'));
+        $this->assertNull($site->getLocaleData('test'));
     }
 
     public function testGetData()
@@ -145,14 +150,22 @@ class SiteTest extends TestCase
     {
         $site = new Site();
         $site->addLocale('en');
+        $this->assertFalse($site->hasDefaultLocale());
+
         $site->addDefaultLocale('fr');
+        $this->assertTrue($site->hasDefaultLocale());
+        $this->assertSame('fr', $site->getDefaultLocale());
 
         $this->assertSame('fr', $site->getLocale());
 
         // Still fr since once getLocale run sets to default locale
         $site->addLocale('ja');
         $site->addDefaultLocale('de');
+        $this->assertTrue($site->hasDefaultLocale());
         $this->assertSame('fr', $site->getLocale());
+
+        // But getDefaultLocale returns whatever is currently set
+        $this->assertSame('de', $site->getDefaultLocale());
     }
 
     public function testGetTextDirection()
