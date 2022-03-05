@@ -8,7 +8,6 @@ use Strata\Frontend\Metadata\RepositoryInterface;
 
 class ArrayStorage implements StorageInterface
 {
-
     /**
      * @var string
      */

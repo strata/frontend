@@ -7,7 +7,6 @@ use Strata\Frontend\View\ViewTests;
 
 class ViewTestsTest extends TestCase
 {
-
     public function testIsProd()
     {
         $helper = new ViewTests();

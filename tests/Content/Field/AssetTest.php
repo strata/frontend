@@ -9,7 +9,6 @@ use Strata\Frontend\Content\Field\AssetField;
 
 class AssetTest extends TestCase
 {
-
     public function testGuesser()
     {
         $this->assertEquals('Document', AssetField::guesser('application/pdf'));

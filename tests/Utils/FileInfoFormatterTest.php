@@ -9,7 +9,6 @@ use Strata\Frontend\Utils\FileInfoFormatter;
 
 class FileInfoFormatterTest extends TestCase
 {
-
     public function testFileSizeToString()
     {
         $this->assertEquals('0 B', FileInfoFormatter::formatFileSize(null));

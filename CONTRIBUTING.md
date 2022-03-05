@@ -40,6 +40,14 @@ so code can be loaded via Composer.
 
 ## Tests
 
+You can run all tests (phplint, phpcs, phpunit) from one command via:
+
+```
+composer test
+```
+
+## Unit tests
+
 Please add unit tests for all bug fixes and new code changes.
 
 Run [PHPUnit](https://phpunit.readthedocs.io/en/8.0/) tests via: 

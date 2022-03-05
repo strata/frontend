@@ -11,7 +11,6 @@ namespace Strata\Frontend\View;
  */
 class ViewFunctions
 {
-
     /**
      * Return a simple full-width staging banner to indicate this is a test environment and not the live site
      *

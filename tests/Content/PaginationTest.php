@@ -9,7 +9,6 @@ use Strata\Frontend\Content\Pagination\Pagination;
 
 class PaginationTest extends TestCase
 {
-
     public function testBasicPagination()
     {
         $pages = new Pagination();

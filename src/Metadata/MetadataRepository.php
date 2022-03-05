@@ -8,7 +8,6 @@ use Strata\Frontend\Storage\StorageInterface;
 
 class MetadataRepository implements RepositoryInterface
 {
-
     /**
      * @var string
      */

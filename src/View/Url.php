@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strata\Frontend\View;
 
 /**
@@ -7,7 +9,6 @@ namespace Strata\Frontend\View;
  */
 class Url
 {
-
     /**
      * Generate a URL safe slug from a string
      *
@@ -137,6 +138,4 @@ class Url
         }
         return $uri;
     }
-
-
 }

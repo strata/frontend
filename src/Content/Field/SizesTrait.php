@@ -13,7 +13,6 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 trait SizesTrait
 {
-
     /**
      * Image sizes collection
      *

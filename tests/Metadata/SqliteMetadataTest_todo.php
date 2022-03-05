@@ -11,7 +11,6 @@ use Strata\Frontend\Storage\SQLiteStorage;
 
 class SqliteMetadataTestTodo extends TestCase
 {
-
     /**
      * @var MetadataFactory
      */

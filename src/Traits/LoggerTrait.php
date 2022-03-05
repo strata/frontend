@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
  */
 trait LoggerTrait
 {
-
     /**
      * Logger object
      *

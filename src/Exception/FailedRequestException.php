@@ -6,5 +6,4 @@ namespace Strata\Frontend\Exception;
 
 class FailedRequestException extends \Exception
 {
-
 }

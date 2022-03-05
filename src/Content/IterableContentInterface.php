@@ -6,5 +6,4 @@ namespace Strata\Frontend\Content;
 
 interface IterableContentInterface extends \SeekableIterator, \Countable, \ArrayAccess
 {
-
 }

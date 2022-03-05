@@ -7,7 +7,6 @@ use Strata\Frontend\View\ViewFilters;
 
 class ViewFiltersTest extends TestCase
 {
-
     public function testExcerpt()
     {
         $helper = new ViewFilters();

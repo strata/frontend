@@ -7,7 +7,6 @@ use Strata\Frontend\View\ViewFunctions;
 
 class ViewFunctionsTest extends TestCase
 {
-
     public function testStagingBanner()
     {
         $helper = new ViewFunctions();

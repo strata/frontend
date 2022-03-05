@@ -184,5 +184,4 @@ class SiteTest extends TestCase
         $this->expectException(InvalidLocaleException::class);
         $site->getTextDirection('de');
     }
-
 }

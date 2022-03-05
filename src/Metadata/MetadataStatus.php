@@ -8,7 +8,6 @@ use Strata\Data\Helper\ContentHasher;
 
 class MetadataStatus
 {
-
     /**
      * @var \Strata\Data\Metadata\MetadataRepository
      */

@@ -10,7 +10,6 @@ namespace Strata\Frontend\Utils;
  */
 class FileInfoFormatter
 {
-
     /**
      * Converts a filesize (in bytes) to a formatted string (e.g. '23 MB')
      *

@@ -6,5 +6,4 @@ namespace Strata\Frontend\Exception;
 
 class MetaTagNotAllowedException extends \Exception
 {
-
 }

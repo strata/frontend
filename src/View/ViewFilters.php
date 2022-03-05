@@ -13,7 +13,6 @@ use Masterminds\HTML5;
  */
 class ViewFilters
 {
-
     /**
      * Generate a URL safe slug from a string
      *

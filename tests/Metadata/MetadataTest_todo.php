@@ -14,7 +14,6 @@ use Strata\Frontend\Storage\ArrayStorage;
 
 class MetadataTestTodo extends TestCase
 {
-
     /**
      * @var MetadataFactory
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strata\Frontend;
 
 use Strata\Frontend\Exception\InvalidLocaleException;
@@ -240,5 +242,4 @@ class Site
         }
         return sprintf('dir="%s"', $direction);
     }
-
 }

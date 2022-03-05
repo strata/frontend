@@ -15,9 +15,9 @@ use Strata\Frontend\Content\IterableContentTrait;
  */
 class Component implements ContentInterface, IterableContentInterface
 {
-    protected $name;
-
     use IterableContentTrait;
+
+    protected $name;
 
     /**
      * Content field collection

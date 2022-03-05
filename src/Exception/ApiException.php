@@ -6,5 +6,4 @@ namespace Strata\Frontend\Exception;
 
 class ApiException extends \Exception
 {
-
 }
