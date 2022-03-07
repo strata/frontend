@@ -19,23 +19,23 @@ class UrlTest extends TestCase
 
     public function testFixUrl()
     {
-        $this->assertEquals('https://www.domain.com',Url::fixUrl('//www.domain.com'));
-        $this->assertEquals('http://www.domain.com',Url::fixUrl('//www.domain.com', 'http'));
-        $this->assertEquals('https://domain.com',Url::fixUrl('domain.com'));
-        $this->assertEquals('http://domain.com',Url::fixUrl('domain.com', 'http'));
-        $this->assertEquals('https://www.domain.com',Url::fixUrl('www.domain.com'));
-        $this->assertEquals('http://www.domain.com',Url::fixUrl('www.domain.com', 'http'));
-        $this->assertEquals('https://domain.com',Url::fixUrl('domain.com'));
-        $this->assertEquals('https://domain.co.uk',Url::fixUrl('domain.co.uk'));
-        $this->assertEquals('https://domain.com/contact/',Url::fixUrl('domain.com/contact/'));
-        $this->assertEquals('https://domain.com/team/bob',Url::fixUrl('domain.com/team/bob'));
-        $this->assertEquals('https://domain.com:8080/about',Url::fixUrl('domain.com:8080/about'));
-        $this->assertEquals('https://domain.com/search?k=maths',Url::fixUrl('domain.com/search?k=maths'));
-        $this->assertEquals('https://domain.com/search?k=maths#3',Url::fixUrl('domain.com/search?k=maths#3'));
-        $this->assertEquals('https://me:pass@staging.domain.com/',Url::fixUrl('https://me:pass@staging.domain.com/'));
-        $this->assertEquals('/team/bob',Url::fixUrl('/team/bob'));
-        $this->assertEquals('../contact',Url::fixUrl('../contact'));
-        $this->assertEquals('fake url',Url::fixUrl('fake url'));
+        $this->assertEquals('https://www.domain.com', Url::fixUrl('//www.domain.com'));
+        $this->assertEquals('http://www.domain.com', Url::fixUrl('//www.domain.com', 'http'));
+        $this->assertEquals('https://domain.com', Url::fixUrl('domain.com'));
+        $this->assertEquals('http://domain.com', Url::fixUrl('domain.com', 'http'));
+        $this->assertEquals('https://www.domain.com', Url::fixUrl('www.domain.com'));
+        $this->assertEquals('http://www.domain.com', Url::fixUrl('www.domain.com', 'http'));
+        $this->assertEquals('https://domain.com', Url::fixUrl('domain.com'));
+        $this->assertEquals('https://domain.co.uk', Url::fixUrl('domain.co.uk'));
+        $this->assertEquals('https://domain.com/contact/', Url::fixUrl('domain.com/contact/'));
+        $this->assertEquals('https://domain.com/team/bob', Url::fixUrl('domain.com/team/bob'));
+        $this->assertEquals('https://domain.com:8080/about', Url::fixUrl('domain.com:8080/about'));
+        $this->assertEquals('https://domain.com/search?k=maths', Url::fixUrl('domain.com/search?k=maths'));
+        $this->assertEquals('https://domain.com/search?k=maths#3', Url::fixUrl('domain.com/search?k=maths#3'));
+        $this->assertEquals('https://me:pass@staging.domain.com/', Url::fixUrl('https://me:pass@staging.domain.com/'));
+        $this->assertEquals('/team/bob', Url::fixUrl('/team/bob'));
+        $this->assertEquals('../contact', Url::fixUrl('../contact'));
+        $this->assertEquals('fake url', Url::fixUrl('fake url'));
     }
 
     public function testTrailingSlash()
@@ -65,5 +65,4 @@ class UrlTest extends TestCase
         $this->assertSame('/news/?page=2&tag=something', Url::relativeUrl('/news/?page=2&tag=something'));
         $this->assertSame('/news/?page=2&tag=something#bookmark', Url::relativeUrl('/news/?page=2&tag=something#bookmark'));
     }
-
 }

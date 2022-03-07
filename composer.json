@@ -42,7 +42,8 @@
         "squizlabs/php_codesniffer": "^3.5",
         "phpstan/phpstan": "^1.0",
         "overtrue/phplint": "^3.0",
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "nyholm/psr7": "^1.5"
     },
     "scripts": {
         "lint": [
