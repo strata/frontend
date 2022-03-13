@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Response;
 
+use FOS\HttpCache\ResponseTagger;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Strata\Data\Cache\CacheLifetime;
@@ -15,53 +16,63 @@ use Strata\Frontend\ResponseHelper\Psr7ResponseHelper;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
-class Psr7ResponseHelperTest extends TestCase {
-
+class Psr7ResponseHelperTest extends TestCase
+{
     private Psr7ResponseHelper $helper;
-
-    public function setup(): void
-    {
-        $response = new Response();
-        $this->helper = new Psr7ResponseHelper($response);
-    }
 
     public function testCacheHeaders()
     {
-        $this->helper->cacheControl();
-        $this->assertContains('public, must-revalidate, max-age=86400', $this->helper->getResponse()->getHeader('Cache-Control'));
+        $helper = new Psr7ResponseHelper();
+        $response = new Response();
 
-        $this->helper->doNotCache();
-        $this->assertContains('private, no-store, no-cache', $this->helper->getResponse()->getHeader('Cache-Control'));
+        $helper->cacheControl();
+        $response = $helper->apply($response);
+        $this->assertContains('public, must-revalidate, max-age=86400', $response->getHeader('Cache-Control'));
 
-        $this->helper->cacheControl(CacheLifetime::HOUR);
-        $this->assertContains('public, must-revalidate, max-age=3600', $this->helper->getResponse()->getHeader('Cache-Control'));
+        $helper->doNotCache();
+        $response = $helper->apply($response);
+        $this->assertContains('private, no-store, no-cache', $response->getHeader('Cache-Control'));
+
+        $helper->cacheControl(CacheLifetime::HOUR);
+        $response = $helper->apply($response);
+        $this->assertContains('public, must-revalidate, max-age=3600', $response->getHeader('Cache-Control'));
     }
 
     public function testSecurityHeaders()
     {
-        $this->helper->setFrameOptions();
-        $this->assertContains('deny', $this->helper->getResponse()->getHeader('X-Frame-Options'));
+        $helper = new Psr7ResponseHelper();
+        $response = new Response();
 
-        $this->helper->setContentTypeOptions();
-        $this->assertContains('nosniff', $this->helper->getResponse()->getHeader('X-Content-Type-Options'));
+        $helper->setFrameOptions()
+               ->setContentTypeOptions()
+               ->setReferrerPolicy();
+        $response = $helper->apply($response);
 
-        $this->helper->setReferrerPolicy();
-        $this->assertContains('same-origin', $this->helper->getResponse()->getHeader('Referrer-Policy'));
+        $this->assertContains('deny', $response->getHeader('X-Frame-Options'));
+        $this->assertContains('nosniff', $response->getHeader('X-Content-Type-Options'));
+        $this->assertContains('same-origin', $response->getHeader('Referrer-Policy'));
     }
 
     public function testInvalidOptions()
     {
+        $helper = new Psr7ResponseHelper();
+
         $this->expectException(InvalidResponseHeaderValueException::class);
-        $this->helper->setFrameOptions('invalidorigin');
+        $helper->setFrameOptions('invalidorigin');
     }
 
     public function testResponseTagger()
     {
-        $this->helper->getResponseTagger()->addTags(['global','test1']);
-        $this->helper->getResponseTagger()->addTags(['test2']);
-        $this->helper->setHeadersFromResponseTagger();
+        $helper = new Psr7ResponseHelper();
+        $response = new Response();
+        $responseTagger = new ResponseTagger();
 
-        $this->assertContains('global,test1,test2', $this->helper->getResponse()->getHeader('X-Cache-Tags'));
+        $responseTagger->addTags(['global','test1']);
+        $responseTagger->addTags(['test2']);
+        $helper->setHeadersFromResponseTagger($responseTagger);
+        $response = $helper->apply($response);
+
+        $this->assertContains('global,test1,test2', $response->getHeader('X-Cache-Tags'));
     }
 
     public function testResponseTaggerFromQueryManager()
@@ -82,8 +93,16 @@ class Psr7ResponseHelperTest extends TestCase {
         $manager->add('query2', $query);
         $data = $manager->get('query1');
 
-        $this->helper->addTagsFromQueryManager($manager);
-        $this->assertContains('test1,test2,test3,test4', $this->helper->getResponse()->getHeader('X-Cache-Tags'));
+        $helper = new Psr7ResponseHelper();
+        $response = new Response();
+        $responseTagger = new ResponseTagger();
+
+        $responseTagger = $helper->addTagsFromQueryManager($responseTagger, $manager);
+        $this->assertNotContains('test1,test2,test3,test4', $response->getHeader('X-Cache-Tags'));
+
+        $helper->setHeadersFromResponseTagger($responseTagger);
+        $response = $helper->apply($response);
+        $this->assertContains('test1,test2,test3,test4', $response->getHeader('X-Cache-Tags'));
 
         $query = new Query();
         $query->setUri('test1')->cacheTags(['test5', 'test6']);
@@ -93,8 +112,8 @@ class Psr7ResponseHelperTest extends TestCase {
         $manager->add('query4', $query);
         $data = $manager->get('query3');
 
-        $this->helper->addTagsFromQueryManager($manager);
-        $this->assertContains('test1,test2,test3,test4,test5,test6', $this->helper->getResponse()->getHeader('X-Cache-Tags'));
+        $helper->addTagsFromQueryManager($responseTagger, $manager, true);
+        $response = $helper->apply($response);
+        $this->assertContains('test1,test2,test3,test4,test5,test6', $response->getHeader('X-Cache-Tags'));
     }
-
 }

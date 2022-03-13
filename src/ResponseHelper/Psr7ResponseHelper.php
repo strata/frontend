@@ -5,46 +5,32 @@ declare(strict_types=1);
 namespace Strata\Frontend\ResponseHelper;
 
 use Psr\Http\Message\ResponseInterface;
+use Strata\Data\Helper\UnionTypes;
 
 /**
  * Concrete implementation of response helper using PSR7 response objects
  */
 class Psr7ResponseHelper extends ResponseHelperAbstract
 {
-    private ResponseInterface $response;
-
-    public function __construct(ResponseInterface $response)
-    {
-        $this->setResponse($response);
-    }
-
-    public function setResponse(ResponseInterface $response): self
-    {
-        $this->response = $response;
-        return $this;
-    }
-
-    public function getResponse(): ResponseInterface
-    {
-        return $this->response;
-    }
-
     /**
-     * Set a header to the response object
-     * @param string $name
-     * @param string $value
-     * @param bool $replace If true, replace header, if false, append header
-     * @return $this
+     * Apply headers to response object and return response
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function setHeader(string $name, string $value, bool $replace = true): self
+    public function apply($response): ResponseInterface
     {
-        if ($replace) {
-            $this->setResponse($this->response->withHeader($name, $value));
-        } else {
-            $this->setResponse($this->response->withAddedHeader($name, $value));
+        UnionTypes::assert('response', $response, ResponseInterface::class);
+
+        foreach ($this->getHeaders() as $name => $values) {
+            /** @var HeaderValue $header */
+            foreach ($values as $header) {
+                if ($header->isReplace()) {
+                    $response = $response->withHeader($name, $header->getValue());
+                } else {
+                    $response = $response->withAddedHeader($name, $header->getValue());
+                }
+            }
         }
-
-        return $this;
+        return $response;
     }
-
 }

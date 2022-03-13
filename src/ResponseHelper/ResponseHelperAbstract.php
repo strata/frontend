@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Strata\Frontend\ResponseHelper;
 
 use FOS\HttpCache\ResponseTagger;
-use FOS\HttpCache\TagHeaderFormatter\CommaSeparatedTagHeaderFormatter;
-use FOS\HttpCache\TagHeaderFormatter\TagHeaderFormatter;
 use Strata\Data\Cache\CacheLifetime;
 use Strata\Data\Query\QueryManager;
 use Strata\Frontend\Exception\InvalidResponseHeaderValueException;
@@ -18,82 +16,70 @@ use Strata\Frontend\Exception\InvalidResponseHeaderValueException;
  */
 abstract class ResponseHelperAbstract implements ResponseHelperInterface
 {
-    private ?ResponseTagger $responseTagger = null;
+    private array $headers = [];
+
+    /**
+     * Set a header
+     * @param string $name
+     * @param string $value
+     * @param bool $replace If true, replace header, if false, append header
+     * @return $this
+     */
+    public function setHeader(string $name, string $value, bool $replace = true): self
+    {
+        if (!isset($this->headers[$name]) || $replace) {
+            $this->headers[$name] = [];
+        }
+        $this->headers[$name][] = new HeaderValue($value, $replace);
+        return $this;
+    }
+
+    /**
+     * Return headers array
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
 
     /**
      * @inheritDoc
      */
-    abstract public function setHeader(string $name, string $value, bool $replace = true): self;
-
-    /**
-     * Return response tagger for adding cache tags to the response
-     *
-     * Usage:
-     * $responseTagger = $responseHelper->getResponseTagger();
-     * $responseTagger->addTags(['tag-one', 'tag-two']);
-     *
-     * // Apply cache tag headers to response
-     * $responseHelper->apply($response);
-     *
-     * @param string $headerName Response header for cache tags, defaults to X-Cache-Tags
-     * @param string $glue Combine multiple tags with this string
-     * @return ResponseTagger
-     */
-    public function getResponseTagger(string $headerName = TagHeaderFormatter::DEFAULT_HEADER_NAME, string $glue = ','): ResponseTagger
-    {
-        if ($this->responseTagger instanceof ResponseTagger) {
-            return $this->responseTagger;
-        }
-
-        if ($headerName !== TagHeaderFormatter::DEFAULT_HEADER_NAME || $glue !== ',') {
-            $formatter = new CommaSeparatedTagHeaderFormatter($headerName, $glue);
-            $this->responseTagger = new ResponseTagger(['header_formatter' => $formatter]);
-        } else {
-            $this->responseTagger = new ResponseTagger();
-        }
-
-        return $this->responseTagger;
-    }
-
-    /**
-     * Set the response tagger used for adding cache tags to the response
-     * @param ResponseTagger $responseTagger
-     * @return $this
-     */
-    public function setResponseTagger(ResponseTagger $responseTagger): self
-    {
-        $this->responseTagger = $responseTagger;
-        return $this;
-    }
-
-    /**
-     * Set cache tag headers from response tagger
-     * @return $this
-     */
-    public function setHeadersFromResponseTagger(): self
-    {
-        $responseTagger = $this->getResponseTagger();
-        $this->setHeader($responseTagger->getTagsHeaderName(), $responseTagger->getTagsHeaderValue());
-        $this->getResponseTagger()->clear();
-        return $this;
-    }
+    abstract public function apply($response);
 
     /**
      * Add cache tags to response tagger from query manager
+     * @param ResponseTagger $responseTagger
      * @param QueryManager $manager
-     * @return $this
+     * @param bool $setHeaders Whether to automatically set headers once tags are retrieved from query manager
+     * @return ResponseTagger
      */
-    public function addTagsFromQueryManager(QueryManager $manager): self
+    public function addTagsFromQueryManager(ResponseTagger $responseTagger, QueryManager $manager, bool $setHeaders = false): ResponseTagger
     {
-        $responseTagger = $this->getResponseTagger();
-
         foreach ($manager->getQueries() as $query) {
             if ($query->hasResponseRun() && $query->hasCacheTags()) {
                 $responseTagger->addTags($query->getCacheTags());
             }
         }
 
-        $this->setHeadersFromResponseTagger();
+        if ($setHeaders) {
+            $this->setHeadersFromResponseTagger($responseTagger);
+        }
+
+        return $responseTagger;
+    }
+
+    /**
+     * Set cache tag headers from response tagger
+     * @param ResponseTagger $responseTagger
+     * @param bool $replace If true, replace header, if false, append header
+     * @return $this
+     */
+    public function setHeadersFromResponseTagger(ResponseTagger $responseTagger, bool $replace = true): self
+    {
+        $this->setHeader($responseTagger->getTagsHeaderName(), $responseTagger->getTagsHeaderValue(), $replace);
+        $responseTagger->clear();
         return $this;
     }
 

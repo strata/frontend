@@ -11,36 +11,7 @@ use Strata\Frontend\Exception\InvalidResponseHeaderValueException;
 interface ResponseHelperInterface
 {
     /**
-     * Return response tagger for adding cache tags to the response
-     *
-     * Usage:
-     * $responseTagger = $responseHelper->getResponseTagger();
-     * $responseTagger->addTags(['tag-one', 'tag-two']);
-     *
-     * // Apply cache tag headers to response
-     * $responseHelper->apply($response);
-     *
-     * @param string $headerName Response header for cache tags, defaults to X-Cache-Tags
-     * @param string $glue Combine multiple tags with this string
-     * @return ResponseTagger
-     */
-    public function getResponseTagger(string $headerName = TagHeaderFormatter::DEFAULT_HEADER_NAME, string $glue = ','): ResponseTagger;
-
-    /**
-     * Set the response tagger used for adding cache tags to the response
-     * @param ResponseTagger $responseTagger
-     * @return $this
-     */
-    public function setResponseTagger(ResponseTagger $responseTagger): self;
-
-    /**
-     * Set cache tag headers from response tagger
-     * @return $this
-     */
-    public function setHeadersFromResponseTagger(): self;
-
-    /**
-     * Set a header to the response object
+     * Set a header
      * @param string $name
      * @param string $value
      * @param bool $replace If true, replace header, if false, append header
@@ -49,11 +20,32 @@ interface ResponseHelperInterface
     public function setHeader(string $name, string $value, bool $replace = true): self;
 
     /**
+     * Return headers array
+     * @return array
+     */
+    public function getHeaders(): array;
+
+    /**
+     * Apply headers to response object and return response
+     * @param $response
+     * @return mixed
+     */
+    public function apply($response);
+
+    /**
      * Add cache tags to response tagger from query manager
+     * @param ResponseTagger $responseTagger
      * @param QueryManager $manager
+     * @return ResponseTagger
+     */
+    public function addTagsFromQueryManager(ResponseTagger $responseTagger, QueryManager $manager): ResponseTagger;
+
+    /**
+     * Set cache tag headers from response tagger
+     * @param ResponseTagger $responseTagger
      * @return $this
      */
-    public function addTagsFromQueryManager(QueryManager $manager): self;
+    public function setHeadersFromResponseTagger(ResponseTagger $responseTagger): self;
 
     /**
      * Set Cache-Control headers to enable full page caching
