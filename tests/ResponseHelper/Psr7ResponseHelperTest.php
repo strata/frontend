@@ -97,7 +97,7 @@ class Psr7ResponseHelperTest extends TestCase
         $response = new Response();
         $responseTagger = new ResponseTagger();
 
-        $responseTagger = $helper->addTagsFromQueryManager($responseTagger, $manager);
+        $responseTagger = $helper->applyResponseTagsFromQuery($responseTagger, $manager);
         $this->assertNotContains('test1,test2,test3,test4', $response->getHeader('X-Cache-Tags'));
 
         $helper->setHeadersFromResponseTagger($responseTagger);
@@ -112,7 +112,7 @@ class Psr7ResponseHelperTest extends TestCase
         $manager->add('query4', $query);
         $data = $manager->get('query3');
 
-        $helper->addTagsFromQueryManager($responseTagger, $manager, true);
+        $helper->applyResponseTagsFromQuery($responseTagger, $manager, true);
         $response = $helper->apply($response);
         $this->assertContains('test1,test2,test3,test4,test5,test6', $response->getHeader('X-Cache-Tags'));
     }

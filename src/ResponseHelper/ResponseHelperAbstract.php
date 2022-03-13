@@ -55,7 +55,7 @@ abstract class ResponseHelperAbstract implements ResponseHelperInterface
      * @param bool $setHeaders Whether to automatically set headers once tags are retrieved from query manager
      * @return ResponseTagger
      */
-    public function addTagsFromQueryManager(ResponseTagger $responseTagger, QueryManager $manager, bool $setHeaders = false): ResponseTagger
+    public function applyResponseTagsFromQuery(ResponseTagger $responseTagger, QueryManager $manager, bool $setHeaders = false): ResponseTagger
     {
         foreach ($manager->getQueries() as $query) {
             if ($query->hasResponseRun() && $query->hasCacheTags()) {

@@ -3,7 +3,6 @@
 namespace Strata\Frontend\ResponseHelper;
 
 use FOS\HttpCache\ResponseTagger;
-use FOS\HttpCache\TagHeaderFormatter\TagHeaderFormatter;
 use Strata\Data\Cache\CacheLifetime;
 use Strata\Data\Query\QueryManager;
 use Strata\Frontend\Exception\InvalidResponseHeaderValueException;
@@ -33,12 +32,12 @@ interface ResponseHelperInterface
     public function apply($response);
 
     /**
-     * Add cache tags to response tagger from query manager
+     * Apply cache tags to response tagger from query manager
      * @param ResponseTagger $responseTagger
      * @param QueryManager $manager
      * @return ResponseTagger
      */
-    public function addTagsFromQueryManager(ResponseTagger $responseTagger, QueryManager $manager): ResponseTagger;
+    public function applyResponseTagsFromQuery(ResponseTagger $responseTagger, QueryManager $manager): ResponseTagger;
 
     /**
      * Set cache tag headers from response tagger
