@@ -66,7 +66,7 @@ class HeadingCollection implements \SeekableIterator, \Countable
     {
         foreach ($collection as $heading) {
             $link = $doc->createElement('a');
-            $link->setAttribute('href', htmlentities($heading->link));
+            $link->setAttribute('href', $heading->link);
             $link->nodeValue = htmlentities($heading->name);
 
             $listItem =  $doc->createElement('li');

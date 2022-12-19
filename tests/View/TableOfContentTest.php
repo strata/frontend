@@ -240,4 +240,17 @@ class TableOfContentTest extends TestCase
         $this->assertStringContainsString('<h3 id="custom-link">Topmast</h3>', $html);
         $this->assertStringContainsString('<h2 id="spain">Spain</h2>', $html);
     }
+
+    public function testAmpersandInTitle()
+    {
+        $helper = new TableOfContents(file_get_contents(__DIR__ . '/html/example-ampersand.html'));
+        $html = $helper->html();
+        $headings = $helper->getHeadings();
+
+        $this->assertStringContainsString('<a href="#ship">Ship</a>', $headings);
+        $this->assertStringContainsString('<a href="#topmast">Topmast</a>', $headings);
+        $this->assertStringContainsString('<a href="#gold--treasure">Gold &amp; Treasure</a>', $headings);
+        $this->assertStringContainsString('<a href="#something--something--something-else">Something &amp; something &amp; something else</a>', $headings);
+    }
+
 }
