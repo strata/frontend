@@ -260,7 +260,6 @@ class TableOfContentTest extends TestCase
         $this->assertStringContainsString('<a href="#x3-w3c-registry-track">3. W3C Registry Track</a>', $headings);
         $this->assertStringContainsString('<a href="#x1-summary">1.  Summary table</a>', $headings);
         $this->assertStringContainsString('<a href="#h-5-another-heading-with-trange-characters">5  Another heading with $trange characters</a>', $headings);
-
     }
 
     public function testEscapeIdAttribute()
@@ -282,5 +281,4 @@ class TableOfContentTest extends TestCase
         $this->assertEquals('Test Heading', $helper->escapeHeadingName('Test Heading'));
         $this->assertEquals('Test &quot;Heading&quot;', $helper->escapeHeadingName('Test "Heading"'));
     }
-
 }

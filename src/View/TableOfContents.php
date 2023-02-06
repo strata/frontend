@@ -129,7 +129,6 @@ class TableOfContents
             }
             // Match a heading
             if (in_array($node->tagName, $this->levels)) {
-
                 // Use id if exists, or generate from heading text
                 if (!empty($node->getAttribute('id'))) {
                     $id = $node->getAttribute('id');
