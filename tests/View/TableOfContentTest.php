@@ -248,9 +248,39 @@ class TableOfContentTest extends TestCase
         $headings = $helper->getHeadings();
 
         $this->assertStringContainsString('<a href="#ship">Ship</a>', $headings);
-        $this->assertStringContainsString('<a href="#topmast">Topmast</a>', $headings);
-        $this->assertStringContainsString('<a href="#gold--treasure">Gold &amp; Treasure</a>', $headings);
-        $this->assertStringContainsString('<a href="#something--something--something-else">Something &amp; something &amp; something else</a>', $headings);
+    }
+
+    public function testHtmlInTitle()
+    {
+        $helper = new TableOfContents(file_get_contents(__DIR__ . '/html/example-html-in-title.html'));
+        $html = $helper->html();
+        $headings = $helper->getHeadings();
+
+        $this->assertStringContainsString('<a href="#x4-w3c-standardization-track">4. W3C Standardization track</a>', $headings);
+        $this->assertStringContainsString('<a href="#x3-w3c-registry-track">3. W3C Registry Track</a>', $headings);
+        $this->assertStringContainsString('<a href="#x1-summary">1.  Summary table</a>', $headings);
+        $this->assertStringContainsString('<a href="#h-5-another-heading-with-trange-characters">5  Another heading with $trange characters</a>', $headings);
+
+    }
+
+    public function testEscapeIdAttribute()
+    {
+        $helper = new TableOfContents("");
+
+        $this->assertEquals('test-heading', $helper->escapeIdAttribute('Test Heading'));
+        $this->assertEquals('test-heading', $helper->escapeIdAttribute('Test   Heading'));
+        $this->assertEquals('h-15-test-heading', $helper->escapeIdAttribute('15 Test Heading'));
+        $this->assertEquals('h-test-heading', $helper->escapeIdAttribute('- Test Heading'));
+        $this->assertEquals('test-heading-bold-text', $helper->escapeIdAttribute('Test Heading "bold" text'));
+        //TODO
+    }
+
+    public function testEscapeHeadingName()
+    {
+        $helper = new TableOfContents("");
+
+        $this->assertEquals('Test Heading', $helper->escapeHeadingName('Test Heading'));
+        $this->assertEquals('Test &quot;Heading&quot;', $helper->escapeHeadingName('Test "Heading"'));
     }
 
 }

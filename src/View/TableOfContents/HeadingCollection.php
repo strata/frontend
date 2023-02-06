@@ -7,6 +7,9 @@ namespace Strata\Frontend\View\TableOfContents;
 use Masterminds\HTML5;
 use Strata\Data\Traits\IterableTrait;
 
+/**
+ * A collection of headings parsed to generate a table of contents
+ */
 class HeadingCollection implements \SeekableIterator, \Countable
 {
     use IterableTrait;
@@ -67,7 +70,7 @@ class HeadingCollection implements \SeekableIterator, \Countable
         foreach ($collection as $heading) {
             $link = $doc->createElement('a');
             $link->setAttribute('href', $heading->link);
-            $link->nodeValue = htmlentities($heading->name);
+            $link->nodeValue = $heading->name;
 
             $listItem =  $doc->createElement('li');
             $listItem->appendChild($link);

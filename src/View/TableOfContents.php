@@ -36,7 +36,6 @@ class TableOfContents
 {
     private \DOMDocumentFragment $content;
     private HTML5 $html5;
-    private ViewFilters $filters;
     private array $levels;
     private array $uniqueIds = [];
     private array $parsedHeadings;
@@ -47,13 +46,12 @@ class TableOfContents
      * Constructor
      *
      * @param string $html HTML content to generate TOC for
-     * @param array $levels Array of heading levels you want to generate TOC for, defaults to h2, h3
+     * @param array $levels Array of heading levels you want to generate TOC for
      * @throws ViewHelperException
      */
     public function __construct(string $html, array $levels = ['h2', 'h3'])
     {
         $this->html5 = new HTML5();
-        $this->filters = new ViewFilters();
 
         $this->content =  $this->html5->loadHTMLFragment($html);
         $this->setLevels($levels);
@@ -79,6 +77,7 @@ class TableOfContents
     }
 
     /**
+     * Return levels of HTML headings we are generating ToC for
      * @return array
      */
     public function getLevels(): array
@@ -87,7 +86,7 @@ class TableOfContents
     }
 
     /**
-     * Set heading levels
+     * Set levels of HTML headings we are generating ToC for
      * @param array $levels
      */
     public function setLevels(array $levels): void
@@ -106,11 +105,14 @@ class TableOfContents
     }
 
     /**
-     * Return flat array of headings found in HTML content and update HTML content with heading ID attributes (anchor links)
+     * Parse headings from HTML
      *
-     * @param \DOMNodeList|null $childNodes
-     * @param array $headings
-     * @return array
+     * Parses headings from HTML content (DOMNodeList), updates the HTML content with heading ID attributes (anchor links),
+     * and returns a flat array of found headings.
+     *
+     * @param \DOMNodeList|null $childNodes Parse HTML from passed $childNodes or from the HTML content passed in the constructor
+     * @param array $headings Optional existing headings array to add further parsed headings to
+     * @return array Headings array
      */
     protected function parseHeadingsFromHtml(?\DOMNodeList $childNodes = null, array $headings = []): array
     {
@@ -127,17 +129,19 @@ class TableOfContents
             }
             // Match a heading
             if (in_array($node->tagName, $this->levels)) {
+
                 // Use id if exists, or generate from heading text
                 if (!empty($node->getAttribute('id'))) {
                     $id = $node->getAttribute('id');
                 } else {
-                    $id = $this->filters->slugify($node->nodeValue);
+                    // Create safe string for ID attribute
+                    $id = $this->escapeIdAttribute($node->nodeValue);
                 }
                 $id = $this->getUniqueId($id);
 
                 $headings[] = [
                     'level' => (int) ltrim($node->tagName, 'h'),
-                    'name' => $node->nodeValue,
+                    'name' => $this->escapeHeadingName($node->nodeValue),
                     'link' => '#' . $id,
                     'children' => [],
                 ];
@@ -155,7 +159,56 @@ class TableOfContents
     }
 
     /**
-     * Return flat array of parsed headings from HTML
+     * Generate a safe string to use as an ID attribute
+     *
+     * To avoid inadvertent errors, only ASCII letters, digits, '_', and '-' should be used and the value for an id
+     * attribute should start with a letter.
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id
+     *
+     * @param string $string
+     * @return string
+     */
+    public function escapeIdAttribute(string $string): string
+    {
+        $string = mb_strtolower($string, 'UTF-8');
+
+        // Convert spaces
+        $string = preg_replace('/\&nbsp;/', '-', $string);
+        $string = preg_replace('/\s/', '-', $string);
+
+        // Remove anything that isn't an ASCII letter, number, underscore _ or dash -
+        $string = strip_tags($string);
+        $string = preg_replace('/[^A-Za-z0-9_-]+/', '', $string);
+
+        // Ensure string starts with a letter
+        if (!preg_match('/^[a-z]/', $string)) {
+            $string = 'h-' . $string;
+        }
+
+        // Remove duplicate spaces
+        $string = preg_replace('/-{2,}/', '-', $string);
+
+        return $string;
+    }
+
+    /**
+     * Generate a safe string for use as the heading anchor link value
+     * @param string $string
+     * @return string
+     */
+    public function escapeHeadingName(string $string): string
+    {
+        // Filter
+        $string = htmlentities($string);
+
+        // Convert nbsp back to spaces
+        $string = preg_replace('/\&nbsp;/i', ' ', $string);
+
+        return $string;
+    }
+
+    /**
+     * Return array of parsed headings from HTML
      * @return array
      */
     public function getParsedHeadings(): array
