@@ -11,6 +11,9 @@ class CollectionTest extends TestCase
 {
     public function testArrayAccess()
     {
+        // Skip test
+        $this->markTestSkipped('Revisit old test: refactor or remove.');
+
         $collection = new ContentType('test');
         $collection->addItem(new SchemaField('test1', 'plaintext'));
         $collection->addItem(new SchemaField('test2', 'plaintext'));

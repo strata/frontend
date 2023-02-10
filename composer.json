@@ -70,5 +70,8 @@
         "fix": "Fix PHP code so it meets coding standards",
         "unit": "Run PHPUnit tests",
         "test": "Run all tests (phplint, phpcs, phpunit)"
+    },
+    "config": {
+        "allow-plugins": false
     }
 }
