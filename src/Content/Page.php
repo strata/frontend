@@ -26,13 +26,15 @@ class Page extends BaseContent
      * Head head
      * @var $head
      */
-    protected $head;
+    protected Head $head;
 
     /**
      * Template template
      * @var $template
      */
     protected $template;
+
+    protected Url $urlPattern;
 
     /**
      * Page constructor.

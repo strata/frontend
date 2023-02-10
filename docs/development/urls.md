@@ -1,10 +1,5 @@
 # URLs
 
-* TOC
-{:toc}
-
-{% raw %}
-
 You can setup URLs in your PHP controller code via the `Url` object.
 
 To create a new URL with the pattern `news/:slug`:
@@ -67,7 +62,7 @@ $url = new Url('news/:date_published/:slug');
 
 Example URL: `news/2019/02/12/hello-world`
 
-You can also set the `format` option which controls how the date is outputted in the URL. See [date format](https://secure.php.net/date) options.
+You can also set the `format` option which controls how the date is outputted in the URL. See [date format](https://www.php.net/datetime.format) options.
 
 ```
 $url = new Url('news/:date_published(format=Y)/:slug');
@@ -84,5 +79,3 @@ $url = new Url('news/:date_modified/:slug');
 ```
 
 Example URL: `news/2019/02/13/hello-world`
-
-{% endraw %}

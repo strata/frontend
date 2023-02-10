@@ -3,9 +3,9 @@ composer.lock
 /vendor/
 .phpunit*
 .phplint-cache
-.jekyll-cache
-docs/_site
+.phpunit.result.cache
 
 # Application gitignore
 /tests/Cms/twig/cache/*
 !/tests/Cms/twig/cache/.gitkeep
+/config/content

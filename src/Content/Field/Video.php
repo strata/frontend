@@ -11,8 +11,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class Video extends PlayableMediaAsset
 {
-    const TYPE = 'video';
-
     public static $allowedMimeTypes = [
         'video/x-ms-asf',
         'video/x-ms-wmv',

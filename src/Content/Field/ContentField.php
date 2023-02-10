@@ -14,6 +14,11 @@ use Strata\Frontend\Exception\ContentFieldException;
 abstract class ContentField implements ContentFieldInterface
 {
     /**
+     * Define this constant in child classes
+     */
+    const TYPE = 'undefined';
+
+    /**
      * Content field name
      * @var string
      */
@@ -22,11 +27,13 @@ abstract class ContentField implements ContentFieldInterface
     /**
      * Return content field type
      *
+     * TYPE constant must be defined in child classes
+     *
      * @return string
      */
     public function getType(): string
     {
-        return self::TYPE;
+        return $this::TYPE;
     }
 
     /**

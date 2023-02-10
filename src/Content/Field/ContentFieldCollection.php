@@ -21,6 +21,19 @@ class ContentFieldCollection extends \ArrayIterator
     }
 
     /**
+     * Remove an item from the collection
+     * @param ContentFieldInterface $item
+     * @return $this
+     */
+    public function removeItem(ContentFieldInterface $item)
+    {
+        if ($this->offsetExists($item->getName())) {
+            $this->offsetUnset($item->getName());
+        }
+        return $this;
+    }
+
+    /**
      * Return current item
      *
      * @return ContentFieldInterface

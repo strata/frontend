@@ -10,7 +10,6 @@ namespace Strata\Frontend\Utils;
  */
 class FileInfoFormatter
 {
-
     /**
      * Converts a filesize (in bytes) to a formatted string (e.g. '23 MB')
      *
@@ -19,6 +18,8 @@ class FileInfoFormatter
      */
     public static function formatFileSize($sizeInByte = 0): string
     {
+        $size = '';
+
         if (empty($sizeInByte)) {
             $size = '0 B';
             return $size;

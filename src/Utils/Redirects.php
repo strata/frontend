@@ -151,7 +151,7 @@ class Redirects
                 array_shift($m);
 
                 $this->setLastDestination($this->replace($item[self::DESTINATION], $m));
-                if (isset($redirect[self::HTTP_STATUS])) {
+                if (isset($item[self::HTTP_STATUS])) {
                     $this->setLastHttpStatus($item[self::HTTP_STATUS]);
                 } else {
                     $this->setLastHttpStatus($this->defaultHttpStatus);

@@ -11,8 +11,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class Date extends ContentField
 {
-    const TYPE = 'date';
-
     /**
      * Date
      *

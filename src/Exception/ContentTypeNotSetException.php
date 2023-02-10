@@ -6,5 +6,4 @@ namespace Strata\Frontend\Exception;
 
 class ContentTypeNotSetException extends \Exception
 {
-
 }

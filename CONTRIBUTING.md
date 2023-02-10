@@ -11,8 +11,8 @@ must accept these license and copyright conditions.
 
 All contributions must be made on a branch and must pass [unit tests](#tests) and [coding standards](#coding-standards). 
 
-Please create a Pull Request to merge changes into master, these will be automatically tested by 
-[Travis CI](https://travis-ci.org/strata/frontend).
+Please create a Pull Request to merge changes into the `main` branch, these will be automatically tested by 
+GitHub Actions. 
 
 All Pull Requests need at least one approval from the Studio 24 development team.
 
@@ -30,16 +30,34 @@ documented in `UPGRADE-PRE-1.0.md`.
 Once version 1.0 is reached any upgrade notes should be added to `UPGRADE.md`.
  
 ### Creating a release
- 
-To create a new release do the following:
 
-1. Update [CHANGELOG.md](https://github.com/strata/frontend/blob/master/CHANGELOG.md) with a summary of the changes.
-1. Update [Version.php](https://github.com/strata/frontend/blob/master/src/Version.php) with the current version.
-1. Create a [new release](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) 
-at GitHub. This will automatically create a new release at [Packagist](https://packagist.org/packages/strata/frontend) 
+This repo uses [Release Please](https://github.com/marketplace/actions/release-please-action) to automatically create releases, based on [semantic versioning](https://semver.org/).
+
+To create a new release use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) in your commit message. This will automatically create a release PR, which is kept up to date with further commits and you can merge it to create the new release when you are ready.
+
+Use the following keywords in your commits:
+
+* `fix:` this indicates a bug fix and creates a new patch version (e.g. 1.0.1).
+* `feat:` this indicates a new feature and creates a new minor version (e.g. 1.1.0).
+* To create a new major version (e.g. 2.0.0) either append an exclamation mark to `fix!:` or `feat!:` or add a foter of `BREAKING CHANGE:` with details of what breaking changes there are.
+
+This will create a PR with the name `chore(main): release [version]`, this allows you to check what is about to be 
+included in the release and make any manual edits to the [CHANGELOG.md](https://github.com/strata/frontend/blob/master/CHANGELOG.md)
+
+If the action fails to run you can view the action and select `Re-run all jobs` to re-run it.
+
+Once a release PR is merged in this will automatically create a new release at [Packagist](https://packagist.org/packages/strata/frontend) 
 so code can be loaded via Composer.  
 
 ## Tests
+
+You can run all tests (phplint, phpcs, phpunit) from one command via:
+
+```
+composer test
+```
+
+## Unit tests
 
 Please add unit tests for all bug fixes and new code changes.
 
@@ -47,6 +65,14 @@ Run [PHPUnit](https://phpunit.readthedocs.io/en/8.0/) tests via:
 
 ```
 vendor/bin/phpunit
+```
+
+## PHPStan
+
+You can use [PHPStan](https://phpstan.org/) to help test code quality, this can help catch simple errors:
+
+```
+vendor/bin/phpstan analyse
 ```
 
 ## Coding standards
@@ -71,21 +97,6 @@ declare(strict_types=1);
 
 ## Documentation
 
-See [docs](docs/README.md) or via the GitHub pages site at: [https://docs.strata.dev/](https://docs.strata.dev/)
+See [docs](docs/README.md) or via the GitHub pages site at: [https://docs.strata.dev/frontend](https://docs.strata.dev/)
 
-Docs are published to GitHub Pages via [Jekyll](https://jekyllrb.com/docs/pages/) which uses [Kramdown](https://kramdown.gettalong.org/parser/html.html) 
-to parse markdown to HTML and the [Liquid templating](https://jekyllrb.com/docs/liquid/) 
-language. Liquid uses a similar syntax to Twig, so if you need to include Twig tags in your docs files ensure you wrap your 
-page content in `raw` Liquid tags to avoid errors. For example:  
-
-```
-{% raw %}
-
-Your Markdown here
-
-{% if page.content.field is not empty %}
-    Do something
-{% endif %}
-
-{% endraw %}
-```
+Docs are published to GitBook using [markdown](https://docs.gitbook.com/editing-content/markdown).  

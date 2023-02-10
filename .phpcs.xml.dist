@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<!-- see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset -->
+<ruleset name="Strata">
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="75"/>
+    <arg value="np"/>
+
+    <!-- Files to scan -->
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- Ignore Twig cache files -->
+    <exclude-pattern>tests/*/twig/cache/*.php</exclude-pattern>
+
+    <!-- Ignore mock response info files -->
+    <exclude-pattern>tests/*.info.php</exclude-pattern>
+
+    <!-- Coding standards -->
+    <rule ref="PSR12" />
+
+    <!-- Require strict types declare statement -->
+    <rule ref="Generic.PHP.RequireStrictTypes">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
+    <!-- Namespaces and classes MUST follow PSR-0.
+         This means each class is in a file by itself, and is in a namespace of at least one level: a top-level vendor name. -->
+    <rule ref="PSR1.Classes.ClassDeclaration">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
+</ruleset>

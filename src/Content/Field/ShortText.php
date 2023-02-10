@@ -11,8 +11,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class ShortText extends ContentField
 {
-    const TYPE = 'text';
-
     protected $content = '';
 
     /**

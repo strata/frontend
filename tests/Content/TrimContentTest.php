@@ -9,7 +9,6 @@ use Strata\Frontend\Content\Page;
 
 class TrimContentTest extends TestCase
 {
-
     public function testTrimContent()
     {
         $page = new Page();

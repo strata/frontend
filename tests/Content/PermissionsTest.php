@@ -9,7 +9,6 @@ use Strata\Frontend\Api\Permissions;
 
 class PermissionsTest extends TestCase
 {
-
     public function testDefault()
     {
         $perms = new Permissions();

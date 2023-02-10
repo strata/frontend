@@ -1,10 +1,5 @@
 # Pagination
 
-* TOC
-{:toc}
-
-{% raw %}
-
 The pagination object is returned on listing pages, usually in the `{{ pages.pagination }}` field.
 
 The pagination object has the following variables and functions available. In the following examples we assume the 
@@ -133,12 +128,12 @@ you can customise this by altering the `$maxPages` value.
 
 For example, using the default 5 page links for a pagination result set with 50 pages you would get the following results:
 
-* Page 1: 1,2,3,4,5
-* Page 2: 1,2,3,4,5
-* Page 6: 4,5,6,7,8
-* Page 45: 45,46,47,48,49
-* Page 47: 46,47,48,49,50
-* Page 50: 46,47,48,49,50
+* Page 1: `[1,2,3,4,5]`
+* Page 2: `[1,2,3,4,5]`
+* Page 6: `[4,5,6,7,8]`
+* Page 45: `[45,46,47,48,49]`
+* Page 47: `[46,47,48,49,50]`
+* Page 50: `[46,47,48,49,50]`
 
 ## Building pagination HTML
 
@@ -150,5 +145,3 @@ links. For example:
 ```
 {{ include('includes/pagination.html.twig', {'pagination': pages.pagination, 'route': 'news_list'}) }}
 ```
-
-{% endraw %}

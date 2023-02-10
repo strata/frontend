@@ -1,15 +1,12 @@
 # Content model
 
-* TOC
-{:toc}
-
 ## How content works
 
 The basic principle of the Frontend project is to read in content from external sources and make it simple to build a 
 website out of this.
 
 The common pattern is to read in content from an API (e.g. the WordPress REST API). This raw data 
-is then converted into a more useful content object that is passed to the template (Twig).
+is then converted into a more useful content object that is passed to the template (e.g. Twig).
 
 You can find out how to output content fields on the [Templating content fields](templating/content-fields.md) page.
 
@@ -23,11 +20,11 @@ The content model can be described as so:
 
 * Your website is made up of multiple **content types**
 * Each content content type is made up of multiple **content fields**      
-    * Content fields can point to another content type via a **relation**
-    * Content fields can point to a **taxonomy**  
-    * A content field can be **flexible content** which means it contains:
-        * Multiple **components**
-            * Each component contains multiple **content fields**
+  * Content fields can point to another content type via a **relation**
+  * Content fields can point to a **taxonomy**  
+  * A content field can be **flexible content** which means it contains:
+    * Multiple **components**
+      * Each component contains multiple **content fields**
 
 ### Content types 
 
@@ -47,7 +44,7 @@ There is a bunch of standard fields for a content type, such as title and URL. H
 fields defined for each content type. 
 
 Each content field has a type (e.g. plaintext, image). You can see the list of supported content field types on
-[Setting up content types](development/setting-up-content-types.md). 
+[Setting up content types](development/content-schema.md). 
 
 ### Relations
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content\Field;
 
+use Strata\Frontend\Exception\ContentFieldException;
+
 /**
  * Document content field
  *
@@ -11,8 +13,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class Audio extends PlayableMediaAsset
 {
-    const TYPE = 'audio';
-
     protected $mediaParameters;
 
     public static $allowedMimeTypes = [

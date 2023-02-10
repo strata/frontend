@@ -11,8 +11,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class PlainText extends ContentField
 {
-    const TYPE = 'plaintext';
-
     protected $content = '';
 
     /**

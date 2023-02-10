@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Strata\Frontend\Command\ContentSchemaCommand;
+use Strata\Frontend\Command\ContentTypeCommand;
+use Strata\Frontend\Command\MockResponseCommand;
+
+$application = new Application('Strata console tool');
+$application->add(new MockResponseCommand());
+$application->add(new ContentSchemaCommand());
+$application->add(new ContentTypeCommand());
+$application->run();

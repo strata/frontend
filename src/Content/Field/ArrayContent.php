@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content\Field;
 
+use Strata\Frontend\Exception\ContentFieldException;
+
 /**
  * Array content field
  *
@@ -21,8 +23,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class ArrayContent extends ContentField implements \SeekableIterator, \Countable
 {
-    const TYPE = 'array';
-
     protected $collection = [];
     protected $position = 0;
 

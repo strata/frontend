@@ -13,8 +13,6 @@ class Document extends AssetField
 {
     use SizesTrait;
 
-    const TYPE = 'document';
-
     public static $allowedMimeTypes = [
         'application/pdf',
         'application/msword',
@@ -51,7 +49,6 @@ class Document extends AssetField
      * @param string $filesize Size of file as formatted string
      * @param string|null $title Title
      * @param string|null $description Description
-     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $url, string $filesize = null, string $title = null, string $description = null)
     {

@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace Strata\Frontend\Content\Field;
 
 use Strata\Frontend\Content\ContentInterface;
+use Strata\Frontend\Content\IterableContentInterface;
+use Strata\Frontend\Content\IterableContentTrait;
 
 /**
  * Represents one component
  *
  * @package Strata\Frontend\Content\Field
  */
-class Component implements ContentInterface
+class Component implements ContentInterface, IterableContentInterface
 {
+    use IterableContentTrait;
+
     protected $name;
 
     /**
@@ -41,6 +45,7 @@ class Component implements ContentInterface
     public function addContent(ContentFieldInterface $contentField)
     {
         $this->content->addItem($contentField);
+        $this->collection[$contentField->getName()] = $contentField;
     }
 
     /**
@@ -73,6 +78,14 @@ class Component implements ContentInterface
     {
         $this->name = $name;
         return $this;
+    }
+
+    public function __get(string $name)
+    {
+        if ($this->getContent()->offsetExists($name)) {
+            return $this->getContent()->offsetGet($name);
+        }
+        return null;
     }
 
     /**

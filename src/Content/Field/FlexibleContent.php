@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content\Field;
 
+use Strata\Frontend\Exception\ContentFieldException;
+
 /**
  * Flexible content field
  *
@@ -13,8 +15,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class FlexibleContent extends ContentField implements \SeekableIterator, \Countable
 {
-    const TYPE = 'flexible';
-
     /**
      * Collection of components
      *

@@ -11,7 +11,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Strata\Frontend\Cms\Wordpress;
 use Strata\Frontend\Content\Head;
-use Strata\Frontend\ContentModel\ContentModel;
+use Strata\Frontend\Schema\Schema;
 use Strata\Frontend\Exception\MetaTagNotAllowedException;
 
 class HeadTest extends TestCase

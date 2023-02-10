@@ -9,7 +9,6 @@ use Strata\Frontend\Utils\Redirects;
 
 class RedirectsTest extends TestCase
 {
-
     public function testRegex()
     {
         $redirects = new Redirects();

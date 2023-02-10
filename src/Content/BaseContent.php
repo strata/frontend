@@ -4,77 +4,34 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content;
 
+use Strata\Data\Helper\UnionTypes;
 use Strata\Frontend\Content\Field\ContentFieldCollection;
 use Strata\Frontend\Content\Field\ContentFieldInterface;
 use Strata\Frontend\Content\Field\DateTime;
 use Strata\Frontend\Content\Field\Image;
-use Strata\Frontend\ContentModel\ContentType;
+use Strata\Frontend\Schema\ContentType;
 
+/**
+ * Class to represent base content object
+ *
+ * Designed to be forgiving, values are null if not set
+ * Setters use a fluent interface so you can chain methods
+ */
 class BaseContent implements ContentInterface, AddressableInterface
 {
-    /**
-     * @var
-     */
-    protected $id;
-
-    /**
-     * @var ContentType
-     */
-    protected $contentType;
-
-    /**
-     * @var
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $urlSlug;
-
-    /**
-     * Date published
-     *
-     * @var DateTime
-     */
-    protected $datePublished;
-
-    /**
-     * Date last modified
-     *
-     * @var DateTime
-     */
-    protected $dateModified;
-
-    /**
-     * @var
-     */
+    protected $id = null;
+    protected ContentType $contentType;
+    protected ?string $title = null;
+    protected ?string $urlSlug = null;
+    protected DateTime $datePublished;
+    protected DateTime $dateModified;
     protected $status;
+    protected ContentFieldCollection $content;
+    protected Image $featuredImage;
 
-    /**
-     * Content field collection
-     *
-     * @var ContentFieldCollection
-     */
-    protected $content;
+    /** @var TermCollection[] */
+    protected array $taxonomies;
 
-    /**
-     * Image object
-     *
-     * @var Image
-     */
-    protected $featuredImage;
-
-    /**
-     * Taxonomy terms
-     *
-     * @var array of TermCollection objects
-     */
-    protected $taxonomies;
-
-    /**
-     * Page constructor.
-     */
     public function __construct()
     {
         $this->content = new ContentFieldCollection();
@@ -83,7 +40,8 @@ class BaseContent implements ContentInterface, AddressableInterface
     }
 
     /**
-     * @return mixed
+     * Return identifier for this content
+     * @return string|int
      */
     public function getId()
     {
@@ -91,12 +49,13 @@ class BaseContent implements ContentInterface, AddressableInterface
     }
 
     /**
-     * @param mixed $id
+     * Set identifier for this content
+     * @param string|int $id
      * @return BaseContent
      */
     public function setId($id): BaseContent
     {
-        if (empty($id)) {
+        if (!UnionTypes::is($id, 'string', 'int')) {
             return $this;
         }
 
@@ -305,6 +264,16 @@ class BaseContent implements ContentInterface, AddressableInterface
     public function getContent(): ContentFieldCollection
     {
         return $this->content;
+    }
+
+    /**
+     * Remove a content field
+     *
+     * @param ContentFieldInterface $contentField
+     */
+    public function removeContent(ContentFieldInterface $contentField)
+    {
+        $this->content->removeItem($contentField);
     }
 
     /**

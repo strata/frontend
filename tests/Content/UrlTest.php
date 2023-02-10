@@ -10,7 +10,6 @@ use Strata\Frontend\Content\Url;
 
 class UrlTest extends TestCase
 {
-
     public function testValidParam()
     {
         $url = new Url();

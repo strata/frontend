@@ -8,22 +8,18 @@ Deliver fast, accessible user experiences on the modern web.
 ## Status
 Please note this software is in development, usage may change before the 1.0 release.
 
-See the [roadmap](ROADMAP.md) for more details on future development plans. 
-
 ## Requirements
 
-* PHP 7.2.5+
+* PHP 7.4+
 * [Composer](https://getcomposer.org/)
 
 ## Installation
 
-```
-composer require strata/frontend:^0.7
-```
+See [installation](docs/installation.md).
 
 ## Documentation
 
-See [docs](docs/README.md) or the docs site at: [https://docs.strata.dev/](https://docs.strata.dev/)
+See [docs](docs/README.md) or the documentation site at: [https://docs.strata.dev/frontend/](https://docs.strata.dev/frontend/)
 
 ## Contributing
 

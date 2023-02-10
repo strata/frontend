@@ -15,8 +15,6 @@ class Image extends AssetField
 {
     use SizesTrait;
 
-    const TYPE = 'image';
-
     public static $allowedMimeTypes = [
         'image/jpeg',
         'image/gif',
@@ -37,7 +35,6 @@ class Image extends AssetField
      * @param string|null $description Image description
      * @param string|null $alt Alt text
      * @param array $sizes Array of alternative image sizes
-     * @throws \Strata\Frontend\Exception\ContentFieldException
      */
     public function __construct(string $name, string $url, string $title = null, string $description = null, string $alt = null, array $sizes = [])
     {

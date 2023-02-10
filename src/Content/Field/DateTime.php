@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content\Field;
 
+use Strata\Frontend\Exception\ContentFieldException;
+
 /**
  * Date time content field
  *
@@ -11,8 +13,6 @@ namespace Strata\Frontend\Content\Field;
  */
 class DateTime extends Date
 {
-    const TYPE = 'datetime';
-
     /**
      * Create date time content field
      *
