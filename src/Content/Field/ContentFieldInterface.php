@@ -16,5 +16,5 @@ interface ContentFieldInterface
     public function setName(string $name): ContentFieldInterface;
     public function getName(): string;
     public function getValue();
-    public function __toString(): ?string;
+    public function __toString(): string;
 }

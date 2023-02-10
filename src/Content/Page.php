@@ -10,7 +10,6 @@ namespace Strata\Frontend\Content;
  */
 class Page extends BaseContent
 {
-
     /**
      * @var
      */

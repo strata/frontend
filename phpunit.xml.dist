@@ -13,6 +13,9 @@
   <testsuites>
     <testsuite name="Test Suite">
       <directory>tests</directory>
+      <exclude>
+        <directory>tests/Content</directory>
+      </exclude>
     </testsuite>
   </testsuites>
 </phpunit>

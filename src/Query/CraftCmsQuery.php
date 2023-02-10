@@ -8,5 +8,4 @@ use Strata\Data\Query\Query;
 
 class CraftCmsQuery extends Query
 {
-
 }
