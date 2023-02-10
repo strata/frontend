@@ -15,6 +15,12 @@ Please note this software is in development, usage may change before the 1.0 rel
 
 ## Installation
 
+Install via Composer:
+
+```
+composer require strata/frontend:^0.8
+```
+
 See [installation](docs/installation.md).
 
 ## Documentation
