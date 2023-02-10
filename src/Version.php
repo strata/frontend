@@ -19,12 +19,14 @@ final class Version
      */
     public static function getVersion(): ?string
     {
-        if (class_exists('\Composer\InstalledVersions')) {
-            if (InstalledVersions::isInstalled(self::PACKAGE)) {
-                return InstalledVersions::getPrettyVersion(self::PACKAGE);
-            }
+        if (
+            !class_exists(InstalledVersions::class)
+            || !InstalledVersions::isInstalled(self::PACKAGE)
+        ) {
+            return null;
         }
-        return null;
+
+        return InstalledVersions::getPrettyVersion(self::PACKAGE);
     }
 
     /**
@@ -35,7 +37,10 @@ final class Version
     public static function getUserAgent(): string
     {
         $version = self::getVersion();
-        $version = $version ? '/' . $version : '';
-        return 'Strata_Frontend' . $version . ' (+https://github.com/strata/frontend)';
+
+        return sprintf(
+            'Strata_Frontend%s (+https://github.com/strata/frontend)',
+            is_string($version) ? '/' . $version : ''
+        );
     }
 }
