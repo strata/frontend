@@ -1,6 +1,15 @@
 # Strata Frontend
 
-Strata is based on the idea of delivering robust, efficient HTML pages on the frontend reading content from a variety of 
+Strata is a set of tools to help to build front-end websites that use headless CMSs to manage content or get data from a 
+bunch of different data sources. An approach that is ever more typical on the modern web.
+
+## Principles
+
+Strata is based on delivering HTML-first, efficient web pages on the frontend. We recommend using JavaScript using 
+progressive enhancement to enhance the user experience. The
+
+
+the idea of delivering robust, efficient HTML pages on the frontend reading content from a variety of 
 data sources. Basically the "front" of a headless CMS. 
 
 Delivery is via HTML, since this is the foundation of the web. You should consider your core page content cacheable, and 

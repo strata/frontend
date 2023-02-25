@@ -1,7 +1,6 @@
 # Overview
 
-## About
-
+* [Introduction](README.md)
 * [About](about.md)
 * [Design principles](design-principles.md)
 
