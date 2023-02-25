@@ -1,14 +1,12 @@
 # Overview
 
 * [Introduction](README.md)
+* [Installation](installation.md)
 * [About](about.md)
 * [Design principles](design-principles.md)
 
-## Getting started
-* [Installation](installation.md)
-* [Content model](content-model.md)
-
 ## Accessing data
+
 * [Accessing data](data/README.md)
 * [CraftCMS](data/craftcms.md)
 
