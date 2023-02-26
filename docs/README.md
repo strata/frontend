@@ -34,8 +34,6 @@ Data is returned from a repository in a raw format, for HTTP-based APIs this is 
 Once you have retrieved data you can map it to a content object (or collection of content objects) via **mappers**.
 These parse the response data into typed objects that you can pass to your templates to output to the frontend.
 
-{% page-ref page="data/README.md" %}
-
 ### Templating
 
 Content is outputted to the template layer, in Symfony this is Twig. Content models are designed to output content easily
