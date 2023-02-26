@@ -1,7 +1,6 @@
 # Templating
 
 * [Debugging](debugging.md)
-* [Content fields](content-fields.md) 
 * [Twig filters & functions](twig.md)
 * [Pagination](pagination.md)
 
