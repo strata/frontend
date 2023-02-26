@@ -25,7 +25,7 @@ See [installation](docs/installation.md).
 
 ## Documentation
 
-See [docs](docs/README.md) or the documentation site at: [https://docs.strata.dev/frontend/](https://docs.strata.dev/frontend/)
+See [docs](docs/README.md) - these are currently being cleaned up and we plan to publish better docs for v0.10.  
 
 ## Contributing
 
