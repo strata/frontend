@@ -164,4 +164,5 @@ class ViewFilters
 
         return $src . '?v=' . $hash;
     }
+
 }

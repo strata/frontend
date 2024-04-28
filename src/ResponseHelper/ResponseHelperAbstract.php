@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Strata\Frontend\ResponseHelper;
 
 use FOS\HttpCache\ResponseTagger;
+use Psr\Http\Message\ResponseInterface;
 use Strata\Data\Cache\CacheLifetime;
 use Strata\Data\Query\QueryManager;
 use Strata\Frontend\Exception\InvalidResponseHeaderValueException;
@@ -46,7 +47,7 @@ abstract class ResponseHelperAbstract implements ResponseHelperInterface
     /**
      * @inheritDoc
      */
-    abstract public function apply($response);
+    abstract public function apply(ResponseInterface $response);
 
     /**
      * Add cache tags to response tagger from query manager

@@ -22,12 +22,12 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.1",
         "friendsofsymfony/http-cache": "^2.12",
         "psr/simple-cache": "^1.0",
         "masterminds/html5": "2.*",
         "monolog/monolog": "^2.0",
-        "strata/data": "^0.8",
+        "strata/data": "dev-feature/php8",
         "symfony/http-foundation": "^5.4|^6.0",
         "symfony/yaml":  "^5.4|^6.0",
         "toflar/psr6-symfony-http-cache-store": "^3.0"
