@@ -2,22 +2,26 @@ name: PHP tests
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - release/**
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
 
     strategy:
       matrix:
-        php-versions: ['7.4']
+        php-versions: ['8.1', '8.2', '8.3']
 
     runs-on: ubuntu-latest
 
     steps:
+      # https://github.com/marketplace/actions/checkout
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # https://github.com/marketplace/actions/setup-php-action
       - name: Setup PHP
@@ -27,25 +31,13 @@ jobs:
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
 
-      - uses: actions/checkout@v2
-
       - name: Check PHP version
         run: php -v
 
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
-
       - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
       - name: Code lint PHP files
