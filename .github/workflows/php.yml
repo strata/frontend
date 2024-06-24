@@ -45,9 +45,8 @@ jobs:
 
       - name: Install Symfony ${{ matrix.symfony }} packages
         run: |
-          composer update symfony/http-foundation:${{ matrix.symfony }} --no-update
-          composer update symfony/yaml:${{ matrix.symfony }} --no-update
-        if: matrix.symfony != 7.1
+          composer update symfony/http-foundation:${{ matrix.symfony }}
+          composer update symfony/yaml:${{ matrix.symfony }}
 
       - name: Lint PHP files
         run: |
