@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-* testing release GH action ([9173fcd](https://github.com/strata/frontend/commit/9173fcd2d5fa61c2d59b19cdb1363bb7a59ca860))
+* Update to PHP 8.1+
+* Support Symfony 6 and 7
 
-## [0.8.0] - 2021-TBC
+## [0.8.0] - 2023-02-10
 
 ### Added
 - Added support for GraphQL and CraftCMS
