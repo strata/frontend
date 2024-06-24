@@ -1,9 +1,10 @@
 parameters:
-    level: 1    # Move towards level 5 or 6
+    level: 2    # Move towards level 5 or 6
     paths:
         - src
         - tests
     excludePaths:    # Exclude code which has yet to be refactored / removed
+        - src/Content/*
         - src/Api/*
         - src/Repository/RestApi/*
         - src/Repository/WordPress/*

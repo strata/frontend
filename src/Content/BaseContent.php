@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content;
 
-use Strata\Data\Helper\UnionTypes;
 use Strata\Frontend\Content\Field\ContentFieldCollection;
 use Strata\Frontend\Content\Field\ContentFieldInterface;
 use Strata\Frontend\Content\Field\DateTime;
@@ -53,12 +52,8 @@ class BaseContent implements ContentInterface, AddressableInterface
      * @param string|int $id
      * @return BaseContent
      */
-    public function setId($id): BaseContent
+    public function setId(string|int $id): BaseContent
     {
-        if (!UnionTypes::is($id, 'string', 'int')) {
-            return $this;
-        }
-
         $this->id = $id;
         return $this;
     }

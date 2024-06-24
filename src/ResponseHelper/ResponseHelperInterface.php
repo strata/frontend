@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Strata\Frontend\ResponseHelper;
 
 use FOS\HttpCache\ResponseTagger;
+use Psr\Http\Message\ResponseInterface;
 use Strata\Data\Cache\CacheLifetime;
 use Strata\Data\Query\QueryManager;
 use Strata\Frontend\Exception\InvalidResponseHeaderValueException;
@@ -28,10 +29,10 @@ interface ResponseHelperInterface
 
     /**
      * Apply headers to response object and return response
-     * @param $response
+     * @param ResponseInterface $response
      * @return mixed
      */
-    public function apply($response);
+    public function apply(ResponseInterface $response);
 
     /**
      * Apply cache tags to response tagger from query manager

@@ -1,6 +1,0 @@
-salary:
-  type: text
-location:
-  type: text
-contract_length:
-  type: text

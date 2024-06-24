@@ -8,8 +8,8 @@ use Strata\Data\Query\Query;
 
 class WordPressQuery extends Query
 {
-    private string $fieldParameter = '_fields';
-    private string $resultsPerPageParam = 'per_page';
+    protected string $fieldParameter = '_fields';
+    protected string $resultsPerPageParam = 'per_page';
 
     /**
      * Pagination in headers:
