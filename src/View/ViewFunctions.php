@@ -28,7 +28,7 @@ class ViewFunctions
         if ($tests->isProd($environment, $prod)) {
             return null;
         } else {
-            $className = filter_var($environment, FILTER_SANITIZE_STRING);
+            $className = htmlspecialchars($environment);
             $className = $helpers->slugify($className);
             $message = sprintf($message, $environment);
             return <<<EOD
