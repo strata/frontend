@@ -14,9 +14,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php: ['8.1', '8.2', '8.3']
+        symfony: ['6.4', '7.1']
 
     runs-on: ubuntu-latest
+
+    name: On PHP ${{ matrix.php }} and Symfony ${{ matrix.symfony }}
 
     steps:
       # https://github.com/marketplace/actions/checkout
@@ -27,11 +30,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
-
-      - name: Check PHP version
         run: php -v
 
       - name: Validate composer.json and composer.lock
@@ -39,6 +40,12 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
+
+      - name: Install Symfony ${{ matrix.symfony }} packages
+        run: |
+          composer update symfony/http-foundation:${{ matrix.symfony }} --no-update
+          composer update symfony/yaml:${{ matrix.symfony }} --no-update
+        if: matrix.symfony != 7.1
 
       - name: Lint PHP files
         run: |
