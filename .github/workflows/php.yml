@@ -33,6 +33,8 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
+
+      - name: Check PHP version
         run: php -v
 
       - name: Validate composer.json and composer.lock
