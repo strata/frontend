@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- https://phpunit.readthedocs.io/en/8.0/configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="false" colors="true">
-  <coverage>
-    <include>
-      <directory>src</directory>
-    </include>
-  </coverage>
-  <php>
-    <ini name="error_reporting" value="-1"/>
-    <ini name="display_errors" value="1"/>
-  </php>
-  <testsuites>
-    <testsuite name="Test Suite">
-      <directory>tests</directory>
-      <exclude>
-        <directory>tests/Content</directory>
-      </exclude>
-    </testsuite>
-  </testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" backupGlobals="false" colors="true">
+<php>
+  <ini name="error_reporting" value="-1"/>
+  <ini name="display_errors" value="1"/>
+</php>
+<testsuites>
+  <testsuite name="Strata Frontend Test Suite">
+    <directory>tests</directory>
+  </testsuite>
+</testsuites>
+<source>
+  <include>
+    <directory>src</directory>
+  </include>
+</source>
 </phpunit>
+
