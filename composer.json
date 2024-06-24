@@ -16,7 +16,7 @@
         "masterminds/html5": "^2.9",
         "strata/data": "^0.9",
         "symfony/http-foundation": "^6.4|^7.1",
-        "symfony/yaml":  "^6.4|^7.1",
+        "symfony/yaml": "^6.4|^7.1",
         "toflar/psr6-symfony-http-cache-store": "^4.0"
     },
     "autoload": {
@@ -32,10 +32,10 @@
         "nyholm/psr7": "^1.5"
     },
     "scripts": {
-        "phpcs":  [
+        "phpcs": [
             "./vendor/bin/phpcs"
         ],
-        "phpcbf":  [
+        "phpcbf": [
             "./vendor/bin/phpcbf"
         ],
         "phpunit": [
