@@ -14,7 +14,7 @@
         "friendsofsymfony/http-cache": "^3.0",
         "psr/simple-cache": "^3.0",
         "masterminds/html5": "^2.9",
-        "strata/data": "dev-feature/laravel",
+        "strata/data": "dev-feature/laravel@dev",
         "symfony/http-foundation": "^6.4|^7.1",
         "symfony/yaml":  "^6.4|^7.1",
         "toflar/psr6-symfony-http-cache-store": "^4.0"
