@@ -1,7 +1,7 @@
 # Security Issues
 
 If you think that you have found a security issue in Strata, please don't use the issue tracker and don't publish it 
-publicly. Send urgent or sensitive reports directly to [strata@studio24.net](mailto:strata@studio24.net).
+publicly. Send urgent or sensitive reports directly to [opensource@studio24.net](mailto:opensource@studio24.net).
  
 ## Resolving Process
 
