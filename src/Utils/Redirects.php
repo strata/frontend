@@ -66,7 +66,7 @@ class Redirects
         }
 
         if (($handle = fopen($file, "r")) !== false) {
-            while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+            while (($row = fgetcsv($handle, 1000, ",", escape:"\\")) !== false) {
                 $count = count($row);
                 if ($count == 2) {
                     $this->addRedirect($row[self::SOURCE], $row[self::DESTINATION]);

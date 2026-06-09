@@ -26,7 +26,7 @@ class Url
         $string = mb_strtolower($string, 'UTF-8');
         $string = strip_tags($string);
         $string = preg_replace('/\s/', '-', $string);
-        $string = preg_replace('/[-]+/', '-', $string);
+        $string = preg_replace('/[-]+/', '-', (string) $string);
 
         // Sanitise
         $string = filter_var($string, FILTER_SANITIZE_URL);

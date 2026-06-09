@@ -30,7 +30,7 @@ class ViewFilters
         $string = mb_strtolower($string, 'UTF-8');
         $string = strip_tags($string);
         $string = preg_replace('/\s/', '-', $string);
-        $string = preg_replace('/[-]+/', '-', $string);
+        $string = preg_replace('/[-]+/', '-', (string) $string);
 
         // Sanitise
         $string = filter_var($string, FILTER_SANITIZE_URL);
@@ -146,12 +146,12 @@ class ViewFilters
         // If file src path is not relative, try to find it relative to website root
         $hash = '';
         if (file_exists($src)) {
-            $hash = hash($algorithm, file_get_contents($src));
+            $hash = hash((string) $algorithm, file_get_contents($src));
         } else {
             if (isset($_SERVER['DOCUMENT_ROOT'])) {
                 $path = rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') . '/' . ltrim($src, '/');
                 if (file_exists($path)) {
-                    $hash = hash($algorithm, file_get_contents($path));
+                    $hash = hash((string) $algorithm, file_get_contents($path));
                 }
             }
         }
