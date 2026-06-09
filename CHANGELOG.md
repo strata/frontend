@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0](https://github.com/strata/frontend/compare/v0.9.0...v0.10.0) (2026-06-09)
+
+
+### Features
+
+* Symfony 8 support ([e313370](https://github.com/strata/frontend/commit/e3133709d717ab1224311d8db425246fd8ad91b2))
+* Symfony 8 support ([ad755e4](https://github.com/strata/frontend/commit/ad755e494dc707b3947f12e653219fc60f5898cb))
+
 ## [0.9.0](https://github.com/strata/frontend/compare/v0.8.3...v0.9.0) (2024-06-24)
 
 
