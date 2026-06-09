@@ -73,7 +73,7 @@ class Url
         $this->pattern = $pattern;
 
         foreach ($this->availableParams as $param) {
-            if (preg_match('/:(' . preg_quote($param, '/') . ')(\([^)]+\))?/', $pattern, $m)) {
+            if (preg_match('/:(' . preg_quote((string) $param, '/') . ')(\([^)]+\))?/', $pattern, $m)) {
                 $replace = $m[0];
                 $param = $m[1];
 
@@ -257,26 +257,13 @@ class Url
             return $date->format($format);
         };
 
-        switch ($param) {
-            case 'id':
-                $value = $content->getId();
-                break;
-
-            case 'slug':
-                $value = $content->getUrlSlug();
-                break;
-
-            case 'date_published':
-                $value = $formatDate($content->getDatePublished(), $param);
-                break;
-
-            case 'date_modified':
-                $value = $formatDate($content->getDateModified(), $param);
-                break;
-
-            default:
-                throw new UrlException(sprintf('Param name %s not recognised!', $param));
-        }
+        $value = match ($param) {
+            'id' => $content->getId(),
+            'slug' => $content->getUrlSlug(),
+            'date_published' => $formatDate($content->getDatePublished(), $param),
+            'date_modified' => $formatDate($content->getDateModified(), $param),
+            default => throw new UrlException(sprintf('Param name %s not recognised!', $param)),
+        };
 
         return str_ireplace($this->getReplace($param), $value, $url);
     }

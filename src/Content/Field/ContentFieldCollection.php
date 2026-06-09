@@ -6,7 +6,7 @@ namespace Strata\Frontend\Content\Field;
 
 use Strata\Frontend\Collection\ArrayAccessTrait;
 
-class ContentFieldCollection extends \ArrayIterator
+class ContentFieldCollection extends \ArrayIterator implements \Stringable
 {
     /**
      * Add an item to the collection

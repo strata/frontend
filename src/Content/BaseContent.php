@@ -16,7 +16,7 @@ use Strata\Frontend\Schema\ContentType;
  * Designed to be forgiving, values are null if not set
  * Setters use a fluent interface so you can chain methods
  */
-class BaseContent implements ContentInterface, AddressableInterface
+class BaseContent implements ContentInterface, AddressableInterface, \Stringable
 {
     protected $id = null;
     protected ContentType $contentType;
@@ -35,7 +35,7 @@ class BaseContent implements ContentInterface, AddressableInterface
     {
         $this->content = new ContentFieldCollection();
         $this->featuredImage = null;
-        $this->taxonomies = array();
+        $this->taxonomies = [];
     }
 
     /**
@@ -320,7 +320,7 @@ class BaseContent implements ContentInterface, AddressableInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $content = '';
         foreach ($this->getContent() as $item) {

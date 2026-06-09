@@ -18,16 +18,15 @@ class Url
      * Returns:
      * my-name-is-earl
      *
-     * @param $string
      * @return string
      */
-    public static function slugify($string): string
+    public static function slugify(string $string): string
     {
         // Filter
         $string = mb_strtolower($string, 'UTF-8');
         $string = strip_tags($string);
         $string = preg_replace('/\s/', '-', $string);
-        $string = preg_replace('/[-]+/', '-', $string);
+        $string = preg_replace('/[-]+/', '-', (string) $string);
 
         // Sanitise
         $string = filter_var($string, FILTER_SANITIZE_URL);
@@ -119,7 +118,7 @@ class Url
      */
     public static function removeTrailingSlash(string $uri): string
     {
-        if (substr($uri, -1, 1) === '/') {
+        if (str_ends_with($uri, '/')) {
             return substr($uri, 0, -1);
         }
         return $uri;
@@ -133,7 +132,7 @@ class Url
      */
     public static function addTrailingSlash(string $uri): string
     {
-        if (substr($uri, -1, 1) !== '/') {
+        if (!str_ends_with($uri, '/')) {
             return $uri . '/';
         }
         return $uri;

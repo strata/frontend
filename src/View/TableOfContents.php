@@ -173,14 +173,14 @@ class TableOfContents
 
         // Convert spaces
         $string = preg_replace('/\&nbsp;/', '-', $string);
-        $string = preg_replace('/\s/', '-', $string);
+        $string = preg_replace('/\s/', '-', (string) $string);
 
         // Remove anything that isn't an ASCII letter, number, underscore _ or dash -
-        $string = strip_tags($string);
+        $string = strip_tags((string) $string);
         $string = preg_replace('/[^A-Za-z0-9_-]+/', '', $string);
 
         // Ensure string starts with a letter
-        if (!preg_match('/^[a-z]/', $string)) {
+        if (!preg_match('/^[a-z]/', (string) $string)) {
             $string = 'h-' . $string;
         }
 

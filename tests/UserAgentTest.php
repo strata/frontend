@@ -16,7 +16,7 @@ class UserAgentTest extends TestCase
         $this->assertStringContainsString('(+https://github.com/strata/data)', $version);
 
         // Only run for Composer 2
-        if (class_exists('\Composer\InstalledVersions')) {
+        if (class_exists(\Composer\InstalledVersions::class)) {
             $expects = 'Strata_Data/' . InstalledVersions::getPrettyVersion('strata/data');
             $this->assertStringContainsString($expects, $version);
         }
@@ -30,7 +30,7 @@ class UserAgentTest extends TestCase
         $this->assertStringContainsString('(+https://github.com/strata/frontend)', $userAgent);
 
         // Only run for Composer 2
-        if (class_exists('\Composer\InstalledVersions')) {
+        if (class_exists(\Composer\InstalledVersions::class)) {
             $expects = 'Strata_Frontend/' . InstalledVersions::getPrettyVersion('strata/frontend');
             $this->assertStringContainsString($expects, $userAgent);
         }

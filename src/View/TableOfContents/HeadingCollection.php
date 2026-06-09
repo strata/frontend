@@ -10,7 +10,7 @@ use Strata\Data\Traits\IterableTrait;
 /**
  * A collection of headings parsed to generate a table of contents
  */
-class HeadingCollection implements \SeekableIterator, \Countable
+class HeadingCollection implements \SeekableIterator, \Countable, \Stringable
 {
     use IterableTrait;
 

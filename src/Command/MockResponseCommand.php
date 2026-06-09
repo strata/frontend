@@ -43,16 +43,11 @@ class MockResponseCommand extends Command
             }
 
             $extension = pathinfo($file, PATHINFO_EXTENSION);
-            switch ($extension) {
-                case 'json':
-                    $content = '{"name": "Test"}';
-                    break;
-                case 'html':
-                    $content = '<h1>Test</h1>';
-                    break;
-                default:
-                    $content = 'Test';
-            }
+            $content = match ($extension) {
+                'json' => '{"name": "Test"}',
+                'html' => '<h1>Test</h1>',
+                default => 'Test',
+            };
             $filesystem->dumpFile($file, $content);
             $output->writeln(sprintf('<info>Mock response file created at %s</info>', $file));
         }

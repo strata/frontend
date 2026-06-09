@@ -6,9 +6,6 @@ namespace Strata\Frontend\View\TableOfContents;
 
 class Heading
 {
-    public int $level;
-    public string $name;
-    public string $link;
     public HeadingCollection $children;
 
     /**
@@ -17,11 +14,8 @@ class Heading
      * @param string $name
      * @param string $link
      */
-    public function __construct(int $level, string $name, string $link)
+    public function __construct(public int $level, public string $name, public string $link)
     {
-        $this->level = $level;
-        $this->name = $name;
-        $this->link = $link;
         $this->children = new HeadingCollection();
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content;
 
-class Yoast
+class Yoast implements \Stringable
 {
     protected $title;
     protected $metadescription;
@@ -102,7 +102,7 @@ class Yoast
      */
     public function getMetadescription()
     {
-        return strlen($this->metakeywords) > 0 ? "<meta name=\"description\" content=\"" . $this->metadescription . "\">" : "";
+        return strlen((string) $this->metakeywords) > 0 ? "<meta name=\"description\" content=\"" . $this->metadescription . "\">" : "";
     }
 
     /**
@@ -118,7 +118,7 @@ class Yoast
      */
     public function getMetakeywords()
     {
-        return strlen($this->metakeywords) > 0 ? "<meta name=\"keywords\" content=\"" . $this->metakeywords . "\">" : "";
+        return strlen((string) $this->metakeywords) > 0 ? "<meta name=\"keywords\" content=\"" . $this->metakeywords . "\">" : "";
     }
 
     /**
@@ -140,8 +140,8 @@ class Yoast
         return $metatags;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getAllMetatags();
+        return (string) $this->getAllMetatags();
     }
 }

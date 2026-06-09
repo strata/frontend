@@ -9,7 +9,7 @@ namespace Strata\Frontend\Content;
  *
  * @package Strata\Frontend\Content
  */
-class Metadata implements \ArrayAccess
+class Metadata implements \ArrayAccess, \Stringable
 {
     protected $metadata = [];
 
@@ -108,7 +108,7 @@ class Metadata implements \ArrayAccess
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $content = [];
         foreach ($this->metadata as $key => $item) {

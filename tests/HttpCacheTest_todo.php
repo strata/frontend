@@ -54,7 +54,7 @@ class HttpCacheTestTodo extends TestCase
 
     public function testInvalidCacheTagsAdapter()
     {
-        $this->expectException('Strata\Data\Exception\CacheException');
+        $this->expectException(\Strata\Data\Exception\CacheException::class);
 
         $api = new RestApi('https://example.com/api/');
         $api->setCache(new FilesystemAdapter(self::CACHE_NAMESPACE, 3600, self::CACHE_DIR));

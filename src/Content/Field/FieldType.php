@@ -41,46 +41,27 @@ class FieldType
      */
     public static function getClass(string $type): string
     {
-        switch ($type) {
-            case self::ARRAY:
-                return ArrayContent::class;
-            case self::AUDIO:
-                return Audio::class;
-            case self::BOOLEAN:
-                return Boolean::class;
-            case self::DATE:
-                return Date::class;
-            case self::DATETIME:
-                return DateTime::class;
-            case self::DECIMAL:
-                return Decimal::class;
-            case self::DOCUMENT:
-                return Document::class;
-            case self::FLEXIBLE_CONTENT:
-                return FlexibleContent::class;
-            case self::IMAGE:
-                return Image::class;
-            case self::NUMBER:
-                return Number::class;
-            case self::PLAIN_ARRAY:
-                return PlainArray::class;
-            case self::PLAIN_TEXT:
-                return PlainText::class;
-            case self::RELATION:
-                return Relation::class;
-            case self::RELATION_ARRAY:
-                return RelationArray::class;
-            case self::RICH_TEXT:
-                return RichText::class;
-            case self::SHORT_TEXT:
-                return ShortText::class;
-            case self::TAXONOMY_TERMS:
-                return TaxonomyTerms::class;
-            case self::VIDEO:
-                return Video::class;
-            default:
-                throw new ContentFieldException(sprintf('Field type %s not recognised', $type));
-        }
+        return match ($type) {
+            self::ARRAY => ArrayContent::class,
+            self::AUDIO => Audio::class,
+            self::BOOLEAN => Boolean::class,
+            self::DATE => Date::class,
+            self::DATETIME => DateTime::class,
+            self::DECIMAL => Decimal::class,
+            self::DOCUMENT => Document::class,
+            self::FLEXIBLE_CONTENT => FlexibleContent::class,
+            self::IMAGE => Image::class,
+            self::NUMBER => Number::class,
+            self::PLAIN_ARRAY => PlainArray::class,
+            self::PLAIN_TEXT => PlainText::class,
+            self::RELATION => Relation::class,
+            self::RELATION_ARRAY => RelationArray::class,
+            self::RICH_TEXT => RichText::class,
+            self::SHORT_TEXT => ShortText::class,
+            self::TAXONOMY_TERMS => TaxonomyTerms::class,
+            self::VIDEO => Video::class,
+            default => throw new ContentFieldException(sprintf('Field type %s not recognised', $type)),
+        };
     }
 
     /*
@@ -104,7 +85,7 @@ class FieldType
         try {
             self::getClass($type);
             return true;
-        } catch (ContentFieldException $e) {
+        } catch (ContentFieldException) {
             return false;
         }
     }
@@ -116,7 +97,7 @@ class FieldType
      */
     public static function getFieldTypes(): array
     {
-        $reflection = new \ReflectionClass(__CLASS__);
+        $reflection = new \ReflectionClass(self::class);
         return $reflection->getConstants();
     }
 }
