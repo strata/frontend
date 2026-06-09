@@ -50,10 +50,7 @@ class Head
      */
     public function getMeta(string $name): ?string
     {
-        if (isset($this->meta[$name])) {
-            return $this->meta[$name];
-        }
-        return null;
+        return $this->meta[$name] ?? null;
     }
 
     public function getMetaHtml(string $name): ?string

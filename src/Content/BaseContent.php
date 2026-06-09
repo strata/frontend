@@ -35,7 +35,7 @@ class BaseContent implements ContentInterface, AddressableInterface
     {
         $this->content = new ContentFieldCollection();
         $this->featuredImage = null;
-        $this->taxonomies = array();
+        $this->taxonomies = [];
     }
 
     /**

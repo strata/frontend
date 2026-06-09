@@ -116,7 +116,7 @@ class FieldType
      */
     public static function getFieldTypes(): array
     {
-        $reflection = new \ReflectionClass(__CLASS__);
+        $reflection = new \ReflectionClass(self::class);
         return $reflection->getConstants();
     }
 }

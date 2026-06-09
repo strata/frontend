@@ -13,7 +13,7 @@ use Strata\Frontend\Exception\ContentFieldException;
  */
 class PlainArray extends ContentField
 {
-    protected $content = array();
+    protected $content = [];
 
     /**
      * Create plain array content field

@@ -93,11 +93,11 @@ class Redirects
         $redirect[self::SOURCE] = filter_var($source, FILTER_SANITIZE_URL);
         $redirect[self::DESTINATION] = filter_var($destination, FILTER_SANITIZE_URL);
 
-        if ($httpCode !== null && (substr((string) $httpCode, 0, 1) === '3')) {
+        if ($httpCode !== null && (str_starts_with((string) $httpCode, '3'))) {
             $redirect[self::HTTP_STATUS] = (int) $httpCode;
         }
 
-        if (strpos($source, '*') !== false) {
+        if (str_contains($source, '*')) {
             $this->redirectRegex[] = $redirect;
         } else {
             $this->redirectsOneToOne[] = $redirect;
@@ -119,9 +119,7 @@ class Redirects
     public function match(string $url): bool
     {
         // Try one to one match first
-        $matchOne = function ($url) {
-            return array_search($url, array_column($this->redirectsOneToOne, self::SOURCE));
-        };
+        $matchOne = (fn($url) => array_search($url, array_column($this->redirectsOneToOne, self::SOURCE)));
         $result = $matchOne($url);
 
         // Try to remove/add trailing slash from URL
@@ -192,12 +190,12 @@ class Redirects
         $x = 0;
 
         // If no * in destination, just return it
-        if (strpos($destination, '*') === false) {
+        if (!str_contains($destination, '*')) {
             return $destination;
         }
 
         // Check if * is at start
-        if (strpos($destination, '*') === 0) {
+        if (str_starts_with($destination, '*')) {
             $redirect .= $replace[0];
             $x++;
         }

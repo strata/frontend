@@ -46,7 +46,7 @@ class MetadataTestTodo extends TestCase
 
     public function testArrayStorageDataPersistenceWithProvidedKey()
     {
-        $id = rand(0, 999);
+        $id = random_int(0, 999);
 
         $metaData = $this->metaDataFactory->createNew();
         $metaData->setUrl('https://example.net');

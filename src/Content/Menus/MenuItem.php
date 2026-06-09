@@ -143,8 +143,7 @@ class MenuItem
         $currentUrl = rtrim($this->getUrl(), '/');
 
         // We check the $currentPath isn't empty, then check if the $currentPath is at the end of the current url
-        // The - on strlen ensures we use the end of the string for comparison rather than the start
-        if (!empty($currentPath) && substr($currentUrl, -strlen($currentPath)) == $currentPath) {
+        if (!empty($currentPath) && str_ends_with($currentUrl, $currentPath)) {
             return true;
         }
 

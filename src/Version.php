@@ -19,7 +19,7 @@ final class Version
      */
     public static function getVersion(): ?string
     {
-        if (class_exists('\Composer\InstalledVersions')) {
+        if (class_exists(\Composer\InstalledVersions::class)) {
             if (InstalledVersions::isInstalled(self::PACKAGE)) {
                 return InstalledVersions::getPrettyVersion(self::PACKAGE);
             }

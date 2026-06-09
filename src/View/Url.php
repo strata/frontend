@@ -119,7 +119,7 @@ class Url
      */
     public static function removeTrailingSlash(string $uri): string
     {
-        if (substr($uri, -1, 1) === '/') {
+        if (str_ends_with($uri, '/')) {
             return substr($uri, 0, -1);
         }
         return $uri;
@@ -133,7 +133,7 @@ class Url
      */
     public static function addTrailingSlash(string $uri): string
     {
-        if (substr($uri, -1, 1) !== '/') {
+        if (!str_ends_with($uri, '/')) {
             return $uri . '/';
         }
         return $uri;

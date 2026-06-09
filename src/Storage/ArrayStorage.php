@@ -92,10 +92,7 @@ class ArrayStorage implements StorageInterface
 
         // Save the data
         $this->data[] = $data;
-
-        // Find the ID of the inserted item
-        end($this->data);
-        $key = key($this->data);
+        $key = array_key_last($this->data);
 
         // Save this ID as a key in the array so we always have it
         $data = $this->data[$key];
