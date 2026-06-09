@@ -154,11 +154,9 @@ class MetadataRepository implements RepositoryInterface
      */
     public function getTableSetupScript(string $storageType): string
     {
-        switch ($storageType) {
-            case 'sqlite':
-            default:
-                return $this->getSqliteTableCreationSql();
-        }
+        return match ($storageType) {
+            default => $this->getSqliteTableCreationSql(),
+        };
     }
 
     /**

@@ -7,7 +7,7 @@ use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 
 return RectorConfig::configure()
     ->withPaths([__DIR__ . '/src', __DIR__ . '/tests'])
-    ->withPhpSets(php74: true)
+    ->withPhpSets(php80: true)
 //    ->withPhpSets(php82: true)
 //    ->withPreparedSets(symfonyCodeQuality: true)
 //    ->withComposerBased(symfony: true)

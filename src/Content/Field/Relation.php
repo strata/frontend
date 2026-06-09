@@ -117,6 +117,6 @@ class Relation extends ContentField
      */
     public function __toString(): string
     {
-        return $this->getValue();
+        return (string) $this->getValue();
     }
 }

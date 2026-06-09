@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Strata\Frontend\Content;
 
-class Yoast
+class Yoast implements \Stringable
 {
     protected $title;
     protected $metadescription;
@@ -140,8 +140,8 @@ class Yoast
         return $metatags;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getAllMetatags();
+        return (string) $this->getAllMetatags();
     }
 }

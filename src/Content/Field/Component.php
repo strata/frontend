@@ -13,7 +13,7 @@ use Strata\Frontend\Content\IterableContentTrait;
  *
  * @package Strata\Frontend\Content\Field
  */
-class Component implements ContentInterface, IterableContentInterface
+class Component implements ContentInterface, IterableContentInterface, \Stringable
 {
     use IterableContentTrait;
 

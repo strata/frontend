@@ -6,7 +6,7 @@ namespace Strata\Frontend\Content;
 
 use Strata\Frontend\Exception\MetaTagNotAllowedException;
 
-class Head
+class Head implements \Stringable
 {
     protected $title;
 
