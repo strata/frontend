@@ -44,10 +44,10 @@ class Boolean extends ContentField
             return $this;
         }
         if (!is_string($value)) {
-            if (preg_match('/(y|yes|1)/i', $value)) {
+            if (preg_match('/(y|yes|1)/i', (string) $value)) {
                 $this->value = true;
             }
-            if (preg_match('/(n|no|0)/i', $value)) {
+            if (preg_match('/(n|no|0)/i', (string) $value)) {
                 $this->value = false;
             }
         }

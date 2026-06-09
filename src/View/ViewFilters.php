@@ -22,10 +22,9 @@ class ViewFilters
      * Returns:
      * my-name-is-earl
      *
-     * @param $string
      * @return string
      */
-    public function slugify($string): string
+    public function slugify(string $string): string
     {
         // Filter
         $string = mb_strtolower($string, 'UTF-8');
@@ -135,7 +134,7 @@ class ViewFilters
     public function buildVersion(string $src): string
     {
         // Choose a fast, short hashing algorithm
-        static $algorithm;
+        static $algorithm = '';
         if (empty($algorithm)) {
             if (in_array('adler32', hash_algos())) {
                 $algorithm = 'adler32';
@@ -150,7 +149,7 @@ class ViewFilters
             $hash = hash($algorithm, file_get_contents($src));
         } else {
             if (isset($_SERVER['DOCUMENT_ROOT'])) {
-                $path = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/' . ltrim($src, '/');
+                $path = rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') . '/' . ltrim($src, '/');
                 if (file_exists($path)) {
                     $hash = hash($algorithm, file_get_contents($path));
                 }

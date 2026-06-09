@@ -73,7 +73,7 @@ class Url
         $this->pattern = $pattern;
 
         foreach ($this->availableParams as $param) {
-            if (preg_match('/:(' . preg_quote($param, '/') . ')(\([^)]+\))?/', $pattern, $m)) {
+            if (preg_match('/:(' . preg_quote((string) $param, '/') . ')(\([^)]+\))?/', $pattern, $m)) {
                 $replace = $m[0];
                 $param = $m[1];
 

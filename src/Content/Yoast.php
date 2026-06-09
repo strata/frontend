@@ -102,7 +102,7 @@ class Yoast implements \Stringable
      */
     public function getMetadescription()
     {
-        return strlen($this->metakeywords) > 0 ? "<meta name=\"description\" content=\"" . $this->metadescription . "\">" : "";
+        return strlen((string) $this->metakeywords) > 0 ? "<meta name=\"description\" content=\"" . $this->metadescription . "\">" : "";
     }
 
     /**
@@ -118,7 +118,7 @@ class Yoast implements \Stringable
      */
     public function getMetakeywords()
     {
-        return strlen($this->metakeywords) > 0 ? "<meta name=\"keywords\" content=\"" . $this->metakeywords . "\">" : "";
+        return strlen((string) $this->metakeywords) > 0 ? "<meta name=\"keywords\" content=\"" . $this->metakeywords . "\">" : "";
     }
 
     /**

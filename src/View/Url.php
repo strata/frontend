@@ -18,10 +18,9 @@ class Url
      * Returns:
      * my-name-is-earl
      *
-     * @param $string
      * @return string
      */
-    public static function slugify($string): string
+    public static function slugify(string $string): string
     {
         // Filter
         $string = mb_strtolower($string, 'UTF-8');

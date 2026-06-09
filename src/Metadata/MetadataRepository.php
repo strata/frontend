@@ -137,7 +137,7 @@ class MetadataRepository implements RepositoryInterface
 
         if (isset($data['attributes'])) {
             if (!is_array($data['attributes'])) {
-                $data['attributes'] = explode(',', $data['attributes']);
+                $data['attributes'] = explode(',', (string) $data['attributes']);
             }
             $metaData->setAttributes($data['attributes']);
         }
