@@ -10,7 +10,7 @@ Please note this software is in development, usage may change before the 1.0 rel
 
 ## Requirements
 
-* PHP 7.4+
+* PHP 8.2+
 * [Composer](https://getcomposer.org/)
 
 ## Installation
@@ -18,7 +18,7 @@ Please note this software is in development, usage may change before the 1.0 rel
 Install via Composer:
 
 ```
-composer require strata/frontend:^0.9
+composer require strata/frontend
 ```
 
 See [installation](docs/installation.md).

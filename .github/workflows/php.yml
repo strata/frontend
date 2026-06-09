@@ -14,11 +14,17 @@ jobs:
 
     strategy:
       matrix:
-        php: ['8.1', '8.2', '8.3']
-        symfony: ['6.4', '7.1']
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        symfony: [ '7.4', '8.0', '8.1' ]
         exclude:
-          - php: '8.1'
-            symfony: '7.1'
+          - php: '8.2'
+            symfony: '8.0'
+          - php: '8.2'
+            symfony: '8.1'
+          - php: '8.3'
+            symfony: '8.0'
+          - php: '8.3'
+            symfony: '8.1'
 
     runs-on: ubuntu-latest
 
@@ -27,14 +33,14 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # https://github.com/marketplace/actions/setup-php-action
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, intl
+          extensions: mbstring, intl, :redis, redis-6.3.0
           ini-values: post_max_size=256M, max_execution_time=180
 
       - name: Check PHP version
